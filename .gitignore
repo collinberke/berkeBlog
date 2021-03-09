@@ -1,12 +1,16 @@
 # History files
 .Rhistory
 .Rapp.history
+.Rhistory
 
 # Session Data files
 .RData
 
 # User-specific files
 .Ruserdata
+
+.DS_Store
+Thumbs.db
 
 # Example code in package build process
 *-Ex.R
@@ -37,3 +41,6 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+/public/
+/resources/
