@@ -1,2 +1,2 @@
 # berkeBlog
-This repo holds code for a test example of a website to host a blog. 
+This repo holds code for my personal website and blog. 
