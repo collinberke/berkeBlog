@@ -23,8 +23,8 @@ interests:
 - Rstats
 - Data engineering
 organizations:
-- name: NET, Nebraska's PBS & NPR Stations
-  url: https://www.netnebraska.org/
+- name: Nebraska Public Media
+  url: https://www.nebraskapublicmedia.org/
 role: Media Research Analyst
 social:
 - icon: envelope
