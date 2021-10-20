@@ -42,7 +42,7 @@ As part of my talk, I mentioned having put together a curated list of resources 
 
 ## Tidy Data
 
-* [Tidy Data paper published in the Journal of Statistical Software written by Hadley Wickham](http://www.jstatsoft.org/v59/i10/paper)
+* [Tidy Data paper published in the Journal of Statistical Software written by Hadley Wickham](https://www.jstatsoft.org/article/view/v059i10)
 
 * [Tidy Data Chapter published in the open source R for Data Science book written by Hadley Wickham and Garrett Grolemun](https://r4ds.had.co.nz/tidy-data.html)
 
