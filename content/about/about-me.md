@@ -37,7 +37,7 @@ He has experience using different software, third-party services, and programmin
 
 Collin also serves as an adjunct instructor for the [University of Nebraska-Lincoln](https://www.unl.edu/) and [Southeast Community College](https://www.southeast.edu/), where he teaches courses in sports data visualization and analysis and communication specific courses. He holds a M.A. in Communication Studies from the [The University of South Dakota](https://www.usd.edu/) and a Ph.D. in Media and Communication from [Texas Tech University](http://www.ttu.edu/). He has also published and contributed to the publication of several academic journal articles. 
 
-Collin is a self-proclaimed news, sports, and podcast junkie. He really enjoys listening to [NPR](https://www.npr.org/), watching [PBS](https://www.pbs.org/) (especially [NOVA](https://www.pbs.org/wgbh/nova/brand/science-now/)), and indulging in college football and baseball. At times, he will write blog posts on topics he finds interesting in these areas. 
+Collin is a self-proclaimed news, sports, and podcast junkie. He really enjoys listening to [NPR](https://www.npr.org/), watching [PBS](https://www.pbs.org/) (especially [NOVA](https://www.pbs.org/wgbh/nova/)), and indulging in college football and baseball. At times, he will write blog posts on topics he finds interesting in these areas. 
 
 ---
 
