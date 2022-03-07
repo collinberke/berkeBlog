@@ -475,7 +475,7 @@ At this point, this post transitions into examining just the Order Completed pag
 
 It's time to shift focus onto exploring the characteristics of the outcome variable of future forecasting models, order completions, in more depth. The next step, then, is to examine for any lagged relationships present within the Order Completed page views time series. 
 
-The `gg_lag` function from the `feats` package makes it easy to produce the lag plots. Each of these plots represents $y_{t}$ vs. $y_{t-k}$ for $k$ values up to 9 lags of time series. Here the `tidy_trend_wide` data will be used. 
+The `gg_lag` function from the `feats` package makes it easy to produce the lag plots. Here the `tidy_trend_wide` data will be used. 
 
 ```{r vis-order-complete-lag-plots}
 tidy_trend_wide %>% 
