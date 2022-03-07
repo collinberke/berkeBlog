@@ -84,7 +84,7 @@ theme_set(
 
 ## The data
 
-As was used in previous posts, Google Analytics 4 data for the [Google Merchandise Store](https://shop.googlemerchandisestore.com/) are used for the examples below. Data represents website usage from 2020-11-01 to 2021-12-31. Google’s Public Datasets initiative makes this data open and available for anyone to use (as long as you have a Google account and have access to [Google Cloud resources](https://cloud.google.com/)). Data are stored in [Google BigQuery](https://cloud.google.com/bigquery), a data analytics warehouse solution, and are exported using a SQL like syntax. Details on how this data were exported can be found in this [GitHub repository](). More about the data can be found [here](https://support.google.com/analytics/answer/10937659#zippy=%2Cin-this-article).
+As was used in previous posts, Google Analytics 4 data for the [Google Merchandise Store](https://shop.googlemerchandisestore.com/) are used for the examples below. Data represents website usage from 2020-11-01 to 2021-12-31. Google’s Public Datasets initiative makes this data open and available for anyone to use (as long as you have a Google account and have access to [Google Cloud resources](https://cloud.google.com/)). Data are stored in [Google BigQuery](https://cloud.google.com/bigquery), a data analytics warehouse solution, and are exported using a SQL like syntax. Details on how this data were exported can be found in this [GitHub repository](https://github.com/collinberke/blog-forecasting_exploratory_analysis). More about the data can be found [here](https://support.google.com/analytics/answer/10937659#zippy=%2Cin-this-article).
 
 ## Export the data
 
