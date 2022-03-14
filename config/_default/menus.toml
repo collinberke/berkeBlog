@@ -5,7 +5,7 @@
 
 [[main]]
   name = "Now"
-  url = "/now"
+  url = "/now/"
   weight = 10
   
 [[main]]
