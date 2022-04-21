@@ -19,8 +19,8 @@
   weight = 30
 
 [[main]]
-  name = "Resume"
-  url = "/resume"
+  name = "Today I Learned"
+  url = "/til"
   weight = 40
 
 [[main]]
