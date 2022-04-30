@@ -29,13 +29,15 @@ I constantly focus on new ways to improve my workflows and become more efficient
 
 #### [Mastering Ubuntu](https://www.amazon.com/Mastering-Ubuntu-Server-configuring-troubleshooting/dp/1800564643) by Jay LaCroix
 
-More and more I'm finding myself managing compute engines running some form of Ubuntu, a version of Linux. To get better at managing these resources and to make myself more efficient in these environments, I'm reading this book to learn and practice more.  
+More and more I'm finding myself managing compute engines running some form of Ubuntu, a version of Linux. To get better at managing these resources and to make myself more efficient in these environments, I'm reading this book to learn and practice my skills.  
 
-#### [The Long Way to a Small, Angry Planet](https://www.amazon.com/Long-Small-Angry-Planet-Wayfarers/dp/0062444131) by Becky Chambers
+#### [A Closed and Common Orbit: Wayfarers 2](https://www.amazon.com/dp/B01ARXVTFE/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) by Becky Chambers
 
-I'm reading this book for fun. Space, extraterrestrial life, and adventure, what's not to like? 
+Space, artificial intelligence, and other sentient beings. What's not to like? This book is the second in the Wayfarers series. I'm reading this book to fulfill my want to read more science fiction. I highly suggest reading The Long Way to a Small, Angry Planet (link below) before embarking on this read.  
 
 ## A list of books I've read (ever since I've started keeping track)
+
+#### [The Long Way to a Small, Angry Planet: Wayfarers 1](https://www.amazon.com/Long-Small-Angry-Planet-Wayfarers/dp/0062444131) by Becky Chambers
 
 #### [Project Hail Mary](https://www.andyweirauthor.com/books/project-hail-mary-hc/project-hail-mary-el) by Andy Weir
 
