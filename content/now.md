@@ -31,11 +31,13 @@ I constantly focus on new ways to improve my workflows and become more efficient
 
 More and more I'm finding myself managing compute engines running some form of Ubuntu, a version of Linux. To get better at managing these resources and to make myself more efficient in these environments, I'm reading this book to learn and practice my skills.  
 
-#### [A Closed and Common Orbit: Wayfarers 2](https://www.amazon.com/dp/B01ARXVTFE/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) by Becky Chambers
+#### [Record of a Spaceborn Few: Wayfarers 3](https://www.amazon.com/Record-Spaceborn-Few-Wayfarers-Book-ebook/dp/B072BFJCB9/) by Becky Chambers
 
-Space, artificial intelligence, and other sentient beings. What's not to like? This book is the second in the Wayfarers series. I'm reading this book to fulfill my want to read more science fiction. I highly suggest reading The Long Way to a Small, Angry Planet (link below) before embarking on this read.  
+Humans, artificial intelligence, aliens, and some beings yet undiscovered explore what it means to be a community. An interesting read posing questions about the role humans play within a galactic society and exploring answers to some interesting questions: What is the purpose of a ship that has reached its destination? Why remain in space when there are habitable worlds available to live? What is the price of sustaining a carefully balanced way of life--and is it worth saving at all? I suggest reading the first and second book in this series before diving into this read. 
 
 ## A list of books I've read (ever since I've started keeping track)
+
+#### [A Closed and Common Orbit: Wayfarers 2](https://www.amazon.com/dp/B01ARXVTFE/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) by Becky Chambers
 
 #### [The Long Way to a Small, Angry Planet: Wayfarers 1](https://www.amazon.com/Long-Small-Angry-Planet-Wayfarers/dp/0062444131) by Becky Chambers
 
