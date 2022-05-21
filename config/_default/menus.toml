@@ -19,12 +19,7 @@
   weight = 30
 
 [[main]]
-  name = "Today I Learned"
-  url = "/til"
-  weight = 40
-
-[[main]]
   name = "Contact"
   url = "#contact"
-  weight = 50
+  weight = 40
 
