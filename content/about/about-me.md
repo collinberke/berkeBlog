@@ -39,6 +39,8 @@ Collin also serves as an adjunct instructor for the [University of Nebraska-Linc
 
 Collin is a self-proclaimed news, sports, and podcast junkie. He really enjoys listening to [NPR](https://www.npr.org/), watching [PBS](https://www.pbs.org/) (especially [NOVA](https://www.pbs.org/wgbh/nova/)), and indulging in college football and baseball. At times, he will write blog posts on topics he finds interesting in these areas. 
 
+Check out the [Now](/now) page to see what Collin is currently reading and working on. 
+
 ---
 
 ## Note about this site
