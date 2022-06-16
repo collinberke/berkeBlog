@@ -31,11 +31,15 @@ I constantly focus on new ways to improve my workflows and become more efficient
 
 More and more I'm finding myself managing compute engines running some form of Ubuntu, a version of Linux. To get better at managing these resources and to make myself more efficient in these environments, I'm reading this book to learn and practice my skills.  
 
-#### [Record of a Spaceborn Few: Wayfarers 3](https://www.amazon.com/Record-Spaceborn-Few-Wayfarers-Book-ebook/dp/B072BFJCB9/) by Becky Chambers
+#### [The Galaxy, and the Ground Within: A Novel (Wayfarers 4)](https://www.amazon.com/Galaxy-Ground-Within-Novel-Wayfarers-ebook/dp/B088RDCLQ4) by Becky Chambers
 
-Humans, artificial intelligence, aliens, and some beings yet undiscovered explore what it means to be a community. An interesting read posing questions about the role humans play within a galactic society and exploring answers to some interesting questions: What is the purpose of a ship that has reached its destination? Why remain in space when there are habitable worlds available to live? What is the price of sustaining a carefully balanced way of life--and is it worth saving at all? I suggest reading the first and second book in this series before diving into this read. 
+Another sci-fi read for fun. Set at Five-Hop One-Stop, an average long-haul spacer stop on the planet Gora, a freak technological failure halts a trio of spacefaring strangers. During their time together, these strangers are compelled to confront where they've been, where they might go, and what they are, or could be, to each other. I suggest reading the first three books in this series before diving into this read. 
 
 ## A list of books I've read (ever since I've started keeping track)
+
+#### [Record of a Spaceborn Few: Wayfarers 3](https://www.amazon.com/Record-Spaceborn-Few-Wayfarers-Book-ebook/dp/B072BFJCB9/) by Becky Chambers
+
+#### [Google BigQuery: The Definitive Guide](https://www.amazon.com/Google-BigQuery-Definitive-Warehousing-Analytics/dp/1492044466/) by Valliappa Lakshmanan and Jordan Tigani
 
 #### [A Closed and Common Orbit: Wayfarers 2](https://www.amazon.com/dp/B01ARXVTFE/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) by Becky Chambers
 
