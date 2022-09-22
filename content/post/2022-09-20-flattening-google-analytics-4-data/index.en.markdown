@@ -310,7 +310,7 @@ from (
 where key in ('page_location', 'page_title');
 ```
 
-Wanna turn the key field into columns so you only have one row for this specific event? Use BigQuery's [`pivot()` operation](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#pivot_operator). Here is how to achieve this in a query:
+Wanna turn the key field into columns so you only have one row for this specific event? Use BigQuery's [`pivot()` operator](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#pivot_operator). Here is how to achieve this in a query:
 
 ```sql
 select *
