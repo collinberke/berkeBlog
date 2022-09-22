@@ -23,9 +23,9 @@ projects: []
 
 ### Introduction
 
-With the introduction of the Google Analytics 4 (GA4) BigQuery integration, understanding how to work with the underlying analytics data has become increasingly important. When first diving into this data, some of the data types may seem hard to work with. Specifically, analysts might be unfamiliar with the array and struct data types. Even more unfamiliar may be the combination of these two data types into complex, nested data structures. As such, some may become frustrated writing queries against this data. I know I did. 
+With the introduction of the Google Analytics 4 (GA4) BigQuery integration, understanding how to work with the underlying analytics data has become increasingly important. When first diving into this data, some of the data types may seem hard to work with. Specifically, analysts might be unfamiliar with the array and struct data types. Even more unfamiliar may be the combination of these two data types into complex, nested and repeated data structures. As such, some may become frustrated writing queries against this data. I know I did. 
 
-If you're mainly coming from working with flat data files, these more complex data types may not be intuitive to work with, as the SQL syntax is not as straight forward as a simple `SELECT` `FROM` statement. Much of this unfamiliarity may come from the required use of unfamiliar BigQuery functions and operators, many of which are used to transform data from a nested structure to a flattened, denormalized form. 
+If you're mainly coming from working with flat data files, these more complex data types may not be intuitive to work with, as the SQL syntax is not as straight forward as a simple `SELECT` `FROM` statement. Much of this unfamiliarity may come from the required use of unfamiliar BigQuery functions and operators, many of which are used to transform data from nested, repeated, or nested repeated structures to a flattened, denormalized form. 
 
 As such, this post aims to do three things:
 1. Overview the array, struct, and array of struct data types in BigQuery;
@@ -81,7 +81,7 @@ The returned table will contain a `data_type` field, where the value `ARRAY<STRI
 
 #### Querying an array
 
-Multiple approaches are available to query an array. The type of approach will depend on if the returned data needs to maintain its grouped, nested structure, or if the returned data needs to be flattened. If maintaining the nested structure is required, then a simple `SELECT` statement will work. Using the `array_planets_example` table as an example, the query applying this approach will look something like this:
+Multiple approaches are available to query an array. The type of approach will depend on if the returned data needs to maintain its grouped, repeated structure, or if the returned data needs to be flattened. If maintaining the repeated structure is required, then a simple `SELECT` statement will work. Using the `array_planets_example` table as an example, the query applying this approach will look something like this:
 
 ```sql
 select planets
@@ -206,7 +206,7 @@ order by km_sun;
 
 ### Array and structs in GA4 data 
 
-Now that we have learned a little bit about our solar system, let's return to Earth and the task at hand, flattening GA4 data. We just discussed how these data types are created and queried, it is now time to combine them into more complex data structures, as both of these structures are combined to create nested data structures in the GA4 data. It's best to start with an example. Specifically, let's look at how these structures are applied in the `event_params` field.
+Now that we have learned a little bit about our solar system, let's return to Earth and the task at hand, flattening GA4 data. We just discussed how these data types are created and queried, it is now time to combine them into more complex data structures, as both of these structures are combined to create nested repeated data structures in the GA4 data. It's best to start with an example. Specifically, let's look at how these structures are applied in the `event_params` field.
 
 We can start off by querying the `INFORMATION_SCHEMA.COLUMNS` view for one event to get an idea of its structure. The query to do this can be seen here:
 
@@ -220,9 +220,9 @@ from bigquery-public-data.ga4_obfuscated_sample_ecommerce.INFORMATION_SCHEMA.COL
 where table_name = "events_20210131" and column_name = "event_params";
 ```
 
-The data type is described in the returned table's `data_type` field. This field contains the following value `ARRAY<STRUCT<key STRING, value STRUCT<string_value STRING, int_value INT64, float_value FLOAT64, double_value FLOAT64>>>`. It should be immediately apparent that both the array and struct values are being used here to create a nested structure. In fact, the `event_params` value uses a struct within a struct. Given this structure, all the above methods will need to be employed to flatten this data.
+The data type is described in the returned table's `data_type` field. This field contains the following value `ARRAY<STRUCT<key STRING, value STRUCT<string_value STRING, int_value INT64, float_value FLOAT64, double_value FLOAT64>>>`. It should be immediately apparent that both the array and struct values are being used here to create a repeated nested structure. In fact, the `event_params` value uses a struct within a struct. Given this structure, all the above methods will need to be employed to flatten this data.
 
-To simplify this, let's look at one instance of one event in the GA4 data. Specifically, let's look at one instance of a `page_view` event. With this simplified example, we'll go step-by-step, adding additional elements to the query needed to flatten this nested data.
+To simplify this, let's look at one instance of one event in the GA4 data. Specifically, let's look at one instance of a `page_view` event. With this simplified example, we'll go step-by-step, adding additional elements to the query needed to flatten this data.
 
 ```sql
 select 
@@ -235,7 +235,7 @@ where event_name = 'page_view'
 limit 1;
 ```
 
-After running this query, you'll notice the output to the console is quite verbose, especially if you're using the [`bq` command-line tool](https://cloud.google.com/bigquery/docs/bq-command-line-tool). The verbosity of the output is due to the nested structure of the `event_params` field holding much of the data.
+After running this query, you'll notice the output to the console is quite verbose, especially if you're using the [`bq` command-line tool](https://cloud.google.com/bigquery/docs/bq-command-line-tool). The verbosity of the output is due to the `event_params` field holding much of the data.
 
 The first layer of the structure is an array, so the initial step is to use the `unnest()` function. The following can be done to achieve this:
 
@@ -501,7 +501,7 @@ order by event_date
 
 ### Wrap up
 
-This post started out simple by defining what arrays, structs, and array of structs data types are in BigQuery. Through the use of several examples, this post overviewed several approaches to query these different data types, specifically highlighting how to flatten each type. A second aim of this post was to show the application of these methods to the flattening of GA4 data stored in BigQuery. This included the flattening and combination of the complex, nested `event_params` and `geo` fields. Finally, this post shared queries that expanded the result set across multiple days worth of data.
+This post started out simple by defining what arrays, structs, and array of structs data types are in BigQuery. Through the use of several examples, this post overviewed several approaches to query these different data types, specifically highlighting how to flatten each type. A second aim of this post was to show the application of these methods to the flattening of GA4 data stored in BigQuery. This included the flattening and combination of the complex, nested, repeated and nested repeated data types used in the `event_params` and `geo` fields. Finally, this post shared queries that expanded the result set across multiple days worth of data.
 
 If you found this post helpful or just have interest in this type of content, I would appreciate the follow on [GitHub](https://github.com/collinberke) and/or [Twitter](https://twitter.com/BerkeCollin). If you have suggestions on how to improve these queries or found something that I missed, please file an issue in the repo found [here](https://github.com/collinberke/berkeBlog). 
 
