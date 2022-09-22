@@ -503,11 +503,11 @@ order by event_date
 
 This post started out simple by defining what arrays, structs, and array of structs data types are in BigQuery. Through the use of several examples, this post overviewed several approaches to query these different data types, specifically highlighting how to flatten each type. A second aim of this post was to show the application of these methods to the flattening of GA4 data stored in BigQuery. This included the flattening and combination of the complex, nested `event_params` and `geo` fields. Finally, this post shared queries that expanded the result set across multiple days worth of data.
 
-If you found this post helpful or just have interest in this type of content, I would appreciate the follow on [GitHub](https://github.com/collinberke) and/or [Twitter](https://twitter.com/BerkeCollin). If you have suggestions on how to improve these queries or found something that I missed, please file an issue in the repo found [here](). 
+If you found this post helpful or just have interest in this type of content, I would appreciate the follow on [GitHub](https://github.com/collinberke) and/or [Twitter](https://twitter.com/BerkeCollin). If you have suggestions on how to improve these queries or found something that I missed, please file an issue in the repo found [here](https://github.com/collinberke/berkeBlog). 
 
 ### Additional resources
 
-I spent a lot of time researching how to write, use, and query arrays and structs in BigQuery. In the process of preparing this post, I wrote a lot of example queries and followed along with BigQuery's [turtorial on working with arrays and structs](https://cloud.google.com/bigquery/docs/reference/standard-sql/arrays). As a result, I created multiple files that I organized into the GitHub repo for this post. These might be useful as a review after reading this post, or they might be a helpful quickstart quide for your own analysis of GA4 data stored in BigQuery. These additional notes can be found [here](). 
+I spent a lot of time researching how to write, use, and query arrays and structs in BigQuery. In the process of preparing this post, I wrote a lot of example queries and followed along with BigQuery's [turtorial on working with arrays and structs](https://cloud.google.com/bigquery/docs/reference/standard-sql/arrays). As a result, I created multiple files that I organized into the GitHub repo for this post. These might be useful as a review after reading this post, or they might be a helpful quickstart quide for your own analysis of GA4 data stored in BigQuery. These additional notes can be found [here](https://github.com/collinberke/berkeBlog/tree/master/content/post/2022-09-20-flattening-google-analytics-4-data). 
 
 ### Additional references
 
