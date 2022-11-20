@@ -15,15 +15,15 @@ Currently developing and maintaining a data pipeline project built using R and P
 
 #### **R for Data Science Online Learning Community book club facilitator**
 
-Currently facilitating a [R for Data Science Online Learning Community](https://www.rfordatasci.com/) online book club (check it out by joining the [Slack](http://r4ds.io/join)). This group is currently reading through Hadley Wickham and Jenny Bryan's [R Packages](https://r-pkgs.org/) book. The group meets weekly online over Zoom. Meetings are open to anyone who is a part of the Slack group (Join the #bookclubs-rpkgs channel to keep up with the book club). Check out this playlist of recordings for our weekly meetings [here](https://www.youtube.com/playlist?list=PL3x6DOfs2NGi8NcKmNxw_Hk4-leUsivZv). I would love to see more people join the group. 
+Recently started facilitating an [R for Data Science Online Learning Community](https://www.rfordatasci.com/) online book club (check it out by joining the [Slack workspace](http://r4ds.io/join)). This group is currently reading through Hadley Wickham's [Advanced R](https://adv-r.hadley.nz/) book. The group meets weekly online over Zoom. Meetings are open to anyone who is a part of the Slack group (Join the #book_club-advr channel to keep up with the book club). Check out the playlist of past meeting recordings [here](https://www.youtube.com/watch?v=vfTg6upHvO4&list=PL3x6DOfs2NGi4I1DhjPufFNbqCry_xQLq). I would love for more to join and be a part of this group. 
 
 #### Experimenting with [Neovim](https://neovim.io/)
 
-I've been experimenting more and more with Neovim for my development work. I'm happy and becoming more comfortable with the different modes and tools for editing text and code. Still struggling through the configuration and plugin ecosystem to set up workflows that are the most productive. Going through this process has been a challenge, but has me really reflecting on how I approach my work and evaluating what is needed, not needed, and what are the bad habits I need to break.  
+I've been experimenting more and more with Neovim for my development work. I'm becoming more comfortable with the different modes, movements, actions, and various tools for editing text and code. Still struggling through the configuration and plugin ecosystem to set up workflows that are the most productive. Going through this process has been a challenge, but has me really reflecting on how I approach my work, evaluating what is needed, not needed, and focusing on the bad habits I need to break.  
 
 ## Books I'm reading
 
-#### [R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan
+#### [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham
 
 I'm reading this book as part of the R for Data Science Online Learning Community book club. See the 'Projects I'm working on' section for some more detail.
 
@@ -35,13 +35,15 @@ Doing another read through of this book, as I'm leading my work team through the
 
 Slowly reading through this book. It's been some time since I've focused on developing my modelling skills, so I was wanting to spend some more time developing in this area.  
 
-#### [Leviathon Wakes (The Expanse Book 1)](https://www.amazon.com/Leviathan-Wakes-Expanse-Book-1-ebook/dp/B0047Y171G) by James S.A. Corey
+#### [Caliban's War (The Expanse Book 2)](https://www.amazon.com/Calibans-War-Expanse-Book-2-ebook/dp/B005SCRR1A) by James S.A. Corey
 
-Another sci-fi read for fun. Centered on a secret with the capacity to start an all out war within the solar system, the characters Jim Holden, an ice miner, and Detective Miller, a man on the hunt for a central key to this secret, find themselves confronted with its weight and potential impact. An exciting read so far. So exciting that the book was adapted into a telelvision series, which I have not seen yet. 
+Finished the first book in the series. I enjoyed the first, so I continued with the second. So far another good sci-fi read. The characters have depth, and the story is captivating. A Martian marine, a high-level politician, the Outer Planets Alliance crew of the Rocinante, and a scientist from the fallen moon of Ganymede all play an integral part in stopping an interplanetary war, while also confronting the aftereffects of an alien protomolecule now on Venus. We are not alone.
 
 ## A list of books I've read (ever since I've started keeping track)
 
 ### Professional development reads
+
+#### [R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan. Check out past book club meeting recordings [here](https://www.youtube.com/watch?v=QOmdmGMxl_Q&list=PL3x6DOfs2NGi8NcKmNxw_Hk4-leUsivZv&index=1).
 
 #### [Vim help files](https://vimhelp.org/) maintained by Carlo Teubner
 
@@ -49,13 +51,15 @@ Another sci-fi read for fun. Centered on a secret with the capacity to start an 
 
 #### [Google BigQuery: The Definitive Guide](https://www.amazon.com/Google-BigQuery-Definitive-Warehousing-Analytics/dp/1492044466/) by Valliappa Lakshmanan and Jordan Tigani
 
-#### [Mastering Shiny](https://mastering-shiny.org/) by Hadley Wickham
+#### [Mastering Shiny](https://mastering-shiny.org/) by Hadley Wickham. Check out the past book club meeting recordings [here](https://www.youtube.com/watch?v=beOYuHG9Xng&list=PL3x6DOfs2NGjhwrYvdmrKRNcvXX7X6ldt).
 
-#### [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham and Garrett Grolemund
+#### [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham and Garrett Grolemund. Check out the past book club meeting recordings [here](https://www.youtube.com/watch?v=_IQrDw3Fp4M&list=PL3x6DOfs2NGjtn1_4BSX99R5wrLjK7XvY).
 
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [Leviathon Wakes (The Expanse Book 1)](https://www.amazon.com/Leviathan-Wakes-Expanse-Book-1-ebook/dp/B0047Y171G) by James S.A. Corey
 
 #### [The Galaxy, and the Ground Within: A Novel (Wayfarers 4)](https://www.amazon.com/Galaxy-Ground-Within-Novel-Wayfarers-ebook/dp/B088RDCLQ4) by Becky Chambers
 
