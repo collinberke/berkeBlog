@@ -48,3 +48,5 @@ vignettes/*.pdf
 # Mac file files
 .DS_Store
 /content/post/.DS_Store
+
+/.quarto/
