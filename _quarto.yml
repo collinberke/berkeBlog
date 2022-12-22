@@ -12,9 +12,11 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      dark: superhero
+      light: flatly 
     css: styles.css
-    toc: true
+    toc: false 
 
 
 
