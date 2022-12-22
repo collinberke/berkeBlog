@@ -5,5 +5,33 @@
     "title": "About",
     "section": "",
     "text": "About this site"
+  },
+  {
+    "objectID": "now.html",
+    "href": "now.html",
+    "title": "Now",
+    "section": "",
+    "text": "A now page, why?"
+  },
+  {
+    "objectID": "now.html#projects-im-working-on",
+    "href": "now.html#projects-im-working-on",
+    "title": "Now",
+    "section": "Projects I’m working on",
+    "text": "Projects I’m working on\n\nProject Conduit\nCurrently developing and maintaining a data pipeline project built using R and Python. Technology utilized includes Google Cloud resources, Docker, Apache Airflow, Google BigQuery, Google Analytics, Google Data Studio, and Shiny. The goal is to centralize and automate data processing, storage, and reporting.\n\n\nR for Data Science Online Learning Community book club facilitator\nRecently started facilitating an R for Data Science Online Learning Community online book club (check it out by joining the Slack workspace). This group is currently reading through Hadley Wickham’s Advanced R book. The group meets weekly online over Zoom. Meetings are open to anyone who is a part of the Slack group (Join the #book_club-advr channel to keep up with the book club). Check out the playlist of past meeting recordings here. I would love for more to join and be a part of this group.\n\n\nExperimenting with Neovim\nI’ve been experimenting more and more with Neovim for my development work. I’m becoming more comfortable with the different modes, movements, actions, and various tools for editing text and code. Still struggling through the configuration and plugin ecosystem to set up workflows that are the most productive. Going through this process has been a challenge, but has me really reflecting on how I approach my work, evaluating what is needed, not needed, and focusing on the bad habits I need to break."
+  },
+  {
+    "objectID": "now.html#books-im-reading",
+    "href": "now.html#books-im-reading",
+    "title": "Now",
+    "section": "Books I’m reading",
+    "text": "Books I’m reading\n\nAdvanced R by Hadley Wickham\nI’m reading this book as part of the R for Data Science Online Learning Community book club. See the ‘Projects I’m working on’ section for some more detail.\n\n\nMastering Shiny by Hadley Wickham\nDoing another read through of this book, as I’m leading my work team through the material. Our aim is to start developing more Shiny applications to communicate our work and analyses. As such, we are focusing on learning the basics of Shiny app development.\n\n\nRegression and other stories by Andrew Gelman, Jennifer Hill, and Aki Vehtari\nSlowly reading through this book. It’s been some time since I’ve focused on developing my modelling skills, so I was wanting to spend some more time developing in this area.\n\n\nCaliban’s War (The Expanse Book 2) by James S.A. Corey\nFinished the first book in the series. I enjoyed the first, so I continued with the second. So far another good sci-fi read. The characters have depth, and the story is captivating. A Martian marine, a high-level politician, the Outer Planets Alliance crew of the Rocinante, and a scientist from the fallen moon of Ganymede all play an integral part in stopping an interplanetary war, while also confronting the aftereffects of an alien protomolecule now on Venus. We are not alone."
+  },
+  {
+    "objectID": "now.html#a-list-of-books-ive-read-ever-since-ive-started-keeping-track",
+    "href": "now.html#a-list-of-books-ive-read-ever-since-ive-started-keeping-track",
+    "title": "Now",
+    "section": "A list of books I’ve read (ever since I’ve started keeping track)",
+    "text": "A list of books I’ve read (ever since I’ve started keeping track)\n\nProfessional development reads\n\nR Packages by Hadley Wickham and Jenny Bryan. Check out past book club meeting recordings here.\n\n\nVim help files maintained by Carlo Teubner\n\n\nMastering Ubuntu by Jay LaCroix\n\n\nGoogle BigQuery: The Definitive Guide by Valliappa Lakshmanan and Jordan Tigani\n\n\nMastering Shiny by Hadley Wickham. Check out the past book club meeting recordings here.\n\n\nR for Data Science by Hadley Wickham and Garrett Grolemund. Check out the past book club meeting recordings here.\n\n\nDocker Deep Dive by Nigel Poulton\n\n\n\nPersonal reads\n\nLeviathon Wakes (The Expanse Book 1) by James S.A. Corey\n\n\nThe Galaxy, and the Ground Within: A Novel (Wayfarers 4) by Becky Chambers\n\n\nRecord of a Spaceborn Few: Wayfarers 3 by Becky Chambers\n\n\nA Closed and Common Orbit: Wayfarers 2 by Becky Chambers\n\n\nThe Long Way to a Small, Angry Planet: Wayfarers 1 by Becky Chambers\n\n\nLast of the Breed by Louis L’Amour\n\n\nProject Hail Mary by Andy Weir\n\n\nFirebreak by Nicole Kornher-Stace\n\n\nDune Messiah by Frank Herbert\n\n\nDune by Frank Herbert\n\n\nThe Martian: A Novel by Andy Weir"
   }
 ]
