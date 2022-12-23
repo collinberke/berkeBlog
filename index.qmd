@@ -10,7 +10,7 @@ about:
       text: GitHub
       href: https://github.com/collinberke
     - icon: twitter
-      text: twitter
+      text: Twitter
       href: https://twitter.com/BerkeCollin
     - icon: linkedin
       text: LinkedIn
