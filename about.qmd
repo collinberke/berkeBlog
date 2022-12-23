@@ -24,5 +24,4 @@ Check out the [Now](now.qmd) page to see what Collin is currently reading and wo
 
 The views expressed on this site are my own, and they do not reflect the views of my employer, professional and/or community groups I hold membership. Any analyses hosted on this site were done for professional development or were for fun. I make every attempt to perform valid and accurate data analysis and reporting. Unless otherwise noted, none of the content on this site has been peer-reviewed, and thus any conclusions drawn or uses stemming from this work need to take these limitations into account. 
 
-[Blogdown](https://github.com/rstudio/blogdown), [Hugo](https://gohugo.io/), and [Netlify](https://www.netlify.com/) were used to build and deploy this site. All my 
-blog posts are released under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/). 
+[Quarto](https://quarto.org/) and [Netlify](https://www.netlify.com/) were used to build and deploy this site. All my blog posts are released under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/). 
