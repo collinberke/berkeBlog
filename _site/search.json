@@ -61,5 +61,26 @@
     "title": "Collin K. Berke, Ph.D.",
     "section": "",
     "text": "I’m a media research analyst, data enthusiast, and news, sports, and podcast aficianado.\nProfessionally, I use data, audience measurement, and marketing research methods to answer questions on how to best reach and engage audiences–towards the goal of enriching lives and engaging minds with public media content and services. I am particularly interested in the use and development of open-source statistical software (i.e. R) to achieve this goal, and gaining a broader understanding of the role these tools play in media, digital, and marketing analytics. I also adjunct university courses on the side.\nListening to NPR, watching PBS (especially NOVA), and college football and baseball are my jam.\n\n\nWant to know more about what I’m currently working on, reading, or mastering? Check out the now page.\n\n\n\n\nPh.D. in Media and Communication, 2017, Texas Tech University\nM.A. in Communication Studies, 2013, The University of South Dakota\nBachelor of Science, 2011, The University of South Dakota\n\n\n\n\n\nDigital/Marketing analytics\nAudience measurement\nMedia testing\nR\nData engineering\n\nQuarto and Netlify were used to build and deploy this site. All my blog posts are released under a Creative Commons Attribution-ShareAlike 4.0 International License."
+  },
+  {
+    "objectID": "blog/posts/2022-12-22-test/index.html",
+    "href": "blog/posts/2022-12-22-test/index.html",
+    "title": "Test Blog",
+    "section": "",
+    "text": "This is a post test."
+  },
+  {
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "test\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nDec 22, 2022\n\n\nCollin K. Berke, Ph.D.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npersonal\n\n\n\n\n\n\n\n\n\n\n\nApr 2, 2021\n\n\nCollin K. Berke, Ph.D.\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/posts/2021-04-02-intro-post/index.html",
+    "href": "blog/posts/2021-04-02-intro-post/index.html",
+    "title": "Intro Post",
+    "section": "",
+    "text": "The purpose of this blog\nThe purpose of this blog is to serve as a location for me to express my thoughts on topics I find interesting. To be honest, I don’t expect this to be a really niche blog with one focused, clear purpose. Most likely it will be data analysis and/or visualization focused, which I will apply to develop posts in areas I find interesting: open-source software, media/marketing analytics, data analysis, sports, media, etc. My purpose may become more refined once I find my voice.\n\n\nThe inspiration and motivation to do this blog\nI have spent countless hours reading, re-reading, bookmarking, and Googling multiple topics regarding the use of the statistical computing programming language called R. Much of this time has been spent accessing useful, open-source, and free content that has aided me professionally, and it has contributed to my deeper understanding of the topics I find interesting. I couldn’t even begin to describe how grateful I am for those who have spent time organizing and drafting content others find useful. In fact, it’s the #Rstats community that has motivated me to put this blog together, as I have seen how helpful and open it is to aiding in the development of others.\nI now feel I am in a place of not only being a consumer but a producer of this information. I will never be an expert in this area, as there is too much to learn for just one person. As one of my favorite podcasts (i.e., Make Me Smart With Kai and Molly) states in every episode, “None of us is as smart as all of us.” Thus, I feel it is time to start organizing and drafting content others will hopefully find useful, at the very least amusing. Even if this blog helps one person, that will be enough motivation to keep me working on it.\n\n\nWhat’s up next?\nNot sure. I’m just excited I got this blog up and running. Most likely I’ll do something sports related. Who knows–stay tuned.\n\n\nReferences & Acknowledgements\n\nI make every attempt to properly cite information from other sources. If I have failed to properly attribute credit to a source, please kindly let me know."
   }
 ]

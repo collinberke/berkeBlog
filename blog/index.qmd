@@ -1,0 +1,9 @@
+---
+title: "Blog"
+listing:
+    type: default
+    contents: "posts/**/index.qmd"
+    sort: "date desc"
+    categories: true
+---
+
