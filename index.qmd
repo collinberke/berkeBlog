@@ -1,7 +1,46 @@
 ---
-title: "berkeBlog"
+title: "Collin K. Berke, Ph.D."
+subtitle: "Media Research Analyst"
+from: markdown+emoji
+about:
+  template: trestles
+  image: avatar.jpg
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/collinberke
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com/BerkeCollin
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/collinberke/
 ---
 
-This is a Quarto website.
+# :wave: Hi, I'm Collin
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+I'm a media research analyst, data enthusiast, and news, sports, and podcast aficianado. 
+
+Professionally, I use data, audience measurement, and marketing research methods to answer questions on how to best reach and engage audiences--towards the goal of enriching lives and engaging minds with public media content and services. I am particularly interested in the use and development of open-source statistical software (i.e. [R](https://www.r-project.org/)) to achieve this goal, and gaining a broader understanding of the role these tools play in media, digital, and marketing analytics. I also adjunct university courses on the side. 
+
+Listening to [NPR](https://www.npr.org/), watching [PBS](https://www.pbs.org/) (especially [NOVA](https://www.pbs.org/wgbh/nova/)), and college football and baseball are my jam. 
+
+## Now
+
+Want to know more about what I'm currently working on, reading, or mastering? Check out the [now page](now.qmd).
+
+## Education
+
+* **Ph.D. in Media and Communication, 2017, Texas Tech University**
+* **M.A. in Communication Studies, 2013, The University of South Dakota**
+* **Bachelor of Science, 2011, The University of South Dakota**
+
+## Interests
+
+* **Digital/Marketing analytics**
+* **Audience measurement**
+* **Media testing**
+* **R**
+* **Data engineering**
+
+[Quarto](https://quarto.org/) and [Netlify](https://www.netlify.com/) were used to build and deploy this site. All my blog posts are released under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/). 

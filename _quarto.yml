@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Collin K. Berke, Ph.D."
+  favicon: icon.png
   navbar:
     left:
       - href: index.qmd
@@ -17,6 +18,7 @@ format:
       light: flatly 
     css: styles.css
     toc: false 
+    page-layout: full
 
 
 

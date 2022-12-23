@@ -25,10 +25,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./icon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
@@ -60,7 +60,7 @@ ul.task-list{list-style: none;}
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -93,19 +93,73 @@ ul.task-list{list-style: none;}
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<div class="quarto-about-trestles column-page">
+  <div class="about-entity">
+    <img src="avatar.jpg" class="about-image
+  rounded " style="width: 20em;">
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Collin K. Berke, Ph.D.</h1>
+<p class="subtitle lead">Media Research Analyst</p>
+</div>
+<div class="quarto-title-meta">
+  </div>
+</header>
+    <div class="about-links">
+  <a href="https://github.com/collinberke" class="about-link">
+    <i class="bi bi-github"></i>
+     <span class="about-link-text">GitHub</span>
+  </a>
+  <a href="https://twitter.com/BerkeCollin" class="about-link">
+    <i class="bi bi-twitter"></i>
+     <span class="about-link-text">twitter</span>
+  </a>
+  <a href="https://www.linkedin.com/in/collinberke/" class="about-link">
+    <i class="bi bi-linkedin"></i>
+     <span class="about-link-text">LinkedIn</span>
+  </a>
+</div>
+  </div>
+  <div class="about-contents"><main class="content column-page" id="quarto-document-content">
+<section id="hi-im-collin" class="level1">
+<h1><span class="emoji" data-emoji="wave">👋</span> Hi, I’m Collin</h1>
+<p>I’m a media research analyst, data enthusiast, and news, sports, and podcast aficianado.</p>
+<p>Professionally, I use data, audience measurement, and marketing research methods to answer questions on how to best reach and engage audiences–towards the goal of enriching lives and engaging minds with public media content and services. I am especially interested in the use and development of open-source statistical software (i.e.&nbsp;<a href="https://www.r-project.org/">R</a>) to achieve this goal, and gaining a broader understanding of the role these tools play in media, digital, and marketing analytics. I also adjunct university courses on the side.</p>
+<p>Listening to <a href="https://www.npr.org/">NPR</a>, watching <a href="https://www.pbs.org/">PBS</a> (especially <a href="https://www.pbs.org/wgbh/nova/">NOVA</a>), and college football and baseball are my jam.</p>
+<section id="now" class="level2">
+<h2 data-anchor-id="now">Now</h2>
+<p>Want to know more about what I’m currently working on, reading, or mastering? Check out the <a href="./now.html">now page</a>.</p>
+</section>
+<section id="education" class="level2">
+<h2 data-anchor-id="education">Education</h2>
+<ul>
+<li><strong>Ph.D.&nbsp;in Media and Communication, 2017, Texas Tech University</strong></li>
+<li><strong>M.A.&nbsp;in Communication Studies, 2013, The University of South Dakota</strong></li>
+<li><strong>Bachelor of Science, 2011, The University of South Dakota</strong></li>
+</ul>
+</section>
+<section id="interests" class="level2">
+<h2 data-anchor-id="interests">Interests</h2>
+<ul>
+<li><strong>Digital/Marketing analytics</strong></li>
+<li><strong>Audience measurement</strong></li>
+<li><strong>Media testing</strong></li>
+<li><strong>R</strong></li>
+<li><strong>Data engineering</strong></li>
+</ul>
+<p><a href="https://quarto.org/">Quarto</a> and <a href="https://www.netlify.com/">Netlify</a> were used to build and deploy this site. All my blog posts are released under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
 
 
-
-
-
-
-</main> <!-- /main -->
+</section>
+</section>
+</main></div>
+</div>
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -229,13 +283,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
   } 
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
   const clipboard = new window.ClipboardJS('.code-copy-button', {
     target: function(trigger) {
       return trigger.previousElementSibling;
