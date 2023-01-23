@@ -2,8 +2,11 @@
   {
     "listing": "/blog/index.html",
     "items": [
-      "/blog/posts/2022-12-22-test/index.html",
+      "/blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html",
+      "/blog/posts/2022-03-03-forecasting-series-exploratory-analysis-of-google-analytics-4-data-for-forecasting-models/index.html",
       "/blog/posts/2021-12-30-shiny-series-metric-summary-tiles/index.html",
+      "/blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html",
+      "/blog/posts/2021-09-12-shiny-series-implementing-a-next-and-back-button/index.html",
       "/blog/posts/2021-04-02-intro-post/index.html"
     ]
   }
