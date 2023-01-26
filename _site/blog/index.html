@@ -129,13 +129,13 @@ ul.task-list{list-style: none;}
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="BigQuery">BigQuery <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data wrangling">data wrangling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="forecasting">forecasting <span class="quarto-category-count">(1)</span></div><div class="category" data-category="personal">personal <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(2)</span></div><div class="category" data-category="sql">sql <span class="quarto-category-count">(1)</span></div><div class="category" data-category="talks">talks <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -159,13 +159,9 @@ ul.task-list{list-style: none;}
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="BigQuery,sql,data wrangling" data-listing-date-sort="1663650000000" data-listing-file-modified-sort="1674453365429" data-listing-reading-time-sort="17.99">
+<div class="quarto-post image-right" data-index="0" data-categories="BigQuery,sql,data wrangling" data-listing-date-sort="1663650000000" data-listing-file-modified-sort="1674714435035" data-listing-reading-time-sort="18.005">
 <div class="thumbnail">
-<a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html"></a></p>
+<p><a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html"> <img src="../blog/posts/2022-09-20-flattening-google-analytics-4-data/thumbnail.png" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html">
@@ -189,7 +185,7 @@ data wrangling
 </div>
 <a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html">
 <div class="listing-description">
-With the introduction of the Google Analytics 4 (GA4) BigQuery integration, understanding how to work with the underlying analytics data has become increasingly important. When first diving into this data, some of the data types may seem hard to work with. Specifically, analysts might be unfamiliar with the array and struct data types. Even more unfamiliar may be the combination of these two data types into complex, nested and repeated data structures. As such, some may become frustrated writing queries against this data. I know I did.
+<p>Let’s deep dive into working with Google Analytics data stored in BigQuery.</p>
 </div>
 </a>
 </div>
@@ -204,14 +200,14 @@ Collin K. Berke, Ph.D.
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="forecasting" data-listing-date-sort="1646287200000" data-listing-file-modified-sort="1674453000202" data-listing-reading-time-sort="28.3">
+<div class="quarto-post image-right" data-index="1" data-categories="forecasting" data-listing-date-sort="1646287200000" data-listing-file-modified-sort="1674712544572" data-listing-reading-time-sort="28.315">
 <div class="thumbnail">
-<p><a href="../blog/posts/2022-03-03-forecasting-series-exploratory-analysis-of-google-analytics-4-data-for-forecasting-models/index.html"> <img src="../blog/posts/2022-03-03-forecasting-series-exploratory-analysis-of-google-analytics-4-data-for-forecasting-models/images/wrangle_visualize_time_series.png" class="thumnail-image"> </a></p>
+<p><a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html"> <img src="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/thumbnail.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="../blog/posts/2022-03-03-forecasting-series-exploratory-analysis-of-google-analytics-4-data-for-forecasting-models/index.html">
+<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html">
 <h3 class="no-anchor listing-title">
-Forecasting Series: Exploratory analysis of Google Analytics 4 data for forecasting models
+Exploratory analysis of Google Analytics 4 data for forecasting models
 </h3>
 <div class="listing-subtitle">
 
@@ -222,14 +218,14 @@ Forecasting Series: Exploratory analysis of Google Analytics 4 data for forecast
 forecasting
 </div>
 </div>
-<a href="../blog/posts/2022-03-03-forecasting-series-exploratory-analysis-of-google-analytics-4-data-for-forecasting-models/index.html">
+<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html">
 <div class="listing-description">
-Managing an e-commerce websites requires some ability to predict and plan for the future. Some questions a site owner might want to predict include: What content/products will users view the most this coming period (i.e., daily, weekly, etc.)? To what effect will time of year have on the content/products users view (e.g., holiday shopping)? What and how much of each product needs to be in stock to meet users’ demands? Most importantly, what types of content/product views result in more completed orders?
+<p>Exploring Google Analytics 4 data for forecasting models.</p>
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="../blog/posts/2022-03-03-forecasting-series-exploratory-analysis-of-google-analytics-4-data-for-forecasting-models/index.html">
+<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html">
 <div class="listing-date">
 Mar 3, 2022
 </div>
@@ -239,16 +235,12 @@ Collin K. Berke, Ph.D.
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="shiny" data-listing-date-sort="1640844000000" data-listing-file-modified-sort="1674438893960" data-listing-reading-time-sort="26.345">
+<div class="quarto-post image-right" data-index="2" data-categories="shiny" data-listing-date-sort="1640844000000" data-listing-file-modified-sort="1674711553634" data-listing-reading-time-sort="26.36">
 <div class="thumbnail">
-<a href="../blog/posts/2021-12-30-shiny-series-metric-summary-tiles/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="../blog/posts/2021-12-30-shiny-series-metric-summary-tiles/index.html"></a></p>
+<p><a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html"> <img src="../blog/posts/2021-12-30-shiny-metric-summary-tiles/thumbnail.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="../blog/posts/2021-12-30-shiny-series-metric-summary-tiles/index.html">
+<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html">
 <h3 class="no-anchor listing-title">
 Shiny summary tiles
 </h3>
@@ -261,14 +253,14 @@ Shiny summary tiles
 shiny
 </div>
 </div>
-<a href="../blog/posts/2021-12-30-shiny-series-metric-summary-tiles/index.html">
+<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html">
 <div class="listing-description">
-Effective reporting tools include user interface (UI) elements to quickly and effectively communicate summary metrics. Shiny, a free software package written in the <code>R</code> statistical computing language, provides several tools to communicate analysis and insights. Combining several of these elements together, a developer can create user interface elements that clearly communicate important summary metrics (e.g., Key Performance Indicators) to an application’s users.
+<p>Building custom metric summary tiles for Shiny.</p>
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="../blog/posts/2021-12-30-shiny-series-metric-summary-tiles/index.html">
+<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html">
 <div class="listing-date">
 Dec 30, 2021
 </div>
@@ -278,13 +270,9 @@ Collin K. Berke, Ph.D.
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="talks" data-listing-date-sort="1634619600000" data-listing-file-modified-sort="1674454484806" data-listing-reading-time-sort="2.64">
+<div class="quarto-post image-right" data-index="3" data-categories="talks" data-listing-date-sort="1634619600000" data-listing-file-modified-sort="1674715682803" data-listing-reading-time-sort="2.655">
 <div class="thumbnail">
-<a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html"></a></p>
+<p><a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html"> <img src="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/thumbnail.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html">
@@ -302,7 +290,7 @@ talks
 </div>
 <a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html">
 <div class="listing-description">
-I had the great fortune of being a presenter at this year’s PBS TechCon conference. The focus of my talk was to introduce attendees to the principles of tidy data and discuss a data pipeline project my team has been working on at Nebraska Public Media. Here’s the session description:
+<p>I was fortunate to be invited to present about topics I’m passionate about: tidy data and data pipelines.</p>
 </div>
 </a>
 </div>
@@ -317,18 +305,14 @@ Collin K. Berke, Ph.D.
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="shiny" data-listing-date-sort="1631422800000" data-listing-file-modified-sort="1674452401924" data-listing-reading-time-sort="19.905">
+<div class="quarto-post image-right" data-index="4" data-categories="shiny" data-listing-date-sort="1631422800000" data-listing-file-modified-sort="1674716541363" data-listing-reading-time-sort="19.92">
 <div class="thumbnail">
-<a href="../blog/posts/2021-09-12-shiny-series-implementing-a-next-and-back-button/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="../blog/posts/2021-09-12-shiny-series-implementing-a-next-and-back-button/index.html"></a></p>
+<p><a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html"> <img src="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/thumbnail.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="../blog/posts/2021-09-12-shiny-series-implementing-a-next-and-back-button/index.html">
+<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html">
 <h3 class="no-anchor listing-title">
-Shiny series: Implementing a next and back button
+Implementing a next and back button in Shiny
 </h3>
 <div class="listing-subtitle">
 
@@ -339,14 +323,14 @@ Shiny series: Implementing a next and back button
 shiny
 </div>
 </div>
-<a href="../blog/posts/2021-09-12-shiny-series-implementing-a-next-and-back-button/index.html">
+<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html">
 <div class="listing-description">
-As part of the R4DS bookclub, our cohort has been working through Hadley Wickham’s <span class="citation" data-cites="hadley2020mshiny">(2020)</span> Mastering Shiny book. Chapter 4: Case study: ER injuries had an interesting, challenging exercise I couldn’t figure out. This post aims to walk through my process of trying to solve this exercise, overviewing my thought process while trying to solve it. My hope is future me will look back at this post when I need to implement such a feature in a future Shiny application. I hope others find it useful as well.
+<p>Taking the time to understand a challenging question from Mastering Shiny.</p>
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="../blog/posts/2021-09-12-shiny-series-implementing-a-next-and-back-button/index.html">
+<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html">
 <div class="listing-date">
 Sep 12, 2021
 </div>
@@ -356,7 +340,7 @@ Collin K. Berke, Ph.D.
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="personal" data-listing-date-sort="1617339600000" data-listing-file-modified-sort="1674438893958" data-listing-reading-time-sort="2.57">
+<div class="quarto-post image-right" data-index="5" data-categories="personal" data-listing-date-sort="1617339600000" data-listing-file-modified-sort="1674627760219" data-listing-reading-time-sort="2.57">
 <div class="thumbnail">
 <a href="../blog/posts/2021-04-02-intro-post/index.html">
 <div class="thumbnail-image">
@@ -380,7 +364,7 @@ personal
 </div>
 <a href="../blog/posts/2021-04-02-intro-post/index.html">
 <div class="listing-description">
-I have decided to start writing a blog. I have never attempted anything like this before, but I felt it was time to start organizing some of my projects and analyses into one central location. For some time, I really wanted to develop a space where I could discuss topics I find interesting, both professionally and personally. So, <code>Hello World!</code>, my name is Collin, and this is my blog.
+<p><code>Hello World!</code>, my name is Collin, and this is my blog.</p>
 </div>
 </a>
 </div>

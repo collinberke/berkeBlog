@@ -8,6 +8,7 @@
 
 <meta name="author" content="Collin K. Berke, Ph.D.">
 <meta name="dcterms.date" content="2022-09-20">
+<meta name="description" content="Let’s deep dive into working with Google Analytics data stored in BigQuery.">
 
 <title>Collin K. Berke, Ph.D.&nbsp;- Flattening Google Analytics 4 data</title>
 <style>
@@ -165,9 +166,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#arrays-structs-and-array-of-structs" id="toc-arrays-structs-and-array-of-structs" class="nav-link" data-scroll-target="#arrays-structs-and-array-of-structs">Arrays, structs, and array of structs</a></li>
+  <li><a href="#arrays" id="toc-arrays" class="nav-link" data-scroll-target="#arrays">Arrays</a></li>
+  <li><a href="#structs" id="toc-structs" class="nav-link" data-scroll-target="#structs">Structs</a></li>
+  <li><a href="#array-and-structs-in-ga4-data" id="toc-array-and-structs-in-ga4-data" class="nav-link" data-scroll-target="#array-and-structs-in-ga4-data">Array and structs in GA4 data</a></li>
+  <li><a href="#combine-other-nested-fields-in-the-ga4-data" id="toc-combine-other-nested-fields-in-the-ga4-data" class="nav-link" data-scroll-target="#combine-other-nested-fields-in-the-ga4-data">Combine other nested fields in the GA4 data</a></li>
+  <li><a href="#expand-the-unnesting-to-multiple-page-view-events" id="toc-expand-the-unnesting-to-multiple-page-view-events" class="nav-link" data-scroll-target="#expand-the-unnesting-to-multiple-page-view-events">Expand the unnesting to multiple page view events</a></li>
+  <li><a href="#apply-these-approaches-across-multiple-days" id="toc-apply-these-approaches-across-multiple-days" class="nav-link" data-scroll-target="#apply-these-approaches-across-multiple-days">Apply these approaches across multiple days</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional resources</a></li>
+  <li><a href="#additional-references" id="toc-additional-references" class="nav-link" data-scroll-target="#additional-references">Additional references</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -179,6 +198,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   </div>
 
+<div>
+  <div class="description">
+    Let’s deep dive into working with Google Analytics data stored in BigQuery.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -202,6 +226,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="thumbnail-wide.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/photos/R8cA47Uk-14">Alvaro Calvo</a></figcaption><p></p>
+</figure>
+</div>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
 <p>With the introduction of the Google Analytics 4 (GA4) BigQuery integration, understanding how to work with the underlying analytics data has become increasingly important. When first diving into this data, some of the data types may seem hard to work with. Specifically, analysts might be unfamiliar with the array and struct data types. Even more unfamiliar may be the combination of these two data types into complex, nested and repeated data structures. As such, some may become frustrated writing queries against this data. I know I did.</p>

@@ -8,6 +8,7 @@
 
 <meta name="author" content="Collin K. Berke, Ph.D.">
 <meta name="dcterms.date" content="2021-12-30">
+<meta name="description" content="Building custom metric summary tiles for Shiny.">
 
 <title>Collin K. Berke, Ph.D.&nbsp;- Shiny summary tiles</title>
 <style>
@@ -165,9 +166,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#post-objectives" id="toc-post-objectives" class="nav-link active" data-scroll-target="#post-objectives">Post objectives</a></li>
+  <li><a href="#the-data-used" id="toc-the-data-used" class="nav-link" data-scroll-target="#the-data-used">The data used</a></li>
+  <li><a href="#app-functionality" id="toc-app-functionality" class="nav-link" data-scroll-target="#app-functionality">App functionality</a>
+  <ul class="collapse">
+  <li><a href="#the-reactive-graph" id="toc-the-reactive-graph" class="nav-link" data-scroll-target="#the-reactive-graph">The reactive graph</a></li>
+  </ul></li>
+  <li><a href="#general-approach-to-application-development" id="toc-general-approach-to-application-development" class="nav-link" data-scroll-target="#general-approach-to-application-development">General approach to application development</a></li>
+  <li><a href="#creating-the-summary-tiles-for-the-user-interface" id="toc-creating-the-summary-tiles-for-the-user-interface" class="nav-link" data-scroll-target="#creating-the-summary-tiles-for-the-user-interface">Creating the summary tiles for the user interface</a>
+  <ul class="collapse">
+  <li><a href="#the-setup" id="toc-the-setup" class="nav-link" data-scroll-target="#the-setup">The setup</a></li>
+  </ul></li>
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">Data import</a></li>
+  <li><a href="#the-ui-side-of-the-summary-metric-tiles" id="toc-the-ui-side-of-the-summary-metric-tiles" class="nav-link" data-scroll-target="#the-ui-side-of-the-summary-metric-tiles">The UI side of the summary metric tiles</a>
+  <ul class="collapse">
+  <li><a href="#application-layout" id="toc-application-layout" class="nav-link" data-scroll-target="#application-layout">Application layout</a></li>
+  <li><a href="#the-date-input" id="toc-the-date-input" class="nav-link" data-scroll-target="#the-date-input">The date input</a></li>
+  <li><a href="#first-iteration-of-the-summary-metric-tiles" id="toc-first-iteration-of-the-summary-metric-tiles" class="nav-link" data-scroll-target="#first-iteration-of-the-summary-metric-tiles">First iteration of the summary metric tiles</a>
+  <ul class="collapse">
+  <li><a href="#the-server-side" id="toc-the-server-side" class="nav-link" data-scroll-target="#the-server-side">The server side</a></li>
+  <li><a href="#back-to-the-ui" id="toc-back-to-the-ui" class="nav-link" data-scroll-target="#back-to-the-ui">Back to the UI</a></li>
+  </ul></li>
+  <li><a href="#back-to-the-ui-1" id="toc-back-to-the-ui-1" class="nav-link" data-scroll-target="#back-to-the-ui-1">Back to the UI</a></li>
+  <li><a href="#simplifying-the-ui-with-functional-programming" id="toc-simplifying-the-ui-with-functional-programming" class="nav-link" data-scroll-target="#simplifying-the-ui-with-functional-programming">Simplifying the UI with functional programming</a></li>
+  </ul></li>
+  <li><a href="#adding-custom-css-to-the-summary-metric-tiles" id="toc-adding-custom-css-to-the-summary-metric-tiles" class="nav-link" data-scroll-target="#adding-custom-css-to-the-summary-metric-tiles">Adding custom CSS to the summary metric tiles</a>
+  <ul class="collapse">
+  <li><a href="#creating-the-www-folder-and-css-file" id="toc-creating-the-www-folder-and-css-file" class="nav-link" data-scroll-target="#creating-the-www-folder-and-css-file">Creating the <code>www</code> folder and <code>CSS</code> file</a></li>
+  </ul></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  <li><a href="#resource-links" id="toc-resource-links" class="nav-link" data-scroll-target="#resource-links">Resource links</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -177,6 +215,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   </div>
 
+<div>
+  <div class="description">
+    Building custom metric summary tiles for Shiny.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -200,6 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<p><img src="thumbnail-wide.png" class="img-fluid"></p>
 <p>Effective reporting tools include user interface (UI) elements to quickly and effectively communicate summary metrics. <a href="https://shiny.rstudio.com/">Shiny</a>, a free software package written in the <a href="https://www.r-project.org/"><code>R</code> statistical computing language</a>, provides several tools to communicate analysis and insights. Combining several of these elements together, a developer can create user interface elements that clearly communicate important summary metrics (e.g., Key Performance Indicators) to an application’s users.</p>
 <p>This post details the steps to create the following simple <a href="https://collin-berke.shinyapps.io/blog-shiny_summary_tiles/">Shiny application</a>. Specifically, this post overviews the use of Shiny’s built-in functions to create simple summary metric tiles. In addition, this post describes how to add styling to UI elements by applying custom <code>css</code> to a Shiny application.</p>
 <section id="post-objectives" class="level1">

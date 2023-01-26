@@ -1,10 +1,15 @@
 ---
-title: '2021 PBS TechCon: Your Data is Disgusting!'
-author: Collin K. Berke, Ph.D.
+title: "2021 PBS TechCon: Your Data is Disgusting!"
+author: "Collin K. Berke, Ph.D."
 date: '2021-10-19'
+description: "I was fortunate to be invited to present about topics I'm passionate about: tidy data and data pipelines."
+image: thumbnail.jpg
+toc: true
 categories:
   - talks
 ---
+
+![Photo by [T K](https://unsplash.com/photos/9AxFJaNySB8)](thumbnail-wide.png)
 
 I had the great fortune of being a presenter at this year's PBS TechCon conference. The focus of my talk was to introduce attendees to the principles of tidy data and discuss a data pipeline project my team has been working on at [Nebraska Public Media](https://www.nebraskapublicmedia.org). Here's the session description:
 

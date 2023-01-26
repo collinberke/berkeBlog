@@ -1,0 +1,13 @@
+page,page_path
+New,^google\+redesign\/new$
+Apparel,^google\+redesign\/apparel$
+Lifestyle,^google\+redesign\/lifestyle$
+Stationery,^google\+redesign\/stationery$
+Shop by Brand,^google\+redesign\/shop\+by\+brand$
+Clearance,^google\+redesign\/clearance$
+Campus Collection,^google\+redesign\/campus\+collection$
+Basket,^basket.html$
+Your Info,^yourinfo.html$
+Payment Info,^payment.html$
+Review Order,^revieworder.html$
+Order Completed,^ordercompleted.html$
