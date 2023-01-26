@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2021-12-30">
+<meta name="description" content="Building custom metric summary tiles for Shiny.">
+
+<title>Collin K. Berke, Ph.D.&nbsp;- Shiny summary tiles</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html">About</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html">Now</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html">Blog</a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#post-objectives" id="toc-post-objectives" class="nav-link active" data-scroll-target="#post-objectives">Post objectives</a></li>
+  <li><a href="#the-data-used" id="toc-the-data-used" class="nav-link" data-scroll-target="#the-data-used">The data used</a></li>
+  <li><a href="#app-functionality" id="toc-app-functionality" class="nav-link" data-scroll-target="#app-functionality">App functionality</a>
+  <ul class="collapse">
+  <li><a href="#the-reactive-graph" id="toc-the-reactive-graph" class="nav-link" data-scroll-target="#the-reactive-graph">The reactive graph</a></li>
+  </ul></li>
+  <li><a href="#general-approach-to-application-development" id="toc-general-approach-to-application-development" class="nav-link" data-scroll-target="#general-approach-to-application-development">General approach to application development</a></li>
+  <li><a href="#creating-the-summary-tiles-for-the-user-interface" id="toc-creating-the-summary-tiles-for-the-user-interface" class="nav-link" data-scroll-target="#creating-the-summary-tiles-for-the-user-interface">Creating the summary tiles for the user interface</a>
+  <ul class="collapse">
+  <li><a href="#the-setup" id="toc-the-setup" class="nav-link" data-scroll-target="#the-setup">The setup</a></li>
+  </ul></li>
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">Data import</a></li>
+  <li><a href="#the-ui-side-of-the-summary-metric-tiles" id="toc-the-ui-side-of-the-summary-metric-tiles" class="nav-link" data-scroll-target="#the-ui-side-of-the-summary-metric-tiles">The UI side of the summary metric tiles</a>
+  <ul class="collapse">
+  <li><a href="#application-layout" id="toc-application-layout" class="nav-link" data-scroll-target="#application-layout">Application layout</a></li>
+  <li><a href="#the-date-input" id="toc-the-date-input" class="nav-link" data-scroll-target="#the-date-input">The date input</a></li>
+  <li><a href="#first-iteration-of-the-summary-metric-tiles" id="toc-first-iteration-of-the-summary-metric-tiles" class="nav-link" data-scroll-target="#first-iteration-of-the-summary-metric-tiles">First iteration of the summary metric tiles</a>
+  <ul class="collapse">
+  <li><a href="#the-server-side" id="toc-the-server-side" class="nav-link" data-scroll-target="#the-server-side">The server side</a></li>
+  <li><a href="#back-to-the-ui" id="toc-back-to-the-ui" class="nav-link" data-scroll-target="#back-to-the-ui">Back to the UI</a></li>
+  </ul></li>
+  <li><a href="#back-to-the-ui-1" id="toc-back-to-the-ui-1" class="nav-link" data-scroll-target="#back-to-the-ui-1">Back to the UI</a></li>
+  <li><a href="#simplifying-the-ui-with-functional-programming" id="toc-simplifying-the-ui-with-functional-programming" class="nav-link" data-scroll-target="#simplifying-the-ui-with-functional-programming">Simplifying the UI with functional programming</a></li>
+  </ul></li>
+  <li><a href="#adding-custom-css-to-the-summary-metric-tiles" id="toc-adding-custom-css-to-the-summary-metric-tiles" class="nav-link" data-scroll-target="#adding-custom-css-to-the-summary-metric-tiles">Adding custom CSS to the summary metric tiles</a>
+  <ul class="collapse">
+  <li><a href="#creating-the-www-folder-and-css-file" id="toc-creating-the-www-folder-and-css-file" class="nav-link" data-scroll-target="#creating-the-www-folder-and-css-file">Creating the <code>www</code> folder and <code>CSS</code> file</a></li>
+  </ul></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  <li><a href="#resource-links" id="toc-resource-links" class="nav-link" data-scroll-target="#resource-links">Resource links</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Shiny summary tiles</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">shiny</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Building custom metric summary tiles for Shiny.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 30, 2021</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="thumbnail-wide.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/photos/qwtCeJ5cLYs">Stephen Dawson</a></figcaption><p></p>
+</figure>
+</div>
+<p>Effective reporting tools include user interface (UI) elements to quickly and effectively communicate summary metrics. <a href="https://shiny.rstudio.com/">Shiny</a>, a free software package written in the <a href="https://www.r-project.org/"><code>R</code> statistical computing language</a>, provides several tools to communicate analysis and insights. Combining several of these elements together, a developer can create user interface elements that clearly communicate important summary metrics (e.g., Key Performance Indicators) to an application’s users.</p>
+<p>This post details the steps to create the following simple <a href="https://collin-berke.shinyapps.io/blog-shiny_summary_tiles/">Shiny application</a>. Specifically, this post overviews the use of Shiny’s built-in functions to create simple summary metric tiles. In addition, this post describes how to add styling to UI elements by applying custom <code>css</code> to a Shiny application.</p>
+<section id="post-objectives" class="level1">
+<h1>Post objectives</h1>
+<p>This post aims to:</p>
+<ul>
+<li>Overview steps to create summary metric UI elements in a Shiny application.</li>
+<li>Overview the process of applying custom CSS to UI elements in a Shiny application.</li>
+</ul>
+</section>
+<section id="the-data-used" class="level1">
+<h1>The data used</h1>
+<p>This tutorial utilizes Google Analytics 4 data from the <a href="https://shop.googlemerchandisestore.com/">Google Merchandise store</a>. This data is provided through Google’s Public Datasets initiative, and it can be accessed and used by anyone (as long as you have a Google account). The data was obtained by passing a SQL like query to an analytics data warehouse solution called <a href="https://cloud.google.com/bigquery">BigQuery</a>. This data represents web site activity, specifically site events from 2020-11-01 to 2021-12-31. More about the data can be found <a href="https://support.google.com/analytics/answer/10937659#zippy=%2Cin-this-article">here</a>.</p>
+<p>The following code chunks contain the SQL queries used to export the data. These queries were adapted from <a href="https://developers.google.com/analytics/bigquery/basic-queries">Google Analytics BigQuery’s documentation</a>. An example file using <code>R</code> code to export the data can be found <a href="https://github.com/collinberke/blog-shiny_summary_tiles/blob/main/bq-query-data.R">here</a>. To use this code, the <code>bq-project-id</code> in the <code>from</code> statement needs to be replaced. Otherwise, these queries won’t work until this modification is made.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   event_date,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   event_name,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">as</span> event_count</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> `bq<span class="op">-</span>project<span class="op">-</span><span class="kw">id</span>.ga4_obfuscated_sample_ecommerce.events_<span class="op">*</span>`</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   event_name <span class="kw">in</span> (<span class="st">'page_view'</span>, <span class="st">'session_start'</span>, <span class="st">'purchase'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   <span class="kw">and</span> _TABLE_SUFFIX <span class="kw">between</span> <span class="st">'20201101'</span> <span class="kw">and</span> <span class="st">'20211231'</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> <span class="dv">1</span>, <span class="dv">2</span>;   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>   event_date,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">count</span>(<span class="kw">distinct</span>(user_pseudo_id)) <span class="kw">as</span> users</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>   `bq<span class="op">-</span>project<span class="op">-</span><span class="kw">id</span>.ga4_obfuscated_sample_ecommerce.events_<span class="op">*</span>`</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>   _TABLE_SUFFIX <span class="kw">between</span> <span class="st">'20201101'</span> <span class="kw">and</span> <span class="st">'20211231'</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> event_date</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> event_date; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A connection between a Shiny app and BigQuery can be established, and requests containing SQL queries can be passed along using this connection. For simplicity and reproducibility of the example app described in this post, I opted not to discuss this set up. The example code linked above details one method that utilizes the <a href="https://bigrquery.r-dbi.org/"><code>bigrquery</code> package</a> to make a connection and pass queries to BigQuery.</p>
+<p>Once exported, the data were tidied and joined using a <code>dplyr::left_join()</code> on the <code>event_date</code> column. The joined data was then written locally into one <code>.csv</code> file, <code>ga4_data.csv</code>. The process used to export and tidy the data can be found in this <a href="https://github.com/collinberke/blog-shiny_summary_tiles/blob/main/bq-query-data.R">GitHub repository</a>.</p>
+<p>The data represents daily summaries for four metrics:</p>
+<ol type="1">
+<li><p><code>users</code> (i.e., the number of users who visited the Google Merchandise store that day)</p></li>
+<li><p><code>page_view</code> (i.e., the number of Google Merchandise store page views by users for that day)</p></li>
+<li><p><code>session_start</code> (i.e., the number of sessions started by specific users for that day)</p></li>
+<li><p><code>purchase</code> (i.e., the number of purchases made during that day)</p></li>
+</ol>
+</section>
+<section id="app-functionality" class="level1">
+<h1>App functionality</h1>
+<p>The goals for this app are simple:</p>
+<ul>
+<li>Provide users individual summary metrics for the most up-to-date data.</li>
+<li>Build in functionality to display summary metrics for previous dates.</li>
+<li>Provide some element to inform the user on the date represented by the summary metrics.</li>
+</ul>
+<p>Given the functionality requirements, one input element is needed in the UI–a date selected by the user. In addition, since no user input will be provided during the initialization of the app, the date input needs to default to the most recent data.</p>
+<p>As for outputs, the UI will display the four metrics within the data. Moreover, since the app provides users functionality to select a date to modify the displayed data, the app will need to include some output informing the user about what date is being represented in the summary metric tiles.</p>
+<section id="the-reactive-graph" class="level2">
+<h2 class="anchored" data-anchor-id="the-reactive-graph">The reactive graph</h2>
+<p>Although this app is simple and most of the elements can be easily managed, it’s always good practice to see the big picture of the app by plotting out a <a href="https://mastering-shiny.org/basic-reactivity.html#the-reactive-graph">reactive graph</a> first. It’s also good to have the intended reactive graph available as a quick reference, just in case unexpected results and/or behaviors are displayed while developing the application, and as a method for identifying any situations where computing resources are not being used efficiently.</p>
+<p>Below is the reactive graph for the application to be developed:</p>
+<p align="center">
+</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img-01-summary-tiles-graph.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<p></p><figcaption class="figure-caption">Reactive graph for summary metric tiles</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Again, a really simple application–one input (<code>date</code>), a reactive expression (<code>data()</code>), and five outputs (<code>users</code>; <code>page_view</code>; <code>session_start</code>; <code>purchase</code>; and <code>event_date</code>). The graph also details the dependencies clearly, where the outputs are dependent on the reactive <code>data()</code> object–which in cohort with the outputs–depends on the <code>date</code> input.</p>
+</section>
+</section>
+<section id="general-approach-to-application-development" class="level1">
+<h1>General approach to application development</h1>
+<p>When it comes to Shiny development, I take the approach of getting the app to work first. Then, I switch my focus towards optimization. My goal in the following sections is to just get the app working, and then I will focus on refining the code to make it more efficient and eloquent. Thus, the first iteration of the app will contain a lot of repeated, redundant code. However, subsequent iterations will apply functions and functional programming principles to eliminate this repetition.</p>
+<p>At this point in the post, the focus will be on discussing each section of the application and how each section is set up to meet the functionality requirements.</p>
+</section>
+<section id="creating-the-summary-tiles-for-the-user-interface" class="level1">
+<h1>Creating the summary tiles for the user interface</h1>
+<p>Taking a zoomed out view, the app will be composed of four sections: 1. setup; 2. data import; 3. UI; and 4. server.</p>
+<section id="the-setup" class="level2">
+<h2 class="anchored" data-anchor-id="the-setup">The setup</h2>
+<p>The first step is to import the <code>R</code> packages used within the application. The following code chunk contains the packages used for the application. A brief description of each is included.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny) <span class="co"># The Shiny app library</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr) <span class="co"># Import data</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># Pipe and data manipulation</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># Tidying data function</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr) <span class="co"># Used for functional programming</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)  <span class="co"># Used for string interpolation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Many of these packages are part of the <a href="https://www.tidyverse.org/">tidyverse</a>, and thus the import could be simplified to just running <code>library(tidyverse)</code>. Be aware this may bring in unused, unneeded libraries. There is nothing wrong with this approach. However, I opted to be more verbose with this example, so as to be clear about what libraries are utilized within the example application and to have more control on what packages were imported by the application.</p>
+</section>
+</section>
+<section id="data-import" class="level1">
+<h1>Data import</h1>
+<p>Since the data has already been exported and is stored as a <code>.csv</code> file, the app utilizes <code>readr::read_csv()</code> to import the data upon app initialization. During the import, the <code>col_types</code> argument is passed a list of variable parsing functions. Specifically, GA4 data represents dates in a numeric format. Thus on import, this function will parse the imported column into a <code>date</code> type variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ga4_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ga4_data.csv"</span>, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">list</span>(<span class="at">event_date =</span> <span class="fu">col_date</span>(<span class="st">"%Y%m%d"</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This chunk of code follows the library imports, and it makes the data object <code>ga4_data</code> available within the global environment when the application is running. This object will then be later used in the server side of the application, which will be discussed later in the post.</p>
+</section>
+<section id="the-ui-side-of-the-summary-metric-tiles" class="level1">
+<h1>The UI side of the summary metric tiles</h1>
+<section id="application-layout" class="level2">
+<h2 class="anchored" data-anchor-id="application-layout">Application layout</h2>
+<p>The next step is to code the layout of the UI. To keep the design simple, a sidebar will contain the application’s inputs, while the outputs will be placed within the main panel of the application. The general skeleton of the layout looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Inputs</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">sidebarLayout</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sidebarPanel</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>   ),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Outputs</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mainPanel</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Summary tiles</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">br</span>(),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Data information output</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There’s nothing too fancy about this code, outside of it establishing the general layout of the application, so not much else will be said about what each element does here. However, <a href="https://mastering-shiny.org/action-layout.html">Chapter 6 of Mastering Shiny</a> discusses application layout if a more detailed description is needed.</p>
+</section>
+<section id="the-date-input" class="level2">
+<h2 class="anchored" data-anchor-id="the-date-input">The date input</h2>
+<p>The app requirements state users need to have the ability to modify the dates to which the data represents, and the summary metric tiles will change based on this user input. However, the app will not have any user input upon startup, so it needs to default to the most recent date within the data. To meet these requirements, we use the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code excluded for brevity</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dateInput</span>(<span class="st">"date"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Select a date for summary:"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">value =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">max =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">min =</span> <span class="fu">min</span>(ga4_data<span class="sc">$</span>event_date)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>shiny:dateInput()</code> function is used to create the HTML for the input, which resides in the application’s sidebar. The function’s <code>id</code> argument is given the value of <code>date</code>, which will establish a connection to elements within the server. More on this later. Then, a string value of <code>Select a date for summary:</code> is passed along to the <code>label</code> argument. This value will be displayed above the date input in the UI.</p>
+<p>Since the app won’t have an initial user input upon the startup of the application, <code>max(ga4_date$event_date)</code> is passed along to the <code>value</code> argument. This will default the input to the most recent date within the data. In addition, the functions <code>max</code> and <code>min</code> arguments are passed similar calls. However, in the case of the <code>min</code> argument the base <code>R</code> <code>min()</code> function is used on the <code>ga4_data$event_date</code>.</p>
+</section>
+<section id="first-iteration-of-the-summary-metric-tiles" class="level2">
+<h2 class="anchored" data-anchor-id="first-iteration-of-the-summary-metric-tiles">First iteration of the summary metric tiles</h2>
+<section id="the-server-side" class="level3">
+<h3 class="anchored" data-anchor-id="the-server-side">The server side</h3>
+<section id="the-reactive-data-object" class="level4">
+<h4 class="anchored" data-anchor-id="the-reactive-data-object">The reactive <code>data()</code> object</h4>
+<p>Before the summary metrics can be displayed in the UI, the application needs data to create the outputs. In addition, since this data will be dependent on users’ input (i.e., the user can select a new date which subsequently changes the summary metric tile), this object needs to be <a href="https://mastering-shiny.org/basic-reactivity.html">reactive</a>. To do this, the following code is added to the server side of the application.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      ga4_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(.data[[<span class="st">"event_data"</span>]] <span class="sc">==</span> input<span class="sc">$</span>date)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>   })</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In practical terms, this code just filters the data for the date being passed along as the <code>input$date</code> object.</p>
+<p>Again, this object could be the most recent date within the data, the date set by the <code>max</code> argument in the <code>dateInput()</code> function, or it could be based on a user’s modification of the date input. Since this code was wrapped inside of the <code>reactive({})</code> function, Shiny will be listening for any changes made to the to the <code>input$date</code> object. Any changes that occur will result in the <code>data()</code> reactive expression to be modified, followed by new output values being displayed via the UI.</p>
+<p>One other key concept is being exhibited here, <a href="https://mastering-shiny.org/action-tidy.html#action-tidy">tidy evaluation</a>, specifically <a href="https://mastering-shiny.org/action-tidy.html#data-masking">data-masking</a>. Since technically <code>dplyr::filter()</code> is being used inside of a function, an explicit reference to the data is required. Thus, <code>.data[["event_data"]]</code> notation is used to make it explicit on what data will be filtered. The specifics on how to use data-masking in the context of a Shiny app is beyond the scope of this post. However, the previously linked materials provide a more detailed description of these concepts.</p>
+</section>
+<section id="the-outputs" class="level4">
+<h4 class="anchored" data-anchor-id="the-outputs">The outputs</h4>
+<p>Looking back at the reactive graph, the application requires five outputs to be in the server. These outputs will just be simple text outputs, so the use of the <code>shiny::renderText()</code> function will be sufficient to meet our requirements. The <code>format()</code> function is also applied to comma format any outputs that contain numbers (e.g., 2,576 vs 2576). Here is what the server looks like currently:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ga4_date, .data[[<span class="st">"event_date"</span>]] <span class="sc">==</span> input<span class="sc">$</span>date)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>users <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>users, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>page_view <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>page_view, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>session_start <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>session_start, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>purchase <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>purchase, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">glue</span>(<span class="st">"Estimates represent data from {data()$event_date}"</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As part of the functionality requirements, the app needed some UI element informing users what date is being represented in the summary tiles. The <code>output$date</code> object was included to meet this requirement. The <code>output$date</code> object, aside from using the <code>renderText()</code> function, includes the use of the <code>glue::glue()</code> function to make the outputted message more informative.</p>
+<p>The <a href="https://glue.tidyverse.org/"><code>{glue}</code></a> package is used to manipulate string literals with the use of the curly braces (e.g., <code>{}</code>). When applied here, the <code>{data()$event_date}</code> is evaluated as an <code>R</code> call, its value becomes appended to the string, and the whole string is then outputted to the application’s UI.</p>
+</section>
+</section>
+<section id="back-to-the-ui" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-the-ui">Back to the UI</h3>
+<p>Now that there are five elements being outputted from the server, UI elements need to be included to display the rendered outputs.</p>
+<p>When making early design decisions about the application’s layout, it was decided these elements were going to reside within the main panel of the application. Another decision made was to keep the summary metric tile elements on the same row, so as to seem as though they are related to one another (i.e., related KPIs). As for the UI element informing the user on the date the summary metric tiles represent, it was decided that this element would be placed on its own row.</p>
+<p>To achieve the intended design, additional Shiny layout functions were applied to the application’s code. This includes using the <code>fluidRow()</code> and <code>column()</code> functions to achieve the wanted UI organization. The following code was used to achieve the placement of the summary tiles within the application’s layout:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mainPanel</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fluidRow</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">column</span>(),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">column</span>(),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">column</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   ),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">br</span>(),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fluidRow</span>()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As for the design of the summary metric tiles, each tile needed to include some type of title followed by the text representing the metric. To achieve this, the <code>shiny::div()</code> function was used. This function creates an individual <code>HTML</code> tag that outputs the text being passed along into the function. Directly below the title element, the <code>textOutput()</code> function is used to display the outputs coming from the application’s server. The code for one summary metric tile would look like the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">column</span>(<span class="dv">3</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">div</span>(<span class="st">"Unique Users"</span>),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">textOutput</span>(<span class="st">"users"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By combining these elements, the application code in its current state can be seen here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup -------------------------------------------------------------------</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data -------------------------------------------------------------</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ga4_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ga4_data.csv"</span>, </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">list</span>(<span class="at">event_date =</span> <span class="fu">col_date</span>(<span class="st">"%Y%m%d"</span>))</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># UI ----------------------------------------------------------------------</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dateInput</span>(<span class="st">"date"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Select a date for summary:"</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">value =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">max =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">min =</span> <span class="fu">min</span>(ga4_data<span class="sc">$</span>event_date)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>        <span class="fu">h2</span>(<span class="st">"Summary report"</span>),</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>        <span class="fu">column</span>(<span class="dv">3</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>               <span class="fu">div</span>(<span class="st">"Users"</span>),</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>               <span class="fu">textOutput</span>(<span class="st">"users"</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>        <span class="fu">column</span>(<span class="dv">3</span>,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>               <span class="fu">div</span>(<span class="st">"Page Views"</span>),</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>               <span class="fu">textOutput</span>(<span class="st">"page_view"</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">column</span>(<span class="dv">3</span>,</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>               <span class="fu">div</span>(<span class="st">"Session Starts"</span>),</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>               <span class="fu">textOutput</span>(<span class="st">"session_start"</span>)</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>        <span class="fu">column</span>(<span class="dv">3</span>,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>               <span class="fu">div</span>(<span class="st">"Purchases"</span>),</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>               <span class="fu">textOutput</span>(<span class="st">"purchase"</span>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>        )    </span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">br</span>(),</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textOutput</span>(<span class="st">"date"</span>)    </span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Server ------------------------------------------------------------------</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ga4_data, .data[[<span class="st">"event_date"</span>]] <span class="sc">==</span> input<span class="sc">$</span>date)</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Text output</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>users <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>users, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>page_view <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>page_view, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>session_start <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>session_start, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>purchase <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()<span class="sc">$</span>purchase, <span class="at">big.mark =</span> <span class="st">','</span>))</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">glue</span>(<span class="st">"Estimates represent data from {data()$event_date}"</span>))</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Indeed, this code works and meets the functionality requirements. However, it’s quite verbose and contains a lot of redundant, repeated code. Different techniques could be applied to make the application more eloquent and efficient in its design. The goal of the next few sections, then, will be to simplify the application through the development of functions and applying functional programming principles.</p>
+<section id="simplifying-the-outputs" class="level4">
+<h4 class="anchored" data-anchor-id="simplifying-the-outputs">Simplifying the outputs</h4>
+<p>Reviewing the server, most of the outputs are created through the use of repeated patterns of the same code. This breaks the <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY principle (Don’t Repeat Yourself)</a> of software development. Both <a href="https://r4ds.had.co.nz/functions.html">functions</a> and the application of <a href="https://r4ds.had.co.nz/iteration.html#for-loops-vs.-functionals">functional programming principles</a> will be applied to address this issue.</p>
+<p>An obvious pattern used to create the outputs is <code>output$foo &lt;- renderText(format(bar, big.mark = ','))</code>. This pattern could be converted into a function, and then this function could be used to iterate over the several reactive objects (e.g., <code>data()$users</code>) with the use of a <a href="https://purrr.tidyverse.org/"><code>{purrr}</code> function</a>. Since the side-effects are intended to be used rather than outputting a list object from our iteration, <code>purrr::walk()</code> will do the trick.</p>
+<p>Utilizing this strategy simplifies our code to the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">'users'</span>, <span class="st">'page_view'</span>, <span class="st">'session_start'</span>, <span class="st">'purchase'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">walk</span>(<span class="sc">~</span>{output[[.x]] <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()[[.x]], <span class="at">big.mark =</span> <span class="st">','</span>))})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Indeed, I can’t take full credit for this solution. Thanks goes to <code>@Kent Johnson</code> in the <a href="http://r4ds.io/join">R4DS Slack channel</a> for helping me out.</p>
+<p>The <code>output$date</code> object was left out of this simplification of the code. Certainly, the function could be made to be more general and flexible to handle this repetition of the <code>renderText()</code> function. However, this would be over engineering a solution to the problem.</p>
+</section>
+</section>
+</section>
+<section id="back-to-the-ui-1" class="level2">
+<h2 class="anchored" data-anchor-id="back-to-the-ui-1">Back to the UI</h2>
+<p>Functions and functional programming principles will now be used to address these same issues on the UI side of the application. Much of the repetition occurs with the use of the following pattern:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">column</span>(<span class="dv">3</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">div</span>(<span class="st">"Metric Title"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">textOutput</span>(<span class="st">"metric_output"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>       )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Indeed, this pattern is applied four times. Since it was <a href="https://r4ds.had.co.nz/iteration.html">copied and pasted more than twice</a> and breaks the DRY principle, it would be best to convert it into a function and iterate it using functional programming tools.</p>
+</section>
+<section id="simplifying-the-ui-with-functional-programming" class="level2">
+<h2 class="anchored" data-anchor-id="simplifying-the-ui-with-functional-programming">Simplifying the UI with functional programming</h2>
+<p>A helper function, <code>make_summary_tile()</code>, is added to the setup section of the application. The function looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>make_summary_tile <span class="ot">&lt;-</span> <span class="cf">function</span>(title, text_output){</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column</span>(<span class="dv">2</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">div</span>(title),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">textOutput</span>(text_output)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There’s nothing too fancy or complicated about this function. It simply generalizes the pattern applied within the UI side of the first iteration of our application. As for placement, this function could be defined at the top of the application file or in a separate <code>.R</code> file embedded in a <code>R/</code> sub-folder. Both strategies would make the function available for the app. Deciding which to use comes down to the intended organizational structure of the application.</p>
+<p>The next step is to apply functional programming to iterate the <code>make_summary_tile()</code> function over the text outputs. Since the function requires two inputs, <code>title</code> and <code>text_output</code>, they were placed inside of a <code>tibble</code> to improve organization of the inputs being passed to the function through <code>pmap()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Defined in the Setup section</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tiles <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>header         , <span class="sc">~</span>text_output,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Users"</span>         , <span class="st">"users"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Page Views"</span>    , <span class="st">"page_view"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Session Starts"</span>, <span class="st">"session_start"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Purchases"</span>     , <span class="st">"purchase"</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Used within the UI</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap</span>(tiles, make_summary_tile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What once required sixteen line’s of code was cut in half to eight (including the explicit definition of the inputs). In addition, coding the tiles using functional programming also makes it more flexible, where summary tiles could be easily added or taken away.</p>
+<p>Doing this would require some slight modification to the <code>make_summary_tile()</code> helper function, though. That is, a <code>width</code> argument would need to be added to the function, so the column width could be set to accommodate the number of outputs for the UI. There are lots of different options that could be explored here. At this point, though, the solution meets the functionality requirements.</p>
+<p>In its current state, the application code looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup -------------------------------------------------------------------</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>make_summary_tile <span class="ot">&lt;-</span> <span class="cf">function</span>(header, text_output){</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column</span>(<span class="dv">2</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>         <span class="fu">div</span>(header),</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>         <span class="fu">textOutput</span>(text_output)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>tiles <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>header         , <span class="sc">~</span>text_output,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Users"</span>         , <span class="st">"users"</span>,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Page Views"</span>    , <span class="st">"page_view"</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Session Starts"</span>, <span class="st">"session_start"</span>,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Purchases"</span>     , <span class="st">"purchase"</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data -------------------------------------------------------------</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>ga4_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ga4_data.csv"</span>, </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">list</span>(<span class="at">event_date =</span> <span class="fu">col_date</span>(<span class="st">"%Y%m%d"</span>))</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co"># UI ----------------------------------------------------------------------</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dateInput</span>(<span class="st">"date"</span>,</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Select a date for summary:"</span>,</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>                <span class="at">value =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>                <span class="at">max =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>                <span class="at">min =</span> <span class="fu">min</span>(ga4_data<span class="sc">$</span>event_date)</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>        <span class="fu">h2</span>(<span class="st">"Summary report"</span>),</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pmap</span>(tiles, make_summary_tile)</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">br</span>(),</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textOutput</span>(<span class="st">"date"</span>)    </span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Server ------------------------------------------------------------------</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ga4_data, .data[[<span class="st">"event_date"</span>]] <span class="sc">==</span> input<span class="sc">$</span>date)</span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">'users'</span>, <span class="st">'page_view'</span>, <span class="st">'session_start'</span>, <span class="st">'purchase'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">walk</span>(<span class="sc">~</span>{output[[.x]] <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()[[.x]], <span class="at">big.mark =</span> <span class="st">','</span>))})</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">glue</span>(<span class="st">"Estimates represent data from {data()$event_date}"</span>))</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The application works, meets the functionality requirements, and now is written in a way that reduces repetition and redundant patterns within the code. However, the summary metric tiles just blend into the UI, and nothing about the styling communicates they contain important information.</p>
+<p>Since these elements are meant to highlight key, important summary metrics, they need to be styled in a way that creates contrast between themselves and the application’s background. The next section focuses on applying custom <code>CSS</code> to give some contrast between these elements and the application’s background.</p>
+</section>
+</section>
+<section id="adding-custom-css-to-the-summary-metric-tiles" class="level1">
+<h1>Adding custom CSS to the summary metric tiles</h1>
+<p>There are many <a href="https://unleash-shiny.rinterface.com/beautify-css.html#how-to-include-css">methods for adding custom <code>CSS</code> to a Shiny application</a>. <a href="https://unleash-shiny.rinterface.com/beautify-css.html#how-to-include-css">Shiny’s documentation</a> overviews many of these techniques in detail. Accordingly, a through overview of these methods is beyond the focus of this post and won’t be further discussed. Rather, this post will overview the application of just one method–creating a separate <code>CSS</code> file and applying style elements within the code.</p>
+<section id="creating-the-www-folder-and-css-file" class="level2">
+<h2 class="anchored" data-anchor-id="creating-the-www-folder-and-css-file">Creating the <code>www</code> folder and <code>CSS</code> file</h2>
+<p>Since the design opted for a <a href="https://shiny.rstudio.com/articles/css.html">file-based <code>CSS</code> approach</a>, a separate <code>www</code> sub-folder in the application’s main project directory needs to be created. Once created, the custom <code>CSS</code> file will be placed inside this folder. The placement of this file can be seen in this <a href="https://github.com/collinberke/blog-shiny_summary_tiles">Github repo</a>.</p>
+<p>The purpose of this folder is to make the file available to the web browser when the application starts. Placement of this file is critical. If it is not placed in the <code>www</code> sub-folder, then the <code>CSS</code> file will not be available when the application starts, and any custom styling will not be applied.</p>
+<p>Once the <code>www</code> sub-folder is created, you can create a <code>CSS</code> file for the application in Rstudio by clicking <code>File</code>, hovering over <code>New File</code>, and selecting <code>CSS File</code>. Save the file in the <code>www</code> sub-folder and give it an informative name. In the case of this example, the file is named <code>app-styling.css</code>.</p>
+<p>The main goal of the styling will be to create some contrast between the summary metric tiles and the application’s background. Specifically, <code>CSS</code> will be used to create a container that is a different color from the application’s background and includes some shading to make it seem like the element is hovering above the application’s main page. To do this, the <code>app-styling.css</code> file includes the following:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#summary-tile</span>{</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">25</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span>:<span class="cn">White</span><span class="op">;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-align</span>: <span class="dv">center</span><span class="op">;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin</span>: <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span>: <span class="dv">5</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background-color</span>: <span class="cn">#0A145A</span><span class="op">;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span>: <span class="dv">15</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">box-shadow</span>: <span class="dv">0</span> <span class="dv">5</span><span class="dt">px</span> <span class="dv">20</span><span class="dt">px</span> <span class="dv">0</span> <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span> <span class="dv">.25</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transition</span>: transform <span class="dv">300</span><span class="dt">ms</span><span class="op">;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A detailed description on how to create <code>CSS</code> selectors is outside the scope of this post. However, in general terms, this selector sets several values for multiple <code>CSS</code> properties by defining the <code>id</code>, <code>#summary-tile</code> within the file. More about this process of creating different <code>CSS</code> selectors can be found <a href="https://unleash-shiny.rinterface.com/beautify-css.html#select-by-class-id">here</a>.</p>
+<p>Now it’s just a matter of modifying the code to call this file and pass these style values to the summary tiles within the application. The following code is added to the ui side of our application to include our <code>app-styling.css</code> file:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tags<span class="sc">$</span><span class="fu">head</span>(tags<span class="sc">$</span><span class="fu">link</span>(<span class="at">rel =</span> <span class="st">"stylesheet"</span>, <span class="at">type =</span> <span class="st">"text/css"</span>, <span class="at">href =</span> <span class="st">"app-styling.css"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since the styling is being applied to the summary metric tiles, the <code>make_summary_tile()</code> function is modified to bring in the <code>CSS</code> elements. A <code>css_id</code> argument is added to the function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>make_summary_tile <span class="ot">&lt;-</span> <span class="cf">function</span>(header, text_output, css_id){</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column</span>(<span class="dv">2</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">div</span>(header),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">textOutput</span>(text_output),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">id =</span> css_id</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we made this modification to the <code>make_summary_tile()</code>, its application in the UI is also modified. Specifically, the <code>#summary-tile</code> <code>CSS</code> element is explicitly called in <code>pmap()</code>. To do this, the code is modified like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap</span>(tiles, <span class="sc">~</span><span class="fu">make_summary_tile</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">header =</span> ..<span class="dv">1</span>, <span class="at">text_output =</span> ..<span class="dv">2</span>, <span class="at">css_id =</span> <span class="st">"summary-tile"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>header</code>, <code>text_output</code>, and <code>css_id</code> arguments are now explicitly defined in the <code>pmap()</code> call. To refer to the first two elements in the <code>tiles</code> data object, the <code>..1</code> (i.e., <code>header</code> column) and the <code>..2</code> (i.e., <code>text_output</code> column) are used. Check out the <code>pmap()</code> docs on how to apply the <code>..1</code>, <code>..2</code> (<code>?pmap</code>) for more information.</p>
+</section>
+</section>
+<section id="wrap-up" class="level1">
+<h1>Wrap up</h1>
+<p>Putting this all together yields this simple <a href="https://collin-berke.shinyapps.io/blog-shiny_summary_tiles/">application</a>. Here’s the code in its entirety:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup -------------------------------------------------------------------</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>make_summary_tile <span class="ot">&lt;-</span> <span class="cf">function</span>(header, text_output, css_id){</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column</span>(<span class="dv">2</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>         <span class="fu">div</span>(header),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>         <span class="fu">textOutput</span>(text_output),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">id =</span> css_id</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>tiles <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>header         , <span class="sc">~</span>text_output,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Users"</span>         , <span class="st">"users"</span>,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Page Views"</span>    , <span class="st">"page_view"</span>,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Session Starts"</span>, <span class="st">"session_start"</span>,</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Purchases"</span>     , <span class="st">"purchase"</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data -------------------------------------------------------------</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>ga4_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/ga4_data.csv"</span>, </span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">list</span>(<span class="at">event_date =</span> <span class="fu">col_date</span>(<span class="st">"%Y%m%d"</span>))</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="co"># UI ----------------------------------------------------------------------</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">head</span>(</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">link</span>(<span class="at">rel =</span> <span class="st">"stylesheet"</span>, <span class="at">type =</span> <span class="st">"text/css"</span>, <span class="at">href =</span> <span class="st">"app-styling.css"</span>)</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dateInput</span>(<span class="st">"date"</span>,</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Select a date for summary:"</span>,</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>                <span class="at">value =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>                <span class="at">max =</span> <span class="fu">max</span>(ga4_data<span class="sc">$</span>event_date),</span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>                <span class="at">min =</span> <span class="fu">min</span>(ga4_data<span class="sc">$</span>event_date)</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>        <span class="fu">h2</span>(<span class="st">"Summary report"</span>),</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pmap</span>(tiles, <span class="sc">~</span><span class="fu">make_summary_tile</span>(</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>          <span class="at">header =</span> ..<span class="dv">1</span>, <span class="at">text_output =</span> ..<span class="dv">2</span>, <span class="at">css_id =</span> <span class="st">"summary-tile"</span>))</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">br</span>(),</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fluidRow</span>(</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textOutput</span>(<span class="st">"date"</span>)    </span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Server ------------------------------------------------------------------</span></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ga4_data, .data[[<span class="st">"event_date"</span>]] <span class="sc">==</span> input<span class="sc">$</span>date)</span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">'users'</span>, <span class="st">'page_view'</span>, <span class="st">'session_start'</span>, <span class="st">'purchase'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">walk</span>(<span class="sc">~</span>{output[[.x]] <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">format</span>(<span class="fu">data</span>()[[.x]], <span class="at">big.mark =</span> <span class="st">','</span>))})</span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">glue</span>(<span class="st">"Estimates represent data from {data()$event_date}"</span>))</span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-75"><a href="#cb21-75" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To recap what was accomplished by this post, the application meets all the functionality requirements in a simplified, manageable way:</p>
+<ul>
+<li><p>Create summary metric tile UI elements in a Shiny application.</p></li>
+<li><p>Provide functionality for users to modify the date the data represents.</p></li>
+<li><p>Include a UI element that informs the user on what date is being represented in the summary metric tiles.</p></li>
+<li><p>Apply custom CSS to the UI elements to draw a contrast between the app and the summary metric tiles.</p></li>
+</ul>
+<p>More could be done to improve this code. For instance, some of these elements could be moved to their own <code>.R</code> files and placed into separate directories following a <a href="https://mastering-shiny.org/scaling-packaging.html"><code>R</code> package organizational structure</a>. Moreover, more could be done to <a href="https://mastering-shiny.org/scaling-modules.html">modularize</a> the code, so it could be easily applied in other applications. These are all topics for potential future posts.</p>
+<p>Although the app development involved multiple iterations to meet the initial requirements, this post highlights one method to create summary metric tiles that can be used as another tool to effectively and efficiently communicate summary metrics to users, a goal every data tool developer strives to meet.</p>
+<p>If you found this post useful, please pass it along to others. If you have other methods or ways to optimize this solution, please reach out to me.</p>
+</section>
+<section id="resource-links" class="level1">
+<h1>Resource links</h1>
+<ul>
+<li><p>A running example of the application can be found <a href="https://collin-berke.shinyapps.io/blog-shiny_summary_tiles/">here</a></p></li>
+<li><p>The repo containing the application’s code can be found <a href="https://github.com/collinberke/blog-shiny_summary_tiles">here</a></p></li>
+<li><p>The code to export the Google Analytics 4 data for the Google Merchandise store can be found <a href="https://github.com/collinberke/blog-shiny_summary_tiles/blob/main/bq-query-data.R">here</a></p></li>
+<li><p><a href="https://mastering-shiny.org/index.html">Mastering Shiny</a> by Hadley Wickham</p></li>
+<li><p><a href="https://unleash-shiny.rinterface.com/index.html">Outstanding User Interfaces with Shiny</a> by David Granjon</p></li>
+<li><p><a href="https://r4ds.had.co.nz/">R for Data Science</a> by Hadley Wickham and Garrett Grolemund</p></li>
+<li><p><a href="http://r4ds.io/join">The R for Data Science Slack Channel</a></p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'alternate';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -2,6 +2,7 @@
 title: "Intro Post"
 author: "Collin K. Berke, Ph.D."
 date: "2021-04-02"
+description: "`Hello World!`, my name is Collin, and this is my blog."
 categories:
   - personal
 ---
