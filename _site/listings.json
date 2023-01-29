@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/posts/2023-01-29-2023-rig/index.html",
       "/blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html",
       "/blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html",
       "/blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html",
