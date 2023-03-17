@@ -1,0 +1,13 @@
+---
+title: "Today I Learned"
+listing:
+    type: default
+    contents: "posts/**/index.qmd"
+    sort: "date desc"
+    categories: true
+format:
+  html:
+    page-layout: article
+---
+
+Here you'll find posts related to things I have learned recently.
