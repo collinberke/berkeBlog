@@ -11,6 +11,7 @@ website:
       - about.qmd
       - now.qmd
       - blog/index.qmd
+      - til/index.qmd
 
 format:
   html:

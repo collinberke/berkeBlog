@@ -1,0 +1,122 @@
+---
+title: "Find and replace in Vim"
+author: "Collin K. Berke, Ph.D."
+date: "2023-02-24"
+description: "Improving productivity by using Vim's `:substitute` command"
+categories:
+  - vim
+  - neovim
+  - productivity
+---
+
+```{r setup}
+library(tidyverse)
+```
+
+Today I learned how to find and replace in Vim. Knowing how to find and replace is a simple, powerful skill to efficiently edit code and text. By knowing a few simple variations of the `:substitute` (`:s` or `:su` for short) command has greatly improved my productivity. You just have to know the patterns and when to apply them.
+
+This TIL post aims to highlight some of the basics of using the `:s` command in Vim. It also provides several examples to highlight some of these basics to get up and running quickly and some of the times I've found it useful when working with R code. Although most of the examples are highlighted using R, these concepts can be applied to any programming language or text editing task. 
+
+The substitute command provides a lot of utility and various options to perform find and replace editing tasks. Although this post will highlight some of the basics, I suggest reading the docs (`:help substitute`) to learn some more of the advanced options and patterns. I'll provide some links to other resources throughout and near the end of the post.
+
+# The command
+
+[The :substitute command searches for a text pattern, and replaces it with a text string](https://vim.fandom.com/wiki/Search_and_replace). Use the following command pattern to perform find and replace:
+
+`:[range]s[ubstitute]/{pattern}/{string}/[flags] count`
+
+# What can `:substitute` do? 
+
+## The basics
+
+`:s` can be used to find each occurance of a text string, and replace it with another text string. Say I have the character vector `basket` full of fruit. However, I don't like oranges in my fruit basket and want apples instead. I just need to run the following from the command prompt:
+
+`:s/orange/apple/g`
+
+Below is the command in action.
+
+![insert basket example here]()
+
+Want to find and replace code globally on each line and on multiple lines, then add `%` to the beginning of the command.
+
+`:%s/power/horsepower/g`
+`:%s/data/cars_data/g`
+
+This is really useful if you want to refactor code efficiently. Check out these two examples, one more contrived, the other a more common situation.
+
+![insert cars example here]
+
+Not sure what all will be replaced? Add `c` to the end of your command to have Vim prompt you to confirm each replacement.
+
+`:%s/orange/apple/gc`
+
+![insert basket-confirm example here]()
+
+In the prompt, you'll see something like `replace with apple (y/n/a/q/l/^E/^Y)`. You'll select one that fulfills the action you want to perform. Here is a list of what each selection does:
+
+* `y` - substitute this one match.
+* `n` - skip this match and move to the next (if any).
+* `a` - substitue **all** (and it's all matches) remaining matches.
+* `q` - quit out of the prompt.
+* `l` - subsitute this one match and quit. `l` is synonymous with "last".
+* `^E` - or `Ctrl-e` will scroll up.
+* `^Y` - or `Ctrl-y` will scroll down.
+
+The example above only highlights the use of `y`, so I suggest experimenting with each selection to get a feel for what they do. 
+
+## Selecting by range
+
+Take a look at the command pattern again, specifically the first argument `[range]`:
+
+`:[range]s[ubstitute]/{pattern}/{string}/[flags] count`
+
+The command provides functionality to scope the find and replace operation to a specific part of your file. Indeed, this functionality was highlighted earlier when we passed `%` in an earlier command. The `%` indicated that we wanted to find and replace for all lines in the file.
+
+Say we now have a much larger basket, one that can hold both fruit and veggies. However, we want to find the first two instances of carrots in our basket and replace it with kale. This can be done by passing a range at the start of the `:s` command. In our case, I want to find and replace the carrots on lines 5 and 7, but not 8. To do this, I can run the following:
+
+`:3,7s/carrot/kale/g`
+
+If I didn't want to use a specific range, I could pass along the following to tell Vim to find and replace from a specific line and up to 2 additional lines by doing the following:
+
+`:5,+2s/carrot/kale/g`
+
+To make this even easier, you can start on your current line `.` and specify to Vim how many additional lines you would like to find and replace in the range. Keep in mind `.` represents the current line your cursor is located on the file. This looks like this:
+
+`:.,+2s/carrot/kale/g`
+
+What if I had a much bigger basket, and I just wanted to start at a current location and replace all instances that follow? We can use the `$` in the range.
+
+`:8,$s/carrot/kale/g`
+
+Or, if you want to start from the current line and replace to the end of the file, you can do the following:
+
+`:.,$s/carrot/kale/g`
+
+If you would rather want to use visual mode to set the range you can. Just highlight where you want to change, enter into command mode with `:` and then enter your find and replace statement. Doing this will start your command off with `'<,'>`, you'll just need to enter the rest.
+
+`:'<,'>s/carrot/kale`
+
+# More advanced applications
+
+## Use objects in your search buffer
+
+You can also use your previous search history to do find and replace. Let's go back to our miles-per-gallon plot again. First I'll hover my cursor over the word I want to replace and hit `*`. Now I can use this search value in my subsititution command. All I need to do is leave the `{pattern}` blank. This is what this looks like:
+
+`:%s//horsepower`
+
+## Replace with what's under your cursor
+
+To keep things simple, let's go back to our simple basket example. Specifically, let's say I want to modify 'strawberry'with the word banana under my cursor. First I have to make sure the cursor is over the word I want to use for my replacement. Then I enter the following command. However, when you see `<c-r><c-w>`, this means you actually hit `Ctrl-R` and `Ctrl-W` on your keyboard. You'll notice the word 'banana' gets put into the command.
+
+`%s/strawberry/<c-r><c-w>/g`
+
+Well there we have it, a brief description about what I've learned recently about using the `:substitute` command in Vim to perform find and replace tasks. Ineed, this is not everything you can do using this command, but hopefully it's a place for you to get started. I highly suggest reading the docs if you're interested in performing some more complext find and replace actions. In addition, I found the following resources helpful. 
+
+# Additional resources
+
+[The Search and Replace Vim fandom page entry](https://vim.fandom.com/wiki/Search_and_replace).
+
+## Video tutorials
+
+[How to Find and Replace in Vim](https://www.youtube.com/watch?v=PzmLJy0o6qo)
+[Vim (09) - Substitute (Search and Replace)](https://www.youtube.com/watch?v=9Sodnanx_yI)
