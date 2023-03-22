@@ -191,7 +191,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#what-can-substitute-do" id="toc-what-can-substitute-do" class="nav-link" data-scroll-target="#what-can-substitute-do">What can <code>:substitute</code> do?</a>
   <ul class="collapse">
   <li><a href="#the-basics" id="toc-the-basics" class="nav-link" data-scroll-target="#the-basics">The basics</a></li>
-  <li><a href="#selecting-by-range" id="toc-selecting-by-range" class="nav-link" data-scroll-target="#selecting-by-range">Selecting by range</a></li>
+  <li><a href="#confirming-replacement" id="toc-confirming-replacement" class="nav-link" data-scroll-target="#confirming-replacement">Confirming replacement</a></li>
+  <li><a href="#replacing-by-range" id="toc-replacing-by-range" class="nav-link" data-scroll-target="#replacing-by-range">Replacing by range</a></li>
+  <li><a href="#replacing-by-current-location-and-n-lines" id="toc-replacing-by-current-location-and-n-lines" class="nav-link" data-scroll-target="#replacing-by-current-location-and-n-lines">Replacing by current location and n lines</a></li>
+  <li><a href="#replacing-to-end-of-file" id="toc-replacing-to-end-of-file" class="nav-link" data-scroll-target="#replacing-to-end-of-file">Replacing to end of file</a></li>
+  <li><a href="#replacing-using-visual-mode" id="toc-replacing-using-visual-mode" class="nav-link" data-scroll-target="#replacing-using-visual-mode">Replacing using visual mode</a></li>
   </ul></li>
   <li><a href="#more-advanced-applications" id="toc-more-advanced-applications" class="nav-link" data-scroll-target="#more-advanced-applications">More advanced applications</a>
   <ul class="collapse">
@@ -199,10 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#replace-with-whats-under-your-cursor" id="toc-replace-with-whats-under-your-cursor" class="nav-link" data-scroll-target="#replace-with-whats-under-your-cursor">Replace with what’s under your cursor</a></li>
   </ul></li>
   <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final thoughts</a></li>
-  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional resources</a>
-  <ul class="collapse">
-  <li><a href="#video-tutorials" id="toc-video-tutorials" class="nav-link" data-scroll-target="#video-tutorials">Video tutorials</a></li>
-  </ul></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional resources</a></li>
   </ul>
 </nav>
     </div>
@@ -250,40 +251,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="background" class="level1">
 <h1>Background</h1>
-<p>Today I learned how to find and replace in Vim. I’ve found knowing a few variations of the <code>substitute</code> (<code>:s</code> or <code>su</code> for short) to be powerful skill to quickly and efficiently edit code and text. By knowing a few simple command variations, you can greatly improve your productivity. You just have to know the different patterns and when to apply them.</p>
-<p>This TIL post aims to highlight some of the basics of using Vim’s <code>:s</code> command. My intention is to get you up and running quickly with using commmand. As such, this post provides several examples applying the command to some practical use cases. Although most of the examples here use the R programming language, these concepts can be applied to any programming language or text editing task.</p>
-<p>The substitute command provides a lot of utility and various options to perform find and replace editing tasks, and this post focuses on the basics. If you’re looking to learn more advanced features, I suggest reading the docs (<code>:help substitute</code>). I also provide some additional links to other resources throughout and at the end of the post if you’re interested in learning more.</p>
+<p>Today I learned how to find and replace in Vim. I’ve found knowing a few variations of the <code>substitute</code> (<code>:s</code> or <code>su</code> for short) command to be a powerful skill to quickly and efficiently edit code and text within a file. By knowing a few simple command variations, you can greatly improve your productivity. You just have to know the different patterns and when to apply them.</p>
+<p>This TIL post aims to highlight some of the basics of using Vim’s <code>:s</code> command. My intention is to get you up and running quickly. As such, this post provides several simple examples applying the command to some practical use cases. Although most of the examples use the R programming language, these concepts can be applied to any programming language or text editing task.</p>
+<p>This post focuses on the basics. Indeed, the substitute command provides a lot of utility and different options to perform various find and replace editing tasks. If you’re looking to learn more advanced features, I suggest reading the docs (<code>:help substitute</code>). I also provide some additional links to other resources throughout and at the end of the post if you’re interested in learning more.</p>
 </section>
 <section id="the-substitute-command" class="level1">
 <h1>The <code>:substitute</code> command</h1>
-<p><a href="https://vim.fandom.com/wiki/Search_and_replace">The <code>:substitute</code> command searches for a text pattern, and replaces it with a text string</a>. Use the following command pattern to execute find and replace:</p>
+<p><a href="https://vim.fandom.com/wiki/Search_and_replace">The <code>:substitute</code> command searches for a text pattern, and replaces it with a text string</a>. Use the following command pattern to execute find and replace when using Vim:</p>
 <p><code>:[range]s[ubstitute]/{pattern}/{string}/[flags] count</code></p>
 </section>
 <section id="what-can-substitute-do" class="level1">
 <h1>What can <code>:substitute</code> do?</h1>
 <section id="the-basics" class="level2">
 <h2 class="anchored" data-anchor-id="the-basics">The basics</h2>
-<p><code>:s</code> can be used to find each occurance of a text string, and replace it with another text string. Say I have character vector <code>basket</code> full of fruit in the below example. However, what if I want to replace the first apple in my basket with an orange. First, I need to move the cursor to the line I want to find the first string. Then, I can enter the following into the command prompt to find the first instance of the string <code>orange</code> and replace it with the string <code>apple</code>:</p>
+<p><code>:s</code> can be used to find each occurance of a text string, and replace it with another text string. Say I have a character vector <code>basket</code>, and it contains an assortment of fruit. However, what if I want to replace the first <code>apple</code> in my basket with an <code>orange</code> using <code>:s</code>? First, I need to move my cursor to the line I want to find the first string. Then, I can enter the following into the command prompt to find the first instance of the string <code>orange</code> and replace it with the string <code>apple</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:s/orange/apple</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Here is what this will look like in action.</p>
+<p>Here is what this looks like in action.</p>
 <p><img src="examples/example-simple-basket.gif" class="img-fluid"></p>
-<p>However, what if I don’t want any oranges in my fruit basket, and instead I just want apples rather than oranges. I can modify the previous command by appending <code>g</code> to the end. This means I want to replace all instances of the string global to the current line.</p>
+<p>However, what if I don’t want any oranges, and instead I just want apples rather than orangesin my basket. I can append the previous command with <code>g</code> to replace all instances of <code>orange</code> with <code>apple</code>. The <code>g</code> flag indicates to Vim that I want to replace globally to the current line. In other words, replace all instances on the current line.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:s/orange/apple/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Below is the use of <code>g</code> to replace strings global to the line.</p>
+<p>Below is what this will look like in your editor.</p>
 <p><img src="examples/example-basket.gif" class="img-fluid"></p>
-<p>Want to find and replace code globally on each line and on multiple lines, then add <code>%</code> to the beginning of the command.</p>
+<p>Want to find and replace text globally to the line and including multiple lines, then add <code>%</code> to the beginning of the command.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:%s/orange/apple/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-basket2.gif" class="img-fluid"></p>
-<p>This is really useful if you want to refactor code efficiently. Check out these two examples, one more contrived, the other a more practical, common application.</p>
+<p><code>%</code> is really useful if you want to refactor code efficiently within a file. Check out these two examples, one more contrived, the other a more practical, common application.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:%s/power/horsepower/g</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">:%s/data/cars_data/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-cars.gif" class="img-fluid"></p>
-<p>Not sure what all will be replaced and want to go through each replacement step-by-step? Add <code>c</code> to the end of your command. This flag has Vim prompt you to confirm each replacement.</p>
+</section>
+<section id="confirming-replacement" class="level2">
+<h2 class="anchored" data-anchor-id="confirming-replacement">Confirming replacement</h2>
+<p>Not sure what all will be replaced and would rather go through each replacement step-by-step? Add <code>c</code> to the end of your command. Adding this flag will make Vim prompt you to confirm each replacement.</p>
 <p><code>:%s/orange/apple/gc</code></p>
 <p><img src="examples/example-basket-confirm.gif" class="img-fluid"></p>
 <p>In the prompt, you’ll see something like <code>replace with apple (y/n/a/q/l/^E/^Y)</code>. You’ll select the option that fulfills the action you want to perform. Here is a list of what each selection does:</p>
 <ul>
-<li><code>y</code> - substitute this one match.</li>
+<li><code>y</code> - substitute this one match and move to the next (if any).</li>
 <li><code>n</code> - skip this match and move to the next (if any).</li>
 <li><code>a</code> - substitue <strong>all</strong> (and it’s all matches) remaining matches.</li>
 <li><code>q</code> - quit out of the prompt.</li>
@@ -293,25 +297,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>The example above only highlights the use of <code>y</code>, so I suggest experimenting with each selection to get a feel for what they do.</p>
 </section>
-<section id="selecting-by-range" class="level2">
-<h2 class="anchored" data-anchor-id="selecting-by-range">Selecting by range</h2>
+<section id="replacing-by-range" class="level2">
+<h2 class="anchored" data-anchor-id="replacing-by-range">Replacing by range</h2>
 <p>Take a look at the command pattern again, specifically the first portion, <code>[range]</code>:</p>
 <p><code>:[range]s[ubstitute]/{pattern}/{string}/[flags] count</code></p>
-<p>The <code>s</code> command provides functionality to scope the find and replace operation to a specific part of your file. Indeed, this functionality was highlighted earlier when we passed <code>%</code> in an earlier command. The <code>%</code> indicated that we wanted to find and replace for all lines in the file.</p>
-<p>Say we now have a much larger basket, one that can hold both fruit and veggies. In the R programming language, this can be modeled using a <code>tribble</code> from the <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tribble</code> package</a>.</p>
-<p>What if we wanted to find the first two instances of carrots in our basket and replace it with kale. This can be done by passing a range at the start of the <code>:s</code> command. In this specific instance, I want to find and replace the <code>carrots</code> on lines 5 and 7 with the string <code>kale</code>, but I don’t want to change the one on line 8. To do this, I can run the following command:</p>
+<p>The <code>s</code> command provides functionality to scope the find and replace operation to a specific part of your file. Indeed, this functionality was highlighted earlier when we passed <code>%</code> in an earlier command. <code>%</code> just indicated to Vim that we wanted to find and replace all lines in the file. However, we can be more specific.</p>
+<p>Say we now have a much larger basket, one that can hold both fruits and veggies. In the R programming language, this can be modeled using a <code>tribble</code> from the <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tribble</code> package</a>.</p>
+<p>What if we wanted to find the first two instances of <code>carrot</code>s in our basket and replace it with <code>kale</code>. This can be done by passing a range at the start of the <code>:s</code> command. In this specific instance, I want to find and replace the <code>carrots</code> on lines 5 and 7 with the string <code>kale</code>, but I don’t want to change the one on line 8. To do this, I can run the following command:</p>
 <p><code>:5,7s/carrot/kale/g</code></p>
 <p><img src="examples/example-bigbasket-range.gif" class="img-fluid"></p>
-<p>Another variation is to start on your current line <code>.</code> and specify to Vim how many additional lines you would like to find and replace in the range. Keep in mind <code>.</code> represents the current line your cursor is located currently within the file. To do this, your command will look something like this:</p>
+<p>Another variation is to start on your current line <code>.</code> and specify to Vim how many additional lines I would like to find and replace in the range. Keep in mind <code>.</code> represents the current line your cursor is located currently within the file. Once you postion your cursor, your command will look something like this:</p>
+</section>
+<section id="replacing-by-current-location-and-n-lines" class="level2">
+<h2 class="anchored" data-anchor-id="replacing-by-current-location-and-n-lines">Replacing by current location and n lines</h2>
 <p><code>:.,+2s/carrot/kale/g</code></p>
 <p><img src="examples/example-bigbasket-current.gif" class="img-fluid"></p>
-<p>What if I had a much bigger basket, and I just wanted to start at my current location and replace all instances that follow? We can use the <code>$</code> in the range. The use of the dollar sign indicates to Vim we want to replace to the end of the file.</p>
+<p>What if I had a basket with even more fruits and veggies, and I just wanted to start at my current location and replace all instances that follow? We can use the <code>$</code> in the range input. The use of the dollar sign indicates to Vim that we want to replace starting at line 8 and go to the end of the file.</p>
+</section>
+<section id="replacing-to-end-of-file" class="level2">
+<h2 class="anchored" data-anchor-id="replacing-to-end-of-file">Replacing to end of file</h2>
 <p><code>:8,$s/carrot/kale/g</code></p>
 <p><img src="examples/example-bigbasket-end.gif" class="img-fluid"></p>
 <p>Or, if you want to start from the current line and replace to the end of the file, you can do the following:</p>
 <p><code>:.,$s/carrot/kale/g</code></p>
 <p><img src="examples/example-bigbasket-current-end.gif" class="img-fluid"></p>
-<p>You can also use visual mode to set the range of your find and replace operation. Just enter visual mode <code>v</code> or visual line mode <code>Shift-v</code>, highlight the range you want your find and replace operation to be applied, enter into command mode with <code>:</code>, and then enter your find and replace statement to do this. Doing this will start the command line off with <code>'&lt;,'&gt;</code>, and you’ll just need to enter the rest.</p>
+</section>
+<section id="replacing-using-visual-mode" class="level2">
+<h2 class="anchored" data-anchor-id="replacing-using-visual-mode">Replacing using visual mode</h2>
+<p>We can also use visual mode to set the range of the find and replace operation. Just enter visual mode <code>v</code> or visual line mode <code>Shift-v</code>, highlight the range you want your find and replace operation to be applied, enter into command mode with <code>:</code>, and then enter your find and replace statement. Doing this will start the command line off with <code>'&lt;,'&gt;</code>, and you’ll just need to enter the rest of the command, the <code>{pattern}</code> and <code>{string}</code> portions.</p>
 <p><code>:'&lt;,'&gt;s/carrot/kale</code></p>
 <p><img src="examples/example-bigbasket-visual.gif" class="img-fluid"></p>
 </section>
@@ -320,40 +333,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>More advanced applications</h1>
 <section id="use-objects-in-your-search-buffer" class="level2">
 <h2 class="anchored" data-anchor-id="use-objects-in-your-search-buffer">Use objects in your search buffer</h2>
-<p>Your previous search history can also be used to do find and replace. Let’s go back to our miles-per-gallon plot example again. First I’ll hover my cursor over the word I want to replace and hit <code>*</code>. Now I can use this search value in my subsititution command. All I need to do is leave the <code>{pattern}</code> blank in the command. The command will look like this:</p>
+<p>Your previous search history can also be used to do find and replace. Let’s go back to our miles-per-gallon plot example again. First I’ll hover my cursor over the word I want to replace and hit <code>*</code>. Now we can use the search value in our subsititution command. All I need to do is leave the <code>{pattern}</code> blank in the command. The command will look like this:</p>
 <p><code>:%s//horsepower</code></p>
+<p><img src="examples/example-search.gif" class="img-fluid"></p>
 </section>
 <section id="replace-with-whats-under-your-cursor" class="level2">
 <h2 class="anchored" data-anchor-id="replace-with-whats-under-your-cursor">Replace with what’s under your cursor</h2>
-<p>To keep things simple, let’s go back to our simple basket example. Specifically, let’s say I want to modify the string <code>strawberry</code> with the string <code>banana</code> under my cursor. First I have to make sure the cursor is hovering over the word I want to use for my replacement. Then, I enter the below command. When you see <code>&lt;c-r&gt;&lt;c-w&gt;</code>, this means you actually hit <code>Ctrl-R</code> and <code>Ctrl-W</code> on your keyboard. You’ll notice the string <code>banana</code> gets put into the command.</p>
+<p>To keep things simple, let’s go back to our first basket example. Specifically, let’s say I want to modify the string <code>strawberry</code> with the string <code>banana</code>, but use my cursor position to do this. First I have to make sure the cursor is hovering over the word I want to use for my replacement. Then, I enter the below command. When you see <code>&lt;c-r&gt;&lt;c-w&gt;</code>, this means you actually hit <code>Ctrl-R</code> and <code>Ctrl-W</code> on your keyboard. You’ll notice the string <code>banana</code> is populated into the command for us.</p>
 <p><code>%s/strawberry/&lt;c-r&gt;&lt;c-w&gt;/g</code></p>
+<p><img src="examples/example-cursor.gif" class="img-fluid"></p>
 </section>
 </section>
 <section id="final-thoughts" class="level1">
 <h1>Final thoughts</h1>
-<p>Well there we have it, a brief description about what I’ve recently learned about using Vim’s <code>:substitute</code> command to perform find and replace tasks. Specifically, TIL that you can use the Vim <code>:s</code> command to:</p>
+<p>Well there you have it, a brief description about what I’ve recently learned about using Vim’s <code>:substitute</code> command to perform find and replace tasks. Specifically, TIL that you can use the Vim <code>:s</code> command to:</p>
 <ul>
 <li>Find and replace one or many text strings in a file.</li>
 <li>Find and replace text strings based on a specified range.</li>
 <li>Find and replace text strings using objects stored in Vim’s search buffer.</li>
 <li>Find and replace text strings using text under your cursor.</li>
 </ul>
-<p>In truth, the above examples are not everything you can do using <code>:substitute</code>, as many powerful features and options are available. The pairing of <code>:s</code> with regular expressions is an example of one such option. Applying these two tools opens up a wide range of powerful methods to find and replace text. Such applications were beyond the focus of this post. Nonetheless, I highly suggest reading the docs if you’re interested in more advanced find and replace actions. I also provided links below to resources I found useful and will allow you to dive deeper into the topic.</p>
+<p>If you want to try each of these out on your own, I’ve included each example with comments <a href="">here</a>.</p>
+<p>In truth, the above examples are not everything you can do using <code>:substitute</code>, as many powerful features and options are available. One such option is pairing <code>:s</code> with the use of regular expressions. Applying these two tools opens up a wide range of powerful methods to find and replace text within a file. Such applications were beyond the focus of this post, as I just focused on the basics. Nonetheless, I highly suggest reading the docs if you’re interested in more advanced find and replace operations. I also provided some links below to resources I found useful while learning about this topic and writing this post. These are a good starting point to dive deeper into the topic.</p>
+<p>Happy editing!</p>
 </section>
 <section id="additional-resources" class="level1">
 <h1>Additional resources</h1>
 <ul>
 <li><a href="https://vim.fandom.com/wiki/Search_and_replace">The Search and Replace Vim fandom page entry</a>.</li>
-</ul>
-<section id="video-tutorials" class="level2">
-<h2 class="anchored" data-anchor-id="video-tutorials">Video tutorials</h2>
-<ul>
 <li><a href="https://www.youtube.com/watch?v=PzmLJy0o6qo">How to Find and Replace in Vim</a></li>
 <li><a href="https://www.youtube.com/watch?v=9Sodnanx_yI">Vim (09) - Substitute (Search and Replace)</a></li>
 </ul>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
