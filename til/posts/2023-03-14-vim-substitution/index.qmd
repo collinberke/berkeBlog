@@ -180,7 +180,7 @@ Well there you have it, a brief description about what I've recently learned abo
 * Find and replace text strings using objects stored in Vim's search buffer.
 * Find and replace text strings using text under your cursor.
 
-If you want to try each of these out on your own, I've included each example with comments [here]().
+If you want to try each of these out on your own, I've included each example with comments [here](https://github.com/collinberke/berkeBlog/tree/master/til/posts/2023-03-14-vim-substitution/examples).
 
 In truth, the above examples are not everything you can do using `:substitute`, as many powerful features and options are available. One such option is pairing `:s` with the use of regular expressions. Applying these two tools opens up a wide range of powerful methods to find and replace text within a file. Such applications were beyond the focus of this post, as I just focused on the basics. Nonetheless, I highly suggest reading the docs if you're interested in more advanced find and replace operations. I also provided some links below to resources I found useful while learning about this topic and writing this post. These are a good starting point to dive deeper into the topic. 
 
