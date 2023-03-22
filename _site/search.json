@@ -613,7 +613,7 @@
     "href": "til/posts/2023-03-14-vim-substitution/index.html#replace-with-whats-under-your-cursor",
     "title": "Find and replace in Vim",
     "section": "Replace with what’s under your cursor",
-    "text": "Replace with what’s under your cursor\nTo keep things simple, let’s go back to our first basket example. Specifically, let’s say I want to modify the string strawberry with the string banana, but use my cursor position to do this. First I have to make sure the cursor is hovering over the word I want to use for my replacement. Then, I enter the below command. When you see <c-r><c-w>, this means you actually hit Ctrl-R and Ctrl-W on your keyboard. You’ll notice the string banana is populated into the command for us.\n%s/strawberry/<c-r><c-w>/g"
+    "text": "Replace with what’s under your cursor\nTo keep things simple, let’s go back to our first basket example. Specifically, let’s say I want to modify the string strawberry with the string banana, but use my cursor position to do this. First I have to make sure the cursor is hovering over the word I want to use for my replacement. Then, I enter the below command. When you see <c-r><c-w>, this means you actually hit Ctrl-R and Ctrl-W on your keyboard. You’ll notice the string banana is populated into the command for us.\n%s/strawberry/<c-r><c-w>"
   },
   {
     "objectID": "til/posts/2023-03-14-vim-substitution/index.html#video-tutorials",
@@ -662,6 +662,13 @@
     "href": "til/posts/2023-03-14-vim-substitution/index.html#replacing-using-visual-mode",
     "title": "Find and replace in Vim",
     "section": "Replacing using visual mode",
-    "text": "Replacing using visual mode\nWe can also use visual mode to set the range of the find and replace operation. Just enter visual mode v or visual line mode Shift-v, highlight the range you want your find and replace operation to be applied, enter into command mode with :, and then enter your find and replace statement. Doing this will start the command line off with '<,'>, and you’ll just need to enter the rest of the command, the {pattern} and {string} portions.\n:'<,'>s/carrot/kale"
+    "text": "Replacing using visual mode\nWe can also use visual mode to set the range of the find and replace operation. Just enter visual mode v or visual line mode Shift-v, highlight the range you want your find and replace operation to be applied, enter into command mode with :, and then enter your find and replace statement. Doing this will start the command line off with '<,'>, and you’ll just need to enter the rest of the command, the {pattern} and {string} portions.\n:'<,'>s/carrot/kale`"
+  },
+  {
+    "objectID": "til/posts/2023-03-14-vim-substitution/index.html#replacing-from-current-location-to-n-lines",
+    "href": "til/posts/2023-03-14-vim-substitution/index.html#replacing-from-current-location-to-n-lines",
+    "title": "Find and replace in Vim",
+    "section": "Replacing from current location to n lines",
+    "text": "Replacing from current location to n lines\n:.,+2s/carrot/kale/g\n\nWhat if I had a basket with even more fruits and veggies, and I just wanted to start at my current location and replace all instances that follow? We can use the $ in the range input. The use of the dollar sign indicates to Vim that we want to replace starting at line 8 and go to the end of the file."
   }
 ]

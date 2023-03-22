@@ -193,7 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#the-basics" id="toc-the-basics" class="nav-link" data-scroll-target="#the-basics">The basics</a></li>
   <li><a href="#confirming-replacement" id="toc-confirming-replacement" class="nav-link" data-scroll-target="#confirming-replacement">Confirming replacement</a></li>
   <li><a href="#replacing-by-range" id="toc-replacing-by-range" class="nav-link" data-scroll-target="#replacing-by-range">Replacing by range</a></li>
-  <li><a href="#replacing-by-current-location-and-n-lines" id="toc-replacing-by-current-location-and-n-lines" class="nav-link" data-scroll-target="#replacing-by-current-location-and-n-lines">Replacing by current location and n lines</a></li>
+  <li><a href="#replacing-from-current-location-to-n-lines" id="toc-replacing-from-current-location-to-n-lines" class="nav-link" data-scroll-target="#replacing-from-current-location-to-n-lines">Replacing from current location to n lines</a></li>
   <li><a href="#replacing-to-end-of-file" id="toc-replacing-to-end-of-file" class="nav-link" data-scroll-target="#replacing-to-end-of-file">Replacing to end of file</a></li>
   <li><a href="#replacing-using-visual-mode" id="toc-replacing-using-visual-mode" class="nav-link" data-scroll-target="#replacing-using-visual-mode">Replacing using visual mode</a></li>
   </ul></li>
@@ -283,7 +283,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="confirming-replacement" class="level2">
 <h2 class="anchored" data-anchor-id="confirming-replacement">Confirming replacement</h2>
 <p>Not sure what all will be replaced and would rather go through each replacement step-by-step? Add <code>c</code> to the end of your command. Adding this flag will make Vim prompt you to confirm each replacement.</p>
-<p><code>:%s/orange/apple/gc</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:%s/orange/apple/gc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-basket-confirm.gif" class="img-fluid"></p>
 <p>In the prompt, you’ll see something like <code>replace with apple (y/n/a/q/l/^E/^Y)</code>. You’ll select the option that fulfills the action you want to perform. Here is a list of what each selection does:</p>
 <ul>
@@ -304,28 +304,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The <code>s</code> command provides functionality to scope the find and replace operation to a specific part of your file. Indeed, this functionality was highlighted earlier when we passed <code>%</code> in an earlier command. <code>%</code> just indicated to Vim that we wanted to find and replace all lines in the file. However, we can be more specific.</p>
 <p>Say we now have a much larger basket, one that can hold both fruits and veggies. In the R programming language, this can be modeled using a <code>tribble</code> from the <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tribble</code> package</a>.</p>
 <p>What if we wanted to find the first two instances of <code>carrot</code>s in our basket and replace it with <code>kale</code>. This can be done by passing a range at the start of the <code>:s</code> command. In this specific instance, I want to find and replace the <code>carrots</code> on lines 5 and 7 with the string <code>kale</code>, but I don’t want to change the one on line 8. To do this, I can run the following command:</p>
-<p><code>:5,7s/carrot/kale/g</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:5,7s/carrot/kale/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-bigbasket-range.gif" class="img-fluid"></p>
 <p>Another variation is to start on your current line <code>.</code> and specify to Vim how many additional lines I would like to find and replace in the range. Keep in mind <code>.</code> represents the current line your cursor is located currently within the file. Once you postion your cursor, your command will look something like this:</p>
 </section>
-<section id="replacing-by-current-location-and-n-lines" class="level2">
-<h2 class="anchored" data-anchor-id="replacing-by-current-location-and-n-lines">Replacing by current location and n lines</h2>
-<p><code>:.,+2s/carrot/kale/g</code></p>
+<section id="replacing-from-current-location-to-n-lines" class="level2">
+<h2 class="anchored" data-anchor-id="replacing-from-current-location-to-n-lines">Replacing from current location to n lines</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:.,+2s/carrot/kale/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-bigbasket-current.gif" class="img-fluid"></p>
 <p>What if I had a basket with even more fruits and veggies, and I just wanted to start at my current location and replace all instances that follow? We can use the <code>$</code> in the range input. The use of the dollar sign indicates to Vim that we want to replace starting at line 8 and go to the end of the file.</p>
 </section>
 <section id="replacing-to-end-of-file" class="level2">
 <h2 class="anchored" data-anchor-id="replacing-to-end-of-file">Replacing to end of file</h2>
-<p><code>:8,$s/carrot/kale/g</code></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:8,</span><span class="va">$s</span><span class="ex">/carrot/kale/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-bigbasket-end.gif" class="img-fluid"></p>
 <p>Or, if you want to start from the current line and replace to the end of the file, you can do the following:</p>
-<p><code>:.,$s/carrot/kale/g</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:.,</span><span class="va">$s</span><span class="ex">/carrot/kale/g</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-bigbasket-current-end.gif" class="img-fluid"></p>
 </section>
 <section id="replacing-using-visual-mode" class="level2">
 <h2 class="anchored" data-anchor-id="replacing-using-visual-mode">Replacing using visual mode</h2>
 <p>We can also use visual mode to set the range of the find and replace operation. Just enter visual mode <code>v</code> or visual line mode <code>Shift-v</code>, highlight the range you want your find and replace operation to be applied, enter into command mode with <code>:</code>, and then enter your find and replace statement. Doing this will start the command line off with <code>'&lt;,'&gt;</code>, and you’ll just need to enter the rest of the command, the <code>{pattern}</code> and <code>{string}</code> portions.</p>
-<p><code>:'&lt;,'&gt;s/carrot/kale</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:</span><span class="st">'&lt;,'</span><span class="op">&gt;</span>s/carrot/kale<span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-bigbasket-visual.gif" class="img-fluid"></p>
 </section>
 </section>
@@ -334,13 +334,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="use-objects-in-your-search-buffer" class="level2">
 <h2 class="anchored" data-anchor-id="use-objects-in-your-search-buffer">Use objects in your search buffer</h2>
 <p>Your previous search history can also be used to do find and replace. Let’s go back to our miles-per-gallon plot example again. First I’ll hover my cursor over the word I want to replace and hit <code>*</code>. Now we can use the search value in our subsititution command. All I need to do is leave the <code>{pattern}</code> blank in the command. The command will look like this:</p>
-<p><code>:%s//horsepower</code></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">:%s//horsepower</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-search.gif" class="img-fluid"></p>
 </section>
 <section id="replace-with-whats-under-your-cursor" class="level2">
 <h2 class="anchored" data-anchor-id="replace-with-whats-under-your-cursor">Replace with what’s under your cursor</h2>
 <p>To keep things simple, let’s go back to our first basket example. Specifically, let’s say I want to modify the string <code>strawberry</code> with the string <code>banana</code>, but use my cursor position to do this. First I have to make sure the cursor is hovering over the word I want to use for my replacement. Then, I enter the below command. When you see <code>&lt;c-r&gt;&lt;c-w&gt;</code>, this means you actually hit <code>Ctrl-R</code> and <code>Ctrl-W</code> on your keyboard. You’ll notice the string <code>banana</code> is populated into the command for us.</p>
-<p><code>%s/strawberry/&lt;c-r&gt;&lt;c-w&gt;/g</code></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">%s/strawberry/</span><span class="op">&lt;</span>c-r<span class="op">&gt;&lt;</span>c-w<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="examples/example-cursor.gif" class="img-fluid"></p>
 </section>
 </section>
@@ -361,8 +361,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Additional resources</h1>
 <ul>
 <li><a href="https://vim.fandom.com/wiki/Search_and_replace">The Search and Replace Vim fandom page entry</a>.</li>
-<li><a href="https://www.youtube.com/watch?v=PzmLJy0o6qo">How to Find and Replace in Vim</a></li>
-<li><a href="https://www.youtube.com/watch?v=9Sodnanx_yI">Vim (09) - Substitute (Search and Replace)</a></li>
+<li><a href="https://www.youtube.com/watch?v=PzmLJy0o6qo">How to Find and Replace in Vim YouTube video by Tony Teaches Tech</a></li>
+<li><a href="https://www.youtube.com/watch?v=9Sodnanx_yI">Vim (09) - Substitute (Search and Replace) YouTube video by TheFrugalComputerGuy</a></li>
 </ul>
 
 
