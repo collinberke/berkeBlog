@@ -4,4 +4,5 @@
 # c - prompt to confirm replacement for each instance
 # :%s/orange/apple/gc
 basket1 <- c("orange", "banana", "orange", "strawberry")
+
 basket2 <- c("orange", "banana", "orange", "strawberry")
