@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -124,7 +95,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -143,32 +115,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span class="navbar-title">Collin K. Berke, Ph.D.</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../about.html">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../now.html">
+    <a class="nav-link" href="../../../now.html" rel="" target="">
  <span class="menu-text">Now</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../blog/index.html">
+    <a class="nav-link" href="../../../blog/index.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../til/index.html" rel="" target="">
+ <span class="menu-text">Today I Learned</span></a>
+  </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -283,7 +259,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="thumbnail-wide.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Photo by <a href="https://unsplash.com/photos/t5YUoHW6zRo">Barn Images</a></figcaption><p></p>
+<figcaption class="figure-caption">Photo by <a href="https://unsplash.com/photos/t5YUoHW6zRo">Barn Images</a></figcaption>
 </figure>
 </div>
 <blockquote class="blockquote">
@@ -359,7 +335,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="zsh_prompt.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Customized Zsh prompt</figcaption><p></p>
+<figcaption class="figure-caption">Customized Zsh prompt</figcaption>
 </figure>
 </div>
 <p>To achieve this custom setup, I place the following into my <a href="https://github.com/collinberke/dotfiles/blob/main/terminal/.zshrc"><code>.zshrc</code> file</a>:</p>
@@ -570,7 +546,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="neovim-package-manager" class="level3">
 <h3 class="anchored" data-anchor-id="neovim-package-manager">Neovim package manager</h3>
 <p>I use <a href="https://github.com/wbthomason/packer.nvim">packer</a> for plugin management. Packer simplifies plugin installation. For example, here is the Lua code to install some plugins I highlight in the following sections:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> packer<span class="op">.</span>startup<span class="op">(</span><span class="kw">function</span><span class="op">(</span>use<span class="op">)</span></span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="va">packer</span><span class="op">.</span>startup<span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">use</span><span class="op">)</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"wbthomason/packer.nvim"</span>   <span class="co">-- Have packer manage itself</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"jalvesaq/Nvim-R"</span>          <span class="co">-- Tools to work with R in nvim</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -592,7 +568,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Treesitter</span></span>
 <span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  use <span class="op">{</span></span>
 <span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nvim-treesitter/nvim-treesitter"</span><span class="op">,</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    run <span class="op">=</span> <span class="st">":TSUpdate"</span><span class="op">,</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">run</span> <span class="op">=</span> <span class="st">":TSUpdate"</span><span class="op">,</span></span>
 <span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> </span>
 <span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Git </span></span>
@@ -614,7 +590,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="nvim-r-example.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Nvim-r running in Neovim</figcaption><p></p>
+<figcaption class="figure-caption">Nvim-r running in Neovim</figcaption>
 </figure>
 </div>
 <p>The power of Nvim-R comes from its predefined keybindings <a href="https://github.com/jalvesaq/Nvim-R/blob/28dc7c3d6177ad4508318399c7788fd6ebcef9e9/doc/Nvim-R.txt#L293">keybindings</a>, which allow you to quickly and easily do interactive analysis tasks using just a few keystrokes. I’ve found it’s the best option to work with R in Neovim. A whole blog post could be written about the use of Nvim-R, and I only hit the highlights here. I highly suggest checking it out if you’re looking to write R code with Neovim.</p>
@@ -645,21 +621,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="custom-neovim-keymaps">Custom Neovim keymaps</h4>
 <p>Since Neovim is all about customization of your development environment, one thing to modify is Neovim’s keymaps. To configure, you just have to define the configuration in your Neovim config files. For example, the following is some code I use to customize my keymap setup.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- BigQuery keymappings </span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;C-b&gt;"</span><span class="op">,</span> <span class="st">":w | :! bq query &lt; % --format pretty &lt;CR&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;C-b&gt;"</span><span class="op">,</span> <span class="st">":w | :! bq query &lt; % --format pretty &lt;CR&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- R coding keymappings</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"</span><span class="sc">\\</span><span class="st">M"</span><span class="op">,</span> <span class="st">"|&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"i"</span><span class="op">,</span> <span class="st">"</span><span class="sc">\\</span><span class="st">M"</span><span class="op">,</span> <span class="st">"|&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;ts"</span><span class="op">,</span> <span class="st">":RStop&lt;cr&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"tt"</span><span class="op">,</span> <span class="st">"&lt;Esc&gt;&lt;C-w&gt;&lt;C-w&gt;i"</span><span class="op">,</span> opts<span class="op">)</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"</span><span class="sc">\\</span><span class="st">M"</span><span class="op">,</span> <span class="st">"|&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"i"</span><span class="op">,</span> <span class="st">"</span><span class="sc">\\</span><span class="st">M"</span><span class="op">,</span> <span class="st">"|&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;ts"</span><span class="op">,</span> <span class="st">":RStop&lt;cr&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"tt"</span><span class="op">,</span> <span class="st">"&lt;Esc&gt;&lt;C-w&gt;&lt;C-w&gt;i"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- R devtools keymappings</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;I"</span><span class="op">,</span> <span class="st">":RInstallPackage&lt;Esc&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;L"</span><span class="op">,</span> <span class="st">":RLoadPackage&lt;Esc&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;B"</span><span class="op">,</span> <span class="st">":RBuildPackage&lt;Esc&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;E"</span><span class="op">,</span> <span class="st">":RCheckPackage&lt;Esc&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;T"</span><span class="op">,</span> <span class="st">":RTestPackage&lt;Esc&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;D"</span><span class="op">,</span> <span class="st">":RDocumentPackage&lt;Esc&gt;"</span><span class="op">,</span> opts<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;I"</span><span class="op">,</span> <span class="st">":RInstallPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;L"</span><span class="op">,</span> <span class="st">":RLoadPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;B"</span><span class="op">,</span> <span class="st">":RBuildPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;E"</span><span class="op">,</span> <span class="st">":RCheckPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;T"</span><span class="op">,</span> <span class="st">":RTestPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;D"</span><span class="op">,</span> <span class="st">":RDocumentPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>I have additional custom keymappings in my setup, but including the entire file would be too much for this post. Nevertheless, you can access my <a href="https://github.com/collinberke/dotfiles/blob/main/nvim/lua/user/keymaps.lua">keymapping configuration files</a> to get a sense of other keymaps I have within my setup.</p>
 </section>
 </section>
@@ -816,9 +792,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -883,6 +873,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
