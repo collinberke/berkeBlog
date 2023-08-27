@@ -29,13 +29,13 @@ I'm currently developing and maintaining a data pipeline project built using R a
 
 Being that it is a Python summer, I picked up this book as a starter to learn and practice using Python for data analysis. Currently, I'm working through the data cleaning, preparation, and wrangling material. I'm hoping to get to the chapters on modelling towards the end of the summer. 
 
-#### [Regression and other stories](https://avehtari.github.io/ROS-Examples/) by Andrew Gelman, Jennifer Hill, and Aki Vehtari
+#### [Engineering Production-Grade Shiny Apps](https://engineering-shiny.org/) by Colin Fay, Sébastien Rochette, Vincent Guyader, and Cervan Girard
 
-Slowly reading through this book. It's been some time since I've focused on developing my modelling skills, so I was wanting to spend more time reading some material in this space.  
+I've been managing more projects that have an associated Shiny app. Some apps have become large and require a robust framework to manage. As such, at work my team is reading through this book to learn how to implement the [`golem`](https://thinkr-open.github.io/golem/) package for Shiny app development.
 
-#### [Persepolis Rising (The Expanse book 7)](https://www.amazon.com/Persepolis-Rising-Expanse-James-Corey/dp/0316332852)
+#### [Tiamat's Wrath (The Expanse book 8)](https://www.amazon.com/Tiamats-Wrath-Expanse-Book-8-ebook/dp/B07BVNVWL6)
 
-This is a personal Sci-Fi read. I've found I haven't had much time for personal reading as of much lately. I want to finish this series, so I pick it up from time-to-time. 
+I'm continuing with this 8th book in the series. A great Sci-Fi read. I pick it up from time-to-time. I'm looking forward to finishing the series and seeing how this story ends.  
 
 ## A list of books I've read (ever since I've started keeping track)
 
@@ -58,6 +58,8 @@ This is a personal Sci-Fi read. I've found I haven't had much time for personal 
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [Persepolis Rising (The Expanse book 7)](https://www.amazon.com/Persepolis-Rising-Expanse-James-Corey/dp/0316332852) by James S.A. Corey
 
 #### [Babylon's Ashes (The Expanse book 6)](https://www.amazon.com/Babylons-Ashes-Expanse-James-Corey/dp/031633474X) by James S.A. Corey
 
