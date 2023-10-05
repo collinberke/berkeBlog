@@ -19,9 +19,14 @@ This summer I've been focusing on developing my [Python](https://www.python.org/
 
 I've heavily leaned into using [Neovim](https://neovim.io/) for most of my workflows. During this transition, I've come across some really useful tools, like [`telescope`](https://github.com/nvim-telescope/telescope.nvim), [`harpoon`](https://github.com/ThePrimeagen/harpoon), and [`vim-fugitive`](https://github.com/tpope/vim-fugitive). I'm trying to learn as much as I can, as I still don't know if my configuration is correct ... lol
 
-#### Project Conduit 
+#### Attended [Posit::conf(2023)](https://posit.co/conference/) Chicago
 
-I'm currently developing and maintaining a data pipeline project built using R and Python. Technology utilized includes Google Cloud resources, Docker, Apache Airflow, Google BigQuery, Google Analytics, Google Data Studio, and Shiny. The goal is to centralize and automate data processing, storage, and reporting.  
+I was fortunate to attend this year's Posit conference in Chicago, a five day conference with workshops and speaker sessions. I'm still sorting through all that I learned. Here are some of the highlights:
+
+* Attending the Introduction to Tidymodels workshop
+* Attending the Package Development Masterclass workshop
+* All the keynote speakers, especially J.D. Long's *It's Abstractions All the Way Down* talk.
+* Networking and meeting some folks from the [R4DS Online Learning Community](https://rfordatasci.com/) (in person).
 
 ## Books I'm reading
 
@@ -29,17 +34,19 @@ I'm currently developing and maintaining a data pipeline project built using R a
 
 Being that it is a Python summer, I picked up this book as a starter to learn and practice using Python for data analysis. Currently, I'm working through the data cleaning, preparation, and wrangling material. I'm hoping to get to the chapters on modelling towards the end of the summer. 
 
-#### [Engineering Production-Grade Shiny Apps](https://engineering-shiny.org/) by Colin Fay, Sébastien Rochette, Vincent Guyader, and Cervan Girard
+#### [Tidy Modeling with R](https://www.tmwr.org/) by Max Kuhn and Julia Silge
 
-I've been managing more projects that have an associated Shiny app. Some apps have become large and require a robust framework to manage. As such, at work my team is reading through this book to learn how to implement the [`golem`](https://thinkr-open.github.io/golem/) package for Shiny app development.
+While attending the [Posit::conf(2023)](https://posit.co/conference/), I participated in a [tidymodels](https://www.tidymodels.org/) workshop. As a result, I became more interested in how this framework and collection of packages could be applied to my own modeling and machine learning work. I'm specifically excited to learn more about the framework's feature engineering functionality and predictive modeling capabilities.
 
-#### [Tiamat's Wrath (The Expanse book 8)](https://www.amazon.com/Tiamats-Wrath-Expanse-Book-8-ebook/dp/B07BVNVWL6)
+#### [Leviathan Falls (The Expanse book 9)](https://www.amazon.com/Leviathan-Falls-Expanse-Book-9/dp/B0971RBRV8) by James S.A. Corey
 
-I'm continuing with this 8th book in the series. A great Sci-Fi read. I pick it up from time-to-time. I'm looking forward to finishing the series and seeing how this story ends.  
+I'm reading the final book in the series. It's been one of the best Sci-Fi series I've read. I'm excited for the epic conclusion of this story.  
 
 ## A list of books I've read (ever since I've started keeping track)
 
 ### Professional development reads
+
+#### [Engineering Production-Grade Shiny Apps](https://engineering-shiny.org/) by Colin Fay, Sébastien Rochette, Vincent Guyader, and Cervan Girard
 
 #### [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham. Check out past book club meeting recordings [here](https://www.youtube.com/playlist?list=PL3x6DOfs2NGi4I1DhjPufFNbqCry_xQLq).
 
@@ -58,6 +65,8 @@ I'm continuing with this 8th book in the series. A great Sci-Fi read. I pick it 
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [Tiamat's Wrath (The Expanse book 8)](https://www.amazon.com/Tiamats-Wrath-Expanse-Book-8-ebook/dp/B07BVNVWL6) by James S.A. Corey
 
 #### [Persepolis Rising (The Expanse book 7)](https://www.amazon.com/Persepolis-Rising-Expanse-James-Corey/dp/0316332852) by James S.A. Corey
 
