@@ -1,0 +1,167 @@
+---
+title: "Edit an older unpushed commit"
+author: "Collin K. Berke, Ph.D."
+date: "2023-10-14"
+draft: false 
+image: thumbnail.jpg
+description: "Use `git rebase` to edit previous commit messages"
+toc: true
+categories:
+  - git
+  - GitHub 
+---
+
+![Photo by [Yancy Min](https://unsplash.com/photos/842ofHC6MaI)](thumbnail-wide.jpg)
+
+Today I learned how to edit older unpushed commit messages using `git rebase`. 
+
+I've been attempting to be better about linking git commits to specific GitHub issues. Although I try to be disciplined, I forget to reference the issue in the commit message from time-to-time. Luckily, I researched and came upon a solution. The purpose of this post is to briefly document what I've learned.
+
+A quick note: I am not a Git Fu master. The approach I share here (which I learned from a [Stack Overflow post](https://stackoverflow.com/questions/1186535/how-do-i-modify-a-specific-commit)) worked for a small project not intended to be in production. In fact, there may be better approaches to solve this problem given your specific situation. I for sure want to avoid receiving angry messages where someone applied what is discussed, and it took down a critical, in production system. Thus, make sure you are aware of what these commands will do to your commit history before applying them.
+
+# The problem
+
+Let's take a look at a log from a practice repo I created. I'm using git's `--pretty=format` flag here to simplify the printed output for this post; a simple `git log` will also return the same information but in a more verbose way.
+
+```bash
+git log --pretty=format:"%h %s %n%b"
+```
+
+This returns the following log information. Printed to the console is a log containing the various commit's abbreviated SHA-1 values, subjects, and message bodies. 
+
+```txt
+31964b0 fix-found_bug
+- #1
+
+f8256d6 feat-you_get_the_point
+- #1
+
+b1b99e9 feat-another_awesome_new_feat
+
+5d9b87c feat-awesome_new_feature
+- #1
+
+ee8e97b Initial commit
+```
+
+Shoot! I forgot to tag the `b1b99e9` commit as being related to issue #1. How can I edit before I push?
+
+# The solution
+
+`git rebase` can be used here to edit the past commit message. Again, keep in mind these commits have not been pushed to the remote repository. 
+
+First, we need to target the commit we want to edit. `git rebase`, with the `--interactive` flag, and the abbreviated SHA-1 value of the commit to be edited is used to do this:
+
+```bash
+git rebase --interactive b1b99e9~
+```
+
+This command will open our system's default text editor. In it should be something like the following:
+
+```txt
+pick b1b99e9 feat-another_awesome_new_feat
+pick f8256d6 feat-you_get_the_point
+pick 31964b0 fix-found_bug
+
+# Rebase 5d9b87c..31964b0 onto 5d9b87c (3 commands)
+#
+# Commands:
+# p, pick <commit> = use commit
+# r, reword <commit> = use commit, but edit the commit message
+# e, edit <commit> = use commit, but stop for amending
+# s, squash <commit> = use commit, but meld into previous commit
+# f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+#                    commit's log message, unless -C is used, in which case
+#                    keep only this commit's message; -c is same as -C but
+#                    opens the editor
+# x, exec <command> = run command (the rest of the line) using shell
+# b, break = stop here (continue rebase later with 'git rebase --continue')
+# d, drop <commit> = remove commit
+# l, label <label> = label current HEAD with a name
+# t, reset <label> = reset HEAD to a label
+# m, merge [-C <commit> | -c <commit>] <label> [# <oneline>]
+#         create a merge commit using the original merge commit's
+#         message (or the oneline, if no original merge commit was
+#         specified); use -c <commit> to reword the commit message
+# u, update-ref <ref> = track a placeholder for the <ref> to be updated
+#                       to this position in the new commits. The <ref> is
+#                       updated at the end of the rebase
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+```
+
+You'll notice the instructions and different options (formatted as comments) are plentiful. I have yet to explore what all these operations can do (maybe a future post). But here, we are focused on editing a past commit message.
+
+The next step in the process was a little confusing. With a bit of reading of the Stack Overflow post and a little experimentation, I found out we need to manually change any `pick` to `edit` for any commit intended to be edited in the currently open file. Our file will look something like this:
+
+```txt
+edit b1b99e9 feat-another_awesome_new_feat
+pick f8256d6 feat-you_get_the_point
+pick 31964b0 fix-found_bug
+...
+```
+
+We save the file and close our editor. Once back in the terminal, we'll be on the commit targeted for edits. To make our edits, submit the following to the terminal:
+
+```bash
+git commit --amend
+```
+
+Once ran, the text editor will be opened to the commit message we targeted for edits. We'll then make our changes, save them, and exit the text editor.
+
+Now, we need to return to the previous HEAD commit. To do this, we run the following command in our terminal:
+
+```bash
+git rebase --continue
+```
+
+# Rewriting history
+
+Let's look at the log and view our changes. We can do that again by submitting the following to our terminal:
+
+```bash
+git log --pretty=format:"%h %s %n%b"
+```
+
+Below is what gets printed.
+
+```txt
+709c173 fix-found_bug
+- #1
+
+e0ed7ba feat-you_get_the_point
+- #1
+
+179be4a feat-another_awesome_new_feat
+- #1
+
+5d9b87c feat-awesome_new_feature
+- #1
+
+ee8e97b Initial commit
+```
+
+Success! All our commits are now associated with issue #1. However, take a moment to compare the SHA-1 values from our previous log with the current log. Notice anything different? The SHA-1 values for both our edited commit message and all its children have been modified. We have just re-written part of our commit history. 
+
+**Important point: You can break repos doing this if you're not careful.** This re-writing of history should only be applied in cases with unpushed commit messages and when you're not collaborating on a branch with other people. If you make edits to your history using this approach, you'll want to make sure to avoid using commands like `git push --force`. See the original [Stack Overflow post](https://stackoverflow.com/questions/1186535/how-do-i-modify-a-specific-commit) for more detail.
+
+# Wrap-up
+
+So there you have it. A little Git Fu magic to help edit past, unpushed commit messages. 
+
+If you know a better approach or if my Git Fu is way off, let me know. I have far from mastered git. 
+
+Happy rebasing!
+
+# Resources to learn more
+
+* [How do I modify a specific commit? Stack Overflow post](https://stackoverflow.com/questions/1186535/how-do-i-modify-a-specific-commit) submitted by [Sam Liao](https://stackoverflow.com/users/75501/sam-liao) and top answer from [ZelluX](https://stackoverflow.com/users/111896/zellux)
+
+* [Git Rebase Interactive :: A Practical Example YouTube tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) from [EdgeCoders](https://www.youtube.com/@EdgeCoders)
+
+* [7.6 Git Tools - Rewriting History](https://git-scm.herokuapp.com/book/en/v2/Git-Tools-Rewriting-History) from the git documentation
