@@ -8,6 +8,8 @@ listing:
 format:
   html:
     page-layout: article
+citation: false
+license: ""
 ---
 
 Here you'll find posts related to things I have learned recently.

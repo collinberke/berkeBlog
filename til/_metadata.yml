@@ -1,0 +1,14 @@
+# Enable CC licence appendix
+license: "CC BY"
+
+citation:
+  type: post-weblog 
+  author:
+    - name:
+        given: Collin
+        family: Berke
+        dropping-particle: K 
+
+format:
+  html:
+    code-overflow: scroll 
