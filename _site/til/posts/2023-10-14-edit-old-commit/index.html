@@ -276,15 +276,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a># However, if you remove everything, the rebase will be aborted.</span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>#</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You’ll notice the instructions and different options (formatted as comments) are plentiful. I have yet to explore what all these operations can do (maybe a future post). But here, we are focused on editing a past commit message.</p>
-<p>The next step in the process was a little confusing. With a bit of reading of the Stack Overflow post and a little experimenation, I found out we need to manually change any <code>pick</code> to <code>edit</code> for any commit intended to be edited in the currently open file. Our file will look something like this:</p>
+<p>The next step in the process was a little confusing. With a bit of reading of the Stack Overflow post and a little experimentation, I found out we need to manually change any <code>pick</code> to <code>edit</code> for any commit intended to be edited in the currently open file. Our file will look something like this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>edit b1b99e9 feat-another_awesome_new_feat</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pick f8256d6 feat-you_get_the_point</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>pick 31964b0 fix-found_bug</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We save the file and close our editor. Once back in the terminal, we’ll be on the commit targetted for edits. To make our edits, submit the following to the terminal:</p>
+<p>We save the file and close our editor. Once back in the terminal, we’ll be on the commit targeted for edits. To make our edits, submit the following to the terminal:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">--amend</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once ran, the text editor will be opened to the commit message we targetted for edits. We’ll then make our changes, save them, and exit the text editor.</p>
-<p>Now, we need to return to the pervious HEAD commit. To do this, we run the following command in our terminal:</p>
+<p>Once ran, the text editor will be opened to the commit message we targeted for edits. We’ll then make our changes, save them, and exit the text editor.</p>
+<p>Now, we need to return to the previous HEAD commit. To do this, we run the following command in our terminal:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase <span class="at">--continue</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="rewriting-history" class="level1">
@@ -317,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="resources-to-learn-more" class="level1">
 <h1>Resources to learn more</h1>
 <ul>
-<li><p><a href="https://stackoverflow.com/questions/1186535/how-do-i-modify-a-specific-commit">How do I modify a specific commit? Stack Overflow post</a> submited by <a href="https://stackoverflow.com/users/75501/sam-liao">Sam Liao</a> and top answer from <a href="https://stackoverflow.com/users/111896/zellux">ZelluX</a></p></li>
+<li><p><a href="https://stackoverflow.com/questions/1186535/how-do-i-modify-a-specific-commit">How do I modify a specific commit? Stack Overflow post</a> submitted by <a href="https://stackoverflow.com/users/75501/sam-liao">Sam Liao</a> and top answer from <a href="https://stackoverflow.com/users/111896/zellux">ZelluX</a></p></li>
 <li><p><a href="https://www.youtube.com/watch?v=tukOm3Afd8s">Git Rebase Interactive :: A Practical Example YouTube tutorial</a> from <a href="https://www.youtube.com/@EdgeCoders">EdgeCoders</a></p></li>
 <li><p><a href="https://git-scm.herokuapp.com/book/en/v2/Git-Tools-Rewriting-History">7.6 Git Tools - Rewriting History</a> from the git documentation</p></li>
 </ul>
@@ -325,7 +325,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2023,
+  author = {Berke, Collin K},
+  title = {Edit an Older Unpushed Commit},
+  date = {2023-10-14},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2023. <span>“Edit an Older Unpushed Commit.”</span>
+October 14, 2023.
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
