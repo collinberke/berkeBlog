@@ -38,9 +38,9 @@ Being that it is a Python summer, I picked up this book as a starter to learn an
 
 While attending the [Posit::conf(2023)](https://posit.co/conference/), I participated in a [tidymodels](https://www.tidymodels.org/) workshop. As a result, I became more interested in how this framework and collection of packages could be applied to my own modeling and machine learning work. I'm specifically excited to learn more about the framework's feature engineering functionality and predictive modeling capabilities.
 
-#### [Leviathan Falls (The Expanse book 9)](https://www.amazon.com/Leviathan-Falls-Expanse-Book-9/dp/B0971RBRV8) by James S.A. Corey
+#### [I, Robot](https://www.amazon.com/I-Robot-Book-1-ebook/dp/B000FC1PW0/) by Isaac Asimov
 
-I'm reading the final book in the series. It's been one of the best Sci-Fi series I've read. I'm excited for the epic conclusion of this story.  
+I've wanted to read some Isaac Asimov for some time now. Various online posts mention I, Robot is a good place to start. I've also wanted to devote more time to another Sci-Fi read.
 
 ## A list of books I've read (ever since I've started keeping track)
 
@@ -65,6 +65,8 @@ I'm reading the final book in the series. It's been one of the best Sci-Fi serie
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [Leviathan Falls (The Expanse book 9)](https://www.amazon.com/Leviathan-Falls-Expanse-Book-9/dp/B0971RBRV8) by James S.A. Corey
 
 #### [Tiamat's Wrath (The Expanse book 8)](https://www.amazon.com/Tiamats-Wrath-Expanse-Book-8-ebook/dp/B07BVNVWL6) by James S.A. Corey
 
