@@ -14,6 +14,7 @@
   {
     "listing": "/til/index.html",
     "items": [
+      "/til/posts/2023-10-24-temp-directories/index.html",
       "/til/posts/2023-10-22-correlations-with-corrr/index.html",
       "/til/posts/2023-10-14-edit-old-commit/index.html",
       "/til/posts/2023-03-14-vim-substitution/index.html"
