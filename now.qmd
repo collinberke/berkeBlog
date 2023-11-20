@@ -38,9 +38,9 @@ Being that it is a Python summer, I picked up this book as a starter to learn an
 
 While attending the [Posit::conf(2023)](https://posit.co/conference/), I participated in a [tidymodels](https://www.tidymodels.org/) workshop. As a result, I became more interested in how this framework and collection of packages could be applied to my own modeling and machine learning work. I'm specifically excited to learn more about the framework's feature engineering functionality and predictive modeling capabilities.
 
-#### [I, Robot](https://www.amazon.com/I-Robot-Book-1-ebook/dp/B000FC1PW0/) by Isaac Asimov
+#### [The Caves of Steel](https://www.amazon.com/Caves-Steel-Daneel-Olivaw-Book/dp/0553293400) by Max Kuhn and Julia Silge
 
-I've wanted to read some Isaac Asimov for some time now. Various online posts mention I, Robot is a good place to start. I've also wanted to devote more time to another Sci-Fi read.
+I'm continuing to read more of Isaac Asimov's work. It started with I, Robot. Now I've begun reading the first book in his Robot Series. I've recognized I really enjoy Science Fiction.
 
 ## A list of books I've read (ever since I've started keeping track)
 
@@ -65,6 +65,8 @@ I've wanted to read some Isaac Asimov for some time now. Various online posts me
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [I, Robot](https://www.amazon.com/I-Robot-Book-1-ebook/dp/B000FC1PW0/) by Isaac Asimov
 
 #### [Leviathan Falls (The Expanse book 9)](https://www.amazon.com/Leviathan-Falls-Expanse-Book-9/dp/B0971RBRV8) by James S.A. Corey
 
