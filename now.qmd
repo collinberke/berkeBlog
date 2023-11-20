@@ -38,7 +38,7 @@ Being that it is a Python summer, I picked up this book as a starter to learn an
 
 While attending the [Posit::conf(2023)](https://posit.co/conference/), I participated in a [tidymodels](https://www.tidymodels.org/) workshop. As a result, I became more interested in how this framework and collection of packages could be applied to my own modeling and machine learning work. I'm specifically excited to learn more about the framework's feature engineering functionality and predictive modeling capabilities.
 
-#### [The Caves of Steel](https://www.amazon.com/Caves-Steel-Daneel-Olivaw-Book/dp/0553293400) by Max Kuhn and Julia Silge
+#### [The Caves of Steel](https://www.amazon.com/Caves-Steel-Daneel-Olivaw-Book/dp/0553293400) by Isaac Asimov 
 
 I'm continuing to read more of Isaac Asimov's work. It started with I, Robot. Now I've begun reading the first book in his Robot Series. I've recognized I really enjoy Science Fiction.
 
