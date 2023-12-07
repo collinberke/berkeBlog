@@ -1,0 +1,735 @@
+---
+title: "Messing around with tidymodels: Learning how to fit a binary classification model using NCAA Big Ten women's volleyball data"
+author: "Collin K. Berke, Ph.D."
+date: "2023-12-07"
+description: "Using tidymodels to predict wins and losses for volleyball matches"
+image: thumbnail.jpeg
+toc: true
+categories:
+  - tutorial
+  - tidymodels
+  - classification
+  - decision tree
+  - logistic regression
+---
+
+![Image generated using the prompt "volleyball analytics in a pop art style" with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
+
+The initial rounds of the NCAA women's volleyball [tournament](https://www.ncaa.com/news/volleyball-women/article/2023-11-18/2023-ncaa-volleyball-tournament-schedule-dates-di-womens-championship) have just begun. As such, I felt it was a good opportunity to understand more about the game while learning to specify models using [Big Ten women's volleyball](https://bigten.org/sports/wvball) match data and the [tidymodels](https://www.tidymodels.org/) framework. This post sought to specify a predictive model of wins and loses. It then used this model to explore and predict match outcomes of the #1 team going into the tournament, the [Nebraska Cornhuskers](https://huskers.com/sports/volleyball).
+
+This post overviews the use of the tidymodels framework to fit and train predictive models. Specifically, it aims to be an introductory tutorial on the use of [tidymodels](https://www.tidymodels.org/) to split data into test and training sets, specify a model, and assess model fit using both the training and testing data. To do this, I explored the fit of two binary classification models to NCAA Big Ten women's volleyball match data, with the goal to predict wins and loses.
+
+Being a high-level overview, this post will not cover topics like feature engineering, resampling techniques, hyperparameter tuning, or ensemble methods. Most assuredly, additional modeling procedures would lead to improved model predictions. As such, I plan to write future posts overviewing these topics.
+
+Let's attach the libraries we'll need for the session.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidymodels)
+library(corrr)
+library(skimr)
+library(here)
+library(glue)
+library(rpart.plot)
+library(patchwork)
+tidymodels_prefer()
+```
+
+# Establish a modeling goal
+
+First things first, we need to establish a modeling goal. Given the scope of this post, I have the following goal:
+
+Create a simple binary classification model to predict wins and loses using NCAA Big Ten women's volleyball match data.
+
+::: {.callout-note}
+There might be a slight issue of data leakage in this example. [In a previous post](https://www.collinberke.com/til/posts/2023-10-22-correlations-with-corrr/), I explored correlations using similar data. Since this post aims to be a tutorial, I'm simply making note of it here, and I will not address further. Indeed, it is considered best practice to perform exploratory analysis only on the test set rather than all the data when fitting predictive models.
+:::
+
+```{r get-data, eval=FALSE, include=FALSE}
+library(dataBigTenVolleyball)
+
+write_csv(
+  data_vb_game_by_game, 
+  glue(
+    here("blog/posts/2023-12-07-tidymodels-bigten-volleyball/"), 
+    "{Sys.Date()}_bigten_vb_data.csv")
+  )
+```
+
+We'll start by importing our data using `readr::read_csv()`.
+
+```{r import-data}
+data_vball <- 
+  read_csv(
+    glue(
+      here("blog/posts/2023-12-07-tidymodels-bigten-volleyball/"),
+      "2023-12-04_bigten_vb_data.csv"
+    )
+  ) |>
+  select(-ms)
+```
+
+# Data background
+
+The data represents up to date match-by-match offensive and defensive statistics for NCAA Big Ten women's volleyball teams. The data includes matches from the 2021, 2022, and 2023 seasons, where the earliest recorded match is `r min(data_vball$date)`. The data is updated up to `r max(data_vball$date)`. To see the variables within the data, we can run the `dplyr::glimpse()` function.
+
+```{r wrngl-glimpse-data}
+glimpse(data_vball)
+```
+
+Most of the variable names should be informative, aside from `s`. This variable represents the total number of sets played within a match. If you're unfamiliar with the sport, you might find the following [list](https://en.wikipedia.org/wiki/Volleyball_jargon) helpful.
+
+# Wrangle our data
+
+Before fitting any models, a few data wrangling steps will need to take place. First, `NA` values need to be removed. `NA`s are present for two reasons:
+
+1. Cancelled matches due to the COVID pandemic in 2021.
+2. The pre-wrangled data contains matches that have not taken place in the 2023 season.
+
+Second, the `w_l` column (i.e., wins and losses) needs to be mutated into a factor with two levels (win and loss). It's generally best practice to mutate categorical variables into factors when using the tidymodels framework.
+
+```{r wrng-data}
+data_vball <- data_vball |>
+  drop_na(w_l) |>
+  mutate(w_l = factor(w_l, levels = c("loss", "win")))
+```
+
+# Check for any class imbalances
+
+Let's check for the presence of any class imbalances. Take note, this is the only exploratory analysis we'll do before splitting our data into a training and testing set. Additional exploratory analysis will be done on the training set. This is done to prevent [data leakage](https://en.wikipedia.org/wiki/Leakage_(machine_learning)) between the different modeling steps.
+
+```{r vis-class-imbalances}
+ggplot(data_vball, aes(x = w_l)) +
+  geom_bar(fill = "#191970", alpha = 0.8) +
+  theme_minimal() +
+  labs(x = "") +
+  theme(axis.text = element_text(size = 14))
+```
+
+```{r summ-count-w_l, include=FALSE}
+count_wl <- data_vball |> count(w_l)
+
+# Pull values for inline code
+pull(filter(count_wl, w_l == "win"), n)
+pull(filter(count_wl, w_l == "loss"), n)
+```
+
+The bar chart indicates the presence of a slight imbalance between wins and losses (win = `r pull(filter(count_wl, w_l == "win"), n)`; loss = `r pull(filter(count_wl, w_l == "loss"), n)`). During the initial split of our data, we'll employ a stratified sampling technique to account for this imbalance. This is done to ensure our splits avoid major class imbalances within the training and testing sets. 
+
+# Determine the data budget 
+
+At this point, we need to split our data into testing and training data sets. [`rsample`'s](https://rsample.tidymodels.org/index.html), a tidymodels' package, `initial_split()` function makes this easy. While using this function, we'll pass along our data object, `data_vball`, and values to two arguments: `prop` and `strata`. 
+
+The `prop` argument specifies the proportion of data to be retained in the training and testing data sets. It defaults to `3/4` or 75%. For our specific modeling case, we'll specify we want to devote 80% of our data to the training set, with the remaining 20% going to the testing set. Given the data contains 1,555 rows, 1,243 rows will be allocated to the training set while the remaining 312 rows will be held out for the test set. Since class imbalances were identified, a stratified sampling technique will be used. To do this, we pass the name of the class variable to the `strata` argument. For reproducibility, `set.seed(2023)` is set before the split is specified.
+
+```{r split-data}
+set.seed(2023)
+data_vball_split <- initial_split(data_vball, prop = .80, strata = w_l)
+```
+
+Let's take a quick look the `data_vball_split` object.
+
+```{r view-data-split}
+data_vball_split
+```
+
+You'll notice this doesn't print out any data. Rather, information about the split is printed to the console. `initial_split()` only creates an object with the information on how the split is to be performed. To perform the split, we need to use `rsample`'s `training()` and `testing()` functions. Simply, we do the following:
+
+```{r data-training-testing}
+data_vball_train <- training(data_vball_split)
+data_vball_test <- testing(data_vball_split)
+```
+
+When these two objects are printed, you'll see two tibbles. The first tibble is the training data set. The second tibble is the testing data set. 
+
+```{r data-vball-train}
+data_vball_train
+```
+
+```{r data-vball-test}
+data_vball_test
+```
+
+Each of these data sets will be used at specific points during the modeling procedure. The training will be used for model specification and assessment. The testing will be used to assess the final model fit. But first, let's do some exploratory data analysis on our training data.
+
+# Perform exploratory data analysis
+
+## Feature exploration
+
+Given the number of features in the data, we can easily obtain summary information using [`skimr::skim()`](https://docs.ropensci.org/skimr/index.html).
+
+```{r exp-skim-data}
+skim(data_vball_train)
+```
+
+A few things to note from the initial exploratory data analysis:
+
+* Team errors, attacks, and digs distribution exhibits a slight right skew.
+* Aces, service errors, block solos, opponent aces, opponent errors, opponent block solos, and opponent block assists exhibit a greater degree of skewness to the right.
+
+An argument could be made for further exploratory analysis of these variables, followed by some feature engineering. Although this additional work may improve our final predictive model, this post is a general overview of specifying, fitting, and assessing models using the tidymodels framework. I will thus not address these topics further. However, I intend to write a future post focusing on feature engineering using tidymodels' [`recipes` package](https://recipes.tidymodels.org/). 
+
+## Examine correlations among features
+
+The next step in the exploratory analysis is to identify the presence of any correlations among features. This can [easily be done](https://www.collinberke.com/til/posts/2023-10-22-correlations-with-corrr/) using functions from the [`corrr`](https://corrr.tidymodels.org/index.html) package. Specifically, the `correlate()` function calculates correlations among the various numeric features within our data. The output from the `correlate()` function is then passed to the `autoplot()` method, which outputs a visualization of the correlations values.
+
+```{r vis-var-correlations}
+data_vball_train |> 
+  correlate() |>
+  corrr::focus(-set_wins, -set_loss, -s, mirror = TRUE) |>
+  autoplot(triangular = "lower")
+```
+
+The plot indicates correlations of varying degrees among features. Feature engineering and feature reduction approaches could be used to address these correlations. However, these approaches will not be explored in this post.
+
+## Specify our models
+
+To keep things simple, I'll explore the fit of two models to the training data. However, tidymodels has interfaces to fit a wide-range of [models](https://www.tidymodels.org/find/parsnip/), many of which are implemented via the `parsnip` package.
+
+The models I intend to fit to our data include:
+
+1. A logistic regression using `glm`. 
+2. A decision tree using `rpart`. 
+
+When specifying a model with tidymodels, we do [three things](https://www.tmwr.org/models):
+
+1. Use [`parsnip`](https://parsnip.tidymodels.org/) functions to specify the mathematical structure of the model we intend to use (e.g., `logistic_reg()`; `decision_tree()`). 
+
+2. Specify the engine we want to use to fit our model. This is done using the `set_engine()` function.
+
+3. When required, we declare the mode of the model (i.e., is it regression or classification). Some models can perform both, so we need to explicitly set the mode with the `set_mode()` function.
+
+Specifying the two models in this post looks like this:
+
+```{r model-specs}
+# Logistic regression specification
+log_reg_spec <- 
+  logistic_reg() |>
+  set_engine("glm")
+
+# Decision tree specification
+dt_spec <- 
+  decision_tree() |>
+  set_engine("rpart") |>
+  set_mode("classification")
+```
+
+Let's take a moment to breakdown what's going on here. The calls to `logistic_regression()` and `decision_tree()` establishes the mathematical structure we want to use to fit our model to the data. `set_engine("glm")` and `set_engine("rpart")` specifies the model's engine, i.e., the software we want to use to fit our model. For our decision tree, since it can perform both regression and classification, we specify it's mode using `set_mode("classification")`. You'll notice our logistic regression specification excludes this function. This is because logistic regression is [only used to perform classification](https://parsnip.tidymodels.org/reference/details_logistic_reg_glm.html#details), thus we don't need to set its mode.
+
+If you're curious or want more information on what `parsnip` is doing in the background, you can pipe the model specification object to the `translate()` function. Here's what the output looks like for our decision tree specification:
+
+```{r demo-translate}
+dt_spec |> translate()
+```
+
+If you're interested in viewing the types of engines available for your model, you can use `parsnip`'s `show_engines()` function. Here you'll need to pass a string character of the model function you want to explore as an argument. This is what this looks like for `logistic_reg()`:
+
+```{r show-engines}
+show_engines("logistic_reg")
+```
+
+## Create workflows
+
+From here, we'll create workflow objects using tidymodel's [`workflow`](https://workflows.tidymodels.org/) package. Workflow objects make it easier to work with different modeling objects by combining  objects into one object. Although this isn't too important for our current modeling task, the use of workflows will be beneficial later when we attempt to improve upon our models, like I'll do in future posts. 
+
+In this case, our model specification and model formula are combined into a workflow object. Here I just choose a few features to include within the model. For this post, I mainly focused on using team oriented features within our model to predict wins and losses. Indeed, others could have been included, as the data also contained opponent oriented statistics. To keep things simple, however, I chose to only include the following features within our model:
+
+* Hitting percentage
+* Errors
+* Block solos
+* Block assists
+* Digs
+
+The `workflow()` function sets up the beginning of our workflow object. We'll add the model object with `add_model()`, followed by the formula object using `add_formula()`.
+
+```{r create-workflows}
+log_reg_wflow <-
+  workflow() |>
+  add_model(log_reg_spec) |>
+  add_formula(
+    w_l ~ hit_pct + errors + block_solos + block_assists + digs
+  )
+
+dt_wflow <- 
+  workflow() |>
+  add_model(dt_spec) |>
+  add_formula(
+    w_l ~ hit_pct + errors + block_solos + block_assists + digs
+  )
+```
+
+This syntax can be a bit long, so there's a shortcut. We can pass both the model formula and the model specification as arguments to the `workflow()` function instead of using a piped chain of functions.
+
+```{r simplified-workflows}
+log_reg_wflow <- 
+  workflow(
+    w_l ~ hit_pct + errors + block_solos + block_assists + digs,
+    log_reg_spec
+  )
+
+dt_wflow <-
+  workflow(
+    w_l ~ hit_pct + errors + block_solos + block_assists + digs,
+    dt_spec
+  )
+```
+
+## Fit our models
+
+Now with our models specified, we can go about fitting our model to the training data using the `fit()` method. We do the following to fit both models to the training data:
+
+```{r fit-models-train}
+log_reg_fit <- log_reg_wflow |> fit(data = data_vball_train)
+
+dt_fit <- dt_wflow |> fit(data = data_vball_train)
+```
+
+Let's take a look at the `log_reg_fit` and `dt_fit` fit objects.
+
+```{r print-log-reg-fit}
+log_reg_fit
+```
+
+```{r print-dt-fit}
+dt_fit
+```
+
+When the fit objects are called, tidymodels prints information about our fitted models to the console. First, we get notified this object is a trained workflow. Second, preprocessing information is included. Since we only set a model function during preprocessing, we only see the model formula printed in this section. Lastly, tidymodels outputs model specific information and summary information about the model fit.
+
+### Explore the fit
+
+Now that we have the fit object, we can obtain more information about the fit using the `extract_fit_engine()` function.
+
+```{r extract-fit-engine-log-reg}
+log_reg_fit |> extract_fit_engine()
+```
+
+```{r extract-fit-engine-dt}
+dt_fit |> extract_fit_engine() 
+```
+
+The output when passing the fit object to the `extract_fit_engine()` is similar to what was printed when we called the fit object alone. However, the `extract_*` family of workflow functions are great for extracting elements of a workflow. According to the docs (`?extract_fit_engine`), this family of functions are helpful when accessing elements within the fit object. This is especially helpful when needing to pass along elements of the fit object to generics like `print()`, `summary()`, and `plot()`.
+
+```{r extract-plot-elements, eval=FALSE}
+# Not evaluated to conserve space, but I encourage
+# you to run it on your own
+log_reg_fit |> extract_fit_engine() |> plot()
+```
+
+Although `extract_*` functions afford convenience, the docs warn to avoid situations where you invoke a `predict()` method on the extracted object. Specifically, the docs state:
+
+> There may be preprocessing operations that `workflows` has executed on the data prior to giving it to the model. Bypassing these can lead to errors or silently generating incorrect predictions.
+
+In other words,
+
+```{r extract-dont-do, eval=FALSE}
+# BAD, NO NO
+log_reg_fit |> extract_fit_engine() |> predict(new_data)
+
+# Good
+log_reg_fit |> predict(new_data)
+```
+
+The fit object can also be passed to other generics, like `broom::tidy()`. The general `tidy()` method, when passed a fit object, is useful to view and use the coefficients table from the logistic regression model.
+
+```{r tidy-log-reg}
+tidy(log_reg_fit)
+```
+
+Beyond summarizing the model with the coefficients table, we can also create some plots from the model's predictions from the training data. Here we need to use the `augment()` function. Later, we'll explore this function in more depth when we calculate assessment metrics. For now, I'm using it to obtain the prediction estimates for winning. 
+
+```{r predictions-vball-train}
+data_vball_aug <- augment(log_reg_fit, data_vball_train)
+```
+
+With this data, we can visualize these prediction estimates with the various features used within the model. Since we're creating several visualizations using similar code, I created a `plot_log_mdl()` function to simplify the plotting. Lastly, I used the [`patchwork` package](https://patchwork.data-imaginist.com/) to combine the plots into one visualization. Below is the code to create these visualizations.
+
+```{r func-plot-log-mdl}
+plot_log_mdl <- function(data, x_var, y_var, color) {
+  ggplot() +
+    geom_point(
+      data = data_vball_aug, 
+      aes(x = {{ x_var }}, y = {{ y_var }}, color = {{ color }}),
+      alpha = .4
+    ) +
+    geom_smooth(
+      data = data_vball_aug,
+      aes(x = {{ x_var }}, y = {{ y_var }}),
+      method = "glm", 
+      method.args = list(family = "binomial"),
+      se = FALSE
+    ) +
+    labs(color = "") +
+    theme_minimal()
+}
+```
+
+```{r plot-mdls, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 6}
+plot_hit_pct <- 
+  plot_log_mdl(data_vball_aug, hit_pct, .pred_win, w_l)
+
+plot_errors <- 
+  plot_log_mdl(data_vball_aug, errors, .pred_win, w_l)
+
+plot_block_solos <- 
+  plot_log_mdl(data_vball_aug, block_solos, .pred_win, w_l) +
+  scale_x_continuous(labels = label_number(accuracy = 1))	
+
+plot_block_assists <- 
+  plot_log_mdl(data_vball_aug, block_assists, .pred_win, w_l)
+
+plot_digs <-
+  plot_log_mdl(data_vball_aug, digs, .pred_win, w_l)
+
+wrap_plots(
+  plot_hit_pct, 
+  plot_errors,
+  plot_block_solos, 
+  plot_block_assists,
+  plot_digs, 
+  guides = "collect"
+) & theme(legend.position = "bottom")
+```
+
+To summarise our decision tree, we need to use the [`rpart.plot`](https://cran.r-project.org/web/packages/rpart.plot/) package to create a plot of the tree. The code to do this looks like this:
+
+```{r plot-decision-tree}
+dt_fit |>
+  extract_fit_engine() |>
+  rpart.plot(roundint = FALSE)
+```
+
+Before transitioning to model assessment, let's explore the predictions for both models using the `augment()` function again. According to the docs,
+
+> Augment accepts a model object and a dataset and adds information about each observation in the dataset.
+
+`augment()` produces new columns from the original data set to which makes it easy to examine model predictions. For instance, we can create a data set with the `.pred_class`, `.pred_win`, and `.pred_loss` columns. `augment()` also makes a guarantee that a tibble with the same number of rows as the passed data set will be returned, and all new column names will be prefixed with a `.`. 
+
+Here we'll pipe the tibble returned from `augment()` to the `relocate()` function. This will make it easier to view the variables we are interested in further examining by moving these columns to the left of the tibble.
+
+```{r log-reg-explore-predictions}
+augment(log_reg_fit, data_vball_train) |>
+  relocate(w_l, .pred_class, .pred_win, .pred_loss)
+```
+
+```{r dt-explore-predictions}
+augment(dt_fit, data_vball_train) |>
+  relocate(w_l, .pred_class, .pred_win, .pred_loss)
+```
+
+## Model assessment
+
+Since we're fitting a binary classification model, we will use several measurements to assess model performance. Many of these measurements can be calculated using functions from the [`yardstick`](https://yardstick.tidymodels.org/) package. To start, we can calculate several measurements using the hard class predictions: a confusion matrix; accuracy; specificity; ROC curves; etc.
+
+### Create a confusion matrix
+
+First, let's start by creating a confusion matrix. A confusion matrix is simply a cross-tabulation of the observed and predicted classes, and it summarizes how many times the model predicted a class correctly vs. how many times it predicted it incorrectly. [The calculation of the table is pretty straight forward](https://www.youtube.com/watch?v=Kdsp6soqA7o) for a binary-classification model. The `yardstick` package makes it easy to calculate this table with the `conf_mat()` function. 
+
+`conf_mat()`'s two main arguments are `truth` and `estimate`. `truth` pertains to the column containing the true class predictions (i.e., what was actually recorded). The `estimate` is the name of the column containing the discrete class prediction (i.e., the prediction made by the model).
+
+```{r log-reg-conf-matrix}
+augment(log_reg_fit, data_vball_train) |>
+  conf_mat(truth = w_l, estimate = .pred_class)
+```
+
+```{r dt-conf-matrix}
+augment(dt_fit, data_vball_train) |>
+  conf_mat(truth = w_l, estimate = .pred_class)
+```
+
+The `conf_mat()` also has an `autoplot()` method. This makes it easier to visualize the confusion matrix, either as a `mosaic` plot or a `heatmap`.
+
+```{r vis-log-reg-conf-matrix}
+augment(log_reg_fit, data_vball_train) |>
+  conf_mat(truth = w_l, estimate = .pred_class) |>
+  autoplot(type = "mosaic") 
+```
+
+```{r vis-dt-conf-matrix}
+augment(dt_fit, data_vball_train) |>
+  conf_mat(truth = w_l, estimate = .pred_class) |>
+  autoplot(type = "heatmap")
+```
+
+A few things to note from the confusion matrices created from our two models:
+
+* The logistic regression does well predicting wins and losses, though it slightly over predicts wins in cases of losses and losses in cases of wins. However, prediction accuracy is pretty balanced.
+
+* The decision tree does better reducing cases where it predicts a loss when a win occurred, but it predicted more wins when a loss took place. Thus, the decision tree model seems fairly optimistic when it comes to predicting wins when a loss occurred.
+
+After examining the confusion matrix, we can move forward with calculating some quantitative summary metrics from the results of the confusion matrix, which we can use to better compare the fit between the two models.
+
+### Measure model accuracy
+
+One way to summarize the confusion matrix is to calculate the proportion of data that is predicted correctly, also known as accuracy. `yardstick`'s `accuracy()` function simplifies this calculation for us. Again, we just pipe our `augment()` function to the `accuracy()` function, and we specify which column is the `truth` and which is the `estimate` class prediction from the model. 
+
+```{r accuracy-log-reg}
+augment(log_reg_fit, data_vball_train) |>
+  accuracy(truth = w_l, estimate = .pred_class)
+```
+
+```{r accuracy-dt}
+augment(dt_fit, data_vball_train) |>
+  accuracy(truth = w_l, estimate = .pred_class)
+```
+
+When it comes to accuracy, both models are fairly similar in their ability to predict cases correctly. The logistic regression's accuracy is slightly better, though.
+
+### Measure model sensitivity and specificity
+
+Sensitivity and specificity are additional assessment metrics we can calculate. Sensitivity in this case is the percentage of matches that were wins that were correctly identified by the model. Specificity is the percentage of matches that were losses that were correctly identified by the model. The @StatQuest YouTube channel has a good [video](https://www.youtube.com/watch?v=vP06aMoz4v8) breaking down how these metrics are calculated.
+
+`yardstick` makes it easy to calculate these metrics with the `sensitivity()` and `specificity()` functions. As we did with calculating accuracy, we pipe the output of the `augment()` function to the `sensitivity()` function. We also specify the column that represents the true values to the `truth` argument, then pass the class predictions made by the model to the `estimate` argument. This looks like the following for both our logistic regression and decision tree models:
+
+```{r sensitivity-log-reg}
+augment(log_reg_fit, data_vball_train) |>
+  sensitivity(truth = w_l, estimate = .pred_class)
+```
+
+```{r specificity-log-reg}
+augment(log_reg_fit, data_vball_train) |>
+  specificity(truth = w_l, estimate = .pred_class)
+```
+
+```{r sensitivity-dt}
+augment(dt_fit, data_vball_train) |>
+  sensitivity(truth = w_l, estimate = .pred_class)
+```
+
+```{r specificity-dt}
+augment(dt_fit, data_vball_train) |>
+  specificity(truth = w_l, estimate = .pred_class)
+```
+
+A few things to note:
+
+* The logistic regression (sensitivity = 80.8%) was much better at predicting matches that were wins than the decision tree model (sensitivity = 75.8%).
+
+* The decision tree was much better at identifying losses, though (90.9% vs. 87.3%).
+
+#### Simplify metric calculations with `metric_set()`
+
+Although the above code provided the output we were looking for, we can simplify our code by using `yardstick`'s `metric_set()` function. Inside `metric_set()` we specify the different metrics we want to calculate for each model. 
+
+```{r metrics-set}
+vball_mdl_metrics <- 
+  metric_set(accuracy, sensitivity, specificity)
+```
+
+Then we do as before, pipe the output from `augment()` to our metric set object `vball_mdl_metrics`, and specify the column that represents the truth and the column that represents the model's class prediction. Here's what this looks like for both our models:
+
+```{r metrics-set-log-reg}
+augment(log_reg_fit, data_vball_train) |>
+  vball_mdl_metrics(truth = w_l, estimate = .pred_class)
+```
+
+```{r metrics-set-dt}
+augment(dt_fit, data_vball_train) |>
+  vball_mdl_metrics(truth = w_l, estimate = .pred_class)
+```
+
+Now it's much easier to make comparisons, and we write less code for the same amount of information. A big win!
+
+### ROC curves and AUC estimates
+
+[Receiver operating characteristic (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) curves visually summarise classification model specificity and sensitivity using different threshold values. From this curve, an area under the curve (AUC) metric can be calculated. The AUC is a useful summary metric and can be used to compare the fit of two or more models. Again, @StatQuest has a pretty good [video](https://www.youtube.com/watch?v=4jRBRDbJemM) explaining the fundamentals of ROC curves and AUC estimates.
+
+Being a useful way to summarise model performance, the `yardstick` package makes several functions available to calculate both the ROC curve and AUC metric. An `autoplot()` method is also available to easily plot the ROC curve for us. 
+
+Let's take a look at how this is done with our logistic regression model. Here's the code:
+
+```{r roc-log-reg}
+augment(log_reg_fit, new_data = data_vball_train) |>
+  roc_curve(truth = w_l, .pred_loss)
+```
+
+```{r auc-log-reg}
+augment(log_reg_fit, new_data = data_vball_train) |>
+  roc_auc(truth = w_l, .pred_loss)
+```
+
+```{r vis-roc-log-reg}
+augment(log_reg_fit, new_data = data_vball_train) |>
+  roc_curve(truth = w_l, .pred_loss) |>
+  autoplot()
+```
+
+You'll likely notice the syntax is pretty intuitive. You'll also notice the code is similar to our other model performance metric calculations. First we use `augment()` to create the data we need. Second, we pipe the output of the `augment()` function to either the `roc_curve()` or `roc_auc()` function. The `roc_curve()` function calculates the ROC curve values and returns a tibble, which we will later pipe to the `autoplot()` method. The `roc_auc()` function calculates the area under the curve metric.
+
+Since we're comparing two models, we perform these steps again for the decision tree model.
+
+```{r roc-curve-dt}
+augment(dt_fit, new_data = data_vball_train) |>
+  roc_curve(truth = w_l, .pred_loss)
+```
+
+```{r auc-dt}
+augment(dt_fit, new_data = data_vball_train) |>
+  roc_auc(truth = w_l, .pred_loss)
+```
+
+```{r vis-roc-dt}
+augment(dt_fit, new_data = data_vball_train) |>
+  roc_curve(truth = w_l, .pred_loss) |>
+  autoplot()
+```
+
+A few notes from comparing the ROC curve and AUC metrics:
+
+* The AUC indicates a better model fit across different thresholds for the logistic regression model (AUC = .920) vs. the decision tree (AUC = .864).
+
+* When visually examining the ROC curves for both models, it seems the logistic regression model is a better fitting model for the data.
+
+# Logistic regression it is, then 
+
+Our model assessment suggested logistic regression is a good candidate model to make predictions. Thus, the last step is to test our final model fit using the test set.
+
+tidymodels makes this step easy with the `last_fit()` function. This is where our previous step of specifying a workflow comes in handy. In the function, we'll pass along the `log_reg_wflow` workflow object and the `data_vball_split` object. We'll also calculate metrics by passing along `metric_set(accuracy, sensitivity, specificity, roc_auc)` to the `metrics` argument of the function.
+
+```{r final-fit}
+final_log_reg_fit <- 
+  last_fit(
+    log_reg_wflow, 
+    data_vball_split,
+    metrics = metric_set(accuracy, sensitivity, specificity, roc_auc) 
+  )
+```
+
+When you print the `final_log_reg_fit` object, a tibble is returned. The tibble contains list columns holding relevant model information, like our metrics and predictions. Take notice that all these columns are prefixed with a `.`.
+
+```{r print-final-fit}
+final_log_reg_fit 
+```
+
+To grab the information from these list columns, tidymodels makes several accessor functions available. In the case of obtaining our metrics, we can use the `collect_metrics()` function.
+
+```{r assess-final-fit}
+collect_metrics(final_log_reg_fit)
+```
+
+We can then compare the assessment metrics produced from the fit to the training set to that of the testing set.
+
+```{r metrics-log-reg}
+augment(log_reg_fit, data_vball_train) |>
+  vball_mdl_metrics(truth = w_l, estimate = .pred_class)
+```
+
+```{r roc-log-reg-fit}
+augment(log_reg_fit, data_vball_train) |>
+  roc_auc(truth = w_l, .pred_loss)
+```
+
+A few things of note:
+
+* Most of the model assessment metrics dropped between the training and testing sets. This may indicate some slight overfitting of our model. As such, it may not fully generalize when new data is used to create predictions.
+
+# Have some fun, make predictions
+
+## Extract the final workflow
+
+Once the final candidate model is identified, we can extract the final workflow using the [`hardhat`](https://hardhat.tidymodels.org) package's `extract_workflow()` function. Here we'll use this workflow object to make predictions, but this workflow object is also useful if you intend to deploy this model.
+
+```{r final-workflow}
+final_fit_wflow <- extract_workflow(final_log_reg_fit)
+```
+
+## Make predictions
+
+At this point in the season, let's see how the Nebraska women's volleyball team stacked up in several of their matches using our model. First, let's examine Nebraska's win against Wisconsin, [a five set thriller](https://huskers.com/boxscore/21265).
+
+```{r predict-first-wisconsin-match}
+wisc_mtch_one <- data_vball |> 
+  filter(team_name == "Nebraska Huskers", date == as_date("2023-10-21"))
+
+predict(final_fit_wflow, new_data = wisc_mtch_one)
+```
+
+According to our model, Nebraska should have lost this match. This makes Nebraska's win even more impressive. The grittiness to pull out a win, even when evidence suggests they shouldn't have, speaks volumes of this team. Indeed, wins and losses for volleyball matches are a function of many different factors. Factors that may not be fully captured by the data or this specific model.
+
+What about Nebraska's 0-3, [second match loss against Wisconsin](https://huskers.com/boxscore/21274)?
+
+```{r predict-second-wisconsin-match}
+wisc_mtch_two <- data_vball |> 
+  filter(team_name == "Nebraska Huskers", date == as_date("2023-11-24"))
+
+predict(final_fit_wflow, new_data = wisc_mtch_two)
+```
+
+No surprise, the model predicted Nebraska would lose this match. It's a pretty steep hill to climb when you hit a .243 and only have 5 total blocks.
+
+Another nail-biter was Nebraska's second [match against Penn State](https://huskers.com/boxscore/21268). Let's take a look at what the model would predict. 
+
+```{r predict-penn-state-match}
+penn_state <- data_vball |>
+  filter(team_name == "Nebraska Huskers", date == as_date("2023-11-03"))
+
+predict(final_fit_wflow, new_data = penn_state)
+```
+
+Even though the match was close, the model predicted Nebraska would win this match. It may have been a nail-biter to watch, but Nebraska played well enough to win the match, according to our model. 
+
+## The NCAA tournament and our model
+
+We're through the initial rounds of the [2023 NCAA women's volleyball tournament](https://www.ncaa.com/news/volleyball-women/article/2023-11-18/2023-ncaa-volleyball-tournament-bracket-how-watch). Let's look at a couple of scenarios for Nebraska using our final model.
+
+::: {.callout-note}
+I'm extrapolating a bit here, since the data I'm using only includes Big Ten volleyball team matches. The NCAA tournament will include teams from many other conferences, so the predictions don't fully generalize to tournament matches.
+
+We could avert the extrapolation here by obtaining match data for all NCAA volleyball matches for the 2021, 2022, and 2023 seasons. For the sake of keeping this post manageable, I did not obtain this data.
+:::
+
+First, let's just say Nebraska plays to up to their regular season average for hit percentage, errors, block solos, block assists, and digs in NCAA tournament matches. What does our model predict in regards to Nebraska winning or losing a match?
+
+```{r predict-win-loss-avg}
+season_avg <- data_vball |>
+  filter(team_name == "Nebraska Huskers", year(date) == 2023) |>
+  summarise(across(where(is.numeric), mean)) |>
+  select(hit_pct, errors, block_solos, block_assists, digs)
+
+predict(final_fit_wflow, new_data = season_avg)
+```
+
+If Nebraska can hit at least a .290, commit less than 17 errors, have one solo block, have 16 block assists, and dig the ball roughly 48 times, then according to the model, they should win matches. Put another way, if Nebraska performs close to their regular season average for these statistics, then the model suggests they will win matches. 
+
+This is very encouraging, since the Huskers should be playing their best volleyball here at the end of the season. One would hope this means they perform near or better than their average in tournament matches.
+
+One last scenario, let's look at the low end of Nebraska's performance this season. Specifically, let's see what the model predicts 
+if Nebraska will win or lose a match at the 25% quartile for these statistics.
+
+```{r predict-quantile-25}
+quantile_25 <- data_vball |>
+  filter(team_name == "Nebraska Huskers", year(date) == 2023) |>
+  summarise(across(where(is.numeric), ~quantile(.x, .25))) |>
+  select(hit_pct, errors, block_solos, block_assists, digs)
+
+predict(final_fit_wflow, new_data = quantile_25)
+```
+
+According to the model, if Nebraska can perform up to their 25% quartile of their regular season statistics, the model suggests they should win matches. Matches like those in the NCAA tournament. So even if Nebraska doesn't perform to their potential or just has an off match, they should win if they can at least achieve the 25% quartile of their regular season statistics. 
+
+> "All models are wrong, but some are useful."
+>
+> \- [George Box](https://en.wikipedia.org/wiki/All_models_are_wrong)
+
+Again, many factors determine if a team wins or loses a match in volleyball (see the model's prediction for Nebraska's first match against Wisconsin). This is just one, simple model aimed at predicting wins and losses based on hit percentage, errors, block solos, block assists, and digs. A model that certainly could be improved.
+
+# Ways to improve our predictive model
+
+This post was a brief overview of fitting predictive models using the tidymodels framework. As such, additional modeling procedures were not performed to improve the predictive performance of the model. This includes feature engineering (I can hear the volleyball fanatics groveling over my lack of per set statistics in the model), hyperparameter tuning, exploration of other models, and the use of ensemble methods. 
+
+The use of these techniques would most likely yield more accurate results from the final candidate model. Additionally, different models, not explored here, may fit the data better. Thus, I intend to write future posts exploring these topics in more depth.
+
+# Wrap-up
+
+This post aimed to be a high-level overview of specifying predictive models using the tidymodels framework. To do this, two binary classification models predicting wins and losses were fit to Big Ten NCAA women's volleyball data. Subsequent model assessment metrics indicated logistic regression to be a candidate model to predict wins and losses when hit percentage, errors, block solos, block assists, and digs are used as features. Using this model, we estimated predictions for several matches won and lost by the Nebraska women's volleyball team. Finally, we explored some different scenarios for the Nebraska women's volleyball team and whether the model predicted if they would win matches in the NCAA tournament based on their regular season performance.
+
+If you have any suggestions to improve upon this model or a different approach, let me know. 
+
+Now, go have some fun specifying models and making predictions with [`tidymodels`](https://www.tidymodels.org/).
+
+# Resources to learn more 
+
+- [Tidy Modeling with R by Max Kuhn and Julia Silge](https://www.tmwr.org/)
+- [tidymodels documentation](https://www.tidymodels.org/)
+- [Machine Learning Fundamentals: Sensitivity and Specificity from the @StatQuest YouTube Channel](https://www.youtube.com/watch?v=vP06aMoz4v8)
+- [ROC and AUC, Clearly Explained! from the @StatQuest YouTube Channel](https://www.youtube.com/watch?v=4jRBRDbJemM)

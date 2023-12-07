@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2023-12-07">
+<meta name="description" content="Using tidymodels to predict wins and losses for volleyball matches">
+
+<title>Collin K. Berke, Ph.D.&nbsp;- Messing around with tidymodels: Learning how to fit a binary classification model using NCAA Big Ten women’s volleyball data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html" rel="" target="">
+ <span class="menu-text">Now</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../til/index.html" rel="" target="">
+ <span class="menu-text">Today I Learned</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#establish-a-modeling-goal" id="toc-establish-a-modeling-goal" class="nav-link active" data-scroll-target="#establish-a-modeling-goal">Establish a modeling goal</a></li>
+  <li><a href="#data-background" id="toc-data-background" class="nav-link" data-scroll-target="#data-background">Data background</a></li>
+  <li><a href="#wrangle-our-data" id="toc-wrangle-our-data" class="nav-link" data-scroll-target="#wrangle-our-data">Wrangle our data</a></li>
+  <li><a href="#check-for-any-class-imbalances" id="toc-check-for-any-class-imbalances" class="nav-link" data-scroll-target="#check-for-any-class-imbalances">Check for any class imbalances</a></li>
+  <li><a href="#determine-the-data-budget" id="toc-determine-the-data-budget" class="nav-link" data-scroll-target="#determine-the-data-budget">Determine the data budget</a></li>
+  <li><a href="#perform-exploratory-data-analysis" id="toc-perform-exploratory-data-analysis" class="nav-link" data-scroll-target="#perform-exploratory-data-analysis">Perform exploratory data analysis</a>
+  <ul class="collapse">
+  <li><a href="#feature-exploration" id="toc-feature-exploration" class="nav-link" data-scroll-target="#feature-exploration">Feature exploration</a></li>
+  <li><a href="#examine-correlations-among-features" id="toc-examine-correlations-among-features" class="nav-link" data-scroll-target="#examine-correlations-among-features">Examine correlations among features</a></li>
+  <li><a href="#specify-our-models" id="toc-specify-our-models" class="nav-link" data-scroll-target="#specify-our-models">Specify our models</a></li>
+  <li><a href="#create-workflows" id="toc-create-workflows" class="nav-link" data-scroll-target="#create-workflows">Create workflows</a></li>
+  <li><a href="#fit-our-models" id="toc-fit-our-models" class="nav-link" data-scroll-target="#fit-our-models">Fit our models</a>
+  <ul class="collapse">
+  <li><a href="#explore-the-fit" id="toc-explore-the-fit" class="nav-link" data-scroll-target="#explore-the-fit">Explore the fit</a></li>
+  </ul></li>
+  <li><a href="#model-assessment" id="toc-model-assessment" class="nav-link" data-scroll-target="#model-assessment">Model assessment</a>
+  <ul class="collapse">
+  <li><a href="#create-a-confusion-matrix" id="toc-create-a-confusion-matrix" class="nav-link" data-scroll-target="#create-a-confusion-matrix">Create a confusion matrix</a></li>
+  <li><a href="#measure-model-accuracy" id="toc-measure-model-accuracy" class="nav-link" data-scroll-target="#measure-model-accuracy">Measure model accuracy</a></li>
+  <li><a href="#measure-model-sensitivity-and-specificity" id="toc-measure-model-sensitivity-and-specificity" class="nav-link" data-scroll-target="#measure-model-sensitivity-and-specificity">Measure model sensitivity and specificity</a></li>
+  <li><a href="#roc-curves-and-auc-estimates" id="toc-roc-curves-and-auc-estimates" class="nav-link" data-scroll-target="#roc-curves-and-auc-estimates">ROC curves and AUC estimates</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#logistic-regression-it-is-then" id="toc-logistic-regression-it-is-then" class="nav-link" data-scroll-target="#logistic-regression-it-is-then">Logistic regression it is, then</a></li>
+  <li><a href="#have-some-fun-make-predictions" id="toc-have-some-fun-make-predictions" class="nav-link" data-scroll-target="#have-some-fun-make-predictions">Have some fun, make predictions</a>
+  <ul class="collapse">
+  <li><a href="#extract-the-final-workflow" id="toc-extract-the-final-workflow" class="nav-link" data-scroll-target="#extract-the-final-workflow">Extract the final workflow</a></li>
+  <li><a href="#make-predictions" id="toc-make-predictions" class="nav-link" data-scroll-target="#make-predictions">Make predictions</a></li>
+  <li><a href="#the-ncaa-tournament-and-our-model" id="toc-the-ncaa-tournament-and-our-model" class="nav-link" data-scroll-target="#the-ncaa-tournament-and-our-model">The NCAA tournament and our model</a></li>
+  </ul></li>
+  <li><a href="#ways-to-improve-our-predictive-model" id="toc-ways-to-improve-our-predictive-model" class="nav-link" data-scroll-target="#ways-to-improve-our-predictive-model">Ways to improve our predictive model</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap-up</a></li>
+  <li><a href="#resources-to-learn-more" id="toc-resources-to-learn-more" class="nav-link" data-scroll-target="#resources-to-learn-more">Resources to learn more</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Messing around with tidymodels: Learning how to fit a binary classification model using NCAA Big Ten women’s volleyball data</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">tutorial</div>
+    <div class="quarto-category">tidymodels</div>
+    <div class="quarto-category">classification</div>
+    <div class="quarto-category">decision tree</div>
+    <div class="quarto-category">logistic regression</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Using tidymodels to predict wins and losses for volleyball matches
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 7, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="thumbnail-wide.jpeg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Image generated using the prompt “volleyball analytics in a pop art style” with the <a href="https://www.bing.com/images/create">Bing Image Creator</a></figcaption>
+</figure>
+</div>
+<p>The initial rounds of the NCAA women’s volleyball <a href="https://www.ncaa.com/news/volleyball-women/article/2023-11-18/2023-ncaa-volleyball-tournament-schedule-dates-di-womens-championship">tournament</a> have just begun. As such, I felt it was a good opportunity to understand more about the game while learning to specify models using <a href="https://bigten.org/sports/wvball">Big Ten women’s volleyball</a> match data and the <a href="https://www.tidymodels.org/">tidymodels</a> framework. This post sought to specify a predictive model of wins and loses. It then used this model to explore and predict match outcomes of the #1 team going into the tournament, the <a href="https://huskers.com/sports/volleyball">Nebraska Cornhuskers</a>.</p>
+<p>This post overviews the use of the tidymodels framework to fit and train predictive models. Specifically, it aims to be an introductory tutorial on the use of <a href="https://www.tidymodels.org/">tidymodels</a> to split data into test and training sets, specify a model, and assess model fit using both the training and testing data. To do this, I explored the fit of two binary classification models to NCAA Big Ten women’s volleyball match data, with the goal to predict wins and loses.</p>
+<p>Being a high-level overview, this post will not cover topics like feature engineering, resampling techniques, hyperparameter tuning, or ensemble methods. Most assuredly, additional modeling procedures would lead to improved model predictions. As such, I plan to write future posts overviewing these topics.</p>
+<p>Let’s attach the libraries we’ll need for the session.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="establish-a-modeling-goal" class="level1">
+<h1>Establish a modeling goal</h1>
+<p>First things first, we need to establish a modeling goal. Given the scope of this post, I have the following goal:</p>
+<p>Create a simple binary classification model to predict wins and loses using NCAA Big Ten women’s volleyball match data.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There might be a slight issue of data leakage in this example. <a href="https://www.collinberke.com/til/posts/2023-10-22-correlations-with-corrr/">In a previous post</a>, I explored correlations using similar data. Since this post aims to be a tutorial, I’m simply making note of it here, and I will not address further. Indeed, it is considered best practice to perform exploratory analysis only on the test set rather than all the data when fitting predictive models.</p>
+</div>
+</div>
+<p>We’ll start by importing our data using <code>readr::read_csv()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_vball <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glue</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">here</span>(<span class="st">"blog/posts/2023-12-07-tidymodels-bigten-volleyball/"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"2023-12-04_bigten_vb_data.csv"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 1613 Columns: 28
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (3): team_name, opponent, w_l
+dbl  (24): set_wins, set_loss, s, kills, errors, total_attacks, hit_pct, assists, aces, serr, di...
+date  (1): date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+</section>
+<section id="data-background" class="level1">
+<h1>Data background</h1>
+<p>The data represents up to date match-by-match offensive and defensive statistics for NCAA Big Ten women’s volleyball teams. The data includes matches from the 2021, 2022, and 2023 seasons, where the earliest recorded match is 2021-01-22. The data is updated up to 2023-11-25. To see the variables within the data, we can run the <code>dplyr::glimpse()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(data_vball)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,613
+Columns: 27
+$ date              &lt;date&gt; 2021-01-22, 2021-01-23, 2021-01-29, 2021-01-30, 2021-02-05, 2021-02-06,…
+$ team_name         &lt;chr&gt; "Illinois Fighting Illini", "Illinois Fighting Illini", "Illinois Fighti…
+$ opponent          &lt;chr&gt; "@ Iowa", "@ Iowa", "Wisconsin", "Wisconsin", "@ Penn St.", "@ Penn St."…
+$ w_l               &lt;chr&gt; "win", "win", "loss", "loss", "loss", "loss", NA, NA, "loss", "loss", NA…
+$ set_wins          &lt;dbl&gt; 3, 3, 0, 1, 1, 2, 0, 0, 1, 2, 0, 0, 0, 0, 2, 0, 3, 3, 3, 3, 0, 3, 3, 3, …
+$ set_loss          &lt;dbl&gt; 1, 1, 3, 3, 3, 3, 0, 0, 3, 3, 0, 0, 3, 3, 3, 3, 1, 2, 0, 1, 3, 2, 2, 0, …
+$ s                 &lt;dbl&gt; 4, 4, 3, 4, 4, 5, 0, 0, 4, 5, 0, 0, 3, 3, 5, 3, 4, 5, 3, 4, 3, 5, 5, 3, …
+$ kills             &lt;dbl&gt; 55, 49, 36, 48, 49, 55, 0, 0, 47, 59, 0, 0, 36, 41, 71, 32, 51, 63, 41, …
+$ errors            &lt;dbl&gt; 28, 21, 19, 22, 19, 31, 0, 0, 29, 29, 0, 0, 19, 25, 33, 29, 34, 30, 14, …
+$ total_attacks     &lt;dbl&gt; 139, 122, 101, 129, 112, 167, 0, 0, 137, 178, 0, 0, 111, 118, 185, 124, …
+$ hit_pct           &lt;dbl&gt; 0.194, 0.230, 0.168, 0.202, 0.268, 0.144, 0.000, 0.000, 0.131, 0.169, 0.…
+$ assists           &lt;dbl&gt; 48, 44, 27, 45, 47, 54, 0, 0, 43, 53, 0, 0, 31, 36, 64, 31, 44, 53, 35, …
+$ aces              &lt;dbl&gt; 14, 10, 3, 7, 5, 9, 0, 0, 6, 11, 0, 0, 5, 6, 5, 7, 12, 5, 7, 8, 2, 2, 12…
+$ serr              &lt;dbl&gt; 10, 11, 9, 10, 11, 14, 0, 0, 10, 6, 0, 0, 10, 11, 6, 10, 12, 14, 8, 10, …
+$ digs              &lt;dbl&gt; 61, 46, 34, 47, 48, 57, 0, 0, 53, 76, 0, 0, 35, 39, 90, 45, 67, 60, 33, …
+$ block_solos       &lt;dbl&gt; 1, 2, 1, 1, 0, 3, 0, 0, 2, 0, 0, 0, 1, 0, 1, 2, 2, 1, 1, 2, 0, 0, 3, 3, …
+$ block_assists     &lt;dbl&gt; 25, 22, 4, 12, 14, 16, 0, 0, 12, 16, 0, 0, 12, 8, 22, 6, 10, 14, 12, 27,…
+$ opp_kills         &lt;dbl&gt; 36, 37, 48, 55, 52, 63, 56, 63, 44, 39, 57, 33, 32, 52, 31, 44, 43, 63, …
+$ opp_errors        &lt;dbl&gt; 25, 24, 9, 14, 14, 21, 15, 18, 15, 14, 18, 12, 24, 21, 20, 29, 14, 25, 0…
+$ opp_total_attacks &lt;dbl&gt; 131, 117, 105, 123, 124, 148, 141, 168, 103, 102, 179, 97, 135, 139, 93,…
+$ opp_hit_pct       &lt;dbl&gt; 0.084, 0.111, 0.371, 0.333, 0.306, 0.284, 0.291, 0.268, 0.282, 0.245, 0.…
+$ opp_assists       &lt;dbl&gt; 30, 36, 42, 46, 48, 56, 48, 52, 38, 35, 52, 30, 30, 51, 29, 34, 38, 57, …
+$ opp_aces          &lt;dbl&gt; 6, 1, 4, 5, 5, 9, 2, 2, 2, 4, 4, 2, 4, 8, 1, 1, 6, 6, 0, 0, 0, 0, 3, 2, …
+$ opp_serr          &lt;dbl&gt; 2, 8, 9, 11, 15, 10, 12, 10, 3, 8, 6, 5, 9, 11, 3, 8, 6, 7, 0, 0, 0, 0, …
+$ opp_digs          &lt;dbl&gt; 45, 43, 39, 47, 42, 67, 49, 77, 47, 39, 72, 49, 55, 64, 30, 48, 56, 80, …
+$ opp_block_solos   &lt;dbl&gt; 2, 1, 2, 1, 2, 3, 4, 1, 2, 1, 2, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 0, 4, 3, …
+$ opp_block_assists &lt;dbl&gt; 18, 20, 12, 14, 12, 20, 14, 24, 12, 12, 24, 28, 29, 16, 4, 14, 24, 28, 0…</code></pre>
+</div>
+</div>
+<p>Most of the variable names should be informative, aside from <code>s</code>. This variable represents the total number of sets played within a match. If you’re unfamiliar with the sport, you might find the following <a href="https://en.wikipedia.org/wiki/Volleyball_jargon">list</a> helpful.</p>
+</section>
+<section id="wrangle-our-data" class="level1">
+<h1>Wrangle our data</h1>
+<p>Before fitting any models, a few data wrangling steps will need to take place. First, <code>NA</code> values need to be removed. <code>NA</code>s are present for two reasons:</p>
+<ol type="1">
+<li>Cancelled matches due to the COVID pandemic in 2021.</li>
+<li>The pre-wrangled data contains matches that have not taken place in the 2023 season.</li>
+</ol>
+<p>Second, the <code>w_l</code> column (i.e., wins and losses) needs to be mutated into a factor with two levels (win and loss). It’s generally best practice to mutate categorical variables into factors when using the tidymodels framework.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_vball <span class="ot">&lt;-</span> data_vball <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(w_l) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">w_l =</span> <span class="fu">factor</span>(w_l, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"loss"</span>, <span class="st">"win"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="check-for-any-class-imbalances" class="level1">
+<h1>Check for any class imbalances</h1>
+<p>Let’s check for the presence of any class imbalances. Take note, this is the only exploratory analysis we’ll do before splitting our data into a training and testing set. Additional exploratory analysis will be done on the training set. This is done to prevent <a href="https://en.wikipedia.org/wiki/Leakage_(machine_learning)">data leakage</a> between the different modeling steps.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_vball, <span class="fu">aes</span>(<span class="at">x =</span> w_l)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"#191970"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/vis-class-imbalances-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The bar chart indicates the presence of a slight imbalance between wins and losses (win = 877; loss = 678). During the initial split of our data, we’ll employ a stratified sampling technique to account for this imbalance. This is done to ensure our splits avoid major class imbalances within the training and testing sets.</p>
+</section>
+<section id="determine-the-data-budget" class="level1">
+<h1>Determine the data budget</h1>
+<p>At this point, we need to split our data into testing and training data sets. <a href="https://rsample.tidymodels.org/index.html"><code>rsample</code>’s</a>, a tidymodels’ package, <code>initial_split()</code> function makes this easy. While using this function, we’ll pass along our data object, <code>data_vball</code>, and values to two arguments: <code>prop</code> and <code>strata</code>.</p>
+<p>The <code>prop</code> argument specifies the proportion of data to be retained in the training and testing data sets. It defaults to <code>3/4</code> or 75%. For our specific modeling case, we’ll specify we want to devote 80% of our data to the training set, with the remaining 20% going to the testing set. Given the data contains 1,555 rows, 1,243 rows will be allocated to the training set while the remaining 312 rows will be held out for the test set. Since class imbalances were identified, a stratified sampling technique will be used. To do this, we pass the name of the class variable to the <code>strata</code> argument. For reproducibility, <code>set.seed(2023)</code> is set before the split is specified.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2023</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data_vball_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_vball, <span class="at">prop =</span> .<span class="dv">80</span>, <span class="at">strata =</span> w_l)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a quick look the <code>data_vball_split</code> object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_vball_split</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;Training/Testing/Total&gt;
+&lt;1243/312/1555&gt;</code></pre>
+</div>
+</div>
+<p>You’ll notice this doesn’t print out any data. Rather, information about the split is printed to the console. <code>initial_split()</code> only creates an object with the information on how the split is to be performed. To perform the split, we need to use <code>rsample</code>’s <code>training()</code> and <code>testing()</code> functions. Simply, we do the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_vball_train <span class="ot">&lt;-</span> <span class="fu">training</span>(data_vball_split)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>data_vball_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_vball_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>When these two objects are printed, you’ll see two tibbles. The first tibble is the training data set. The second tibble is the testing data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_vball_train</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,243 × 27
+   date       team_name    opponent w_l   set_wins set_loss     s kills errors total_attacks hit_pct
+   &lt;date&gt;     &lt;chr&gt;        &lt;chr&gt;    &lt;fct&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+ 1 2021-01-29 Illinois Fi… Wiscons… loss         0        3     3    36     19           101   0.168
+ 2 2021-01-30 Illinois Fi… Wiscons… loss         1        3     4    48     22           129   0.202
+ 3 2021-02-06 Illinois Fi… @ Penn … loss         2        3     5    55     31           167   0.144
+ 4 2021-02-19 Illinois Fi… Ohio St. loss         1        3     4    47     29           137   0.131
+ 5 2021-02-20 Illinois Fi… Ohio St. loss         2        3     5    59     29           178   0.169
+ 6 2021-03-05 Illinois Fi… Nebraska loss         0        3     3    36     19           111   0.153
+ 7 2021-03-06 Illinois Fi… Nebraska loss         0        3     3    41     25           118   0.136
+ 8 2021-03-12 Illinois Fi… @ Minne… loss         2        3     5    71     33           185   0.205
+ 9 2021-03-13 Illinois Fi… @ Minne… loss         0        3     3    32     29           124   0.024
+10 2021-04-02 Illinois Fi… @ Purdue loss         0        3     3    33     22           127   0.087
+# ℹ 1,233 more rows
+# ℹ 16 more variables: assists &lt;dbl&gt;, aces &lt;dbl&gt;, serr &lt;dbl&gt;, digs &lt;dbl&gt;, block_solos &lt;dbl&gt;,
+#   block_assists &lt;dbl&gt;, opp_kills &lt;dbl&gt;, opp_errors &lt;dbl&gt;, opp_total_attacks &lt;dbl&gt;,
+#   opp_hit_pct &lt;dbl&gt;, opp_assists &lt;dbl&gt;, opp_aces &lt;dbl&gt;, opp_serr &lt;dbl&gt;, opp_digs &lt;dbl&gt;,
+#   opp_block_solos &lt;dbl&gt;, opp_block_assists &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_vball_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 312 × 27
+   date       team_name    opponent w_l   set_wins set_loss     s kills errors total_attacks hit_pct
+   &lt;date&gt;     &lt;chr&gt;        &lt;chr&gt;    &lt;fct&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+ 1 2021-01-23 Illinois Fi… @ Iowa   win          3        1     4    49     21           122   0.23 
+ 2 2021-02-05 Illinois Fi… @ Penn … loss         1        3     4    49     19           112   0.268
+ 3 2021-03-19 Illinois Fi… Maryland win          3        1     4    51     34           162   0.105
+ 4 2021-08-27 Illinois Fi… UC Sant… win          3        2     5    63     33           178   0.169
+ 5 2021-09-10 Illinois Fi… SMU @ O… win          3        0     3    41     11            98   0.306
+ 6 2021-09-17 Illinois Fi… @ Illin… win          3        0     3    43     10            88   0.375
+ 7 2021-09-18 Illinois Fi… North T… win          3        0     3    40     17           102   0.225
+ 8 2021-09-25 Illinois Fi… Northwe… win          3        2     5    65     19           137   0.336
+ 9 2021-10-03 Illinois Fi… Wiscons… loss         1        3     4    48     20           142   0.197
+10 2021-10-23 Illinois Fi… Michigan win          3        1     4    55     21           155   0.219
+# ℹ 302 more rows
+# ℹ 16 more variables: assists &lt;dbl&gt;, aces &lt;dbl&gt;, serr &lt;dbl&gt;, digs &lt;dbl&gt;, block_solos &lt;dbl&gt;,
+#   block_assists &lt;dbl&gt;, opp_kills &lt;dbl&gt;, opp_errors &lt;dbl&gt;, opp_total_attacks &lt;dbl&gt;,
+#   opp_hit_pct &lt;dbl&gt;, opp_assists &lt;dbl&gt;, opp_aces &lt;dbl&gt;, opp_serr &lt;dbl&gt;, opp_digs &lt;dbl&gt;,
+#   opp_block_solos &lt;dbl&gt;, opp_block_assists &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Each of these data sets will be used at specific points during the modeling procedure. The training will be used for model specification and assessment. The testing will be used to assess the final model fit. But first, let’s do some exploratory data analysis on our training data.</p>
+</section>
+<section id="perform-exploratory-data-analysis" class="level1">
+<h1>Perform exploratory data analysis</h1>
+<section id="feature-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="feature-exploration">Feature exploration</h2>
+<p>Given the number of features in the data, we can easily obtain summary information using <a href="https://docs.ropensci.org/skimr/index.html"><code>skimr::skim()</code></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data_vball_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">data_vball_train</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">1243</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Date</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">team_name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">opponent</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">329</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">min</th>
+<th style="text-align: left;">max</th>
+<th style="text-align: left;">median</th>
+<th style="text-align: right;">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2021-01-22</td>
+<td style="text-align: left;">2023-11-25</td>
+<td style="text-align: left;">2022-09-09</td>
+<td style="text-align: right;">228</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">ordered</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: left;">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">w_l</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">win: 701, los: 542</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">set_wins</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.03</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: left;">▃▂▁▂▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">set_loss</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.65</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: left;">▆▃▁▂▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">s</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.68</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: left;">▇▁▅▁▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">kills</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">47.02</td>
+<td style="text-align: right;">11.49</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">39.00</td>
+<td style="text-align: right;">46.00</td>
+<td style="text-align: right;">55.00</td>
+<td style="text-align: right;">84.00</td>
+<td style="text-align: left;">▁▆▇▅▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">errors</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.86</td>
+<td style="text-align: right;">6.57</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">19.00</td>
+<td style="text-align: right;">23.00</td>
+<td style="text-align: right;">44.00</td>
+<td style="text-align: left;">▃▇▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_attacks</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">125.31</td>
+<td style="text-align: right;">30.19</td>
+<td style="text-align: right;">63.00</td>
+<td style="text-align: right;">101.00</td>
+<td style="text-align: right;">121.00</td>
+<td style="text-align: right;">148.00</td>
+<td style="text-align: right;">237.00</td>
+<td style="text-align: left;">▃▇▆▂▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hit_pct</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: left;">▁▃▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">assists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">43.23</td>
+<td style="text-align: right;">10.84</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">36.00</td>
+<td style="text-align: right;">43.00</td>
+<td style="text-align: right;">50.50</td>
+<td style="text-align: right;">75.00</td>
+<td style="text-align: left;">▂▆▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">aces</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.18</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: right;">18.00</td>
+<td style="text-align: left;">▅▇▃▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">serr</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.97</td>
+<td style="text-align: right;">3.41</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">8.00</td>
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">23.00</td>
+<td style="text-align: left;">▅▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">digs</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51.55</td>
+<td style="text-align: right;">15.14</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">40.00</td>
+<td style="text-align: right;">49.00</td>
+<td style="text-align: right;">61.00</td>
+<td style="text-align: right;">108.00</td>
+<td style="text-align: left;">▂▇▅▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">block_solos</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">1.62</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">block_assists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.25</td>
+<td style="text-align: right;">6.78</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">18.00</td>
+<td style="text-align: right;">38.00</td>
+<td style="text-align: left;">▂▇▆▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">opp_kills</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">43.64</td>
+<td style="text-align: right;">15.01</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">34.00</td>
+<td style="text-align: right;">44.00</td>
+<td style="text-align: right;">54.00</td>
+<td style="text-align: right;">84.00</td>
+<td style="text-align: left;">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">opp_errors</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.34</td>
+<td style="text-align: right;">7.05</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">24.00</td>
+<td style="text-align: right;">46.00</td>
+<td style="text-align: left;">▁▆▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">opp_total_attacks</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">121.76</td>
+<td style="text-align: right;">36.90</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">119.00</td>
+<td style="text-align: right;">148.00</td>
+<td style="text-align: right;">237.00</td>
+<td style="text-align: left;">▁▂▇▅▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">opp_hit_pct</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: left;">▁▃▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">opp_assists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40.20</td>
+<td style="text-align: right;">13.99</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">31.00</td>
+<td style="text-align: right;">41.00</td>
+<td style="text-align: right;">50.00</td>
+<td style="text-align: right;">75.00</td>
+<td style="text-align: left;">▁▃▇▆▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">opp_aces</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.56</td>
+<td style="text-align: right;">2.91</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: left;">▆▇▆▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">opp_serr</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.58</td>
+<td style="text-align: right;">3.66</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">7.00</td>
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">23.00</td>
+<td style="text-align: left;">▃▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">opp_digs</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48.99</td>
+<td style="text-align: right;">17.90</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">38.00</td>
+<td style="text-align: right;">48.00</td>
+<td style="text-align: right;">60.00</td>
+<td style="text-align: right;">108.00</td>
+<td style="text-align: left;">▁▆▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">opp_block_solos</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">opp_block_assists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.71</td>
+<td style="text-align: right;">7.30</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">8.00</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">18.00</td>
+<td style="text-align: right;">40.00</td>
+<td style="text-align: left;">▆▇▃▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>A few things to note from the initial exploratory data analysis:</p>
+<ul>
+<li>Team errors, attacks, and digs distribution exhibits a slight right skew.</li>
+<li>Aces, service errors, block solos, opponent aces, opponent errors, opponent block solos, and opponent block assists exhibit a greater degree of skewness to the right.</li>
+</ul>
+<p>An argument could be made for further exploratory analysis of these variables, followed by some feature engineering. Although this additional work may improve our final predictive model, this post is a general overview of specifying, fitting, and assessing models using the tidymodels framework. I will thus not address these topics further. However, I intend to write a future post focusing on feature engineering using tidymodels’ <a href="https://recipes.tidymodels.org/"><code>recipes</code> package</a>.</p>
+</section>
+<section id="examine-correlations-among-features" class="level2">
+<h2 class="anchored" data-anchor-id="examine-correlations-among-features">Examine correlations among features</h2>
+<p>The next step in the exploratory analysis is to identify the presence of any correlations among features. This can <a href="https://www.collinberke.com/til/posts/2023-10-22-correlations-with-corrr/">easily be done</a> using functions from the <a href="https://corrr.tidymodels.org/index.html"><code>corrr</code></a> package. Specifically, the <code>correlate()</code> function calculates correlations among the various numeric features within our data. The output from the <code>correlate()</code> function is then passed to the <code>autoplot()</code> method, which outputs a visualization of the correlations values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data_vball_train <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">correlate</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  corrr<span class="sc">::</span><span class="fu">focus</span>(<span class="sc">-</span>set_wins, <span class="sc">-</span>set_loss, <span class="sc">-</span>s, <span class="at">mirror =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">triangular =</span> <span class="st">"lower"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Non-numeric variables removed from input: `date`, `team_name`, `opponent`, and `w_l`
+Correlation computed with
+• Method: 'pearson'
+• Missing treated using: 'pairwise.complete.obs'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/vis-var-correlations-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The plot indicates correlations of varying degrees among features. Feature engineering and feature reduction approaches could be used to address these correlations. However, these approaches will not be explored in this post.</p>
+</section>
+<section id="specify-our-models" class="level2">
+<h2 class="anchored" data-anchor-id="specify-our-models">Specify our models</h2>
+<p>To keep things simple, I’ll explore the fit of two models to the training data. However, tidymodels has interfaces to fit a wide-range of <a href="https://www.tidymodels.org/find/parsnip/">models</a>, many of which are implemented via the <code>parsnip</code> package.</p>
+<p>The models I intend to fit to our data include:</p>
+<ol type="1">
+<li>A logistic regression using <code>glm</code>.</li>
+<li>A decision tree using <code>rpart</code>.</li>
+</ol>
+<p>When specifying a model with tidymodels, we do <a href="https://www.tmwr.org/models">three things</a>:</p>
+<ol type="1">
+<li><p>Use <a href="https://parsnip.tidymodels.org/"><code>parsnip</code></a> functions to specify the mathematical structure of the model we intend to use (e.g., <code>logistic_reg()</code>; <code>decision_tree()</code>).</p></li>
+<li><p>Specify the engine we want to use to fit our model. This is done using the <code>set_engine()</code> function.</p></li>
+<li><p>When required, we declare the mode of the model (i.e., is it regression or classification). Some models can perform both, so we need to explicitly set the mode with the <code>set_mode()</code> function.</p></li>
+</ol>
+<p>Specifying the two models in this post looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Logistic regression specification</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>log_reg_spec <span class="ot">&lt;-</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Decision tree specification</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>dt_spec <span class="ot">&lt;-</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">decision_tree</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a moment to breakdown what’s going on here. The calls to <code>logistic_regression()</code> and <code>decision_tree()</code> establishes the mathematical structure we want to use to fit our model to the data. <code>set_engine("glm")</code> and <code>set_engine("rpart")</code> specifies the model’s engine, i.e., the software we want to use to fit our model. For our decision tree, since it can perform both regression and classification, we specify it’s mode using <code>set_mode("classification")</code>. You’ll notice our logistic regression specification excludes this function. This is because logistic regression is <a href="https://parsnip.tidymodels.org/reference/details_logistic_reg_glm.html#details">only used to perform classification</a>, thus we don’t need to set its mode.</p>
+<p>If you’re curious or want more information on what <code>parsnip</code> is doing in the background, you can pipe the model specification object to the <code>translate()</code> function. Here’s what the output looks like for our decision tree specification:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dt_spec <span class="sc">|&gt;</span> <span class="fu">translate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Decision Tree Model Specification (classification)
+
+Computational engine: rpart 
+
+Model fit template:
+rpart::rpart(formula = missing_arg(), data = missing_arg(), weights = missing_arg())</code></pre>
+</div>
+</div>
+<p>If you’re interested in viewing the types of engines available for your model, you can use <code>parsnip</code>’s <code>show_engines()</code> function. Here you’ll need to pass a string character of the model function you want to explore as an argument. This is what this looks like for <code>logistic_reg()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_engines</span>(<span class="st">"logistic_reg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+  engine    mode          
+  &lt;chr&gt;     &lt;chr&gt;         
+1 glm       classification
+2 glmnet    classification
+3 LiblineaR classification
+4 spark     classification
+5 keras     classification
+6 stan      classification
+7 brulee    classification</code></pre>
+</div>
+</div>
+</section>
+<section id="create-workflows" class="level2">
+<h2 class="anchored" data-anchor-id="create-workflows">Create workflows</h2>
+<p>From here, we’ll create workflow objects using tidymodel’s <a href="https://workflows.tidymodels.org/"><code>workflow</code></a> package. Workflow objects make it easier to work with different modeling objects by combining objects into one object. Although this isn’t too important for our current modeling task, the use of workflows will be beneficial later when we attempt to improve upon our models, like I’ll do in future posts.</p>
+<p>In this case, our model specification and model formula are combined into a workflow object. Here I just choose a few features to include within the model. For this post, I mainly focused on using team oriented features within our model to predict wins and losses. Indeed, others could have been included, as the data also contained opponent oriented statistics. To keep things simple, however, I chose to only include the following features within our model:</p>
+<ul>
+<li>Hitting percentage</li>
+<li>Errors</li>
+<li>Block solos</li>
+<li>Block assists</li>
+<li>Digs</li>
+</ul>
+<p>The <code>workflow()</code> function sets up the beginning of our workflow object. We’ll add the model object with <code>add_model()</code>, followed by the formula object using <code>add_formula()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>log_reg_wflow <span class="ot">&lt;-</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(log_reg_spec) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    w_l <span class="sc">~</span> hit_pct <span class="sc">+</span> errors <span class="sc">+</span> block_solos <span class="sc">+</span> block_assists <span class="sc">+</span> digs</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>dt_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(dt_spec) <span class="sc">|&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    w_l <span class="sc">~</span> hit_pct <span class="sc">+</span> errors <span class="sc">+</span> block_solos <span class="sc">+</span> block_assists <span class="sc">+</span> digs</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This syntax can be a bit long, so there’s a shortcut. We can pass both the model formula and the model specification as arguments to the <code>workflow()</code> function instead of using a piped chain of functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>log_reg_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    w_l <span class="sc">~</span> hit_pct <span class="sc">+</span> errors <span class="sc">+</span> block_solos <span class="sc">+</span> block_assists <span class="sc">+</span> digs,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    log_reg_spec</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>dt_wflow <span class="ot">&lt;-</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>(</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    w_l <span class="sc">~</span> hit_pct <span class="sc">+</span> errors <span class="sc">+</span> block_solos <span class="sc">+</span> block_assists <span class="sc">+</span> digs,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    dt_spec</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fit-our-models" class="level2">
+<h2 class="anchored" data-anchor-id="fit-our-models">Fit our models</h2>
+<p>Now with our models specified, we can go about fitting our model to the training data using the <code>fit()</code> method. We do the following to fit both models to the training data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>log_reg_fit <span class="ot">&lt;-</span> log_reg_wflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> data_vball_train)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>dt_fit <span class="ot">&lt;-</span> dt_wflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> data_vball_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a look at the <code>log_reg_fit</code> and <code>dt_fit</code> fit objects.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>log_reg_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════════════════════════
+Preprocessor: Formula
+Model: logistic_reg()
+
+── Preprocessor ────────────────────────────────────────────────────────────────────────────────────
+w_l ~ hit_pct + errors + block_solos + block_assists + digs
+
+── Model ───────────────────────────────────────────────────────────────────────────────────────────
+
+Call:  stats::glm(formula = ..y ~ ., family = stats::binomial, data = data)
+
+Coefficients:
+  (Intercept)        hit_pct         errors    block_solos  block_assists           digs  
+     -8.54857       30.05361       -0.01277        0.20006        0.08764        0.01375  
+
+Degrees of Freedom: 1242 Total (i.e. Null);  1237 Residual
+Null Deviance:      1703 
+Residual Deviance: 874.4    AIC: 886.4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dt_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════════════════════════
+Preprocessor: Formula
+Model: decision_tree()
+
+── Preprocessor ────────────────────────────────────────────────────────────────────────────────────
+w_l ~ hit_pct + errors + block_solos + block_assists + digs
+
+── Model ───────────────────────────────────────────────────────────────────────────────────────────
+n= 1243 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+ 1) root 1243 542 win (0.4360418 0.5639582)  
+   2) hit_pct&lt; 0.2255 601 140 loss (0.7670549 0.2329451)  
+     4) block_assists&lt; 17.5 429  56 loss (0.8694639 0.1305361) *
+     5) block_assists&gt;=17.5 172  84 loss (0.5116279 0.4883721)  
+      10) hit_pct&lt; 0.1355 32   4 loss (0.8750000 0.1250000) *
+      11) hit_pct&gt;=0.1355 140  60 win (0.4285714 0.5714286)  
+        22) digs&lt; 45.5 14   4 loss (0.7142857 0.2857143) *
+        23) digs&gt;=45.5 126  50 win (0.3968254 0.6031746) *
+   3) hit_pct&gt;=0.2255 642  81 win (0.1261682 0.8738318) *</code></pre>
+</div>
+</div>
+<p>When the fit objects are called, tidymodels prints information about our fitted models to the console. First, we get notified this object is a trained workflow. Second, preprocessing information is included. Since we only set a model function during preprocessing, we only see the model formula printed in this section. Lastly, tidymodels outputs model specific information and summary information about the model fit.</p>
+<section id="explore-the-fit" class="level3">
+<h3 class="anchored" data-anchor-id="explore-the-fit">Explore the fit</h3>
+<p>Now that we have the fit object, we can obtain more information about the fit using the <code>extract_fit_engine()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>log_reg_fit <span class="sc">|&gt;</span> <span class="fu">extract_fit_engine</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:  stats::glm(formula = ..y ~ ., family = stats::binomial, data = data)
+
+Coefficients:
+  (Intercept)        hit_pct         errors    block_solos  block_assists           digs  
+     -8.54857       30.05361       -0.01277        0.20006        0.08764        0.01375  
+
+Degrees of Freedom: 1242 Total (i.e. Null);  1237 Residual
+Null Deviance:      1703 
+Residual Deviance: 874.4    AIC: 886.4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>dt_fit <span class="sc">|&gt;</span> <span class="fu">extract_fit_engine</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n= 1243 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+ 1) root 1243 542 win (0.4360418 0.5639582)  
+   2) hit_pct&lt; 0.2255 601 140 loss (0.7670549 0.2329451)  
+     4) block_assists&lt; 17.5 429  56 loss (0.8694639 0.1305361) *
+     5) block_assists&gt;=17.5 172  84 loss (0.5116279 0.4883721)  
+      10) hit_pct&lt; 0.1355 32   4 loss (0.8750000 0.1250000) *
+      11) hit_pct&gt;=0.1355 140  60 win (0.4285714 0.5714286)  
+        22) digs&lt; 45.5 14   4 loss (0.7142857 0.2857143) *
+        23) digs&gt;=45.5 126  50 win (0.3968254 0.6031746) *
+   3) hit_pct&gt;=0.2255 642  81 win (0.1261682 0.8738318) *</code></pre>
+</div>
+</div>
+<p>The output when passing the fit object to the <code>extract_fit_engine()</code> is similar to what was printed when we called the fit object alone. However, the <code>extract_*</code> family of workflow functions are great for extracting elements of a workflow. According to the docs (<code>?extract_fit_engine</code>), this family of functions are helpful when accessing elements within the fit object. This is especially helpful when needing to pass along elements of the fit object to generics like <code>print()</code>, <code>summary()</code>, and <code>plot()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Not evaluated to conserve space, but I encourage</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># you to run it on your own</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>log_reg_fit <span class="sc">|&gt;</span> <span class="fu">extract_fit_engine</span>() <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Although <code>extract_*</code> functions afford convenience, the docs warn to avoid situations where you invoke a <code>predict()</code> method on the extracted object. Specifically, the docs state:</p>
+<blockquote class="blockquote">
+<p>There may be preprocessing operations that <code>workflows</code> has executed on the data prior to giving it to the model. Bypassing these can lead to errors or silently generating incorrect predictions.</p>
+</blockquote>
+<p>In other words,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BAD, NO NO</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>log_reg_fit <span class="sc">|&gt;</span> <span class="fu">extract_fit_engine</span>() <span class="sc">|&gt;</span> <span class="fu">predict</span>(new_data)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>log_reg_fit <span class="sc">|&gt;</span> <span class="fu">predict</span>(new_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The fit object can also be passed to other generics, like <code>broom::tidy()</code>. The general <code>tidy()</code> method, when passed a fit object, is useful to view and use the coefficients table from the logistic regression model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(log_reg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  term          estimate std.error statistic  p.value
+  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)    -8.55     0.769     -11.1   1.10e-28
+2 hit_pct        30.1      2.09       14.4   5.50e-47
+3 errors         -0.0128   0.0212     -0.603 5.46e- 1
+4 block_solos     0.200    0.0515      3.89  1.02e- 4
+5 block_assists   0.0876   0.0137      6.39  1.64e-10
+6 digs            0.0137   0.00703     1.96  5.05e- 2</code></pre>
+</div>
+</div>
+<p>Beyond summarizing the model with the coefficients table, we can also create some plots from the model’s predictions from the training data. Here we need to use the <code>augment()</code> function. Later, we’ll explore this function in more depth when we calculate assessment metrics. For now, I’m using it to obtain the prediction estimates for winning.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>data_vball_aug <span class="ot">&lt;-</span> <span class="fu">augment</span>(log_reg_fit, data_vball_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With this data, we can visualize these prediction estimates with the various features used within the model. Since we’re creating several visualizations using similar code, I created a <code>plot_log_mdl()</code> function to simplify the plotting. Lastly, I used the <a href="https://patchwork.data-imaginist.com/"><code>patchwork</code> package</a> to combine the plots into one visualization. Below is the code to create these visualizations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>plot_log_mdl <span class="ot">&lt;-</span> <span class="cf">function</span>(data, x_var, y_var, color) {</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> data_vball_aug, </span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> {{ x_var }}, <span class="at">y =</span> {{ y_var }}, <span class="at">color =</span> {{ color }}),</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> .<span class="dv">4</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> data_vball_aug,</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> {{ x_var }}, <span class="at">y =</span> {{ y_var }}),</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">"glm"</span>, </span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>),</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">se =</span> <span class="cn">FALSE</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plot_hit_pct <span class="ot">&lt;-</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_log_mdl</span>(data_vball_aug, hit_pct, .pred_win, w_l)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>plot_errors <span class="ot">&lt;-</span> </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_log_mdl</span>(data_vball_aug, errors, .pred_win, w_l)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>plot_block_solos <span class="ot">&lt;-</span> </span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_log_mdl</span>(data_vball_aug, block_solos, .pred_win, w_l) <span class="sc">+</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">accuracy =</span> <span class="dv">1</span>))   </span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>plot_block_assists <span class="ot">&lt;-</span> </span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_log_mdl</span>(data_vball_aug, block_assists, .pred_win, w_l)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>plot_digs <span class="ot">&lt;-</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_log_mdl</span>(data_vball_aug, digs, .pred_win, w_l)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  plot_hit_pct, </span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>  plot_errors,</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>  plot_block_solos, </span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  plot_block_assists,</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>  plot_digs, </span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">guides =</span> <span class="st">"collect"</span></span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>) <span class="sc">&amp;</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/plot-mdls-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>To summarise our decision tree, we need to use the <a href="https://cran.r-project.org/web/packages/rpart.plot/"><code>rpart.plot</code></a> package to create a plot of the tree. The code to do this looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>dt_fit <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fit_engine</span>() <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rpart.plot</span>(<span class="at">roundint =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/plot-decision-tree-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Before transitioning to model assessment, let’s explore the predictions for both models using the <code>augment()</code> function again. According to the docs,</p>
+<blockquote class="blockquote">
+<p>Augment accepts a model object and a dataset and adds information about each observation in the dataset.</p>
+</blockquote>
+<p><code>augment()</code> produces new columns from the original data set to which makes it easy to examine model predictions. For instance, we can create a data set with the <code>.pred_class</code>, <code>.pred_win</code>, and <code>.pred_loss</code> columns. <code>augment()</code> also makes a guarantee that a tibble with the same number of rows as the passed data set will be returned, and all new column names will be prefixed with a <code>.</code>.</p>
+<p>Here we’ll pipe the tibble returned from <code>augment()</code> to the <code>relocate()</code> function. This will make it easier to view the variables we are interested in further examining by moving these columns to the left of the tibble.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(w_l, .pred_class, .pred_win, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,243 × 30
+   w_l   .pred_class .pred_win .pred_loss date       team_name      opponent set_wins set_loss     s
+   &lt;fct&gt; &lt;fct&gt;           &lt;dbl&gt;      &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+ 1 loss  loss          0.0616       0.938 2021-01-29 Illinois Figh… Wiscons…        0        3     3
+ 2 loss  loss          0.297        0.703 2021-01-30 Illinois Figh… Wiscons…        1        3     4
+ 3 loss  loss          0.138        0.862 2021-02-06 Illinois Figh… @ Penn …        2        3     5
+ 4 loss  loss          0.0572       0.943 2021-02-19 Illinois Figh… Ohio St.        1        3     4
+ 5 loss  loss          0.199        0.801 2021-02-20 Illinois Figh… Ohio St.        2        3     5
+ 6 loss  loss          0.0787       0.921 2021-03-05 Illinois Figh… Nebraska        0        3     3
+ 7 loss  loss          0.0281       0.972 2021-03-06 Illinois Figh… Nebraska        0        3     3
+ 8 loss  win           0.636        0.364 2021-03-12 Illinois Figh… @ Minne…        2        3     5
+ 9 loss  loss          0.00129      0.999 2021-03-13 Illinois Figh… @ Minne…        0        3     3
+10 loss  loss          0.0114       0.989 2021-04-02 Illinois Figh… @ Purdue        0        3     3
+# ℹ 1,233 more rows
+# ℹ 20 more variables: kills &lt;dbl&gt;, errors &lt;dbl&gt;, total_attacks &lt;dbl&gt;, hit_pct &lt;dbl&gt;,
+#   assists &lt;dbl&gt;, aces &lt;dbl&gt;, serr &lt;dbl&gt;, digs &lt;dbl&gt;, block_solos &lt;dbl&gt;, block_assists &lt;dbl&gt;,
+#   opp_kills &lt;dbl&gt;, opp_errors &lt;dbl&gt;, opp_total_attacks &lt;dbl&gt;, opp_hit_pct &lt;dbl&gt;,
+#   opp_assists &lt;dbl&gt;, opp_aces &lt;dbl&gt;, opp_serr &lt;dbl&gt;, opp_digs &lt;dbl&gt;, opp_block_solos &lt;dbl&gt;,
+#   opp_block_assists &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(w_l, .pred_class, .pred_win, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,243 × 30
+   w_l   .pred_class .pred_win .pred_loss date       team_name      opponent set_wins set_loss     s
+   &lt;fct&gt; &lt;fct&gt;           &lt;dbl&gt;      &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+ 1 loss  loss            0.131      0.869 2021-01-29 Illinois Figh… Wiscons…        0        3     3
+ 2 loss  loss            0.131      0.869 2021-01-30 Illinois Figh… Wiscons…        1        3     4
+ 3 loss  loss            0.131      0.869 2021-02-06 Illinois Figh… @ Penn …        2        3     5
+ 4 loss  loss            0.131      0.869 2021-02-19 Illinois Figh… Ohio St.        1        3     4
+ 5 loss  loss            0.131      0.869 2021-02-20 Illinois Figh… Ohio St.        2        3     5
+ 6 loss  loss            0.131      0.869 2021-03-05 Illinois Figh… Nebraska        0        3     3
+ 7 loss  loss            0.131      0.869 2021-03-06 Illinois Figh… Nebraska        0        3     3
+ 8 loss  win             0.603      0.397 2021-03-12 Illinois Figh… @ Minne…        2        3     5
+ 9 loss  loss            0.131      0.869 2021-03-13 Illinois Figh… @ Minne…        0        3     3
+10 loss  loss            0.131      0.869 2021-04-02 Illinois Figh… @ Purdue        0        3     3
+# ℹ 1,233 more rows
+# ℹ 20 more variables: kills &lt;dbl&gt;, errors &lt;dbl&gt;, total_attacks &lt;dbl&gt;, hit_pct &lt;dbl&gt;,
+#   assists &lt;dbl&gt;, aces &lt;dbl&gt;, serr &lt;dbl&gt;, digs &lt;dbl&gt;, block_solos &lt;dbl&gt;, block_assists &lt;dbl&gt;,
+#   opp_kills &lt;dbl&gt;, opp_errors &lt;dbl&gt;, opp_total_attacks &lt;dbl&gt;, opp_hit_pct &lt;dbl&gt;,
+#   opp_assists &lt;dbl&gt;, opp_aces &lt;dbl&gt;, opp_serr &lt;dbl&gt;, opp_digs &lt;dbl&gt;, opp_block_solos &lt;dbl&gt;,
+#   opp_block_assists &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="model-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="model-assessment">Model assessment</h2>
+<p>Since we’re fitting a binary classification model, we will use several measurements to assess model performance. Many of these measurements can be calculated using functions from the <a href="https://yardstick.tidymodels.org/"><code>yardstick</code></a> package. To start, we can calculate several measurements using the hard class predictions: a confusion matrix; accuracy; specificity; ROC curves; etc.</p>
+<section id="create-a-confusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-confusion-matrix">Create a confusion matrix</h3>
+<p>First, let’s start by creating a confusion matrix. A confusion matrix is simply a cross-tabulation of the observed and predicted classes, and it summarizes how many times the model predicted a class correctly vs.&nbsp;how many times it predicted it incorrectly. <a href="https://www.youtube.com/watch?v=Kdsp6soqA7o">The calculation of the table is pretty straight forward</a> for a binary-classification model. The <code>yardstick</code> package makes it easy to calculate this table with the <code>conf_mat()</code> function.</p>
+<p><code>conf_mat()</code>’s two main arguments are <code>truth</code> and <code>estimate</code>. <code>truth</code> pertains to the column containing the true class predictions (i.e., what was actually recorded). The <code>estimate</code> is the name of the column containing the discrete class prediction (i.e., the prediction made by the model).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction loss win
+      loss  438  89
+      win   104 612</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction loss win
+      loss  411  64
+      win   131 637</code></pre>
+</div>
+</div>
+<p>The <code>conf_mat()</code> also has an <code>autoplot()</code> method. This makes it easier to visualize the confusion matrix, either as a <code>mosaic</code> plot or a <code>heatmap</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class) <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">"mosaic"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/vis-log-reg-conf-matrix-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class) <span class="sc">|&gt;</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">"heatmap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/vis-dt-conf-matrix-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A few things to note from the confusion matrices created from our two models:</p>
+<ul>
+<li><p>The logistic regression does well predicting wins and losses, though it slightly over predicts wins in cases of losses and losses in cases of wins. However, prediction accuracy is pretty balanced.</p></li>
+<li><p>The decision tree does better reducing cases where it predicts a loss when a win occurred, but it predicted more wins when a loss took place. Thus, the decision tree model seems fairly optimistic when it comes to predicting wins when a loss occurred.</p></li>
+</ul>
+<p>After examining the confusion matrix, we can move forward with calculating some quantitative summary metrics from the results of the confusion matrix, which we can use to better compare the fit between the two models.</p>
+</section>
+<section id="measure-model-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="measure-model-accuracy">Measure model accuracy</h3>
+<p>One way to summarize the confusion matrix is to calculate the proportion of data that is predicted correctly, also known as accuracy. <code>yardstick</code>’s <code>accuracy()</code> function simplifies this calculation for us. Again, we just pipe our <code>augment()</code> function to the <code>accuracy()</code> function, and we specify which column is the <code>truth</code> and which is the <code>estimate</code> class prediction from the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy binary         0.845</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy binary         0.843</code></pre>
+</div>
+</div>
+<p>When it comes to accuracy, both models are fairly similar in their ability to predict cases correctly. The logistic regression’s accuracy is slightly better, though.</p>
+</section>
+<section id="measure-model-sensitivity-and-specificity" class="level3">
+<h3 class="anchored" data-anchor-id="measure-model-sensitivity-and-specificity">Measure model sensitivity and specificity</h3>
+<p>Sensitivity and specificity are additional assessment metrics we can calculate. Sensitivity in this case is the percentage of matches that were wins that were correctly identified by the model. Specificity is the percentage of matches that were losses that were correctly identified by the model. The <span class="citation" data-cites="StatQuest">@StatQuest</span> YouTube channel has a good <a href="https://www.youtube.com/watch?v=vP06aMoz4v8">video</a> breaking down how these metrics are calculated.</p>
+<p><code>yardstick</code> makes it easy to calculate these metrics with the <code>sensitivity()</code> and <code>specificity()</code> functions. As we did with calculating accuracy, we pipe the output of the <code>augment()</code> function to the <code>sensitivity()</code> function. We also specify the column that represents the true values to the <code>truth</code> argument, then pass the class predictions made by the model to the <code>estimate</code> argument. This looks like the following for both our logistic regression and decision tree models:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sensitivity</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 sensitivity binary         0.808</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specificity</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 specificity binary         0.873</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sensitivity</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 sensitivity binary         0.758</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">specificity</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 specificity binary         0.909</code></pre>
+</div>
+</div>
+<p>A few things to note:</p>
+<ul>
+<li><p>The logistic regression (sensitivity = 80.8%) was much better at predicting matches that were wins than the decision tree model (sensitivity = 75.8%).</p></li>
+<li><p>The decision tree was much better at identifying losses, though (90.9% vs.&nbsp;87.3%).</p></li>
+</ul>
+<section id="simplify-metric-calculations-with-metric_set" class="level4">
+<h4 class="anchored" data-anchor-id="simplify-metric-calculations-with-metric_set">Simplify metric calculations with <code>metric_set()</code></h4>
+<p>Although the above code provided the output we were looking for, we can simplify our code by using <code>yardstick</code>’s <code>metric_set()</code> function. Inside <code>metric_set()</code> we specify the different metrics we want to calculate for each model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>vball_mdl_metrics <span class="ot">&lt;-</span> </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we do as before, pipe the output from <code>augment()</code> to our metric set object <code>vball_mdl_metrics</code>, and specify the column that represents the truth and the column that represents the model’s class prediction. Here’s what this looks like for both our models:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vball_mdl_metrics</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy    binary         0.845
+2 sensitivity binary         0.808
+3 specificity binary         0.873</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vball_mdl_metrics</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy    binary         0.843
+2 sensitivity binary         0.758
+3 specificity binary         0.909</code></pre>
+</div>
+</div>
+<p>Now it’s much easier to make comparisons, and we write less code for the same amount of information. A big win!</p>
+</section>
+</section>
+<section id="roc-curves-and-auc-estimates" class="level3">
+<h3 class="anchored" data-anchor-id="roc-curves-and-auc-estimates">ROC curves and AUC estimates</h3>
+<p><a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">Receiver operating characteristic (ROC)</a> curves visually summarise classification model specificity and sensitivity using different threshold values. From this curve, an area under the curve (AUC) metric can be calculated. The AUC is a useful summary metric and can be used to compare the fit of two or more models. Again, <span class="citation" data-cites="StatQuest">@StatQuest</span> has a pretty good <a href="https://www.youtube.com/watch?v=4jRBRDbJemM">video</a> explaining the fundamentals of ROC curves and AUC estimates.</p>
+<p>Being a useful way to summarise model performance, the <code>yardstick</code> package makes several functions available to calculate both the ROC curve and AUC metric. An <code>autoplot()</code> method is also available to easily plot the ROC curve for us.</p>
+<p>Let’s take a look at how this is done with our logistic regression model. Here’s the code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, <span class="at">new_data =</span> data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(<span class="at">truth =</span> w_l, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,245 × 3
+     .threshold specificity sensitivity
+          &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+ 1 -Inf             0                 1
+ 2    0.0000835     0                 1
+ 3    0.000181      0.00143           1
+ 4    0.000405      0.00285           1
+ 5    0.000415      0.00428           1
+ 6    0.000496      0.00571           1
+ 7    0.000824      0.00713           1
+ 8    0.000839      0.00856           1
+ 9    0.000922      0.00999           1
+10    0.000979      0.0114            1
+# ℹ 1,235 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, <span class="at">new_data =</span> data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> w_l, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.920</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, <span class="at">new_data =</span> data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(<span class="at">truth =</span> w_l, .pred_loss) <span class="sc">|&gt;</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/vis-roc-log-reg-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>You’ll likely notice the syntax is pretty intuitive. You’ll also notice the code is similar to our other model performance metric calculations. First we use <code>augment()</code> to create the data we need. Second, we pipe the output of the <code>augment()</code> function to either the <code>roc_curve()</code> or <code>roc_auc()</code> function. The <code>roc_curve()</code> function calculates the ROC curve values and returns a tibble, which we will later pipe to the <code>autoplot()</code> method. The <code>roc_auc()</code> function calculates the area under the curve metric.</p>
+<p>Since we’re comparing two models, we perform these steps again for the decision tree model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, <span class="at">new_data =</span> data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(<span class="at">truth =</span> w_l, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 3
+  .threshold specificity sensitivity
+       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1   -Inf           0          1     
+2      0.126       0          1     
+3      0.397       0.800      0.851 
+4      0.714       0.909      0.758 
+5      0.869       0.914      0.740 
+6      0.875       0.994      0.0517
+7    Inf           1          0     </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, <span class="at">new_data =</span> data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> w_l, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.864</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(dt_fit, <span class="at">new_data =</span> data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(<span class="at">truth =</span> w_l, .pred_loss) <span class="sc">|&gt;</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/vis-roc-dt-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A few notes from comparing the ROC curve and AUC metrics:</p>
+<ul>
+<li><p>The AUC indicates a better model fit across different thresholds for the logistic regression model (AUC = .920) vs.&nbsp;the decision tree (AUC = .864).</p></li>
+<li><p>When visually examining the ROC curves for both models, it seems the logistic regression model is a better fitting model for the data.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="logistic-regression-it-is-then" class="level1">
+<h1>Logistic regression it is, then</h1>
+<p>Our model assessment suggested logistic regression is a good candidate model to make predictions. Thus, the last step is to test our final model fit using the test set.</p>
+<p>tidymodels makes this step easy with the <code>last_fit()</code> function. This is where our previous step of specifying a workflow comes in handy. In the function, we’ll pass along the <code>log_reg_wflow</code> workflow object and the <code>data_vball_split</code> object. We’ll also calculate metrics by passing along <code>metric_set(accuracy, sensitivity, specificity, roc_auc)</code> to the <code>metrics</code> argument of the function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>final_log_reg_fit <span class="ot">&lt;-</span> </span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">last_fit</span>(</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>    log_reg_wflow, </span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>    data_vball_split,</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="fu">metric_set</span>(accuracy, sensitivity, specificity, roc_auc) </span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>When you print the <code>final_log_reg_fit</code> object, a tibble is returned. The tibble contains list columns holding relevant model information, like our metrics and predictions. Take notice that all these columns are prefixed with a <code>.</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>final_log_reg_fit </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Resampling results
+# Manual resampling 
+# A tibble: 1 × 6
+  splits             id               .metrics         .notes           .predictions .workflow 
+  &lt;list&gt;             &lt;chr&gt;            &lt;list&gt;           &lt;list&gt;           &lt;list&gt;       &lt;list&gt;    
+1 &lt;split [1243/312]&gt; train/test split &lt;tibble [4 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble&gt;     &lt;workflow&gt;</code></pre>
+</div>
+</div>
+<p>To grab the information from these list columns, tidymodels makes several accessor functions available. In the case of obtaining our metrics, we can use the <code>collect_metrics()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(final_log_reg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  .metric     .estimator .estimate .config             
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+1 accuracy    binary         0.869 Preprocessor1_Model1
+2 sensitivity binary         0.846 Preprocessor1_Model1
+3 specificity binary         0.886 Preprocessor1_Model1
+4 roc_auc     binary         0.944 Preprocessor1_Model1</code></pre>
+</div>
+</div>
+<p>We can then compare the assessment metrics produced from the fit to the training set to that of the testing set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vball_mdl_metrics</span>(<span class="at">truth =</span> w_l, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy    binary         0.845
+2 sensitivity binary         0.808
+3 specificity binary         0.873</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(log_reg_fit, data_vball_train) <span class="sc">|&gt;</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> w_l, .pred_loss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.920</code></pre>
+</div>
+</div>
+<p>A few things of note:</p>
+<ul>
+<li>Most of the model assessment metrics dropped between the training and testing sets. This may indicate some slight overfitting of our model. As such, it may not fully generalize when new data is used to create predictions.</li>
+</ul>
+</section>
+<section id="have-some-fun-make-predictions" class="level1">
+<h1>Have some fun, make predictions</h1>
+<section id="extract-the-final-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="extract-the-final-workflow">Extract the final workflow</h2>
+<p>Once the final candidate model is identified, we can extract the final workflow using the <a href="https://hardhat.tidymodels.org"><code>hardhat</code></a> package’s <code>extract_workflow()</code> function. Here we’ll use this workflow object to make predictions, but this workflow object is also useful if you intend to deploy this model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>final_fit_wflow <span class="ot">&lt;-</span> <span class="fu">extract_workflow</span>(final_log_reg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="make-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="make-predictions">Make predictions</h2>
+<p>At this point in the season, let’s see how the Nebraska women’s volleyball team stacked up in several of their matches using our model. First, let’s examine Nebraska’s win against Wisconsin, <a href="https://huskers.com/boxscore/21265">a five set thriller</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>wisc_mtch_one <span class="ot">&lt;-</span> data_vball <span class="sc">|&gt;</span> </span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(team_name <span class="sc">==</span> <span class="st">"Nebraska Huskers"</span>, date <span class="sc">==</span> <span class="fu">as_date</span>(<span class="st">"2023-10-21"</span>))</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(final_fit_wflow, <span class="at">new_data =</span> wisc_mtch_one)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 loss       </code></pre>
+</div>
+</div>
+<p>According to our model, Nebraska should have lost this match. This makes Nebraska’s win even more impressive. The grittiness to pull out a win, even when evidence suggests they shouldn’t have, speaks volumes of this team. Indeed, wins and losses for volleyball matches are a function of many different factors. Factors that may not be fully captured by the data or this specific model.</p>
+<p>What about Nebraska’s 0-3, <a href="https://huskers.com/boxscore/21274">second match loss against Wisconsin</a>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>wisc_mtch_two <span class="ot">&lt;-</span> data_vball <span class="sc">|&gt;</span> </span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(team_name <span class="sc">==</span> <span class="st">"Nebraska Huskers"</span>, date <span class="sc">==</span> <span class="fu">as_date</span>(<span class="st">"2023-11-24"</span>))</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(final_fit_wflow, <span class="at">new_data =</span> wisc_mtch_two)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 loss       </code></pre>
+</div>
+</div>
+<p>No surprise, the model predicted Nebraska would lose this match. It’s a pretty steep hill to climb when you hit a .243 and only have 5 total blocks.</p>
+<p>Another nail-biter was Nebraska’s second <a href="https://huskers.com/boxscore/21268">match against Penn State</a>. Let’s take a look at what the model would predict.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>penn_state <span class="ot">&lt;-</span> data_vball <span class="sc">|&gt;</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(team_name <span class="sc">==</span> <span class="st">"Nebraska Huskers"</span>, date <span class="sc">==</span> <span class="fu">as_date</span>(<span class="st">"2023-11-03"</span>))</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(final_fit_wflow, <span class="at">new_data =</span> penn_state)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 win        </code></pre>
+</div>
+</div>
+<p>Even though the match was close, the model predicted Nebraska would win this match. It may have been a nail-biter to watch, but Nebraska played well enough to win the match, according to our model.</p>
+</section>
+<section id="the-ncaa-tournament-and-our-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-ncaa-tournament-and-our-model">The NCAA tournament and our model</h2>
+<p>We’re through the initial rounds of the <a href="https://www.ncaa.com/news/volleyball-women/article/2023-11-18/2023-ncaa-volleyball-tournament-bracket-how-watch">2023 NCAA women’s volleyball tournament</a>. Let’s look at a couple of scenarios for Nebraska using our final model.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I’m extrapolating a bit here, since the data I’m using only includes Big Ten volleyball team matches. The NCAA tournament will include teams from many other conferences, so the predictions don’t fully generalize to tournament matches.</p>
+<p>We could avert the extrapolation here by obtaining match data for all NCAA volleyball matches for the 2021, 2022, and 2023 seasons. For the sake of keeping this post manageable, I did not obtain this data.</p>
+</div>
+</div>
+<p>First, let’s just say Nebraska plays to up to their regular season average for hit percentage, errors, block solos, block assists, and digs in NCAA tournament matches. What does our model predict in regards to Nebraska winning or losing a match?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>season_avg <span class="ot">&lt;-</span> data_vball <span class="sc">|&gt;</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(team_name <span class="sc">==</span> <span class="st">"Nebraska Huskers"</span>, <span class="fu">year</span>(date) <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">|&gt;</span></span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), mean)) <span class="sc">|&gt;</span></span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(hit_pct, errors, block_solos, block_assists, digs)</span>
+<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(final_fit_wflow, <span class="at">new_data =</span> season_avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 win        </code></pre>
+</div>
+</div>
+<p>If Nebraska can hit at least a .290, commit less than 17 errors, have one solo block, have 16 block assists, and dig the ball roughly 48 times, then according to the model, they should win matches. Put another way, if Nebraska performs close to their regular season average for these statistics, then the model suggests they will win matches.</p>
+<p>This is very encouraging, since the Huskers should be playing their best volleyball here at the end of the season. One would hope this means they perform near or better than their average in tournament matches.</p>
+<p>One last scenario, let’s look at the low end of Nebraska’s performance this season. Specifically, let’s see what the model predicts if Nebraska will win or lose a match at the 25% quartile for these statistics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>quantile_25 <span class="ot">&lt;-</span> data_vball <span class="sc">|&gt;</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(team_name <span class="sc">==</span> <span class="st">"Nebraska Huskers"</span>, <span class="fu">year</span>(date) <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">|&gt;</span></span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">quantile</span>(.x, .<span class="dv">25</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(hit_pct, errors, block_solos, block_assists, digs)</span>
+<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(final_fit_wflow, <span class="at">new_data =</span> quantile_25)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 win        </code></pre>
+</div>
+</div>
+<p>According to the model, if Nebraska can perform up to their 25% quartile of their regular season statistics, the model suggests they should win matches. Matches like those in the NCAA tournament. So even if Nebraska doesn’t perform to their potential or just has an off match, they should win if they can at least achieve the 25% quartile of their regular season statistics.</p>
+<blockquote class="blockquote">
+<p>“All models are wrong, but some are useful.”</p>
+<p>- <a href="https://en.wikipedia.org/wiki/All_models_are_wrong">George Box</a></p>
+</blockquote>
+<p>Again, many factors determine if a team wins or loses a match in volleyball (see the model’s prediction for Nebraska’s first match against Wisconsin). This is just one, simple model aimed at predicting wins and losses based on hit percentage, errors, block solos, block assists, and digs. A model that certainly could be improved.</p>
+</section>
+</section>
+<section id="ways-to-improve-our-predictive-model" class="level1">
+<h1>Ways to improve our predictive model</h1>
+<p>This post was a brief overview of fitting predictive models using the tidymodels framework. As such, additional modeling procedures were not performed to improve the predictive performance of the model. This includes feature engineering (I can hear the volleyball fanatics groveling over my lack of per set statistics in the model), hyperparameter tuning, exploration of other models, and the use of ensemble methods.</p>
+<p>The use of these techniques would most likely yield more accurate results from the final candidate model. Additionally, different models, not explored here, may fit the data better. Thus, I intend to write future posts exploring these topics in more depth.</p>
+</section>
+<section id="wrap-up" class="level1">
+<h1>Wrap-up</h1>
+<p>This post aimed to be a high-level overview of specifying predictive models using the tidymodels framework. To do this, two binary classification models predicting wins and losses were fit to Big Ten NCAA women’s volleyball data. Subsequent model assessment metrics indicated logistic regression to be a candidate model to predict wins and losses when hit percentage, errors, block solos, block assists, and digs are used as features. Using this model, we estimated predictions for several matches won and lost by the Nebraska women’s volleyball team. Finally, we explored some different scenarios for the Nebraska women’s volleyball team and whether the model predicted if they would win matches in the NCAA tournament based on their regular season performance.</p>
+<p>If you have any suggestions to improve upon this model or a different approach, let me know.</p>
+<p>Now, go have some fun specifying models and making predictions with <a href="https://www.tidymodels.org/"><code>tidymodels</code></a>.</p>
+</section>
+<section id="resources-to-learn-more" class="level1">
+<h1>Resources to learn more</h1>
+<ul>
+<li><a href="https://www.tmwr.org/">Tidy Modeling with R by Max Kuhn and Julia Silge</a></li>
+<li><a href="https://www.tidymodels.org/">tidymodels documentation</a></li>
+<li><a href="https://www.youtube.com/watch?v=vP06aMoz4v8">Machine Learning Fundamentals: Sensitivity and Specificity from the <span class="citation" data-cites="StatQuest">@StatQuest</span> YouTube Channel</a></li>
+<li><a href="https://www.youtube.com/watch?v=4jRBRDbJemM">ROC and AUC, Clearly Explained! from the <span class="citation" data-cites="StatQuest">@StatQuest</span> YouTube Channel</a></li>
+</ul>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2023,
+  author = {Berke, Collin K},
+  title = {Messing Around with Tidymodels: {Learning} How to Fit a
+    Binary Classification Model Using {NCAA} {Big} {Ten} Women’s
+    Volleyball Data},
+  date = {2023-12-07},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2023. <span>“Messing Around with Tidymodels: Learning
+How to Fit a Binary Classification Model Using NCAA Big Ten Women’s
+Volleyball Data.”</span> December 7, 2023.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'alternate';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
