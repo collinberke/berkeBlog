@@ -1,0 +1,149 @@
+---
+title: "30-day tidymodels `recipes` challenge"
+date: "2024-01-01"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpg
+description: "Learning how to use the `recipes` package, one day at a time"
+toc: true
+categories:
+  - machine learning
+  - feature engineering
+  - tidymodels
+  - data wrangling
+---
+
+![Photo by [Nicolas Gras](https://unsplash.com/photos/assorted-cookware-set-UiGsP8TvOJQ)](thumbnail-wide.jpg)
+
+# Background
+
+Before the holidays, I came across [Emil Hvitfeldt's](https://www.linkedin.com/in/emilhvitfeldt/) `#adventofsteps` LinkedIn [posts](https://www.linkedin.com/feed/hashtag/?keywords=adventofsteps). Following a model popularized by [advent of code](https://adventofcode.com/2023/about)--an annual tradition of online programming puzzles based on the theme of an [advent calendar](https://en.wikipedia.org/wiki/Advent_calendar)--these posts provided daily examples on the use of various `step_*` functions from the `tidymodels`' [`recipes`](https://recipes.tidymodels.org/index.html) package. This post, with a slight spin, is inspired by these posts. 
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidymodels)
+tidymodels_prefer()
+```
+
+# My spin on this
+
+One of my personal goals this coming year is to learn and practice using the different tidymodels' packages. To complete this goal, I thought a 30-day `recipes` challenge would be a good start. Each day during this 30-day personal challenge, I will focus on learning and creating some daily notes about one functionality of the `recipes` package. First, I start with the basics (e.g., how to create a recipe object). Then, I'll focus on describing the various `step_*` functions. 
+
+To keep me on track, while also avoiding making this a chore, I'm going to place a 1-hour a day stopgap on studying, practicing, and documenting what I've learned. Depending on my schedule and motivation, I may work ahead on some material, but I will strive to update this post once a day.
+
+Given the time constraint I'm imposing on myself, some of my daily notes or examples may result in an incomplete description of functionality. In cases like this, I'll try to link to relevant documentation for you to follow up and learn more. Please be flexible with any grammar and spelling errors during this challenge, as I'll likely edit very little until the end of the 30 days, if at all. 
+
+Since the aim of this post is to document what I'm learning, all errors are completely mine. I highly suggest following up with the `recipes` package's [documentation](https://recipes.tidymodels.org/) and the [Tidy Modeling with R](https://www.tmwr.org/) book following a review of these notes. Both do a more thorough job overviewing the package's functionality.
+
+# What I intend to get out of this challenge 
+
+By the end of this challenge, I hope to have pushed myself to learn more about how to use `tidymodels`'s `recipe` package, and to create several example use cases of different functionality.
+
+# Day 01 - Create a recipe
+
+First off, what is a recipe? According to the docs:
+
+> A recipe is a description of the steps to be applied to a data set in order to prepare it for data analysis.
+
+So, I start this personal challenge by overviewing how to create a recipe object with the `recipes` package. The `recipe()` function is used to create a recipe object. 
+
+When creating a recipe, we need to consider what **roles** variables take. In simple modeling tasks, you'll just have outcomes and predictors. However, variables may take on other roles (i.e., IDs). As such, the `recipe()` function provides multiple means for specifying the role of a variable: 
+
+1. The formula 
+2. Manually updating roles using the `update_role()` function.
+
+Let's use the `credit_data` from tidymodels' `modeldata` package. You can get more information about this data by running `?credit_data` in your console.
+
+```{r day-01-data}
+data(credit_data, package = "modeldata")
+glimpse(credit_data)
+
+# For reproducibility
+set.seed(1)
+credit_split <- initial_split(credit_data, prop = 0.8, strata = Status)
+
+# Create splits for examples
+credit_train <- training(credit_split)
+credit_test <- testing(credit_split)
+```
+
+```{r day-01-recipe-formula}
+# No outcome variable, `.` is a shortcut for **all** variables
+credit_rec <- recipe(~., data = credit_train)
+
+# Outcome with specific variables to be included within model
+credit_rec <- recipe(
+  Status ~ Debt + Income + Assets, 
+  data = credit_train
+)
+
+# Recipe uses `data` only as a template, all the data is not needed
+# Useful in cases when you're working with large data
+credit_rec <- recipe(
+  Status ~ Debt + Income + Assets, 
+  data = head(credit_train)
+)
+```
+
+```{r day-01-recipe-update}
+# Use `update_role()` to specify variable roles
+credit_rec_update <- recipe(credit_train) |>
+  update_role(Status, new_role = "outcome") |>
+  update_role(
+    Seniority, Home, Time, Age, Marital, Records, 
+    Job, Expenses, Income, Assets, Debt, Amount, 
+    Price, new_role = "predictor"
+  )
+
+credit_rec_update
+```
+
+The `update_role()` function is useful in cases where you might have an ID variable you don't want to include within your model.
+
+```{r day-01-create-data-w-id}
+credit_data_id <- credit_data |>
+  mutate(id = 1:n(), .before = 1)
+
+set.seed(2)
+credit_id_split <- 
+  initial_split(credit_data_id, prop = 0.8, strata = Status)
+credit_id_train <- training(credit_id_split)
+credit_id_test <- testing(credit_id_split)
+```
+
+```{r day-01-recipe-w-ids}
+# Manually add an 'id' role to a variable
+credit_id_rec <- recipe(credit_id_train) |>
+  update_role(id, new_role = "id") |>
+  update_role(Status, new_role = "outcome") |>
+  update_role(
+    Seniority, Home, Time, Age, Marital, Records, 
+    Job, Expenses, Income, Assets, Debt, Amount, 
+    Price, new_role = "predictor"
+  ) 
+
+credit_id_rec
+```
+
+In case you ever need to remove a role, you can use `remove_role()`.
+
+```{r day-01-recipe-no-id}
+credit_no_id_rec <- credit_id_rec |>
+  remove_role(id, old_role = "id")
+
+# id will be assigned and 'undeclared' role
+credit_no_id_rec
+```
+
+Each recipe has its own summary method. We can wrap the recipe object within `summary()` to output more information about each variable and its assigned role.
+
+```{r day-01-summary}
+# Formula specified recipe
+summary(credit_rec)
+
+# Manually specified using `update_role()`
+summary(credit_rec_update)
+
+# Recipe with a variable holding the 'id' role
+summary(credit_id_rec)
+```
