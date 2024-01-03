@@ -1,5 +1,5 @@
 ---
-title: "30-day tidymodels `recipes` challenge"
+title: "30 day tidymodels `recipes` challenge"
 date: "2024-01-01"
 author: "Collin K. Berke, Ph.D."
 draft: false 
@@ -27,7 +27,7 @@ tidymodels_prefer()
 
 # My spin on this
 
-One of my personal goals this coming year is to learn and practice using the different tidymodels' packages. To complete this goal, I thought a 30-day `recipes` challenge would be a good start. Each day during this 30-day personal challenge, I will focus on learning and creating some daily notes about one functionality of the `recipes` package. First, I start with the basics (e.g., how to create a recipe object). Then, I'll focus on describing the various `step_*` functions. 
+One of my personal goals this coming year is to learn and practice using the different tidymodels' packages. To complete this goal, I thought a 30 day `recipes` challenge would be a good start. Each day during this 30 day personal challenge, I will focus on learning and creating some daily notes about one functionality of the `recipes` package. First, I start with the basics (e.g., how to create a recipe object). Then, I'll focus on describing the various `step_*` functions. 
 
 To keep me on track, while also avoiding making this a chore, I'm going to place a 1-hour a day stopgap on studying, practicing, and documenting what I've learned. Depending on my schedule and motivation, I may work ahead on some material, but I will strive to update this post once a day.
 
@@ -147,3 +147,89 @@ summary(credit_rec_update)
 # Recipe with a variable holding the 'id' role
 summary(credit_id_rec)
 ```
+
+# Day 02 - How to use `prep()` and `bake()` 
+
+Let's stick with the credit data for today's examples.
+
+```{r day-02-data}
+# Same code from day 01
+data(credit_data, package = "modeldata")
+glimpse(credit_data)
+
+# For reproducibility
+set.seed(1)
+credit_split <- initial_split(credit_data, prop = 0.8, strata = Status)
+
+# Create splits for our day 2 examples
+credit_train <- training(credit_split)
+credit_test <- testing(credit_split)
+```
+
+We're going to continue to use the previously specified limited model from day 01 for our examples.
+
+```{r day-02-recipe}
+credit_rec <- recipe(
+  Status ~ Debt + Income + Assets, 
+  data = credit_train
+)
+```
+
+Now that we know how to specify a recipe, we need to learn how to use `recipes`' `prep()` and `bake()` functions. `prep()` calculates any intermediate values required for preprocessing. `bake()` applies the preprocessing steps--using any intermediate values--to our testing and training data.
+
+`prep()` and `bake()` [can be confusing](https://stackoverflow.com/questions/62189885/what-is-the-difference-among-prep-bake-juice-in-the-r-package-recipes) at first. However, I like the following analogy from the [R4DS learning community's Q&A](https://youtu.be/xygnYlku-w4?feature=shared&t=1822) with the authors of the [Tidy Modeling with R book](https://www.tmwr.org/):
+
+> They're analogous to `fit()` and `predict()` ... `prep()` is like fitting where you're estimating stuff and `bake()` is like you're applying it.
+>
+> \- Max Kuhn
+
+For a more formal treatment, the `prep()` docs state:
+
+> For a recipe with at least one preprocessing operation, estimate the required parameters from a training set that can be later applied to other data sets. 
+
+The `bake()` docs state:
+
+> For a recipe with at least one preprocessing operation that has been trained by `prep()`, apply the computations to new data.
+
+Why two separate functions? Some preprocessing steps need an *intermediate calculation* step to be performed before applying the recipe to the data (e.g., `step_normalize()` and `step_center()`; more on this later). To better articulate this point, I'm going to fast-forward a bit in our challenge and apply the `step_center()` function to our recipe. `step_center()` is used to center variables.
+
+When centering a variable, we need to make an intermediate calculation (i.e., `prep()`) before applying the calculation to perform the centering to our data (i.e., `bake()`).
+
+For our example, say we want to center the `Debt` variable. To do this, we can simply add `step_center(Debt)` to our recipe. When we pipe the recipe object to `prep()`, the mean is calculated in the background to perform the preprocessing step. 
+
+```{r day-02-prep}
+credit_rec <- recipe(
+  Status ~ Debt + Income + Assets, 
+  data = credit_train
+) |>
+  step_center(Debt) |>
+  prep() 
+```
+We can see this calculated value by using the `number` argument in the `tidy.recipe()` method. 
+
+```{r day-02-prep-tidy}
+# Print a summary of the recipe steps to be performed
+tidy(credit_rec)
+
+# Print additional information about the first recipe step
+tidy(credit_rec, number = 1)
+```
+
+Take note, though, the `Debt` variable has not been centered yet, and we are still working with a recipe object.
+
+We then apply the centering transformation to the data by piping the prepped recipe to `bake()`. We can apply the preprocessing to the training data by passing the `NULL` to the `new_data` argument. `bake()` returns a tibble with our transformed variable using our training data. 
+
+```{r day-02-baked}
+credit_baked <- recipe(
+  Status ~ Debt + Income + Assets, 
+  data = credit_train
+) |>
+  step_center(Debt) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_baked
+```
+
+Most likely, you won't use `prep()` and `bake()` for other modeling tasks. However, they'll be important as we continue exploring the `recipes` package in the coming days. 
+
