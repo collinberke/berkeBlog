@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-01-01">
 <meta name="description" content="Learning how to use the recipes package, one day at a time">
 
-<title>Collin K. Berke, Ph.D.&nbsp;- 30-day tidymodels recipes challenge</title>
+<title>Collin K. Berke, Ph.D.&nbsp;- 30 day tidymodels recipes challenge</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,6 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#my-spin-on-this" id="toc-my-spin-on-this" class="nav-link" data-scroll-target="#my-spin-on-this">My spin on this</a></li>
   <li><a href="#what-i-intend-to-get-out-of-this-challenge" id="toc-what-i-intend-to-get-out-of-this-challenge" class="nav-link" data-scroll-target="#what-i-intend-to-get-out-of-this-challenge">What I intend to get out of this challenge</a></li>
   <li><a href="#day-01---create-a-recipe" id="toc-day-01---create-a-recipe" class="nav-link" data-scroll-target="#day-01---create-a-recipe">Day 01 - Create a recipe</a></li>
+  <li><a href="#day-02---how-to-use-prep-and-bake" id="toc-day-02---how-to-use-prep-and-bake" class="nav-link" data-scroll-target="#day-02---how-to-use-prep-and-bake">Day 02 - How to use <code>prep()</code> and <code>bake()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -170,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">30-day tidymodels <code>recipes</code> challenge</h1>
+<h1 class="title">30 day tidymodels <code>recipes</code> challenge</h1>
   <div class="quarto-categories">
     <div class="quarto-category">machine learning</div>
     <div class="quarto-category">feature engineering</div>
@@ -225,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="my-spin-on-this" class="level1">
 <h1>My spin on this</h1>
-<p>One of my personal goals this coming year is to learn and practice using the different tidymodels’ packages. To complete this goal, I thought a 30-day <code>recipes</code> challenge would be a good start. Each day during this 30-day personal challenge, I will focus on learning and creating some daily notes about one functionality of the <code>recipes</code> package. First, I start with the basics (e.g., how to create a recipe object). Then, I’ll focus on describing the various <code>step_*</code> functions.</p>
+<p>One of my personal goals this coming year is to learn and practice using the different tidymodels’ packages. To complete this goal, I thought a 30 day <code>recipes</code> challenge would be a good start. Each day during this 30 day personal challenge, I will focus on learning and creating some daily notes about one functionality of the <code>recipes</code> package. First, I start with the basics (e.g., how to create a recipe object). Then, I’ll focus on describing the various <code>step_*</code> functions.</p>
 <p>To keep me on track, while also avoiding making this a chore, I’m going to place a 1-hour a day stopgap on studying, practicing, and documenting what I’ve learned. Depending on my schedule and motivation, I may work ahead on some material, but I will strive to update this post once a day.</p>
 <p>Given the time constraint I’m imposing on myself, some of my daily notes or examples may result in an incomplete description of functionality. In cases like this, I’ll try to link to relevant documentation for you to follow up and learn more. Please be flexible with any grammar and spelling errors during this challenge, as I’ll likely edit very little until the end of the 30 days, if at all.</p>
 <p>Since the aim of this post is to document what I’m learning, all errors are completely mine. I highly suggest following up with the <code>recipes</code> package’s <a href="https://recipes.tidymodels.org/">documentation</a> and the <a href="https://www.tmwr.org/">Tidy Modeling with R</a> book following a review of these notes. Both do a more thorough job overviewing the package’s functionality.</p>
@@ -453,18 +454,133 @@ undeclared role:  1</code></pre>
 15 Price     &lt;chr [2]&gt; predictor original</code></pre>
 </div>
 </div>
+</section>
+<section id="day-02---how-to-use-prep-and-bake" class="level1">
+<h1>Day 02 - How to use <code>prep()</code> and <code>bake()</code></h1>
+<p>Let’s stick with the credit data for today’s examples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Same code from day 01</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(credit_data, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(credit_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,454
+Columns: 14
+$ Status    &lt;fct&gt; good, good, bad, good, good, good, good, good, good, bad, good, good, good, good…
+$ Seniority &lt;int&gt; 9, 17, 10, 0, 0, 1, 29, 9, 0, 0, 6, 7, 8, 19, 0, 0, 15, 33, 0, 1, 2, 5, 1, 27, 2…
+$ Home      &lt;fct&gt; rent, rent, owner, rent, rent, owner, owner, parents, owner, parents, owner, own…
+$ Time      &lt;int&gt; 60, 60, 36, 60, 36, 60, 60, 12, 60, 48, 48, 36, 60, 36, 18, 24, 24, 24, 48, 60, …
+$ Age       &lt;int&gt; 30, 58, 46, 24, 26, 36, 44, 27, 32, 41, 34, 29, 30, 37, 21, 68, 52, 68, 36, 31, …
+$ Marital   &lt;fct&gt; married, widow, married, single, single, married, married, single, married, marr…
+$ Records   &lt;fct&gt; no, no, yes, no, no, no, no, no, no, no, no, no, no, no, yes, no, no, no, no, no…
+$ Job       &lt;fct&gt; freelance, fixed, freelance, fixed, fixed, fixed, fixed, fixed, freelance, parti…
+$ Expenses  &lt;int&gt; 73, 48, 90, 63, 46, 75, 75, 35, 90, 90, 60, 60, 75, 75, 35, 75, 35, 65, 45, 35, …
+$ Income    &lt;int&gt; 129, 131, 200, 182, 107, 214, 125, 80, 107, 80, 125, 121, 199, 170, 50, 131, 330…
+$ Assets    &lt;int&gt; 0, 0, 3000, 2500, 0, 3500, 10000, 0, 15000, 0, 4000, 3000, 5000, 3500, 0, 4162, …
+$ Debt      &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2500, 260, 0, 0, 0, 2000, 0, 0, 0, 0, 500, 0…
+$ Amount    &lt;int&gt; 800, 1000, 2000, 900, 310, 650, 1600, 200, 1200, 1200, 1150, 650, 1500, 600, 400…
+$ Price     &lt;int&gt; 846, 1658, 2985, 1325, 910, 1645, 1800, 1093, 1957, 1468, 1577, 915, 1650, 940, …</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For reproducibility</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>credit_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(credit_data, <span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Status)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create splits for our day 2 examples</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>credit_train <span class="ot">&lt;-</span> <span class="fu">training</span>(credit_split)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>credit_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(credit_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’re going to continue to use the previously specified limited model from day 01 for our examples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  Status <span class="sc">~</span> Debt <span class="sc">+</span> Income <span class="sc">+</span> Assets, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> credit_train</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we know how to specify a recipe, we need to learn how to use <code>recipes</code>’ <code>prep()</code> and <code>bake()</code> functions. <code>prep()</code> calculates any intermediate values required for preprocessing. <code>bake()</code> applies the preprocessing steps–using any intermediate values–to our testing and training data.</p>
+<p><code>prep()</code> and <code>bake()</code> <a href="https://stackoverflow.com/questions/62189885/what-is-the-difference-among-prep-bake-juice-in-the-r-package-recipes">can be confusing</a> at first. However, I like the following analogy from the <a href="https://youtu.be/xygnYlku-w4?feature=shared&amp;t=1822">R4DS learning community’s Q&amp;A</a> with the authors of the <a href="https://www.tmwr.org/">Tidy Modeling with R book</a>:</p>
+<blockquote class="blockquote">
+<p>They’re analogous to <code>fit()</code> and <code>predict()</code> … <code>prep()</code> is like fitting where you’re estimating stuff and <code>bake()</code> is like you’re applying it.</p>
+<p>- Max Kuhn</p>
+</blockquote>
+<p>For a more formal treatment, the <code>prep()</code> docs state:</p>
+<blockquote class="blockquote">
+<p>For a recipe with at least one preprocessing operation, estimate the required parameters from a training set that can be later applied to other data sets.</p>
+</blockquote>
+<p>The <code>bake()</code> docs state:</p>
+<blockquote class="blockquote">
+<p>For a recipe with at least one preprocessing operation that has been trained by <code>prep()</code>, apply the computations to new data.</p>
+</blockquote>
+<p>Why two separate functions? Some preprocessing steps need an <em>intermediate calculation</em> step to be performed before applying the recipe to the data (e.g., <code>step_normalize()</code> and <code>step_center()</code>; more on this later). To better articulate this point, I’m going to fast-forward a bit in our challenge and apply the <code>step_center()</code> function to our recipe. <code>step_center()</code> is used to center variables.</p>
+<p>When centering a variable, we need to make an intermediate calculation (i.e., <code>prep()</code>) before applying the calculation to perform the centering to our data (i.e., <code>bake()</code>).</p>
+<p>For our example, say we want to center the <code>Debt</code> variable. To do this, we can simply add <code>step_center(Debt)</code> to our recipe. When we pipe the recipe object to <code>prep()</code>, the mean is calculated in the background to perform the preprocessing step.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  Status <span class="sc">~</span> Debt <span class="sc">+</span> Income <span class="sc">+</span> Assets, </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> credit_train</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(Debt) <span class="sc">|&gt;</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can see this calculated value by using the <code>number</code> argument in the <code>tidy.recipe()</code> method.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print a summary of the recipe steps to be performed</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type   trained skip  id          
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;       
+1      1 step      center TRUE    FALSE center_lw98c</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print additional information about the first recipe step</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  terms value id          
+  &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;       
+1 Debt   337. center_lw98c</code></pre>
+</div>
+</div>
+<p>Take note, though, the <code>Debt</code> variable has not been centered yet, and we are still working with a recipe object.</p>
+<p>We then apply the centering transformation to the data by piping the prepped recipe to <code>bake()</code>. We can apply the preprocessing to the training data by passing the <code>NULL</code> to the <code>new_data</code> argument. <code>bake()</code> returns a tibble with our transformed variable using our training data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>credit_baked <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  Status <span class="sc">~</span> Debt <span class="sc">+</span> Income <span class="sc">+</span> Assets, </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> credit_train</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(Debt) <span class="sc">|&gt;</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>credit_baked</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,563 × 4
+    Debt Income Assets Status
+   &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt; &lt;fct&gt; 
+ 1 -337.     80      0 bad   
+ 2 -337.     50      0 bad   
+ 3 -337.    107      0 bad   
+ 4  163.    112   2000 bad   
+ 5 -337.     85   5000 bad   
+ 6   NA      NA     NA bad   
+ 7 -337.     90      0 bad   
+ 8 -337.     71   3000 bad   
+ 9 -337.    128      0 bad   
+10 -337.    100      0 bad   
+# ℹ 3,553 more rows</code></pre>
+</div>
+</div>
+<p>Most likely, you won’t use <code>prep()</code> and <code>bake()</code> for other modeling tasks. However, they’ll be important as we continue exploring the <code>recipes</code> package in the coming days.</p>
 
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
   author = {Berke, Collin K},
-  title = {30-Day Tidymodels `Recipes` Challenge},
+  title = {30 Day Tidymodels `Recipes` Challenge},
   date = {2024-01-01},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2024" class="csl-entry quarto-appendix-citeas" role="listitem">
-Berke, Collin K. 2024. <span>“30-Day Tidymodels `Recipes`
+Berke, Collin K. 2024. <span>“30 Day Tidymodels `Recipes`
 Challenge.”</span> January 1, 2024.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
