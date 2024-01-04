@@ -233,3 +233,158 @@ credit_baked
 
 Most likely, you won't use `prep()` and `bake()` for other modeling tasks. However, they'll be important as we continue exploring the `recipes` package in the coming days. 
 
+# Day 03 - Selector functions
+
+Remaining consistent, let's continue using the `credit_data` data for some of today's examples. We'll also use the `Chicago` data set for a couple additional examples. You can read more about this data by running `?Chicago` in your console.
+
+Here we'll get our data and split it into training and testing for both data sets.
+
+```{r day-03-credit-data}
+# Same code from day 01
+data(credit_data, package = "modeldata")
+glimpse(credit_data)
+
+# For reproducibility
+set.seed(1)
+credit_split <- initial_split(credit_data, prop = 0.8, strata = Status)
+credit_train <- training(credit_split)
+credit_test <- testing(credit_split)
+```
+
+```{r day-03-Chicago-data}
+data(Chicago, package = "modeldata")
+glimpse(Chicago)
+
+# For reproducibility
+set.seed(2)
+chicago_split <- initial_split(Chicago, prop = 0.8)
+chicago_train <- training(chicago_split)
+chicago_test <- testing(chicago_split)
+```
+
+When using `recipes`, we often need to select a group of variables (e.g., all predictors, all numeric variables, all categorical variables, etc.) to apply preprocessing steps. Indeed, we certainly could just explicitly specifiy each variable by name within our recipe. There's a better way, though. Use [*selector functions*](https://recipes.tidymodels.org/reference/has_role.html).
+
+Selector functions can be used to choose variables based on:
+
+1. Variable names
+2. Current role
+3. Data type
+4. Any combination of the above three
+
+The first set of selectors comes from the [`tidyselect`](https://tidyselect.r-lib.org) package, which allows you to make selections based on variable names. Some common ones include:
+
+* `tidyselect::starts_with()`
+* `tidyselect::ends_with()`
+* `tidyselect::contains()`
+* `tidyselect::everything()`
+
+Check out `recipes`' `?selections` and the `tidyselect` [docs](https://tidyselect.r-lib.org) for a more exhaustive list of available selection functions. Included above are the ones I commonly use. Here are a few examples of how to use these selector functions to center variables.
+
+```{r day-03-center-chicago-weather}
+# Apply the centering to variables that start with the *weather* prefix
+chicago_rec <- 
+  recipe(ridership ~ ., data = chicago_train) |>
+  step_center(starts_with("weather")) |>
+  prep() |>
+  bake(new_data = NULL)
+
+chicago_rec |> select(starts_with("weather"))
+```
+
+Selections also allows us to use the `-` to exclude specific variables or groupings of variables while using selector functions.
+
+```{r day-03-center-some-numeric}
+chicago_rec <- 
+  recipe(ridership ~ ., data = chicago_train) |>
+  step_center(-date, -starts_with("weather")) |>
+  prep() |>
+  bake(new_data = NULL)
+
+chicago_rec
+
+# To show centering was not applied to variables with the *weather* prefix
+chicago_rec |> select(starts_with("weather"))
+```
+
+`recipes` provides functions to select variables based on role and type. This includes the [`has_role()`](https://recipes.tidymodels.org/reference/has_role.html) and [`has_type()`](https://recipes.tidymodels.org/reference/has_role.html) functions.
+
+```{r day-03-select-by-role}
+# Simplified recipe, applying centering to variables with predictor role 
+credit_rec <- recipe(
+  Status ~ Debt + Income + Assets, 
+  data = credit_train
+)  |>
+  step_center(has_role("predictor")) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_rec
+```
+
+```{r day-03-select-by-type}
+# Applying centering to variables with type numeric
+credit_rec_type <- recipe(Status ~ ., data = credit_train) |>
+  step_center(has_type(match = "numeric")) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_rec_type
+```
+
+Although `has_role()` and `has_type()` are available, you'll most likely rely on functions that are more specific. The docs state (`?has_role`):
+
+> **In most cases**, the right approach for users will be to use the predictor-specific selectors such as `all_numeric_predictors()` and `all_nominal_predictors()`.
+
+These include functions to select variables based on type:
+
+* `all_numeric()` - includes all numeric variables.
+* `all_nominal()` - includes both character and factor variables.
+
+```{r day-03-select-rec-type}
+# Center **all** numeric variables
+credit_rec_type <- recipe(
+  Status ~ Debt + Income + Assets,
+  data = credit_train
+) |>
+  step_center(all_numeric()) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_rec_type 
+```
+
+Functions to select by role:
+
+* `all_predictors()`
+* `all_outcomes()`
+
+```{r day-03-select-rec-role}
+# Center all predictors
+credit_rec_role <- 
+  recipe(
+    Status ~ Debt + Income + Assets, 
+    data = credit_train
+  ) |>
+  step_center(all_predictors()) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_rec_role
+```
+
+Functions to select variables that intersect by role and type:
+
+* `all_numeric_predictors()`
+* `all_nominal_predictors()`
+
+```{r day-03-select-num-predictors}
+credit_rec_num_pred <- 
+  recipe(Status ~ ., data = credit_train) |>
+  step_center(all_numeric_predictors()) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_rec_num_pred
+```
+
+Selector functions will become useful as we continue to explore the `step_*` functions within the `recipes` package.
