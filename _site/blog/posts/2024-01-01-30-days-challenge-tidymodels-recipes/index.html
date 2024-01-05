@@ -164,6 +164,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-01---create-a-recipe" id="toc-day-01---create-a-recipe" class="nav-link" data-scroll-target="#day-01---create-a-recipe">Day 01 - Create a recipe</a></li>
   <li><a href="#day-02---how-to-use-prep-and-bake" id="toc-day-02---how-to-use-prep-and-bake" class="nav-link" data-scroll-target="#day-02---how-to-use-prep-and-bake">Day 02 - How to use <code>prep()</code> and <code>bake()</code></a></li>
   <li><a href="#day-03---selector-functions" id="toc-day-03---selector-functions" class="nav-link" data-scroll-target="#day-03---selector-functions">Day 03 - Selector functions</a></li>
+  <li><a href="#day-04---create-dummy-variables-using-step_dummy" id="toc-day-04---create-dummy-variables-using-step_dummy" class="nav-link" data-scroll-target="#day-04---create-dummy-variables-using-step_dummy">Day 04 - Create dummy variables using <code>step_dummy()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -916,6 +917,218 @@ $ date             &lt;date&gt; 2001-01-22, 2001-01-23, 2001-01-24, 2001-01-25, 
 </div>
 </div>
 <p>Selector functions will become useful as we continue to explore the <code>step_*</code> functions within the <code>recipes</code> package.</p>
+</section>
+<section id="day-04---create-dummy-variables-using-step_dummy" class="level1">
+<h1>Day 04 - Create dummy variables using <code>step_dummy()</code></h1>
+<p>Before starting our overview of <code>recipes</code>’ <code>step_*</code> functions, we need a bit of direction on what preprocessing steps might be required or beneficial to apply. <strong>The type of data preprocessing is determined by the model being fit.</strong> As a starting point, the <a href="https://www.tmwr.org/pre-proc-table">Tidy Modeling with R</a> book provides an <a href="https://www.tmwr.org/pre-proc-table">appendix</a> with a table of preprocessing recommendations based on the types of models being used. This table is separate from the types of feature engineering that may be applied, but it’s a good baseline for determining the initial <code>step_*</code> functions to be included within a recipe.</p>
+<p><a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">Dummy variables</a> is the first preprocessing method highlighted in this appendix. That is, the encoding of qualitative predictors into numeric predictors. Closely related is <a href="https://en.wikipedia.org/wiki/One-hot#Machine_learning_and_statistics">one-hot encoding</a>. When dummy variables are created, most commonly, nominal variable columns are converted into separate columns of 1’s and 0’s. <code>recipes</code>’ <a href="https://recipes.tidymodels.org/reference/step_dummy.html"><code>step_dummy()</code></a> function performs these preprocessing operations.</p>
+<p>Let’s continue using the <code>credit_data</code> for today’s examples. Take note, this data contains some <code>NA</code>‘s. To address this issue, I’m just going to drop any cases with a missing value using dplyr’s <code>drop_na()</code> function. Indeed, this issue could be addressed with <a href="https://en.wikipedia.org/wiki/Imputation_(statistics)">imputation</a> through the use of <code>recipes</code>’ <code>step_impute_*</code> functions (more on this in the coming days).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Same code as day 01</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(credit_data, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(credit_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,454
+Columns: 14
+$ Status    &lt;fct&gt; good, good, bad, good, good, good, good, good, good, bad, good, good, good, good…
+$ Seniority &lt;int&gt; 9, 17, 10, 0, 0, 1, 29, 9, 0, 0, 6, 7, 8, 19, 0, 0, 15, 33, 0, 1, 2, 5, 1, 27, 2…
+$ Home      &lt;fct&gt; rent, rent, owner, rent, rent, owner, owner, parents, owner, parents, owner, own…
+$ Time      &lt;int&gt; 60, 60, 36, 60, 36, 60, 60, 12, 60, 48, 48, 36, 60, 36, 18, 24, 24, 24, 48, 60, …
+$ Age       &lt;int&gt; 30, 58, 46, 24, 26, 36, 44, 27, 32, 41, 34, 29, 30, 37, 21, 68, 52, 68, 36, 31, …
+$ Marital   &lt;fct&gt; married, widow, married, single, single, married, married, single, married, marr…
+$ Records   &lt;fct&gt; no, no, yes, no, no, no, no, no, no, no, no, no, no, no, yes, no, no, no, no, no…
+$ Job       &lt;fct&gt; freelance, fixed, freelance, fixed, fixed, fixed, fixed, fixed, freelance, parti…
+$ Expenses  &lt;int&gt; 73, 48, 90, 63, 46, 75, 75, 35, 90, 90, 60, 60, 75, 75, 35, 75, 35, 65, 45, 35, …
+$ Income    &lt;int&gt; 129, 131, 200, 182, 107, 214, 125, 80, 107, 80, 125, 121, 199, 170, 50, 131, 330…
+$ Assets    &lt;int&gt; 0, 0, 3000, 2500, 0, 3500, 10000, 0, 15000, 0, 4000, 3000, 5000, 3500, 0, 4162, …
+$ Debt      &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2500, 260, 0, 0, 0, 2000, 0, 0, 0, 0, 500, 0…
+$ Amount    &lt;int&gt; 800, 1000, 2000, 900, 310, 650, 1600, 200, 1200, 1200, 1150, 650, 1500, 600, 400…
+$ Price     &lt;int&gt; 846, 1658, 2985, 1325, 910, 1645, 1800, 1093, 1957, 1468, 1577, 915, 1650, 940, …</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>credit_data <span class="ot">&lt;-</span> credit_data <span class="sc">|&gt;</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the split, training and testing data</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20230104</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>credit_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(credit_data, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>credit_train <span class="ot">&lt;-</span> <span class="fu">training</span>(credit_split)</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>credit_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(credit_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s the recipe we’ll use. I’m gonna keep it simple, so it’s easier to observe the results of adding <code>step_dummy()</code> to our recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>    Status <span class="sc">~</span> Job <span class="sc">+</span> Home <span class="sc">+</span> Marital, </span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> credit_train</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s create dummy variables from the <code>Job</code> column. But first, let’s take a look at how many different variable levels there are.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(credit_data<span class="sc">$</span>Job)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] freelance fixed     partime   others   
+Levels: fixed freelance others partime</code></pre>
+</div>
+</div>
+<p>Since we have four levels (<code>freelance</code>, <code>fixed</code>, <code>partime</code>, <code>others</code>), the <code>step_dummy()</code> function will create three columns. The <code>fixed</code> <code>Job</code> level will be the reference group, since it’s the first level specified for the factor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="sc">|&gt;</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Job) <span class="sc">|&gt;</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 6
+   Home    Marital Status Job_freelance Job_others Job_partime
+   &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;          &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+ 1 owner   married good               0          0           0
+ 2 other   married bad                0          1           0
+ 3 owner   married good               0          0           0
+ 4 owner   married good               1          0           0
+ 5 parents single  good               0          0           0
+ 6 rent    single  good               0          0           0
+ 7 parents single  good               0          0           0
+ 8 other   widow   good               0          0           0
+ 9 priv    single  good               1          0           0
+10 owner   married bad                0          0           0
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<p>Take note of the naming conventions applied to the new dummy columns. <code>step_dummy()</code> uses the following naming convention <code>variable-name_variable-level</code>. This makes it easier to know what variable the dummy variables originated.</p>
+<p>Say you don’t want to drop the original column when the dummy variables are created. We can pass <code>TRUE</code> to the <code>keep_original_cols</code> argument. This will retain the original column, while also creating the dummy variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="sc">|&gt;</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Job, <span class="at">keep_original_cols =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 7
+   Job       Home    Marital Status Job_freelance Job_others Job_partime
+   &lt;fct&gt;     &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;          &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+ 1 fixed     owner   married good               0          0           0
+ 2 others    other   married bad                0          1           0
+ 3 fixed     owner   married good               0          0           0
+ 4 freelance owner   married good               1          0           0
+ 5 fixed     parents single  good               0          0           0
+ 6 fixed     rent    single  good               0          0           0
+ 7 fixed     parents single  good               0          0           0
+ 8 fixed     other   widow   good               0          0           0
+ 9 freelance priv    single  good               1          0           0
+10 fixed     owner   married bad                0          0           0
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<p>What about one-hot encoding? To apply one-hot encoding we specify <code>FALSE</code> to the <code>one_hot</code> argument within the function. The preprocessed, baked data will now contain four columns. One column for each level of the source column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="sc">|&gt;</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Job, <span class="at">one_hot =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 7
+   Home    Marital Status Job_fixed Job_freelance Job_others Job_partime
+   &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;      &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+ 1 owner   married good           1             0          0           0
+ 2 other   married bad            0             0          1           0
+ 3 owner   married good           1             0          0           0
+ 4 owner   married good           0             1          0           0
+ 5 parents single  good           1             0          0           0
+ 6 rent    single  good           1             0          0           0
+ 7 parents single  good           1             0          0           0
+ 8 other   widow   good           1             0          0           0
+ 9 priv    single  good           0             1          0           0
+10 owner   married bad            1             0          0           0
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<p>We can scale this preprocessing to all nominal predictors by using, you guessed it, selector functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="sc">|&gt;</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 13
+   Status Job_freelance Job_others Job_partime Home_other Home_owner Home_parents Home_priv
+   &lt;fct&gt;          &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+ 1 good               0          0           0          0          1            0         0
+ 2 bad                0          1           0          1          0            0         0
+ 3 good               0          0           0          0          1            0         0
+ 4 good               1          0           0          0          1            0         0
+ 5 good               0          0           0          0          0            1         0
+ 6 good               0          0           0          0          0            0         0
+ 7 good               0          0           0          0          0            1         0
+ 8 good               0          0           0          1          0            0         0
+ 9 good               1          0           0          0          0            0         1
+10 bad                0          0           0          0          1            0         0
+# ℹ 3,221 more rows
+# ℹ 5 more variables: Home_rent &lt;dbl&gt;, Marital_married &lt;dbl&gt;, Marital_separated &lt;dbl&gt;,
+#   Marital_single &lt;dbl&gt;, Marital_widow &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>That’s a lot of additional columns. How can we keep track of all these additional columns and how they were preprocessed? We can <code>summary</code> and <code>tidy</code> our prepped recipe. Summarizing the prepped recipe is useful because of the <code>source</code> column that gets outputted. In our example, the source column of the returned tibble contains two values: original (i.e., the column was an original column in the data set) and derived (i.e., a column created from the preprocessing step). When we <code>tidy()</code> the recipe object returned from <code>step_dummy()</code>, a tibble with two columns is returned: <code>terms</code> and <code>columns</code>. <code>terms</code> represents the original variable the dummy variables were created from. <code>columns</code> represents the newly preprocessed dummy variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prep our dummy variables</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> </span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>  credit_rec <span class="sc">|&gt;</span></span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(credit_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 4
+   variable          type      role      source  
+   &lt;chr&gt;             &lt;list&gt;    &lt;chr&gt;     &lt;chr&gt;   
+ 1 Status            &lt;chr [3]&gt; outcome   original
+ 2 Job_freelance     &lt;chr [2]&gt; predictor derived 
+ 3 Job_others        &lt;chr [2]&gt; predictor derived 
+ 4 Job_partime       &lt;chr [2]&gt; predictor derived 
+ 5 Home_other        &lt;chr [2]&gt; predictor derived 
+ 6 Home_owner        &lt;chr [2]&gt; predictor derived 
+ 7 Home_parents      &lt;chr [2]&gt; predictor derived 
+ 8 Home_priv         &lt;chr [2]&gt; predictor derived 
+ 9 Home_rent         &lt;chr [2]&gt; predictor derived 
+10 Marital_married   &lt;chr [2]&gt; predictor derived 
+11 Marital_separated &lt;chr [2]&gt; predictor derived 
+12 Marital_single    &lt;chr [2]&gt; predictor derived 
+13 Marital_widow     &lt;chr [2]&gt; predictor derived </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View what preprocessing steps are applied</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type  trained skip  id         
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;      
+1      1 step      dummy TRUE    FALSE dummy_9a72e</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drill down and view what was done in during this specific step </span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   terms   columns   id         
+   &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;      
+ 1 Job     freelance dummy_9a72e
+ 2 Job     others    dummy_9a72e
+ 3 Job     partime   dummy_9a72e
+ 4 Home    other     dummy_9a72e
+ 5 Home    owner     dummy_9a72e
+ 6 Home    parents   dummy_9a72e
+ 7 Home    priv      dummy_9a72e
+ 8 Home    rent      dummy_9a72e
+ 9 Marital married   dummy_9a72e
+10 Marital separated dummy_9a72e
+11 Marital single    dummy_9a72e
+12 Marital widow     dummy_9a72e</code></pre>
+</div>
+</div>
+<p>When it comes to specifying interactions within a model, there are some special considerations when using dummy variables. I don’t have much time to discuss this today, but I hope to address it on a future day of this challenge. I suggest reviewing the ‘Interactions with Dummy Variables’ section from the ‘Dummies’ vignette (<code>vignettes("Dummies", package = "recipes")</code>) for more information.</p>
+<p>One more thing, <code>step_dummy()</code> is useful for straight forward dummy variable creation. However, <code>recipes</code> also has some other closely related <code>step_*</code> functions. Here is a list of a few from the ‘Dummies’ vignette:</p>
+<ul>
+<li><code>step_other()</code> - collapses infrequently occurring levels into an ‘other’ category.</li>
+<li><code>step_holiday()</code> - creates dummy variables from dates to capture holidays. Useful when working with time series data.</li>
+<li><code>step_zv()</code> - removes dummy variables that are zero-variance.</li>
+</ul>
+<p>I look to highlight the use of some of these <code>step_*</code> functions in the coming days.</p>
 
 
 </section>

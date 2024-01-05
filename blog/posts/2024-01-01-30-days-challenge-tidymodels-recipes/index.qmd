@@ -388,3 +388,110 @@ credit_rec_num_pred
 ```
 
 Selector functions will become useful as we continue to explore the `step_*` functions within the `recipes` package.
+
+# Day 04 - Create dummy variables using `step_dummy()`
+
+Before starting our overview of `recipes`' `step_*` functions, we need a bit of direction on what preprocessing steps might be required or beneficial to apply. **The type of data preprocessing is determined by the model being fit.** As a starting point, the [Tidy Modeling with R](https://www.tmwr.org/pre-proc-table) book provides an [appendix](https://www.tmwr.org/pre-proc-table) with a table of preprocessing recommendations based on the types of models being used. This table is separate from the types of feature engineering that may be applied, but it's a good baseline for determining the initial `step_*` functions to be included within a recipe. 
+
+[Dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics)) is the first preprocessing method highlighted in this appendix. That is, the encoding of qualitative predictors into numeric predictors. Closely related is [one-hot encoding](https://en.wikipedia.org/wiki/One-hot#Machine_learning_and_statistics). When dummy variables are created, most commonly, nominal variable columns are converted into separate columns of 1's and 0's. `recipes`' [`step_dummy()`](https://recipes.tidymodels.org/reference/step_dummy.html) function performs these preprocessing operations.
+
+Let's continue using the `credit_data` for today's examples. Take note, this data contains some `NA`'s. To address this issue, I'm just going to drop any cases with a missing value using dplyr's `drop_na()` function. Indeed, this issue could be addressed with [imputation](https://en.wikipedia.org/wiki/Imputation_(statistics)) through the use of `recipes`' `step_impute_*` functions (more on this in the coming days).  
+
+```{r day-04-data}
+# Same code as day 01
+data(credit_data, package = "modeldata")
+glimpse(credit_data)
+
+credit_data <- credit_data |>
+  drop_na()
+```
+
+```{r day-04-split}
+# Create the split, training and testing data
+set.seed(20230104)
+credit_split <- initial_split(credit_data, prop = 0.8)
+credit_train <- training(credit_split)
+credit_test <- testing(credit_split)
+```
+
+Here's the recipe we'll use. I'm gonna keep it simple, so it's easier to observe the results of adding `step_dummy()` to our recipe.
+
+```{r day-04-rec}
+credit_rec <- 
+  recipe(
+    Status ~ Job + Home + Marital, 
+    data = credit_train
+  ) 
+```
+
+Let's create dummy variables from the `Job` column. But first, let's take a look at how many different variable levels there are.
+
+```{r day-04-job-cats}
+unique(credit_data$Job)
+```
+
+Since we have four levels (`freelance`, `fixed`, `partime`, `others`), the `step_dummy()` function will create three columns. The `fixed` `Job` level will be the reference group, since it's the first level specified for the factor.
+
+```{r day-04-dummy-job}
+credit_rec |>
+  step_dummy(Job) |>
+  prep() |>
+  bake(new_data = NULL)
+```
+
+Take note of the naming conventions applied to the new dummy columns. `step_dummy()` uses the following naming convention `variable-name_variable-level`. This makes it easier to know what variable the dummy variables originated.
+
+Say you don't want to drop the original column when the dummy variables are created. We can pass `TRUE` to the `keep_original_cols` argument. This will retain the original column, while also creating the dummy variables.
+
+```{r day-04-dummy-keep-col}
+credit_rec |>
+  step_dummy(Job, keep_original_cols = TRUE) |>
+  prep() |>
+  bake(new_data = NULL)
+```
+
+What about one-hot encoding? To apply one-hot encoding we specify `FALSE` to the `one_hot` argument within the function. The preprocessed, baked data will now contain four columns. One column for each level of the source column.
+
+```{r day-04-one-hot-encoding}
+credit_rec |>
+  step_dummy(Job, one_hot = TRUE) |>
+  prep() |>
+  bake(new_data = NULL)
+```
+
+We can scale this preprocessing to all nominal predictors by using, you guessed it, selector functions.
+
+```{r day-04-nominal-dummy-variables}
+credit_rec |>
+  step_dummy(all_nominal_predictors()) |>
+  prep() |>
+  bake(new_data = NULL)
+```
+
+That's a lot of additional columns. How can we keep track of all these additional columns and how they were preprocessed? We can `summary` and `tidy` our prepped recipe. Summarizing the prepped recipe is useful because of the `source` column that gets outputted. In our example, the source column of the returned tibble contains two values: original (i.e., the column was an original column in the data set) and derived (i.e., a column created from the preprocessing step). When we `tidy()` the recipe object returned from `step_dummy()`, a tibble with two columns is returned: `terms` and `columns`. `terms` represents the original variable the dummy variables were created from. `columns` represents the newly preprocessed dummy variable.
+
+```{r day-04-dummy-tidy}
+# Prep our dummy variables
+credit_rec <- 
+  credit_rec |>
+  step_dummy(all_nominal_predictors()) |>
+  prep()
+
+summary(credit_rec)
+
+# View what preprocessing steps are applied
+tidy(credit_rec)
+
+# Drill down and view what was done in during this specific step 
+tidy(credit_rec, number = 1)
+```
+
+When it comes to specifying interactions within a model, there are some special considerations when using dummy variables. I don't have much time to discuss this today, but I hope to address it on a future day of this challenge. I suggest reviewing the 'Interactions with Dummy Variables' section from the 'Dummies' vignette (`vignettes("Dummies", package = "recipes")`) for more information.
+
+One more thing, `step_dummy()` is useful for straight forward dummy variable creation. However, `recipes` also has some other closely related `step_*` functions. Here is a list of a few from the 'Dummies' vignette:
+
+* `step_other()` - collapses infrequently occurring levels into an 'other' category.
+* `step_holiday()` - creates dummy variables from dates to capture holidays. Useful when working with time series data.
+* `step_zv()` - removes dummy variables that are zero-variance.
+
+I look to highlight the use of some of these `step_*` functions in the coming days.
