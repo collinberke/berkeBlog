@@ -22,6 +22,7 @@ Before the holidays, I came across [Emil Hvitfeldt's](https://www.linkedin.com/i
 ```{r setup, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(tidymodels)
+library(here)
 tidymodels_prefer()
 ```
 
@@ -495,3 +496,74 @@ One more thing, `step_dummy()` is useful for straight forward dummy variable cre
 * `step_zv()` - removes dummy variables that are zero-variance.
 
 I look to highlight the use of some of these `step_*` functions in the coming days.
+
+# Day 05 - Create a binary indicator variable for holidays using `step_holiday()` 
+
+Staying on the topic of dummy variables, I wanted to take a day to focus on the use of `recipes`' `step_holiday()` function. It seems to be pretty useful when working with time series data.
+
+For today's example, I'm going to use some obsfucated, simulated [Google Analytics ecommerce data](https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset). This emulates data closely related to what would be collected for the [Google Merchandise Store](https://shop.googlemerchandisestore.com/). You can learn more about this data by clicking on the previously linked docs. Let's do some data wrangling.
+
+Some notes about what wrangling was done:
+
+* Parse the `event_date` column into a date variable.
+* Calculate the revenue generated from the purchase of items based on quantity.
+* Retain only relevant columns.
+
+For simplicity, I'm not going to create a testing training split for this data.
+
+```{r day-05-data}
+data_ga <- 
+  read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  ) |>
+  mutate(
+    event_date = ymd(event_date),
+    revenue = price_in_usd * quantity
+  ) |>
+  select(event_date, transaction_id, item_category, revenue)
+```
+
+Let's start on our recipe. Since we have an id variable, `transaction_id`, let's update the recipe to change it's role to `id`. Once we do that, we can pass the `event_date` to the `step_holiday()` function. Before we bake our recipe, I wanna `prep()` and summarise the preprocessing to see what columns will get added.
+
+```{r day-05-rec}
+ga_rec <- recipe(revenue ~ ., data = data_ga) |>
+  update_role(transaction_id, new_role = "id") |>
+  step_holiday(event_date) |>
+  prep() 
+
+summary(ga_rec)
+```
+
+Note, three new columns will be added once the recipe is baked. This includes:
+
+* `event_date_LaborDay` - a dummy variable to represent an item purchases on [Labor Day](https://en.wikipedia.org/wiki/Labor_Day). 
+* `event_date_NewYearsDay` - a dummy variable to represent item purchases on New Years Day. 
+* `event_date_ChristmasDay` - a dummy variable to represent item purchases made on Christmas Day.
+
+You can see the variables that get added by baking the recipe.
+
+```{r day-05-rec-baked}
+bake(ga_rec, new_data = NULL)
+```
+
+Labor Day, New Years Day, and Christmas Day are the default holidays preprocessed by the function. You can modify this by passing a character vector of holidays to `step_holiday()`'s `holidays` argument. For instance, say we wanted to create dummy variables for [Boxing Day](https://en.wikipedia.org/wiki/Boxing_Day) and the [United State's Thanksgiving Day](https://en.wikipedia.org/wiki/Thanksgiving_(United_States)) holiday, while excluding Labor Day. The following code will specify this preprocessing step for us:
+
+```{r day-05-rec-expanded-holidays}
+ga_rec_holidays <- recipe(revenue ~ ., data = data_ga) |>
+  update_role(transaction_id, new_role = "transaction_id") |>
+  step_holiday(
+    event_date, 
+    holidays = c("USThanksgivingDay", "ChristmasDay", "BoxingDay", "NewYearsDay")
+  ) |>
+  prep()
+
+summary(ga_rec_holidays)
+```
+
+Now we have a dummy variable for all four of these holidays. Let's bake our recipe and see the final result.
+
+```{r day-05-rec-expanded-holidays-baked}
+bake(ga_rec_holidays, new_data = NULL)
+```
+
+Indeed, there are many holidays that could be specified for dummy variable creation. All the available holdidays can be seen by running `timeDate::listHolidays()` in your console. Last time I checked, there were 118 available holidays.
