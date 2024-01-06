@@ -165,6 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-02---how-to-use-prep-and-bake" id="toc-day-02---how-to-use-prep-and-bake" class="nav-link" data-scroll-target="#day-02---how-to-use-prep-and-bake">Day 02 - How to use <code>prep()</code> and <code>bake()</code></a></li>
   <li><a href="#day-03---selector-functions" id="toc-day-03---selector-functions" class="nav-link" data-scroll-target="#day-03---selector-functions">Day 03 - Selector functions</a></li>
   <li><a href="#day-04---create-dummy-variables-using-step_dummy" id="toc-day-04---create-dummy-variables-using-step_dummy" class="nav-link" data-scroll-target="#day-04---create-dummy-variables-using-step_dummy">Day 04 - Create dummy variables using <code>step_dummy()</code></a></li>
+  <li><a href="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" id="toc-day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" class="nav-link" data-scroll-target="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday">Day 05 - Create a binary indicator variable for holidays using <code>step_holiday()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -223,7 +224,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="my-spin-on-this" class="level1">
@@ -1129,6 +1131,135 @@ Levels: fixed freelance others partime</code></pre>
 <li><code>step_zv()</code> - removes dummy variables that are zero-variance.</li>
 </ul>
 <p>I look to highlight the use of some of these <code>step_*</code> functions in the coming days.</p>
+</section>
+<section id="day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" class="level1">
+<h1>Day 05 - Create a binary indicator variable for holidays using <code>step_holiday()</code></h1>
+<p>Staying on the topic of dummy variables, I wanted to take a day to focus on the use of <code>recipes</code>’ <code>step_holiday()</code> function. It seems to be pretty useful when working with time series data.</p>
+<p>For today’s example, I’m going to use some obsfucated, simulated <a href="https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset">Google Analytics ecommerce data</a>. This emulates data closely related to what would be collected for the <a href="https://shop.googlemerchandisestore.com/">Google Merchandise Store</a>. You can learn more about this data by clicking on the previously linked docs. Let’s do some data wrangling.</p>
+<p>Some notes about what wrangling was done:</p>
+<ul>
+<li>Parse the <code>event_date</code> column into a date variable.</li>
+<li>Calculate the revenue generated from the purchase of items based on quantity.</li>
+<li>Retain only relevant columns.</li>
+</ul>
+<p>For simplicity, I’m not going to create a testing training split for this data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> </span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_date =</span> <span class="fu">ymd</span>(event_date),</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> price_in_usd <span class="sc">*</span> quantity</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event_date, transaction_id, item_category, revenue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<p>Let’s start on our recipe. Since we have an id variable, <code>transaction_id</code>, let’s update the recipe to change it’s role to <code>id</code>. Once we do that, we can pass the <code>event_date</code> to the <code>step_holiday()</code> function. Before we bake our recipe, I wanna <code>prep()</code> and summarise the preprocessing to see what columns will get added.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(revenue <span class="sc">~</span> ., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(transaction_id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_holiday</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ga_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 4
+  variable                type      role      source  
+  &lt;chr&gt;                   &lt;list&gt;    &lt;chr&gt;     &lt;chr&gt;   
+1 event_date              &lt;chr [1]&gt; predictor original
+2 transaction_id          &lt;chr [2]&gt; id        original
+3 item_category           &lt;chr [3]&gt; predictor original
+4 revenue                 &lt;chr [2]&gt; outcome   original
+5 event_date_LaborDay     &lt;chr [2]&gt; predictor derived 
+6 event_date_NewYearsDay  &lt;chr [2]&gt; predictor derived 
+7 event_date_ChristmasDay &lt;chr [2]&gt; predictor derived </code></pre>
+</div>
+</div>
+<p>Note, three new columns will be added once the recipe is baked. This includes:</p>
+<ul>
+<li><code>event_date_LaborDay</code> - a dummy variable to represent an item purchases on <a href="https://en.wikipedia.org/wiki/Labor_Day">Labor Day</a>.</li>
+<li><code>event_date_NewYearsDay</code> - a dummy variable to represent item purchases on New Years Day.</li>
+<li><code>event_date_ChristmasDay</code> - a dummy variable to represent item purchases made on Christmas Day.</li>
+</ul>
+<p>You can see the variables that get added by baking the recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9,365 × 7
+   event_date transaction_id item_category       revenue event_date_LaborDay event_date_NewYearsDay
+   &lt;date&gt;              &lt;dbl&gt; &lt;fct&gt;                 &lt;dbl&gt;               &lt;int&gt;                  &lt;int&gt;
+ 1 2020-12-01          10648 Clearance                12                   0                      0
+ 2 2020-12-01          10648 Accessories               2                   0                      0
+ 3 2020-12-01          10648 Drinkware                 4                   0                      0
+ 4 2020-12-01          10648 Small Goods               2                   0                      0
+ 5 2020-12-01          10648 Office                    3                   0                      0
+ 6 2020-12-01          10648 Accessories               3                   0                      0
+ 7 2020-12-01          10648 Apparel                  14                   0                      0
+ 8 2020-12-01         171491 Apparel                  48                   0                      0
+ 9 2020-12-01         171491 Drinkware                14                   0                      0
+10 2020-12-01         174748 Uncategorized Items      44                   0                      0
+# ℹ 9,355 more rows
+# ℹ 1 more variable: event_date_ChristmasDay &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Labor Day, New Years Day, and Christmas Day are the default holidays preprocessed by the function. You can modify this by passing a character vector of holidays to <code>step_holiday()</code>’s <code>holidays</code> argument. For instance, say we wanted to create dummy variables for <a href="https://en.wikipedia.org/wiki/Boxing_Day">Boxing Day</a> and the <a href="https://en.wikipedia.org/wiki/Thanksgiving_(United_States)">United State’s Thanksgiving Day</a> holiday, while excluding Labor Day. The following code will specify this preprocessing step for us:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>ga_rec_holidays <span class="ot">&lt;-</span> <span class="fu">recipe</span>(revenue <span class="sc">~</span> ., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(transaction_id, <span class="at">new_role =</span> <span class="st">"transaction_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_holiday</span>(</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>    event_date, </span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">holidays =</span> <span class="fu">c</span>(<span class="st">"USThanksgivingDay"</span>, <span class="st">"ChristmasDay"</span>, <span class="st">"BoxingDay"</span>, <span class="st">"NewYearsDay"</span>)</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ga_rec_holidays)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 4
+  variable                     type      role           source  
+  &lt;chr&gt;                        &lt;list&gt;    &lt;chr&gt;          &lt;chr&gt;   
+1 event_date                   &lt;chr [1]&gt; predictor      original
+2 transaction_id               &lt;chr [2]&gt; transaction_id original
+3 item_category                &lt;chr [3]&gt; predictor      original
+4 revenue                      &lt;chr [2]&gt; outcome        original
+5 event_date_USThanksgivingDay &lt;chr [2]&gt; predictor      derived 
+6 event_date_ChristmasDay      &lt;chr [2]&gt; predictor      derived 
+7 event_date_BoxingDay         &lt;chr [2]&gt; predictor      derived 
+8 event_date_NewYearsDay       &lt;chr [2]&gt; predictor      derived </code></pre>
+</div>
+</div>
+<p>Now we have a dummy variable for all four of these holidays. Let’s bake our recipe and see the final result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec_holidays, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9,365 × 8
+   event_date transaction_id item_category     revenue event_date_USThanksg…¹ event_date_Christmas…²
+   &lt;date&gt;              &lt;dbl&gt; &lt;fct&gt;               &lt;dbl&gt;                  &lt;int&gt;                  &lt;int&gt;
+ 1 2020-12-01          10648 Clearance              12                      0                      0
+ 2 2020-12-01          10648 Accessories             2                      0                      0
+ 3 2020-12-01          10648 Drinkware               4                      0                      0
+ 4 2020-12-01          10648 Small Goods             2                      0                      0
+ 5 2020-12-01          10648 Office                  3                      0                      0
+ 6 2020-12-01          10648 Accessories             3                      0                      0
+ 7 2020-12-01          10648 Apparel                14                      0                      0
+ 8 2020-12-01         171491 Apparel                48                      0                      0
+ 9 2020-12-01         171491 Drinkware              14                      0                      0
+10 2020-12-01         174748 Uncategorized It…      44                      0                      0
+# ℹ 9,355 more rows
+# ℹ abbreviated names: ¹​event_date_USThanksgivingDay, ²​event_date_ChristmasDay
+# ℹ 2 more variables: event_date_BoxingDay &lt;int&gt;, event_date_NewYearsDay &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Indeed, there are many holidays that could be specified for dummy variable creation. All the available holdidays can be seen by running <code>timeDate::listHolidays()</code> in your console. Last time I checked, there were 118 available holidays.</p>
 
 
 </section>
