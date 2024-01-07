@@ -166,6 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-03---selector-functions" id="toc-day-03---selector-functions" class="nav-link" data-scroll-target="#day-03---selector-functions">Day 03 - Selector functions</a></li>
   <li><a href="#day-04---create-dummy-variables-using-step_dummy" id="toc-day-04---create-dummy-variables-using-step_dummy" class="nav-link" data-scroll-target="#day-04---create-dummy-variables-using-step_dummy">Day 04 - Create dummy variables using <code>step_dummy()</code></a></li>
   <li><a href="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" id="toc-day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" class="nav-link" data-scroll-target="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday">Day 05 - Create a binary indicator variable for holidays using <code>step_holiday()</code></a></li>
+  <li><a href="#day-06---use-step_zv-to-drop-variables-with-one-value" id="toc-day-06---use-step_zv-to-drop-variables-with-one-value" class="nav-link" data-scroll-target="#day-06---use-step_zv-to-drop-variables-with-one-value">Day 06 - Use <code>step_zv()</code> to drop variables with one value</a></li>
   </ul>
 </nav>
     </div>
@@ -1260,6 +1261,159 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </div>
 </div>
 <p>Indeed, there are many holidays that could be specified for dummy variable creation. All the available holdidays can be seen by running <code>timeDate::listHolidays()</code> in your console. Last time I checked, there were 118 available holidays.</p>
+</section>
+<section id="day-06---use-step_zv-to-drop-variables-with-one-value" class="level1">
+<h1>Day 06 - Use <code>step_zv()</code> to drop variables with one value</h1>
+<p>For today, I’m focusing on <code>recipes</code>’ <code>step_zv()</code> function. This function is a filter function, which drops variables that only contain one value.</p>
+<p>At first, I didn’t really understand why <code>step_zv()</code> was made available. Why would you want a step to drop variables within a recipe? Then it clicked working on yesterday’s example using the obfuscated <a href="https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset">Google Analytics data</a> for the <a href="https://shop.googlemerchandisestore.com/">Google Merchandise store</a>.</p>
+<p>But first, let’s get our data again and specify our recipe. I’m going to keep things simple here. First, I’m just going to use <code>data_ga</code>, which was previously wrangled in yesterday’s post (check it out if you want more info). Second, I’m going to skip creating a testing and training split. Lastly, I’m going to create dummy variables using <code>step_holiday()</code>, just to show how <code>step_zv()</code> can be useful.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(revenue <span class="sc">~</span> ., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_holiday</span>(event_date)</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ga_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  variable       type      role      source  
+  &lt;chr&gt;          &lt;list&gt;    &lt;chr&gt;     &lt;chr&gt;   
+1 event_date     &lt;chr [1]&gt; predictor original
+2 transaction_id &lt;chr [2]&gt; predictor original
+3 item_category  &lt;chr [3]&gt; predictor original
+4 revenue        &lt;chr [2]&gt; outcome   original</code></pre>
+</div>
+</div>
+<p>Let’s take a closer look at our data. You’ll notice the range of the <code>event_date</code> is a subset of data. <code>data_ga</code>’s <code>event_date</code> ranges between the US holiday season. It starts right before Christmas and moves into the first month of the new year.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_date =</span> <span class="fu">min</span>(data_ga<span class="sc">$</span>event_date), </span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_date =</span> <span class="fu">max</span>(data_ga<span class="sc">$</span>event_date)</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    min_date     max_date 
+"2020-12-01" "2021-01-30" </code></pre>
+</div>
+</div>
+<p>If you remember from yesterday’s post, one of the default holidays for <code>step_holiday()</code> is Labor Day. As such, a dummy variable with all <code>0</code>’s will be created for the Labor Day holiday. Purchases made on these dates were not included within this data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>ga_prep <span class="ot">&lt;-</span> <span class="fu">prep</span>(ga_rec)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_prep, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  terms      holiday      id           
+  &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;        
+1 event_date LaborDay     holiday_cClNx
+2 event_date NewYearsDay  holiday_cClNx
+3 event_date ChristmasDay holiday_cClNx</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the unique values</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_prep, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event_date_LaborDay) <span class="sc">|&gt;</span></span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(event_date_LaborDay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  event_date_LaborDay
+                &lt;int&gt;
+1                   0</code></pre>
+</div>
+</div>
+<p>As such, this variable is not very useful and should be dropped before being applied within our model. This is why <code>step_zv()</code> can be handy, especially in situations where you have a lot of variables that could only have one value. <code>step_zv()</code> makes it easy to drop all unnecessary variables in one step, while allowing you to continue working with a recipe object.</p>
+<p>Indeed, keen observers might note this step could be mitigated by modifying the <code>holiday</code> argument in <code>step_holiday()</code>. However, the function’s utility extends beyond just <code>step_holiday()</code>. You might even consider useful as a final step you apply to every recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>ga_rec_drop <span class="ot">&lt;-</span> <span class="fu">recipe</span>(revenue <span class="sc">~</span> ., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_holiday</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>ga_rec_drop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:   1
+predictor: 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 9365 data points and 164 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Holiday features from: event_date | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Zero variance filter removed: event_date_LaborDay | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec_drop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  number operation type    trained skip  id           
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;   &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;        
+1      1 step      holiday TRUE    FALSE holiday_FpWeG
+2      2 step      zv      TRUE    FALSE zv_3cDmc     </code></pre>
+</div>
+</div>
+<p>Take note, the <code>prep()</code> output informs us of the variables that were dropped when the step was applied. This is something to keep an eye on, just in case you need to explore situations where many variables are dropped, and you need to explore what your recipe is actually doing.</p>
+<p>For completeness, lets <code>bake()</code> our final recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(revenue <span class="sc">~</span>., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_holiday</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9,365 × 6
+   event_date transaction_id item_category     revenue event_date_NewYearsDay event_date_Christmas…¹
+   &lt;date&gt;              &lt;dbl&gt; &lt;fct&gt;               &lt;dbl&gt;                  &lt;int&gt;                  &lt;int&gt;
+ 1 2020-12-01          10648 Clearance              12                      0                      0
+ 2 2020-12-01          10648 Accessories             2                      0                      0
+ 3 2020-12-01          10648 Drinkware               4                      0                      0
+ 4 2020-12-01          10648 Small Goods             2                      0                      0
+ 5 2020-12-01          10648 Office                  3                      0                      0
+ 6 2020-12-01          10648 Accessories             3                      0                      0
+ 7 2020-12-01          10648 Apparel                14                      0                      0
+ 8 2020-12-01         171491 Apparel                48                      0                      0
+ 9 2020-12-01         171491 Drinkware              14                      0                      0
+10 2020-12-01         174748 Uncategorized It…      44                      0                      0
+# ℹ 9,355 more rows
+# ℹ abbreviated name: ¹​event_date_ChristmasDay</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ga_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 9,365
+Columns: 6
+$ event_date              &lt;date&gt; 2020-12-01, 2020-12-01, 2020-12-01, 2020-12-01, 2020-12-01, 2020-…
+$ transaction_id          &lt;dbl&gt; 10648, 10648, 10648, 10648, 10648, 10648, 10648, 171491, 171491, 1…
+$ item_category           &lt;fct&gt; Clearance, Accessories, Drinkware, Small Goods, Office, Accessorie…
+$ revenue                 &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14, 1, 4, 16, 14, 92, 371, …
+$ event_date_NewYearsDay  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ event_date_ChristmasDay &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …</code></pre>
+</div>
+</div>
 
 
 </section>

@@ -567,3 +567,71 @@ bake(ga_rec_holidays, new_data = NULL)
 ```
 
 Indeed, there are many holidays that could be specified for dummy variable creation. All the available holdidays can be seen by running `timeDate::listHolidays()` in your console. Last time I checked, there were 118 available holidays.
+
+# Day 06 - Use `step_zv()` to drop variables with one value 
+
+For today, I'm focusing on `recipes`' `step_zv()` function. This function is a filter function, which drops variables that only contain one value.
+
+At first, I didn't really understand why `step_zv()` was made available. Why would you want a step to drop variables within a recipe? Then it clicked working on yesterday's example using the obfuscated [Google Analytics data](https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset) for the [Google Merchandise store](https://shop.googlemerchandisestore.com/). 
+
+But first, let's get our data again and specify our recipe. I'm going to keep things simple here. First, I'm just going to use `data_ga`, which was previously wrangled in yesterday's post (check it out if you want more info). Second, I'm going to skip creating a testing and training split. Lastly, I'm going to create dummy variables using `step_holiday()`, just to show how `step_zv()` can be useful.
+
+```{r day-06-data}
+ga_rec <- recipe(revenue ~ ., data = data_ga) |>
+  step_holiday(event_date)
+
+summary(ga_rec)
+```
+
+Let's take a closer look at our data. You'll notice the range of the `event_date` is a subset of data. `data_ga`'s `event_date` ranges between the US holiday season. It starts right before Christmas and moves into the first month of the new year. 
+
+```{r day-06-view-date-range}
+c(
+  min_date = min(data_ga$event_date), 
+  max_date = max(data_ga$event_date)
+)
+```
+
+If you remember from yesterday's post, one of the default holidays for `step_holiday()` is Labor Day. As such, a dummy variable with all `0`'s will be created for the Labor Day holiday. Purchases made on these dates were not included within this data.
+
+```{r day-06-no-labor-day}
+ga_prep <- prep(ga_rec)
+
+tidy(ga_prep, number = 1)
+
+# Check the unique values
+bake(ga_prep, new_data = NULL) |> 
+  select(event_date_LaborDay) |>
+  distinct(event_date_LaborDay)
+```
+
+As such, this variable is not very useful and should be dropped before being applied within our model. This is why `step_zv()` can be handy, especially in situations where you have a lot of variables that could only have one value. `step_zv()` makes it easy to drop all unnecessary variables in one step, while allowing you to continue working with a recipe object. 
+
+Indeed, keen observers might note this step could be mitigated by modifying the `holiday` argument in `step_holiday()`. However, the function's utility extends beyond just `step_holiday()`. You might even consider useful as a final step you apply to every recipe.
+
+```{r day-06-rec-with-step-zv}
+ga_rec_drop <- recipe(revenue ~ ., data = data_ga) |>
+  step_holiday(event_date) |>
+  step_zv(all_predictors()) |>
+  prep()
+
+ga_rec_drop
+
+tidy(ga_rec_drop)
+```
+
+Take note, the `prep()` output informs us of the variables that were dropped when the step was applied. This is something to keep an eye on, just in case you need to explore situations where many variables are dropped, and you need to explore what your recipe is actually doing. 
+
+For completeness, lets `bake()` our final recipe.
+
+```{r day-06-rec-bake}
+ga_rec <- recipe(revenue ~., data = data_ga) |>
+  step_holiday(event_date) |>
+  step_zv(all_predictors()) |>
+  prep() |>
+  bake(new_data = NULL)
+
+ga_rec
+
+glimpse(ga_rec)
+```
