@@ -167,6 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-04---create-dummy-variables-using-step_dummy" id="toc-day-04---create-dummy-variables-using-step_dummy" class="nav-link" data-scroll-target="#day-04---create-dummy-variables-using-step_dummy">Day 04 - Create dummy variables using <code>step_dummy()</code></a></li>
   <li><a href="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" id="toc-day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" class="nav-link" data-scroll-target="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday">Day 05 - Create a binary indicator variable for holidays using <code>step_holiday()</code></a></li>
   <li><a href="#day-06---use-step_zv-to-drop-variables-with-one-value" id="toc-day-06---use-step_zv-to-drop-variables-with-one-value" class="nav-link" data-scroll-target="#day-06---use-step_zv-to-drop-variables-with-one-value">Day 06 - Use <code>step_zv()</code> to drop variables with one value</a></li>
+  <li><a href="#day-07---use-step_impute_-functions-for-imputation" id="toc-day-07---use-step_impute_-functions-for-imputation" class="nav-link" data-scroll-target="#day-07---use-step_impute_-functions-for-imputation">Day 07 - Use <code>step_impute_*()</code> functions for imputation</a></li>
   </ul>
 </nav>
     </div>
@@ -670,7 +671,7 @@ $ date             &lt;date&gt; 2001-01-22, 2001-01-23, 2001-01-24, 2001-01-25, 
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>chicago_train <span class="ot">&lt;-</span> <span class="fu">training</span>(chicago_split)</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>chicago_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(chicago_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When using <code>recipes</code>, we often need to select a group of variables (e.g., all predictors, all numeric variables, all categorical variables, etc.) to apply preprocessing steps. Indeed, we certainly could just explicitly specifiy each variable by name within our recipe. There’s a better way, though. Use <a href="https://recipes.tidymodels.org/reference/has_role.html"><em>selector functions</em></a>.</p>
+<p>When using <code>recipes</code>, we often need to select a group of variables (e.g., all predictors, all numeric variables, all categorical variables, etc.) to apply preprocessing steps. Indeed, we certainly could just explicitly specify each variable by name within our recipe. There’s a better way, though. Use <a href="https://recipes.tidymodels.org/reference/has_role.html"><em>selector functions</em></a>.</p>
 <p>Selector functions can be used to choose variables based on:</p>
 <ol type="1">
 <li>Variable names</li>
@@ -1136,7 +1137,7 @@ Levels: fixed freelance others partime</code></pre>
 <section id="day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" class="level1">
 <h1>Day 05 - Create a binary indicator variable for holidays using <code>step_holiday()</code></h1>
 <p>Staying on the topic of dummy variables, I wanted to take a day to focus on the use of <code>recipes</code>’ <code>step_holiday()</code> function. It seems to be pretty useful when working with time series data.</p>
-<p>For today’s example, I’m going to use some obsfucated, simulated <a href="https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset">Google Analytics ecommerce data</a>. This emulates data closely related to what would be collected for the <a href="https://shop.googlemerchandisestore.com/">Google Merchandise Store</a>. You can learn more about this data by clicking on the previously linked docs. Let’s do some data wrangling.</p>
+<p>For today’s example, I’m going to use some obfuscated, simulated <a href="https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset">Google Analytics ecommerce data</a>. This emulates data closely related to what would be collected for the <a href="https://shop.googlemerchandisestore.com/">Google Merchandise Store</a>. You can learn more about this data by clicking on the previously linked docs. Let’s do some data wrangling.</p>
 <p>Some notes about what wrangling was done:</p>
 <ul>
 <li>Parse the <code>event_date</code> column into a date variable.</li>
@@ -1260,7 +1261,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 # ℹ 2 more variables: event_date_BoxingDay &lt;int&gt;, event_date_NewYearsDay &lt;int&gt;</code></pre>
 </div>
 </div>
-<p>Indeed, there are many holidays that could be specified for dummy variable creation. All the available holdidays can be seen by running <code>timeDate::listHolidays()</code> in your console. Last time I checked, there were 118 available holidays.</p>
+<p>Indeed, there are many holidays that could be specified for dummy variable creation. All the available holidays can be seen by running <code>timeDate::listHolidays()</code> in your console. Last time I checked, there were 118 available holidays.</p>
 </section>
 <section id="day-06---use-step_zv-to-drop-variables-with-one-value" class="level1">
 <h1>Day 06 - Use <code>step_zv()</code> to drop variables with one value</h1>
@@ -1414,6 +1415,368 @@ $ event_date_NewYearsDay  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 $ event_date_ChristmasDay &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …</code></pre>
 </div>
 </div>
+</section>
+<section id="day-07---use-step_impute_-functions-for-imputation" class="level1">
+<h1>Day 07 - Use <code>step_impute_*()</code> functions for imputation</h1>
+<p>The <code>recipes</code> package makes it easy to perform <a href="https://en.wikipedia.org/wiki/Imputation_(statistics)">imputation</a> tasks. As of this writing, <code>recipes</code> had the following functions to perform different methods of imputation:</p>
+<ul>
+<li><code>step_impute_bag()</code></li>
+<li><code>step_impute_knn()</code></li>
+<li><code>step_impute_linear()</code></li>
+<li><code>step_impute_lower()</code></li>
+<li><code>step_impute_mean()</code></li>
+<li><code>step_impute_median()</code></li>
+<li><code>step_impute_mode()</code></li>
+<li><code>step_impute_roll()</code></li>
+</ul>
+<p>For today’s examples, I’m going to highlight the use of <code>step_impute_mean()</code>, <code>step_input_median()</code>, and <code>step_input_mode()</code>. First, though, we need some data with missing values. Let’s switch it up a bit and use the <a href="https://github.com/allisonhorst/palmerpenguins">Palmer Station penguin data</a> (run ?penguins in your console to get more information about the data). In brief, these data represent different measurements of various <a href="https://en.wikipedia.org/wiki/Penguin">penguin</a> species in Antarctica.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins, <span class="at">package =</span> <span class="st">"modeldata"</span>) </span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Add an id column</span></span>
+<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> </span>
+<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>  penguins <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">.before =</span> <span class="fu">everything</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This data set contains some missing values that could be addressed using imputation methods. Let’s take a moment and explore the data a little further.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ id                &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 2…
+$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, …
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Torger…
+$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, 37.8, 37.8, 41…
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, 17.1, 17.3, 17…
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180, 182, 191, 198…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, 3300, 3700, 32…
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male, NA, NA, NA, NA, fe…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What columns have missing data?</span></span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map_df</span>(penguins, \(x) <span class="fu">any</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 8
+  id    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex  
+  &lt;lgl&gt; &lt;lgl&gt;   &lt;lgl&gt;  &lt;lgl&gt;          &lt;lgl&gt;         &lt;lgl&gt;             &lt;lgl&gt;       &lt;lgl&gt;
+1 FALSE FALSE   FALSE  TRUE           TRUE          TRUE              TRUE        TRUE </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What percentage of data is missing in each column?</span></span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(penguins, \(x) <span class="fu">mean</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$id
+[1] 0
+
+$species
+[1] 0
+
+$island
+[1] 0
+
+$bill_length_mm
+[1] 0.005813953
+
+$bill_depth_mm
+[1] 0.005813953
+
+$flipper_length_mm
+[1] 0.005813953
+
+$body_mass_g
+[1] 0.005813953
+
+$sex
+[1] 0.03197674</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Missing data examples</span></span>
+<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>missing_examples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">69</span>, <span class="dv">272</span>)</span>
+<span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">slice</span>(missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           NA            NA                  NA          NA &lt;NA&gt;  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt;  
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              NA            NA                  NA          NA &lt;NA&gt;  </code></pre>
+</div>
+</div>
+<p>The following columns contain missing data (included are the variable types):</p>
+<ul>
+<li><code>bill_length_mm</code> - double</li>
+<li><code>bill_depth_mm</code> - double</li>
+<li><code>flipper_length_mm</code> - integer</li>
+<li><code>body_mass_g</code> - integer</li>
+<li><code>sex</code> - factor</li>
+</ul>
+<p>You’ll also notice some of these variables are of various types (i.e.&nbsp;factor, double, or integer). Indeed, the variable type will determine the method of imputation applied.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240107</span>)</span>
+<span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb135-3"><a href="#cb135-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb135-4"><a href="#cb135-4" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb135-5"><a href="#cb135-5" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s start by highlighting how to apply <a href="https://en.wikipedia.org/wiki/Imputation_(statistics)#Mean_substitution">mean substitution</a> as our imputation method. Specifically, let’s apply this step to our first numeric variable with missing values, <code>bill_length_mm</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Take note of the importance of the use of <code>prep()</code> here. Remember, some recipe steps need to calculate an intermediate value before applying it to the final baked data. This is highlighted with the <code>tidy(penquin_rec, number = 1)</code> in the code below.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb136-2"><a href="#cb136-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb136-3"><a href="#cb136-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
+<span id="cb136-4"><a href="#cb136-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb136-5"><a href="#cb136-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb136-6"><a href="#cb136-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 4
+  variable          type      role      source  
+  &lt;chr&gt;             &lt;list&gt;    &lt;chr&gt;     &lt;chr&gt;   
+1 id                &lt;chr [2]&gt; id        original
+2 species           &lt;chr [3]&gt; predictor original
+3 island            &lt;chr [3]&gt; predictor original
+4 bill_length_mm    &lt;chr [2]&gt; predictor original
+5 bill_depth_mm     &lt;chr [2]&gt; predictor original
+6 flipper_length_mm &lt;chr [2]&gt; predictor original
+7 body_mass_g       &lt;chr [2]&gt; predictor original
+8 sex               &lt;chr [3]&gt; predictor original</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguins_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  terms          value id               
+  &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;            
+1 bill_length_mm  43.7 impute_mean_yJPI2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a>penguins_baked <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguins_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb140-2"><a href="#cb140-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-3"><a href="#cb140-3" aria-hidden="true" tabindex="-1"></a>penguins_baked</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1    35 Adelie    Dream               36.4          17                 195        3325 female
+ 2   111 Adelie    Biscoe              38.1          16.5               198        3825 female
+ 3   245 Gentoo    Biscoe              45.5          14.5               212        4750 female
+ 4    75 Adelie    Torgersen           35.5          17.5               190        3700 female
+ 5     1 Adelie    Torgersen           39.1          18.7               181        3750 male  
+ 6    96 Adelie    Dream               40.8          18.9               208        4300 male  
+ 7   338 Chinstrap Dream               46.8          16.5               189        3650 female
+ 8    24 Adelie    Biscoe              38.2          18.1               185        3950 male  
+ 9    20 Adelie    Torgersen           46            21.5               194        4200 male  
+10    40 Adelie    Dream               39.8          19.1               184        4650 male  
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Imputation should result in a complete column of data</span></span>
+<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(<span class="fu">is.na</span>(penguins_baked<span class="sc">$</span>bill_length_mm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The missing values have now been substituted</span></span>
+<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a>penguins_baked <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex  
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1   272 Gentoo  Biscoe              43.7          NA                  NA          NA &lt;NA&gt; 
+2     4 Adelie  Torgersen           43.7          NA                  NA          NA &lt;NA&gt; 
+3    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt; </code></pre>
+</div>
+</div>
+<p><code>step_impute_mean()</code> also includes a <code>trim</code> argument, which trims observations from the end of the variable before the mean is computed. This is also a tuning parameter, which can be used in any <a href="https://www.tmwr.org/tuning">hyperparameter tuning</a> applied within your modeling. I would like to explore this more, but it’s outside the scope of this post. Just to highlight use of the <code>trim</code> argument, here’s some example code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>penguin_mean_trim_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(bill_length_mm, <span class="at">trim =</span> .<span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice how the intermediate calculation changed because</span></span>
+<span id="cb146-6"><a href="#cb146-6" aria-hidden="true" tabindex="-1"></a><span class="co"># we trimmed the observations used to make the mean calculation</span></span>
+<span id="cb146-7"><a href="#cb146-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguin_mean_trim_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  terms          value id               
+  &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;            
+1 bill_length_mm    44 impute_mean_sGprM</code></pre>
+</div>
+</div>
+<p>Let’s bake this recipe for completeness.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>penguins_mean_trim_baked <span class="ot">&lt;-</span> </span>
+<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(penguin_mean_trim_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-4"><a href="#cb148-4" aria-hidden="true" tabindex="-1"></a>penguins_mean_trim_baked</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1    35 Adelie    Dream               36.4          17                 195        3325 female
+ 2   111 Adelie    Biscoe              38.1          16.5               198        3825 female
+ 3   245 Gentoo    Biscoe              45.5          14.5               212        4750 female
+ 4    75 Adelie    Torgersen           35.5          17.5               190        3700 female
+ 5     1 Adelie    Torgersen           39.1          18.7               181        3750 male  
+ 6    96 Adelie    Dream               40.8          18.9               208        4300 male  
+ 7   338 Chinstrap Dream               46.8          16.5               189        3650 female
+ 8    24 Adelie    Biscoe              38.2          18.1               185        3950 male  
+ 9    20 Adelie    Torgersen           46            21.5               194        4200 male  
+10    40 Adelie    Dream               39.8          19.1               184        4650 male  
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The missing values have now been imputed</span></span>
+<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a>penguins_mean_trim_baked <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex  
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+1   272 Gentoo  Biscoe              44            NA                  NA          NA &lt;NA&gt; 
+2     4 Adelie  Torgersen           44            NA                  NA          NA &lt;NA&gt; 
+3    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt; </code></pre>
+</div>
+</div>
+<p>Mean substitution is just one imputation step. The <code>recipes</code> package also includes the <code>step_impute_median()</code> and <code>step_impute_mode()</code>. These step functions have similar syntax, just a different calculated metric is applied in the background. Let’s apply <code>step_impute_median()</code> to <code>bill_depth_mm</code>, <code>flipper_length_mm</code>, and <code>body_mass_g</code>.</p>
+<p>In addition, we’ll apply <code>step_impute_mode()</code> to impute values for the missing data within the <code>sex</code> variable. Take note, the docs for this function state:</p>
+<blockquote class="blockquote">
+<p>Impute nominal data using the most common value.</p>
+</blockquote>
+<p>So, it only seems <code>step_input_mode()</code> can only be used to impute missing values for nominal variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
+<span id="cb152-3"><a href="#cb152-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_median</span>(</span>
+<span id="cb152-4"><a href="#cb152-4" aria-hidden="true" tabindex="-1"></a>    bill_depth_mm, </span>
+<span id="cb152-5"><a href="#cb152-5" aria-hidden="true" tabindex="-1"></a>    flipper_length_mm, </span>
+<span id="cb152-6"><a href="#cb152-6" aria-hidden="true" tabindex="-1"></a>    body_mass_g</span>
+<span id="cb152-7"><a href="#cb152-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb152-8"><a href="#cb152-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mode</span>(sex) <span class="sc">|&gt;</span></span>
+<span id="cb152-9"><a href="#cb152-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb152-10"><a href="#cb152-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-11"><a href="#cb152-11" aria-hidden="true" tabindex="-1"></a>penguin_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 275 data points and 11 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Mean imputation for: bill_length_mm | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Median imputation for: bill_depth_mm, flipper_length_mm, body_mass_g | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Mode imputation for: sex | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguin_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 6
+  number operation type          trained skip  id                 
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;         &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;              
+1      1 step      impute_mean   TRUE    FALSE impute_mean_fOycb  
+2      2 step      impute_median TRUE    FALSE impute_median_zocWX
+3      3 step      impute_mode   TRUE    FALSE impute_mode_PGohX  </code></pre>
+</div>
+</div>
+<p>Let’s take a look at the calculated values for all these steps.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, \(x) <span class="fu">tidy</span>(penguin_rec, <span class="at">number =</span> x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 1 × 3
+  terms          value id               
+  &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;            
+1 bill_length_mm  43.7 impute_mean_fOycb
+
+[[2]]
+# A tibble: 3 × 3
+  terms              value id                 
+  &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;              
+1 bill_depth_mm       17.3 impute_median_zocWX
+2 flipper_length_mm  196   impute_median_zocWX
+3 body_mass_g       4050   impute_median_zocWX
+
+[[3]]
+# A tibble: 1 × 3
+  terms value  id               
+  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            
+1 sex   female impute_mode_PGohX</code></pre>
+</div>
+</div>
+<p>As always, let’s bake this recipe and look at the final data, which should not have any missing data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-3"><a href="#cb171-3" aria-hidden="true" tabindex="-1"></a>baked_penguin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1    35 Adelie    Dream               36.4          17                 195        3325 female
+ 2   111 Adelie    Biscoe              38.1          16.5               198        3825 female
+ 3   245 Gentoo    Biscoe              45.5          14.5               212        4750 female
+ 4    75 Adelie    Torgersen           35.5          17.5               190        3700 female
+ 5     1 Adelie    Torgersen           39.1          18.7               181        3750 male  
+ 6    96 Adelie    Dream               40.8          18.9               208        4300 male  
+ 7   338 Chinstrap Dream               46.8          16.5               189        3650 female
+ 8    24 Adelie    Biscoe              38.2          18.1               185        3950 male  
+ 9    20 Adelie    Torgersen           46            21.5               194        4200 male  
+10    40 Adelie    Dream               39.8          19.1               184        4650 male  
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_df</span>(baked_penguin, \(x) <span class="fu">any</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 8
+  id    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex  
+  &lt;lgl&gt; &lt;lgl&gt;   &lt;lgl&gt;  &lt;lgl&gt;          &lt;lgl&gt;         &lt;lgl&gt;             &lt;lgl&gt;       &lt;lgl&gt;
+1 FALSE FALSE   FALSE  FALSE          FALSE         FALSE             FALSE       FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb175"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1   272 Gentoo  Biscoe              43.7          17.3               196        4050 female
+2     4 Adelie  Torgersen           43.7          17.3               196        4050 female
+3    12 Adelie  Torgersen           37.8          17.3               180        3700 female</code></pre>
+</div>
+</div>
+<p>That’s all the time I have for today. Tomorrow I’ll pick up exploring some more of the other <code>step_impute_*</code> functions.</p>
 
 
 </section>
