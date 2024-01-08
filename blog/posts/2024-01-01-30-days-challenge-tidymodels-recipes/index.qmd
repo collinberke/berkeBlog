@@ -263,7 +263,7 @@ chicago_train <- training(chicago_split)
 chicago_test <- testing(chicago_split)
 ```
 
-When using `recipes`, we often need to select a group of variables (e.g., all predictors, all numeric variables, all categorical variables, etc.) to apply preprocessing steps. Indeed, we certainly could just explicitly specifiy each variable by name within our recipe. There's a better way, though. Use [*selector functions*](https://recipes.tidymodels.org/reference/has_role.html).
+When using `recipes`, we often need to select a group of variables (e.g., all predictors, all numeric variables, all categorical variables, etc.) to apply preprocessing steps. Indeed, we certainly could just explicitly specify each variable by name within our recipe. There's a better way, though. Use [*selector functions*](https://recipes.tidymodels.org/reference/has_role.html).
 
 Selector functions can be used to choose variables based on:
 
@@ -501,7 +501,7 @@ I look to highlight the use of some of these `step_*` functions in the coming da
 
 Staying on the topic of dummy variables, I wanted to take a day to focus on the use of `recipes`' `step_holiday()` function. It seems to be pretty useful when working with time series data.
 
-For today's example, I'm going to use some obsfucated, simulated [Google Analytics ecommerce data](https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset). This emulates data closely related to what would be collected for the [Google Merchandise Store](https://shop.googlemerchandisestore.com/). You can learn more about this data by clicking on the previously linked docs. Let's do some data wrangling.
+For today's example, I'm going to use some obfuscated, simulated [Google Analytics ecommerce data](https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset). This emulates data closely related to what would be collected for the [Google Merchandise Store](https://shop.googlemerchandisestore.com/). You can learn more about this data by clicking on the previously linked docs. Let's do some data wrangling.
 
 Some notes about what wrangling was done:
 
@@ -566,7 +566,7 @@ Now we have a dummy variable for all four of these holidays. Let's bake our reci
 bake(ga_rec_holidays, new_data = NULL)
 ```
 
-Indeed, there are many holidays that could be specified for dummy variable creation. All the available holdidays can be seen by running `timeDate::listHolidays()` in your console. Last time I checked, there were 118 available holidays.
+Indeed, there are many holidays that could be specified for dummy variable creation. All the available holidays can be seen by running `timeDate::listHolidays()` in your console. Last time I checked, there were 118 available holidays.
 
 # Day 06 - Use `step_zv()` to drop variables with one value 
 
@@ -635,3 +635,157 @@ ga_rec
 
 glimpse(ga_rec)
 ```
+
+# Day 07 - Use `step_impute_*()` functions for imputation
+
+The `recipes` package makes it easy to perform [imputation](https://en.wikipedia.org/wiki/Imputation_(statistics)) tasks. As of this writing, `recipes` had the following functions to perform different methods of imputation: 
+
+* `step_impute_bag()`
+* `step_impute_knn()`
+* `step_impute_linear()`
+* `step_impute_lower()`
+* `step_impute_mean()`
+* `step_impute_median()`
+* `step_impute_mode()`
+* `step_impute_roll()`
+
+For today's examples, I'm going to highlight the use of `step_impute_mean()`, `step_input_median()`, and `step_input_mode()`. First, though, we need some data with missing values. Let's switch it up a bit and use the [Palmer Station penguin data](https://github.com/allisonhorst/palmerpenguins) (run ?penguins in your console to get more information about the data). In brief, these data represent different measurements of various [penguin](https://en.wikipedia.org/wiki/Penguin) species in Antarctica.
+
+```{r day-07-data}
+data(penguins, package = "modeldata") 
+
+# Add an id column
+penguins <- 
+  penguins |> mutate(id = 1:n(), .before = everything())
+```
+
+This data set contains some missing values that could be addressed using imputation methods. Let's take a moment and explore the data a little further.
+
+```{r day-07-explore-data}
+glimpse(penguins)
+
+# What columns have missing data?
+map_df(penguins, \(x) any(is.na(x)))
+
+# What percentage of data is missing in each column?
+map(penguins, \(x) mean(is.na(x)))
+
+# Missing data examples
+missing_examples <- c(4, 12, 69, 272)
+penguins |> slice(missing_examples)
+```
+
+The following columns contain missing data (included are the variable types):
+
+* `bill_length_mm` - double
+* `bill_depth_mm` - double
+* `flipper_length_mm` - integer
+* `body_mass_g` - integer
+* `sex` - factor 
+
+You'll also notice some of these variables are of various types (i.e. factor, double, or integer). Indeed, the variable type will determine the method of imputation applied. 
+
+```{r day-07-split}
+set.seed(20240107)
+penguins_split <- initial_split(penguins, prop = .8)
+
+penguins_tr <- training(penguins_split)
+penguins_te <- testing(penguins_split)
+```
+
+Let's start by highlighting how to apply [mean substitution](https://en.wikipedia.org/wiki/Imputation_(statistics)#Mean_substitution) as our imputation method. Specifically, let's apply this step to our first numeric variable with missing values, `bill_length_mm`. 
+
+::: {.callout-note}
+Take note of the importance of the use of `prep()` here. Remember, some recipe steps need to calculate an intermediate value before applying it to the final baked data. This is highlighted with the `tidy(penquin_rec, number = 1)` in the code below.
+:::
+
+```{r day-07-recipe}
+penguins_rec <- recipe(~ ., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_mean(bill_length_mm) |>
+  prep()
+
+summary(penguins_rec)
+tidy(penguins_rec, number = 1)
+```
+
+```{r day-07-recipe-bake}
+penguins_baked <- bake(penguins_rec, new_data = NULL)
+
+penguins_baked
+
+# Imputation should result in a complete column of data
+any(is.na(penguins_baked$bill_length_mm))
+
+# The missing values have now been substituted
+penguins_baked |> filter(id %in% missing_examples)
+```
+
+`step_impute_mean()` also includes a `trim` argument, which trims observations from the end of the variable before the mean is computed. This is also a tuning parameter, which can be used in any [hyperparameter tuning](https://www.tmwr.org/tuning) applied within your modeling. I would like to explore this more, but it's outside the scope of this post. Just to highlight use of the `trim` argument, here's some example code.
+
+```{r day-07-impute-mean-trim}
+penguin_mean_trim_rec <- recipe(~ ., data = penguins_tr) |>
+  step_impute_mean(bill_length_mm, trim = .5) |>
+  prep()
+
+# Notice how the intermediate calculation changed because
+# we trimmed the observations used to make the mean calculation
+tidy(penguin_mean_trim_rec, number = 1)
+```
+
+Let's bake this recipe for completeness.
+
+```{r day-07-impute-mean-trim-baked}
+penguins_mean_trim_baked <- 
+  bake(penguin_mean_trim_rec, new_data = NULL)
+
+penguins_mean_trim_baked
+
+# The missing values have now been imputed
+penguins_mean_trim_baked |> filter(id %in% missing_examples)
+```
+
+Mean substitution is just one imputation step. The `recipes` package also includes the `step_impute_median()` and `step_impute_mode()`. These step functions have similar syntax, just a different calculated metric is applied in the background. Let's apply `step_impute_median()` to `bill_depth_mm`, `flipper_length_mm`, and `body_mass_g`. 
+
+In addition, we'll apply `step_impute_mode()` to impute values for the missing data within the `sex` variable. Take note, the docs for this function state:
+
+> Impute nominal data using the most common value.
+
+So, it only seems `step_input_mode()` can only be used to impute missing values for nominal variables. 
+
+```{r day-07-other-numeric-imputation}
+penguin_rec <- recipe(~ ., data = penguins_tr) |>
+  step_impute_mean(bill_length_mm) |>
+  step_impute_median(
+    bill_depth_mm, 
+    flipper_length_mm, 
+    body_mass_g
+  ) |>
+  step_impute_mode(sex) |>
+  prep()
+
+penguin_rec
+
+tidy(penguin_rec)
+```
+
+Let's take a look at the calculated values for all these steps.
+
+```{r day-07-view-step-calcs}
+map(1:3, \(x) tidy(penguin_rec, number = x))
+```
+
+As always, let's bake this recipe and look at the final data, which should not have any missing data.
+
+```{r day-07-bake-final-rec}
+baked_penguin <- bake(penguin_rec, new_data = NULL)
+
+baked_penguin
+
+map_df(baked_penguin, \(x) any(is.na(x)))
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+That's all the time I have for today. Tomorrow I'll pick up exploring some more of the other `step_impute_*` functions.
+
