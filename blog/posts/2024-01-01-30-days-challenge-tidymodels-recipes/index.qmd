@@ -721,7 +721,7 @@ any(is.na(penguins_baked$bill_length_mm))
 penguins_baked |> filter(id %in% missing_examples)
 ```
 
-`step_impute_mean()` also includes a `trim` argument, which trims observations from the end of the variable before the mean is computed. This is also a tuning parameter, which can be used in any [hyperparameter tuning](https://www.tmwr.org/tuning) applied within your modeling. I would like to explore this more, but it's outside the scope of this post. Just to highlight use of the `trim` argument, here's some example code.
+`step_impute_mean()` also includes a `trim` argument, which trims observations from the end of the variable before the mean is computed. This is also a tuning parameter, which can be used in any [hyperparameter tuning](https://www.tmwr.org/tuning) applied within your modeling. I would like to explore this more, but it's outside the scope of this post. Just to highlight the use of the `trim` argument, here's some example code:
 
 ```{r day-07-impute-mean-trim}
 penguin_mean_trim_rec <- recipe(~ ., data = penguins_tr) |>
@@ -751,7 +751,7 @@ In addition, we'll apply `step_impute_mode()` to impute values for the missing d
 
 > Impute nominal data using the most common value.
 
-So, it only seems `step_input_mode()` can only be used to impute missing values for nominal variables. 
+So, it only seems `step_impute_mode()` can only be used to impute missing values for nominal variables. 
 
 ```{r day-07-other-numeric-imputation}
 penguin_rec <- recipe(~ ., data = penguins_tr) |>
@@ -775,7 +775,7 @@ Let's take a look at the calculated values for all these steps.
 map(1:3, \(x) tidy(penguin_rec, number = x))
 ```
 
-As always, let's bake this recipe and look at the final data, which should not have any missing data.
+As always, let's bake this recipe and look at the final data, which should now contain no missing data.
 
 ```{r day-07-bake-final-rec}
 baked_penguin <- bake(penguin_rec, new_data = NULL)
@@ -788,4 +788,173 @@ baked_penguin |> filter(id %in% missing_examples)
 ```
 
 That's all the time I have for today. Tomorrow I'll pick up exploring some more of the other `step_impute_*` functions.
+
+# Day 08 - Use bagged tree models to impute missing data with `step_impute_bag()`
+
+To start, I wanted to highlight a really good, simplified definition of imputation from the [Feature Engineering and Selection: A Practical Approach for Predictive Models](https://bookdown.org/max/FES/) book by Max Kuhn and Kjell Johnson.
+
+> Imputation uses information and relationships among the non-missing predictors to provide an estimate to fill in the missing values.
+
+Yesterday we used the `step_impute_mean()`, `step_impute_median()`, and `step_impute_mode()` functions to calculate missing values. However, we can also use tree-based methods, which uses information from different variables rather than just values in rows, to perform our imputation step.
+
+To be honest, this imputation method was beyond my current knowledge set. Thus, my explanation of what is happening on the backend may be quite general. However, check out the ['Trees' section](https://bookdown.org/max/FES/imputation-methods.html) from the [Feature Engineering and Selection: A Practical Approach for Predictive Models](https://bookdown.org/max/FES/) book for a good starting point to learn more. The book does suggest using bagged models can produce reasonable outputs, which results in values to be produced within the range of the training data. Such methods also retains all predictors, unlike when case-wise deletion is used to manage missing data.
+
+`recipes`' `step_impute_bag()` function is used to impute missing data using bagged tree models. To highlight the use of this step, let's go back to using the `penguins` data from yesterday.
+
+```{r day-08-data}
+data(penguins, package = "modeldata")
+missing_examples <- c(4, 12, 69, 272)
+
+# Create an id variable
+penguins <- 
+  penguins |> 
+  mutate(id = 1:n(), .before = everything())
+
+glimpse(penguins)
+
+# Print the missing examples
+penguins |> filter(id %in% missing_examples)
+```
+
+We'll now create our training and testing split.
+
+```{r day-08-split}
+set.seed(20240108)
+penguins_split <- initial_split(penguins, prop = 0.8)
+penguins_tr <- training(penguins_split)
+penguins_te <- testing(penguins_split)
+```
+
+To start small, let's use a bagged tree model to impute values for the missing data in the `bill_length_mm` variable. The syntax is pretty straightforward:
+
+```{r day-08-recipe}
+penguins_rec <- recipe (~ ., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_bag(bill_length_mm) |>
+  prep()
+
+penguins_rec
+```
+
+Before we `bake()` our recipe, let's `tidy()` our prepped recipe a bit to see what's happening under the hood.
+
+```{r day-08-tidy-rec}
+tidy(penguins_rec)
+
+tidy(penguins_rec, number = 1)
+```
+
+Tidying down to the bagging step, you'll see this step outputs a tibble with three columns:
+
+1. `terms` - the selectors or variables selected. 
+2. `model` - the bagged tree model object.
+3. `id` - a unique id for the step being applied in the recipe.
+
+Let's bake the recipe and see the result of our imputation step.
+
+```{r day-08-baked-recipe}
+baked_penguin <- bake(penguin_rec, new_data = NULL)
+
+baked_penguin
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+`step_impute_bagged()` also has several options to modify the imputation method. First, it has an `impute_with` argument that allows you to be selective about what variables are used as predictors in the bagged tree model. We'll specify these variables by passing them into the `imp_vars()` function to the argument.
+
+This argument accepts the various [selector functions](https://recipes.tidymodels.org/articles/Selecting_Variables.html) as well. For instance, the default for the argument is the `all_predictors()` function. The following code uses this argument to limit the imputation to the `bill_depth_mm` and `sex` variables (I'm not a biologist, so I have no idea if this is actually a good approach).
+
+I did come across a cryptic warning when first doing this, though. This warning also resulted in the imputation step to not be applied.
+
+```{r day-08-cryptic-warning}
+penguin_rec <- recipe(~ ., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_bag(
+    bill_length_mm,
+    impute_with = imp_vars(bill_depth_mm, sex)
+  ) |>
+  prep()
+```
+
+I assumed this was because all the predictors used to create the model for imputation had missing values. So, I applied some imputation to these first before applying the `step_impute_bag()` and the warning went away. However, I'm unsure if this was the initial problem. I might submit an issue to the [`recipes` GitHub repo](https://github.com/tidymodels/recipes) to which I'll link later. Nevertheless, I got the example to work. Here's the code:
+
+```{r day-08-impute-selective}
+penguin_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_mean(bill_depth_mm) |>
+  step_impute_mode(sex) |>
+  step_impute_bag(
+    bill_length_mm,
+    impute_with = imp_vars(bill_depth_mm)
+  ) |>
+  prep() 
+
+baked_penguin <- bake(penguin_rec, new_data = NULL)
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+Given we're using a bagged tree model to perform imputation, we can modify the number of bagged trees used in each model in the `step_impute_bag()` function. To do this, we just pass a value to the `trees` argument. Indeed, its suggested to keep this value [between 25 - 50 trees](https://bookdown.org/max/FES/imputation-methods.html).
+
+```{r day-08-set-trees}
+# The default is 25 trees
+penguin_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_bag(bill_length_mm, trees = 50) |>
+  prep()
+
+baked_penguin <- bake(penguin_rec, new_data = NULL)
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+The last `step_impute_bag()` argument I'll highlight is `options`. `ipred::ipredbagg()` implements the bagged model used for this imputation step. Thus, the `options` argument is used to pass arguments to this function. For example, if we want to speed up execution, we can lower the `nbagg` argument, the number of bootstrap replications applied, and indicate we don't want to return a data frame of predictors by setting `keepX = FALSE`.
+
+```{r day-08-pass-options}
+penguin_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_bag(
+    bill_length_mm,
+    options = list(nbagg = 2, keepX = FALSE)
+  ) |>
+  prep()
+
+baked_penguin <- bake(penguin_rec, new_data = NULL)
+
+baked_penguin
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+Just for the heck of it, let's apply `step_impute_bag()` to all predictor variables in our recipe.
+
+```{r day-08-final-rec}
+penguin_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_bag(all_predictors()) |>
+  prep()
+
+baked_penguin <- bake(penguin_rec, new_data = NULL)
+
+baked_penguin
+
+# There should now be no missing data
+map_df(baked_penguin, \(x) any(is.na(x)))
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+That's it for today. Tomorrow I'll focus on the use of `step_impute_knn()`.
+
+
+
+
+
+
+
+
+
+
+
+
 
