@@ -168,6 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" id="toc-day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday" class="nav-link" data-scroll-target="#day-05---create-a-binary-indicator-variable-for-holidays-using-step_holiday">Day 05 - Create a binary indicator variable for holidays using <code>step_holiday()</code></a></li>
   <li><a href="#day-06---use-step_zv-to-drop-variables-with-one-value" id="toc-day-06---use-step_zv-to-drop-variables-with-one-value" class="nav-link" data-scroll-target="#day-06---use-step_zv-to-drop-variables-with-one-value">Day 06 - Use <code>step_zv()</code> to drop variables with one value</a></li>
   <li><a href="#day-07---use-step_impute_-functions-for-imputation" id="toc-day-07---use-step_impute_-functions-for-imputation" class="nav-link" data-scroll-target="#day-07---use-step_impute_-functions-for-imputation">Day 07 - Use <code>step_impute_*()</code> functions for imputation</a></li>
+  <li><a href="#day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" id="toc-day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" class="nav-link" data-scroll-target="#day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag">Day 08 - Use bagged tree models to impute missing data with <code>step_impute_bag()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -1594,7 +1595,7 @@ Note
 3    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt; </code></pre>
 </div>
 </div>
-<p><code>step_impute_mean()</code> also includes a <code>trim</code> argument, which trims observations from the end of the variable before the mean is computed. This is also a tuning parameter, which can be used in any <a href="https://www.tmwr.org/tuning">hyperparameter tuning</a> applied within your modeling. I would like to explore this more, but it’s outside the scope of this post. Just to highlight use of the <code>trim</code> argument, here’s some example code.</p>
+<p><code>step_impute_mean()</code> also includes a <code>trim</code> argument, which trims observations from the end of the variable before the mean is computed. This is also a tuning parameter, which can be used in any <a href="https://www.tmwr.org/tuning">hyperparameter tuning</a> applied within your modeling. I would like to explore this more, but it’s outside the scope of this post. Just to highlight the use of the <code>trim</code> argument, here’s some example code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>penguin_mean_trim_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
 <span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(bill_length_mm, <span class="at">trim =</span> .<span class="dv">5</span>) <span class="sc">|&gt;</span></span>
@@ -1648,7 +1649,7 @@ Note
 <blockquote class="blockquote">
 <p>Impute nominal data using the most common value.</p>
 </blockquote>
-<p>So, it only seems <code>step_input_mode()</code> can only be used to impute missing values for nominal variables.</p>
+<p>So, it only seems <code>step_impute_mode()</code> can only be used to impute missing values for nominal variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
 <span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
@@ -1738,7 +1739,7 @@ Note
 1 sex   female impute_mode_PGohX</code></pre>
 </div>
 </div>
-<p>As always, let’s bake this recipe and look at the final data, which should not have any missing data.</p>
+<p>As always, let’s bake this recipe and look at the final data, which should now contain no missing data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
 <span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1777,6 +1778,304 @@ Note
 </div>
 </div>
 <p>That’s all the time I have for today. Tomorrow I’ll pick up exploring some more of the other <code>step_impute_*</code> functions.</p>
+</section>
+<section id="day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" class="level1">
+<h1>Day 08 - Use bagged tree models to impute missing data with <code>step_impute_bag()</code></h1>
+<p>To start, I wanted to highlight a really good, simplified definition of imputation from the <a href="https://bookdown.org/max/FES/">Feature Engineering and Selection: A Practical Approach for Predictive Models</a> book by Max Kuhn and Kjell Johnson.</p>
+<blockquote class="blockquote">
+<p>Imputation uses information and relationships among the non-missing predictors to provide an estimate to fill in the missing values.</p>
+</blockquote>
+<p>Yesterday we used the <code>step_impute_mean()</code>, <code>step_impute_median()</code>, and <code>step_impute_mode()</code> functions to calculate missing values. However, we can also use tree-based methods, which uses information from different variables rather than just values in rows, to perform our imputation step.</p>
+<p>To be honest, this imputation method was beyond my current knowledge set. Thus, my explanation of what is happening on the backend may be quite general. However, check out the <a href="https://bookdown.org/max/FES/imputation-methods.html">‘Trees’ section</a> from the <a href="https://bookdown.org/max/FES/">Feature Engineering and Selection: A Practical Approach for Predictive Models</a> book for a good starting point to learn more. The book does suggest using bagged models can produce reasonable outputs, which results in values to be produced within the range of the training data. Such methods also retains all predictors, unlike when case-wise deletion is used to manage missing data.</p>
+<p><code>recipes</code>’ <code>step_impute_bag()</code> function is used to impute missing data using bagged tree models. To highlight the use of this step, let’s go back to using the <code>penguins</code> data from yesterday.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a>missing_examples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">69</span>, <span class="dv">272</span>)</span>
+<span id="cb177-3"><a href="#cb177-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-4"><a href="#cb177-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an id variable</span></span>
+<span id="cb177-5"><a href="#cb177-5" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> </span>
+<span id="cb177-6"><a href="#cb177-6" aria-hidden="true" tabindex="-1"></a>  penguins <span class="sc">|&gt;</span> </span>
+<span id="cb177-7"><a href="#cb177-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">.before =</span> <span class="fu">everything</span>())</span>
+<span id="cb177-8"><a href="#cb177-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-9"><a href="#cb177-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ id                &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 2…
+$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, …
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Torger…
+$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, 37.8, 37.8, 41…
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, 17.1, 17.3, 17…
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180, 182, 191, 198…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, 3300, 3700, 32…
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male, NA, NA, NA, NA, fe…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the missing examples</span></span>
+<span id="cb179-2"><a href="#cb179-2" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           NA            NA                  NA          NA &lt;NA&gt;  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt;  
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              NA            NA                  NA          NA &lt;NA&gt;  </code></pre>
+</div>
+</div>
+<p>We’ll now create our training and testing split.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240108</span>)</span>
+<span id="cb181-2"><a href="#cb181-2" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb181-3"><a href="#cb181-3" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb181-4"><a href="#cb181-4" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To start small, let’s use a bagged tree model to impute values for the missing data in the <code>bill_length_mm</code> variable. The syntax is pretty straightforward:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span> (<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb182-2"><a href="#cb182-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb182-3"><a href="#cb182-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_bag</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
+<span id="cb182-4"><a href="#cb182-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb182-5"><a href="#cb182-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb182-6"><a href="#cb182-6" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 7
+id:        1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 275 data points and 9 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Bagged tree imputation for: bill_length_mm | Trained</code></pre>
+</div>
+</div>
+<p>Before we <code>bake()</code> our recipe, let’s <code>tidy()</code> our prepped recipe a bit to see what’s happening under the hood.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguins_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type       trained skip  id              
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;           
+1      1 step      impute_bag TRUE    FALSE impute_bag_OQalP</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguins_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  terms          model     id              
+  &lt;chr&gt;          &lt;list&gt;    &lt;chr&gt;           
+1 bill_length_mm &lt;regbagg&gt; impute_bag_OQalP</code></pre>
+</div>
+</div>
+<p>Tidying down to the bagging step, you’ll see this step outputs a tibble with three columns:</p>
+<ol type="1">
+<li><code>terms</code> - the selectors or variables selected.</li>
+<li><code>model</code> - the bagged tree model object.</li>
+<li><code>id</code> - a unique id for the step being applied in the recipe.</li>
+</ol>
+<p>Let’s bake the recipe and see the result of our imputation step.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb199-2"><a href="#cb199-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb199-3"><a href="#cb199-3" aria-hidden="true" tabindex="-1"></a>baked_penguin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1    35 Adelie    Dream               36.4          17                 195        3325 female
+ 2   111 Adelie    Biscoe              38.1          16.5               198        3825 female
+ 3   245 Gentoo    Biscoe              45.5          14.5               212        4750 female
+ 4    75 Adelie    Torgersen           35.5          17.5               190        3700 female
+ 5     1 Adelie    Torgersen           39.1          18.7               181        3750 male  
+ 6    96 Adelie    Dream               40.8          18.9               208        4300 male  
+ 7   338 Chinstrap Dream               46.8          16.5               189        3650 female
+ 8    24 Adelie    Biscoe              38.2          18.1               185        3950 male  
+ 9    20 Adelie    Torgersen           46            21.5               194        4200 male  
+10    40 Adelie    Dream               39.8          19.1               184        4650 male  
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb201"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1   272 Gentoo  Biscoe              43.7          17.3               196        4050 female
+2     4 Adelie  Torgersen           43.7          17.3               196        4050 female
+3    12 Adelie  Torgersen           37.8          17.3               180        3700 female</code></pre>
+</div>
+</div>
+<p><code>step_impute_bagged()</code> also has several options to modify the imputation method. First, it has an <code>impute_with</code> argument that allows you to be selective about what variables are used as predictors in the bagged tree model. We’ll specify these variables by passing them into the <code>imp_vars()</code> function to the argument.</p>
+<p>This argument accepts the various <a href="https://recipes.tidymodels.org/articles/Selecting_Variables.html">selector functions</a> as well. For instance, the default for the argument is the <code>all_predictors()</code> function. The following code uses this argument to limit the imputation to the <code>bill_depth_mm</code> and <code>sex</code> variables (I’m not a biologist, so I have no idea if this is actually a good approach).</p>
+<p>I did come across a cryptic warning when first doing this, though. This warning also resulted in the imputation step to not be applied.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb203"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> ., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb203-3"><a href="#cb203-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_bag</span>(</span>
+<span id="cb203-4"><a href="#cb203-4" aria-hidden="true" tabindex="-1"></a>    bill_length_mm,</span>
+<span id="cb203-5"><a href="#cb203-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">impute_with =</span> <span class="fu">imp_vars</span>(bill_depth_mm, sex)</span>
+<span id="cb203-6"><a href="#cb203-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb203-7"><a href="#cb203-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: All predictors are missing; cannot impute</code></pre>
+</div>
+</div>
+<p>I assumed this was because all the predictors used to create the model for imputation had missing values. So, I applied some imputation to these first before applying the <code>step_impute_bag()</code> and the warning went away. However, I’m unsure if this was the initial problem. I might submit an issue to the <a href="https://github.com/tidymodels/recipes"><code>recipes</code> GitHub repo</a> to which I’ll link later. Nevertheless, I got the example to work. Here’s the code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb205"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mean</span>(bill_depth_mm) <span class="sc">|&gt;</span></span>
+<span id="cb205-4"><a href="#cb205-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_mode</span>(sex) <span class="sc">|&gt;</span></span>
+<span id="cb205-5"><a href="#cb205-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_bag</span>(</span>
+<span id="cb205-6"><a href="#cb205-6" aria-hidden="true" tabindex="-1"></a>    bill_length_mm,</span>
+<span id="cb205-7"><a href="#cb205-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">impute_with =</span> <span class="fu">imp_vars</span>(bill_depth_mm)</span>
+<span id="cb205-8"><a href="#cb205-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb205-9"><a href="#cb205-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span>
+<span id="cb205-10"><a href="#cb205-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb205-11"><a href="#cb205-11" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb205-12"><a href="#cb205-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb205-13"><a href="#cb205-13" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           41.0          17.2                NA          NA male  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 male  
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              41.0          17.2                NA          NA male  </code></pre>
+</div>
+</div>
+<p>Given we’re using a bagged tree model to perform imputation, we can modify the number of bagged trees used in each model in the <code>step_impute_bag()</code> function. To do this, we just pass a value to the <code>trees</code> argument. Indeed, its suggested to keep this value <a href="https://bookdown.org/max/FES/imputation-methods.html">between 25 - 50 trees</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb207"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The default is 25 trees</span></span>
+<span id="cb207-2"><a href="#cb207-2" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb207-3"><a href="#cb207-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb207-4"><a href="#cb207-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_bag</span>(bill_length_mm, <span class="at">trees =</span> <span class="dv">50</span>) <span class="sc">|&gt;</span></span>
+<span id="cb207-5"><a href="#cb207-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb207-6"><a href="#cb207-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-7"><a href="#cb207-7" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb207-8"><a href="#cb207-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-9"><a href="#cb207-9" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           38.3          NA                  NA          NA &lt;NA&gt;  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt;  
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              47.8          NA                  NA          NA &lt;NA&gt;  </code></pre>
+</div>
+</div>
+<p>The last <code>step_impute_bag()</code> argument I’ll highlight is <code>options</code>. <code>ipred::ipredbagg()</code> implements the bagged model used for this imputation step. Thus, the <code>options</code> argument is used to pass arguments to this function. For example, if we want to speed up execution, we can lower the <code>nbagg</code> argument, the number of bootstrap replications applied, and indicate we don’t want to return a data frame of predictors by setting <code>keepX = FALSE</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb209"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb209-3"><a href="#cb209-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_bag</span>(</span>
+<span id="cb209-4"><a href="#cb209-4" aria-hidden="true" tabindex="-1"></a>    bill_length_mm,</span>
+<span id="cb209-5"><a href="#cb209-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(<span class="at">nbagg =</span> <span class="dv">2</span>, <span class="at">keepX =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb209-6"><a href="#cb209-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb209-7"><a href="#cb209-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb209-8"><a href="#cb209-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb209-9"><a href="#cb209-9" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb209-10"><a href="#cb209-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb209-11"><a href="#cb209-11" aria-hidden="true" tabindex="-1"></a>baked_penguin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1   280 Chinstrap Dream               45.4          18.7               188        3525 female
+ 2   160 Gentoo    Biscoe              46.7          15.3               219        5200 male  
+ 3    27 Adelie    Biscoe              40.6          18.6               183        3550 male  
+ 4   274 Gentoo    Biscoe              50.4          15.7               222        5750 male  
+ 5   288 Chinstrap Dream               51.7          20.3               194        3775 male  
+ 6    46 Adelie    Dream               39.6          18.8               190        4600 male  
+ 7   316 Chinstrap Dream               53.5          19.9               205        4500 male  
+ 8   286 Chinstrap Dream               51.3          19.9               198        3700 male  
+ 9   164 Gentoo    Biscoe              49            16.1               216        5550 male  
+10    79 Adelie    Torgersen           36.2          16.1               187        3550 female
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb211"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb211-1"><a href="#cb211-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           38.1          NA                  NA          NA &lt;NA&gt;  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt;  
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              48.0          NA                  NA          NA &lt;NA&gt;  </code></pre>
+</div>
+</div>
+<p>Just for the heck of it, let’s apply <code>step_impute_bag()</code> to all predictor variables in our recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb213"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb213-1"><a href="#cb213-1" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb213-2"><a href="#cb213-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb213-3"><a href="#cb213-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_bag</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb213-4"><a href="#cb213-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb213-5"><a href="#cb213-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb213-6"><a href="#cb213-6" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb213-7"><a href="#cb213-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb213-8"><a href="#cb213-8" aria-hidden="true" tabindex="-1"></a>baked_penguin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1   280 Chinstrap Dream               45.4          18.7               188        3525 female
+ 2   160 Gentoo    Biscoe              46.7          15.3               219        5200 male  
+ 3    27 Adelie    Biscoe              40.6          18.6               183        3550 male  
+ 4   274 Gentoo    Biscoe              50.4          15.7               222        5750 male  
+ 5   288 Chinstrap Dream               51.7          20.3               194        3775 male  
+ 6    46 Adelie    Dream               39.6          18.8               190        4600 male  
+ 7   316 Chinstrap Dream               53.5          19.9               205        4500 male  
+ 8   286 Chinstrap Dream               51.3          19.9               198        3700 male  
+ 9   164 Gentoo    Biscoe              49            16.1               216        5550 male  
+10    79 Adelie    Torgersen           36.2          16.1               187        3550 female
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb215"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There should now be no missing data</span></span>
+<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map_df</span>(baked_penguin, \(x) <span class="fu">any</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 8
+  id    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex  
+  &lt;lgl&gt; &lt;lgl&gt;   &lt;lgl&gt;  &lt;lgl&gt;          &lt;lgl&gt;         &lt;lgl&gt;             &lt;lgl&gt;       &lt;lgl&gt;
+1 FALSE FALSE   FALSE  FALSE          FALSE         FALSE             FALSE       FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb217"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           37.9          17.8               188        3546 male  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 female
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              47.9          14.8               214        5028 female</code></pre>
+</div>
+</div>
+<p>That’s it for today. Tomorrow I’ll focus on the use of <code>step_impute_knn()</code>.</p>
 
 
 </section>
