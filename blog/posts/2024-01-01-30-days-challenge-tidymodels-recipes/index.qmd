@@ -946,15 +946,123 @@ baked_penguin |> filter(id %in% missing_examples)
 
 That's it for today. Tomorrow I'll focus on the use of `step_impute_knn()`.
 
+# Day 09 - Impute missing values using `step_impute_knn()`
 
+Today, we're focusing on imputing missing data using `recipes`' `step_impute_knn()` function. In short, this function uses a k-nearest neighbors approach to impute missing values.
 
+For today's examples, I'm going to stick with the `penguins` data we've been using the past few days. Given this data is relatively small (n = 344), it's a [good candidate](https://bookdown.org/max/FES/imputation-methods.html) for using a k-nearest neighbor approach to imputation.
 
+```{r day-09-data}
+data(penguins, package = "modeldata")
 
+# Create a row id
+penguins <- penguins |>
+  mutate(id = 1:n(), .before = everything())
 
+glimpse(penguins)
 
+# Percent missing for each column
+map(penguins, \(x) mean(is.na(x)))
+```
 
+Just for a refresher, let's peek at a few of the missing values.
 
+```{r day-09-mising}
+missing_examples <- c(4, 12, 69, 272)
 
+penguins |> filter(id %in% missing_examples)
+```
 
+Let's create our training and testing split.
 
+```{r day-09-split}
+set.seed(20240109)
+penguins_split <- initial_split(penguins, prop = 0.8)
 
+penguins_tr <- training(penguins_split)
+penguins_te <- testing(penguins_split)
+```
+
+Since imputation can be applied to either numeric or nominal data, `step_impute_knn()` uses [Gower's distance](https://www.jstor.org/stable/2528823) for calculating nearest neighbors (you can learn more by running `?step_impute_knn` in your console). Once the neighbors are calculated, nominal variables are predicted using the mean, and numeric data is predicted using the mode. The number of neighbors can be set by specifying the `neighbors` argument of the function, which can also be used for [hyperparameter tuning](https://www.tmwr.org/tuning).
+
+Let's start by imputing values for our missing data in the `sex` column. Here's the code for this initial recipe.
+
+```{r day-09-rec}
+penguins_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_knn(sex) |>
+  prep()
+
+penguins_rec
+```
+
+Before we bake and examine what the imputation step does, let's drill down and see what's occurring at the prep stage. `tidy()` will be used to do this. Similar to `step_impute_bag()`, a tibble of `terms`, `predictors`, `neighbors` (specific to k-nearest neighbors), and an `id` is returned.
+
+```{r day-09-peek-rec}
+tidy(penguins_rec)
+
+# Drill down into the specific impute_knn step
+tidy(penguins_rec, number = 1)
+```
+
+Let's bake our recipe and examine the result of our imputation step.
+
+```{r day-09-bake-rec}
+baked_penguins <- bake(penguins_rec, new_data = NULL)
+
+baked_penguins
+
+baked_penguins |> 
+  filter(id %in% missing_examples) |> 
+  relocate(sex, .after = 1) 
+```
+
+As mentioned before, `neighbors` is an argument to set the number of neighbors to use in our estimation. The function defaults to five, but we can modify this to any integer value. It is suggested that [5 - 10 neighbors is a sensible default](https://bookdown.org/max/FES/imputation-methods.html). However, this is dependent on the data you are working with. For our next example, let's constrain this parameter to 3, while also applying our imputation step to all numeric predictors.
+
+```{r day-09-neighbors-constrain}
+penguins_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_knn(all_numeric_predictors(), neighbors = 3) |>
+  prep()
+
+penguins_rec
+```
+
+```{r day-09-bake-neighbors-constrain}
+baked_penguin <- bake(penguins_rec, new_data = NULL)
+
+baked_penguin |> filter(id %in% missing_examples)
+```
+
+Just like `step_impute_bag()`, `step_impute_knn()` provides both an `impute_with` and `options` argument. We can be explicit about the variables to use with our knn calculations by passing a comma-separated list of names to the `imp_vars()` function to the `impute_with` arugment. `options` accepts a list of arguments. These get passed along to the underlying `gower::gower_topn()` function running under the hood, which performs the k-nearest neighbors calculation using Gower's distance. According to the docs, the only two options accepted are:
+
+1. `nthread` - specify the number of threads to use for parallelization.
+2. `eps` - optional option for variable ranges (I'm not quite sure what this does).
+
+My assumption is these options can be used to optimize the run-time for our calculations. However, I would consult the documentation for the `gower::gower_topn()` function to verify. The key takeaway here is that `step_impute_knn()` provides an interface to configure options for the function it wraps.
+
+Here's an example constraining our `sex` imputation to the `bill_length` and `bill_depth_mm` variables.
+
+```{r day-09-specific-variables}
+penguins_rec <- recipe(~., data = penguins_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_knn(
+    sex, 
+    impute_with = imp_vars(bill_depth_mm, bill_length_mm)
+  ) |>
+  prep()
+
+penguins_rec
+```
+
+Let's bake our final example and examine what happened.
+
+```{r day-09-final-bake}
+baked_penguin <- bake(penguins_rec, new_data = NULL)
+
+baked_penguin |> 
+  filter(id %in% missing_examples) |>
+  relocate(sex, .after = 1)
+```
+
+So there you have it, another example of a `step_impute_*` function. Tomorrow I'll continue exploring imputation steps by highlighting the use of the `step_impute_linear()` function.

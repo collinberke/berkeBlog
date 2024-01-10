@@ -169,6 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-06---use-step_zv-to-drop-variables-with-one-value" id="toc-day-06---use-step_zv-to-drop-variables-with-one-value" class="nav-link" data-scroll-target="#day-06---use-step_zv-to-drop-variables-with-one-value">Day 06 - Use <code>step_zv()</code> to drop variables with one value</a></li>
   <li><a href="#day-07---use-step_impute_-functions-for-imputation" id="toc-day-07---use-step_impute_-functions-for-imputation" class="nav-link" data-scroll-target="#day-07---use-step_impute_-functions-for-imputation">Day 07 - Use <code>step_impute_*()</code> functions for imputation</a></li>
   <li><a href="#day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" id="toc-day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" class="nav-link" data-scroll-target="#day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag">Day 08 - Use bagged tree models to impute missing data with <code>step_impute_bag()</code></a></li>
+  <li><a href="#day-09---impute-missing-values-using-step_impute_knn" id="toc-day-09---impute-missing-values-using-step_impute_knn" class="nav-link" data-scroll-target="#day-09---impute-missing-values-using-step_impute_knn">Day 09 - Impute missing values using <code>step_impute_knn()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -2076,6 +2077,316 @@ id:        1</code></pre>
 </div>
 </div>
 <p>That’s it for today. Tomorrow I’ll focus on the use of <code>step_impute_knn()</code>.</p>
+</section>
+<section id="day-09---impute-missing-values-using-step_impute_knn" class="level1">
+<h1>Day 09 - Impute missing values using <code>step_impute_knn()</code></h1>
+<p>Today, we’re focusing on imputing missing data using <code>recipes</code>’ <code>step_impute_knn()</code> function. In short, this function uses a k-nearest neighbors approach to impute missing values.</p>
+<p>For today’s examples, I’m going to stick with the <code>penguins</code> data we’ve been using the past few days. Given this data is relatively small (n = 344), it’s a <a href="https://bookdown.org/max/FES/imputation-methods.html">good candidate</a> for using a k-nearest neighbor approach to imputation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb219"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb219-1"><a href="#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb219-2"><a href="#cb219-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb219-3"><a href="#cb219-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a row id</span></span>
+<span id="cb219-4"><a href="#cb219-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb219-5"><a href="#cb219-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">.before =</span> <span class="fu">everything</span>())</span>
+<span id="cb219-6"><a href="#cb219-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb219-7"><a href="#cb219-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ id                &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 2…
+$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, …
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Torger…
+$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, 37.8, 37.8, 41…
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, 17.1, 17.3, 17…
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180, 182, 191, 198…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, 3300, 3700, 32…
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male, NA, NA, NA, NA, fe…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb221"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb221-1"><a href="#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Percent missing for each column</span></span>
+<span id="cb221-2"><a href="#cb221-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(penguins, \(x) <span class="fu">mean</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$id
+[1] 0
+
+$species
+[1] 0
+
+$island
+[1] 0
+
+$bill_length_mm
+[1] 0.005813953
+
+$bill_depth_mm
+[1] 0.005813953
+
+$flipper_length_mm
+[1] 0.005813953
+
+$body_mass_g
+[1] 0.005813953
+
+$sex
+[1] 0.03197674</code></pre>
+</div>
+</div>
+<p>Just for a refresher, let’s peek at a few of the missing values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb223"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a>missing_examples <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">69</span>, <span class="dv">272</span>)</span>
+<span id="cb223-2"><a href="#cb223-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-3"><a href="#cb223-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1     4 Adelie  Torgersen           NA            NA                  NA          NA &lt;NA&gt;  
+2    12 Adelie  Torgersen           37.8          17.3               180        3700 &lt;NA&gt;  
+3    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+4   272 Gentoo  Biscoe              NA            NA                  NA          NA &lt;NA&gt;  </code></pre>
+</div>
+</div>
+<p>Let’s create our training and testing split.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb225"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240109</span>)</span>
+<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb225-3"><a href="#cb225-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb225-4"><a href="#cb225-4" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb225-5"><a href="#cb225-5" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since imputation can be applied to either numeric or nominal data, <code>step_impute_knn()</code> uses <a href="https://www.jstor.org/stable/2528823">Gower’s distance</a> for calculating nearest neighbors (you can learn more by running <code>?step_impute_knn</code> in your console). Once the neighbors are calculated, nominal variables are predicted using the mean, and numeric data is predicted using the mode. The number of neighbors can be set by specifying the <code>neighbors</code> argument of the function, which can also be used for <a href="https://www.tmwr.org/tuning">hyperparameter tuning</a>.</p>
+<p>Let’s start by imputing values for our missing data in the <code>sex</code> column. Here’s the code for this initial recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb226-2"><a href="#cb226-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb226-3"><a href="#cb226-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_knn</span>(sex) <span class="sc">|&gt;</span></span>
+<span id="cb226-4"><a href="#cb226-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb226-5"><a href="#cb226-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb226-6"><a href="#cb226-6" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 7
+id:        1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 275 data points and 10 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• K-nearest neighbor imputation for: sex | Trained</code></pre>
+</div>
+</div>
+<p>Before we bake and examine what the imputation step does, let’s drill down and see what’s occurring at the prep stage. <code>tidy()</code> will be used to do this. Similar to <code>step_impute_bag()</code>, a tibble of <code>terms</code>, <code>predictors</code>, <code>neighbors</code> (specific to k-nearest neighbors), and an <code>id</code> is returned.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb239"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb239-1"><a href="#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguins_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type       trained skip  id              
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;           
+1      1 step      impute_knn TRUE    FALSE impute_knn_dK6OX</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb241"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb241-1"><a href="#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drill down into the specific impute_knn step</span></span>
+<span id="cb241-2"><a href="#cb241-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(penguins_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  terms predictors        neighbors id              
+  &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;           
+1 sex   species                   5 impute_knn_dK6OX
+2 sex   island                    5 impute_knn_dK6OX
+3 sex   bill_length_mm            5 impute_knn_dK6OX
+4 sex   bill_depth_mm             5 impute_knn_dK6OX
+5 sex   flipper_length_mm         5 impute_knn_dK6OX
+6 sex   body_mass_g               5 impute_knn_dK6OX</code></pre>
+</div>
+</div>
+<p>Let’s bake our recipe and examine the result of our imputation step.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb243"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb243-1"><a href="#cb243-1" aria-hidden="true" tabindex="-1"></a>baked_penguins <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguins_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb243-2"><a href="#cb243-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-3"><a href="#cb243-3" aria-hidden="true" tabindex="-1"></a>baked_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 8
+      id species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+   &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+ 1   168 Gentoo    Biscoe              49.3          15.7               217        5850 male  
+ 2   196 Gentoo    Biscoe              49.6          15                 216        4750 male  
+ 3   117 Adelie    Torgersen           38.6          17                 188        2900 female
+ 4    39 Adelie    Dream               37.6          19.3               181        3300 female
+ 5   299 Chinstrap Dream               43.2          16.6               187        2900 female
+ 6   207 Gentoo    Biscoe              46.5          14.4               217        4900 female
+ 7   167 Gentoo    Biscoe              45.8          14.6               210        4200 female
+ 8   101 Adelie    Biscoe              35            17.9               192        3725 female
+ 9   339 Chinstrap Dream               45.7          17                 195        3650 female
+10   267 Gentoo    Biscoe              46.2          14.1               217        4375 female
+# ℹ 265 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb245"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb245-1"><a href="#cb245-1" aria-hidden="true" tabindex="-1"></a>baked_penguins <span class="sc">|&gt;</span> </span>
+<span id="cb245-2"><a href="#cb245-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples) <span class="sc">|&gt;</span> </span>
+<span id="cb245-3"><a href="#cb245-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(sex, <span class="at">.after =</span> <span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id sex    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+  &lt;int&gt; &lt;fct&gt;  &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+1   272 male   Gentoo  Biscoe              NA            NA                  NA          NA
+2    69 female Adelie  Torgersen           35.9          16.6               190        3050
+3     4 male   Adelie  Torgersen           NA            NA                  NA          NA</code></pre>
+</div>
+</div>
+<p>As mentioned before, <code>neighbors</code> is an argument to set the number of neighbors to use in our estimation. The function defaults to five, but we can modify this to any integer value. It is suggested that <a href="https://bookdown.org/max/FES/imputation-methods.html">5 - 10 neighbors is a sensible default</a>. However, this is dependent on the data you are working with. For our next example, let’s constrain this parameter to 3, while also applying our imputation step to all numeric predictors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb247"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb247-1"><a href="#cb247-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb247-2"><a href="#cb247-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb247-3"><a href="#cb247-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_numeric_predictors</span>(), <span class="at">neighbors =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb247-4"><a href="#cb247-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb247-5"><a href="#cb247-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb247-6"><a href="#cb247-6" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 7
+id:        1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 275 data points and 10 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• K-nearest neighbor imputation for: bill_length_mm and bill_depth_mm, ... | Trained</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb260"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguins_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb260-2"><a href="#cb260-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb260-3"><a href="#cb260-3" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g sex   
+  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt; &lt;fct&gt; 
+1   272 Gentoo  Biscoe              47.2          15.4               214        5217 &lt;NA&gt;  
+2    69 Adelie  Torgersen           35.9          16.6               190        3050 female
+3     4 Adelie  Torgersen           36.6          18.3               184        3658 &lt;NA&gt;  </code></pre>
+</div>
+</div>
+<p>Just like <code>step_impute_bag()</code>, <code>step_impute_knn()</code> provides both an <code>impute_with</code> and <code>options</code> argument. We can be explicit about the variables to use with our knn calculations by passing a comma-separated list of names to the <code>imp_vars()</code> function to the <code>impute_with</code> arugment. <code>options</code> accepts a list of arguments. These get passed along to the underlying <code>gower::gower_topn()</code> function running under the hood, which performs the k-nearest neighbors calculation using Gower’s distance. According to the docs, the only two options accepted are:</p>
+<ol type="1">
+<li><code>nthread</code> - specify the number of threads to use for parallelization.</li>
+<li><code>eps</code> - optional option for variable ranges (I’m not quite sure what this does).</li>
+</ol>
+<p>My assumption is these options can be used to optimize the run-time for our calculations. However, I would consult the documentation for the <code>gower::gower_topn()</code> function to verify. The key takeaway here is that <code>step_impute_knn()</code> provides an interface to configure options for the function it wraps.</p>
+<p>Here’s an example constraining our <code>sex</code> imputation to the <code>bill_length</code> and <code>bill_depth_mm</code> variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb262"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb262-1"><a href="#cb262-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb262-2"><a href="#cb262-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb262-3"><a href="#cb262-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_knn</span>(</span>
+<span id="cb262-4"><a href="#cb262-4" aria-hidden="true" tabindex="-1"></a>    sex, </span>
+<span id="cb262-5"><a href="#cb262-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">impute_with =</span> <span class="fu">imp_vars</span>(bill_depth_mm, bill_length_mm)</span>
+<span id="cb262-6"><a href="#cb262-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb262-7"><a href="#cb262-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb262-8"><a href="#cb262-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-9"><a href="#cb262-9" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 7
+id:        1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 275 data points and 10 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• K-nearest neighbor imputation for: sex | Trained</code></pre>
+</div>
+</div>
+<p>Let’s bake our final example and examine what happened.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb275"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb275-1"><a href="#cb275-1" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="ot">&lt;-</span> <span class="fu">bake</span>(penguins_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb275-2"><a href="#cb275-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb275-3"><a href="#cb275-3" aria-hidden="true" tabindex="-1"></a>baked_penguin <span class="sc">|&gt;</span> </span>
+<span id="cb275-4"><a href="#cb275-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> missing_examples) <span class="sc">|&gt;</span></span>
+<span id="cb275-5"><a href="#cb275-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(sex, <span class="at">.after =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+     id sex    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+  &lt;int&gt; &lt;fct&gt;  &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+1   272 female Gentoo  Biscoe              NA            NA                  NA          NA
+2    69 female Adelie  Torgersen           35.9          16.6               190        3050
+3     4 female Adelie  Torgersen           NA            NA                  NA          NA</code></pre>
+</div>
+</div>
+<p>So there you have it, another example of a <code>step_impute_*</code> function. Tomorrow I’ll continue exploring imputation steps by highlighting the use of the <code>step_impute_linear()</code> function.</p>
 
 
 </section>
