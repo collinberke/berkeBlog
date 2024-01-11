@@ -23,6 +23,7 @@ Before the holidays, I came across [Emil Hvitfeldt's](https://www.linkedin.com/i
 library(tidyverse)
 library(tidymodels)
 library(here)
+library(corrr)
 tidymodels_prefer()
 ```
 
@@ -1066,3 +1067,99 @@ baked_penguin |>
 ```
 
 So there you have it, another example of a `step_impute_*` function. Tomorrow I'll continue exploring imputation steps by highlighting the use of the `step_impute_linear()` function.
+
+# Day 10 - Impute missing values using a linear model with `step_impute_linear()`
+
+So here we are, day 10. We continue our overview of `recipes`' imputation steps. Specifically, I'm going to highlight the use of `step_impute_linear()` for today. `step_impute_linear()` uses linear regression models to impute missing data. Indeed, when there is a strong, linear relationship between a complete predictor variable and one that requires imputation (i.e., contains missing data), [linear methods for imputation may be a good approach](http://www.feat.engineering/imputation-methods). Such a method is also really quick and requires few computational resources to calculate.
+
+For today's examples, we're going back to our `credit_data` data. You can read more about this data by running `?credit_data` in your console. 
+
+```{r day-10-data}
+data(credit_data, package = "modeldata")
+
+credit_data <- credit_data |>
+  mutate(id = seq_len(nrow(credit_data)), .before = everything()) |>
+  as_tibble()
+
+glimpse(credit_data)
+
+map(credit_data, \(x) mean(is.na(x)))
+```
+
+Let's peek at some missing data examples.
+
+```{r day-10-view-missing}
+missing_examples <- c(114, 195, 206, 242, 496)
+
+credit_data |> filter(id %in% missing_examples) 
+```
+
+As mentioned before, linear imputation methods are useful in cases where you have a strong, linear relationship between a complete variable (i.e., contains no missing data) and one where imputation is to be applied. For our example, let's use linear methods to impute values for missing data in the `Income` variable. The `Senority` variable is complete, so we'll use it for our imputation step. Although the relationship between these two variables isn't a strong, linear one, let's use it for example sake.  
+
+```{r day-10-correlation-senority-income}
+# Use corrr::correlate() to examine correlation among numeric variables
+correlate(credit_data)
+```
+
+We start off by creating our testing and training split.
+
+```{r day-10-split}
+set.seed(20240110)
+credit_split <- initial_split(credit_data, prop = .80)
+
+credit_tr <- training(credit_split)
+credit_te <- testing(credit_split)
+```
+
+::: {.callout-note}
+The docs mention imputed variables must be of type `numeric`. Also, this method requires predictors to be complete cases. As such, the imputation model will only use training set predictors that don't have any missing values.
+:::
+
+Just like we did with other imputation methods that use a modeling approach, we can be specific about what variables to use as predictors. We do this by passing them to the `impute_with` argument, which are wrapped in the `imp_vars()` function. Here's what this looks like: 
+
+```{r day-10-recipe}
+credit_rec <- recipe(~., data = credit_tr) |>
+  update_role(id, new_role = "id") |>
+  step_impute_linear(Income, impute_with = imp_vars(Seniority)) |>
+  prep(credit_tr)
+
+credit_rec
+```
+
+Before we bake our recipe, let's take a look at what's happening under the hood with `tidy()`.
+
+```{r day-10-tidy-prep}
+tidy(credit_rec)
+
+tidy(credit_rec, number = 1)
+```
+
+A tibble is outputted with three columns: 
+
+1. `terms` - the variable we're seeking to replace missing values with imputed values.
+2. `model` - the model object used to calculate the imputed value. Note, the model object is `lm`.
+3. `id` - a unique id for the step being performed. 
+
+Ready, get set, bake.
+
+```{r day-10-bake-rec}
+credit_baked <- bake(credit_rec, new_data = NULL)
+
+# View some of the imputed values
+credit_baked |> filter(id %in% missing_examples)
+```
+
+The `recipes`' `step_impute_linear()` documentation also has a really good example of how to visualize the imputed data, using a dataset with complete values. It's purpose is to show a comparison between the original values and the newly imputed values.
+
+The following code is adapted from this example. Here I show the regression line used for the imputed `Income` values based on `Seniority`. It's just a linear regression. If you're interested in seeing the full example, run `?step_impute_linear()` in your console, and scroll down to the examples section.
+
+```{r day-10-show-impute-model}
+ggplot(credit_baked, aes(x = Seniority, y = Income)) +
+  geom_abline(col = "green") +
+  geom_point(alpha = .3) +
+  labs(title = "Imputed Values")
+```
+
+Again, this relationship is not a strong, linear one. Therefore, a linear imputation method of estimation may not be the best approach for this data. Nevertheless, it serves as an example of how to do it using the `recipes` package.
+
+Day 10, check. Another 20 to go. Tomorrow I'll continue my exploration of `step_impute_*()` functions by highlighting the use of the `step_impute_lower()` function.
