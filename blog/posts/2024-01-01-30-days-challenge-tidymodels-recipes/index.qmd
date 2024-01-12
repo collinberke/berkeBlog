@@ -24,6 +24,7 @@ library(tidyverse)
 library(tidymodels)
 library(here)
 library(corrr)
+library(skimr)
 tidymodels_prefer()
 ```
 
@@ -1163,3 +1164,68 @@ ggplot(credit_baked, aes(x = Seniority, y = Income)) +
 Again, this relationship is not a strong, linear one. Therefore, a linear imputation method of estimation may not be the best approach for this data. Nevertheless, it serves as an example of how to do it using the `recipes` package.
 
 Day 10, check. Another 20 to go. Tomorrow I'll continue my exploration of `step_impute_*()` functions by highlighting the use of the `step_impute_lower()` function.
+
+# Day 11 - Impute missing values using `step_impute_lower()` 
+
+`step_impute_lower()` is our focus for today. According to the docs, `step_impute_lower()` calculates a variable's minimum, simulates a value between zero and the minimum, and imputes this value for any cases at the minimum value. This imputation method is useful when we have non-negative numeric data, where values cannot be measured below a known value. 
+
+For today's examples, I'm going to use the `modeldata` package's `crickets` data. This data comes from a study examining the relationship between chirp rates and temperature for two different cricket species (run ?crickets in your console to learn more). 
+
+```{r day-11-data}
+data(crickets, package = "modeldata")
+
+glimpse(crickets)
+
+skim(crickets)
+```
+
+We're also going to modify the data a bit to better highlight what `step_impute_lower()` is doing. Here I'm just truncating all temp values less than or equal to 21 to 21.
+
+```{r day-11-wrngl-data}
+# Create a floor at temp = 21
+crickets <- crickets |> 
+  mutate(temp = case_when(
+    temp <= 21 ~ 21,
+    TRUE ~ as.double(temp)
+  ))
+
+print(crickets, n = 50)
+```
+
+For simplicity, I'm not going to create a testing and training split and will use the full data for our example. Let's start with our recipe.
+
+```{r day-11-rec}
+crickets_rec <- recipe(~., data = crickets) |>
+  step_impute_lower(temp) |>
+  prep()
+
+crickets_rec
+```
+
+Let's take a quick peek at what's happening under the hood by tidying our recipe object. 
+
+```{r day-11-tidy-rec}
+tidy(crickets_rec)
+
+tidy(crickets_rec, number = 1)
+```
+
+You'll notice the `value` column in the tibble represents the minimum value within the column. Using this value, `step_impute_lower()` will replace these values with any value between 0 and 21. Let's bake this recipe and verify this is the case.
+
+```{r day-11-bake-rec}
+baked_crickets <- bake(crickets_rec, new_data = NULL)
+
+print(baked_crickets, n = 50)
+```
+
+Great! All values of 21 have now been imputed with a value between 0 and the minimum value for the column, 21.
+
+We can also create a plot to highlight what `step_impute_lower()` is doing. This approach is adapted from the example in the docs (`?step_impute_lower()`).
+
+```{r day-11-rec-plot}
+plot(baked_crickets$temp, crickets$temp,
+  ylab = "pre-imputation", xlab = "imputed"
+)
+```
+
+`step_impute_lower()` is pretty straightforward in my opinion. Give it a try. That's it for today. A short one. Tomorrow is our final `step_impute_*()` function, `step_impute_roll()`. 
