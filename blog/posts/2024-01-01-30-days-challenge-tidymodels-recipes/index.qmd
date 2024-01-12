@@ -1165,7 +1165,7 @@ Again, this relationship is not a strong, linear one. Therefore, a linear imputa
 
 Day 10, check. Another 20 to go. Tomorrow I'll continue my exploration of `step_impute_*()` functions by highlighting the use of the `step_impute_lower()` function.
 
-# Day 11 - Impute missing values using `step_impute_lower()` 
+# Day 11 - Impute values using `step_impute_lower()` 
 
 `step_impute_lower()` is our focus for today. According to the docs, `step_impute_lower()` calculates a variable's minimum, simulates a value between zero and the minimum, and imputes this value for any cases at the minimum value. This imputation method is useful when we have non-negative numeric data, where values cannot be measured below a known value. 
 

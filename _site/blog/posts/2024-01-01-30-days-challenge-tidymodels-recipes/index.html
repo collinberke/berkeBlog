@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" id="toc-day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag" class="nav-link" data-scroll-target="#day-08---use-bagged-tree-models-to-impute-missing-data-with-step_impute_bag">Day 08 - Use bagged tree models to impute missing data with <code>step_impute_bag()</code></a></li>
   <li><a href="#day-09---impute-missing-values-using-step_impute_knn" id="toc-day-09---impute-missing-values-using-step_impute_knn" class="nav-link" data-scroll-target="#day-09---impute-missing-values-using-step_impute_knn">Day 09 - Impute missing values using <code>step_impute_knn()</code></a></li>
   <li><a href="#day-10---impute-missing-values-using-a-linear-model-with-step_impute_linear" id="toc-day-10---impute-missing-values-using-a-linear-model-with-step_impute_linear" class="nav-link" data-scroll-target="#day-10---impute-missing-values-using-a-linear-model-with-step_impute_linear">Day 10 - Impute missing values using a linear model with <code>step_impute_linear()</code></a></li>
-  <li><a href="#day-11---impute-missing-values-using-step_impute_lower" id="toc-day-11---impute-missing-values-using-step_impute_lower" class="nav-link" data-scroll-target="#day-11---impute-missing-values-using-step_impute_lower">Day 11 - Impute missing values using <code>step_impute_lower()</code></a></li>
+  <li><a href="#day-11---impute-values-using-step_impute_lower" id="toc-day-11---impute-values-using-step_impute_lower" class="nav-link" data-scroll-target="#day-11---impute-values-using-step_impute_lower">Day 11 - Impute values using <code>step_impute_lower()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -2634,8 +2634,8 @@ id:         1</code></pre>
 <p>Again, this relationship is not a strong, linear one. Therefore, a linear imputation method of estimation may not be the best approach for this data. Nevertheless, it serves as an example of how to do it using the <code>recipes</code> package.</p>
 <p>Day 10, check. Another 20 to go. Tomorrow I’ll continue my exploration of <code>step_impute_*()</code> functions by highlighting the use of the <code>step_impute_lower()</code> function.</p>
 </section>
-<section id="day-11---impute-missing-values-using-step_impute_lower" class="level1">
-<h1>Day 11 - Impute missing values using <code>step_impute_lower()</code></h1>
+<section id="day-11---impute-values-using-step_impute_lower" class="level1">
+<h1>Day 11 - Impute values using <code>step_impute_lower()</code></h1>
 <p><code>step_impute_lower()</code> is our focus for today. According to the docs, <code>step_impute_lower()</code> calculates a variable’s minimum, simulates a value between zero and the minimum, and imputes this value for any cases at the minimum value. This imputation method is useful when we have non-negative numeric data, where values cannot be measured below a known value.</p>
 <p>For today’s examples, I’m going to use the <code>modeldata</code> package’s <code>crickets</code> data. This data comes from a study examining the relationship between chirp rates and temperature for two different cricket species (run ?crickets in your console to learn more).</p>
 <div class="cell">
