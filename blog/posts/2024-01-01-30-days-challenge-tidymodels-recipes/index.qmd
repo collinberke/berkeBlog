@@ -1353,3 +1353,85 @@ They also note only complete values will be passed to the functions specified wi
 
 That's a wrap for `step_imputation_*()` functions. Next we're going to focus on step functions to decorrelate predictors.
 
+# Day 13 - Use `step_corr()` to remove highly correlated predictors
+
+Starting today, I'm going to begin highlighting `step_*()` functions useful for performing decorrelation preprocessing steps. These include steps to filter out highly correlated predictors, using principal component analysis, or other model-based methods.
+
+I'm starting out simple here by focusing on the use of `step_corr()`. According to the docs, `step_corr()` will
+
+> potentially remove variables that have large absolute correations with other variables.
+
+Using some threshold value, `step_corr()` will identify column combinations where a minimum number of columns are removed and all the absolute correlations between columns are below a specified threshold.
+
+::: {.callout-important}
+`step_corr()` will potentially remove columns.
+:::
+
+Before using `step_corr()` let's highlight some of the important arguments of the function.
+
+* `threshold` - used as the absolute correlation cut off value. The function defaults to .9. This is the only tuning parameter for the function.
+* `method` - the method used to make correlation calculations, defaults to `pearson`.
+
+Let's get our data together. For today's example, I'm going back to our `penguins` data. You can learn more about this data by running `?penguins` in your console or by reviewing my past examples using this data.
+
+```{r day-13-data}
+data(penguins, package = "modeldata")
+
+penguins
+
+glimpse(penguins)
+
+skim(penguins)
+```
+
+Now we create our testing training split.
+
+```{r day-13-split}
+set.seed(20240113)
+penguins_split <- initial_split(penguins, prop = .8)
+
+penguins_tr <- training(penguins_split)
+penguins_te <- testing(penguins_split)
+```
+
+Quickly, let's use `corrr::correlate()` to explore correlations between variables in our training data. The code looks like this:
+
+```{r day-13-var-correlations}
+correlate(penguins_tr)
+```
+
+You'll notice a highly positive correlation between `flipper_length_mm` and `body_mass_g` (.872). Although I'm not making a causal argument here, it would seem feasible to assume that as a penguin's flippers get longer, their body mass would increase. The question now is, if we were using this data to train a model, would the inclusion of both these variables improve our model? Or, could we simplify model estimation by eliminating one of these variables? Perhaps we can achieve the same amount of accuracy while also specifying the most parsimonious model.
+
+Here we'll create our recipe to address these two, highly correlated variables within our data.
+
+```{r day-13-rec}
+penguins_rec <- recipe(~., data = penguins_tr) |>
+  step_corr(all_numeric_predictors(), threshold = .8) |>
+  prep()
+
+penguins_rec
+```
+
+The prepped recipe now tells us the `flipper_length_mm` variable will be removed once we bake the data. This is a good thing to keep an eye on, verifying the step removed expected columns.
+
+When you drill down into the step using `tidy()`, you'll notice a tibble that highlights what column will be removed once we `bake()` the recipe.
+
+```{r day-13-tidy-rec}
+tidy(penguins_rec)
+
+tidy(penguins_rec, number = 1)
+```
+
+```{r day-13-bake}
+baked_penguin <- bake(penguins_rec, new_data = NULL)
+
+baked_penguin
+```
+
+You can verify this highly correlated variable is mitigated by checking out the correlations between variables in our baked data set:
+
+```{r day-13-check-bake-corr}
+correlate(baked_penguin)
+```
+
+So there you have it, our first `step_*()` function to perform decorrelation preprocessing. Tomorrow I'll be focusing on `step_pca()`, which will use principal components analysis to manage correlations among predictors.
