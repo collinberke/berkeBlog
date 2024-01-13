@@ -1229,3 +1229,127 @@ plot(baked_crickets$temp, crickets$temp,
 ```
 
 `step_impute_lower()` is pretty straightforward in my opinion. Give it a try. That's it for today. A short one. Tomorrow is our final `step_impute_*()` function, `step_impute_roll()`. 
+
+# Day 12 - Impute values using a rolling window via `step_impute_roll()`
+
+We're going to round out our discussion of `step_impute_*()` functions by highlighting the use of `step_impute_roll()`. `step_impute_roll()` utilizes window functions to calculate missing values. At first, I had trouble understanding how window functions are utilized. However, seeing a simplified example helped me better understand what was occurring.
+
+Let's get some data for today's examples. I'm going back to our obfuscated [Google Analytics data](https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset) from the [Google Merchandise store](https://shop.googlemerchandisestore.com/) for today's examples.
+
+```{r day-12-data}
+data_ga <- 
+  read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  ) |>
+  mutate(
+    event_date = ymd(event_date),
+    revenue = price_in_usd * quantity
+  ) 
+
+glimpse(data_ga)
+
+skim(data_ga)
+```
+
+To make it clear what `step_impute_roll()` is doing, I'm going to wrangle the data to only look at total revenue for `Clearance` item purchases for a specific date range (2 weeks). Since this data is complete, I will introduce some missing values into the data.
+
+```{r day-12-wrngl-data}
+data_ga <- data_ga |>
+  select(event_date, transaction_id, item_category, revenue) |>
+  filter(item_category == "Clearance") |>
+  group_by(event_date) |>
+  summarise(total_rev = sum(revenue))  |>
+  filter(
+    event_date >= as_date('2020-12-14') & 
+    event_date <= as_date('2020-12-27')
+  )
+
+# Introduce some NAs for the example
+data_ga$total_rev[c(1, 6, 7, 8, 14)] <- NA
+```
+
+Let's get our recipe set up to the point of prepping it.
+
+```{r day-12-rec-to-prep}
+ga_rec <- recipe(~., data = data_ga) |>
+  update_role(event_date, new_role = "data_ref") |>
+  step_impute_roll(total_rev, window = 3) |>
+  prep()
+
+ga_rec
+
+tidy(ga_rec)
+tidy(ga_rec, number = 1)
+```
+
+Not too much useful information here. Let's move forward with bake and see the imputed values. Take note, we will still have a missing value (more on this later).
+
+```{r day-12-bake-rec}
+bake(ga_rec, new_data = NULL)
+```
+
+We now have a complete data set. But, how were these imputed values calculated?  If you peek at `step_impute_roll()`'s arguments, you'll notice it contains a `statistic` argument set to `median`. It should be pretty intuitive that we are calculating the median here, but the median of what? It's the median of our window we set in the function, which was `window = 3`.
+
+```{r day-12-peek-func}
+args(step_impute_roll)
+```
+
+We need to be aware of some important notes regarding our calcuation of the median here. Let's put our baked data side-by-side with our old data, just so it's easier to see what was imputed and how it was calculated.
+
+```{r day-12-bake-w-old-rev}
+baked_ga <- bake(ga_rec, new_data = NULL) |>
+  rename(new_rev = total_rev) |>
+  left_join(
+    data_ga |> rename(old_rev = total_rev)
+  )
+```
+
+Let's start with the tails, the missing values at row 1 and 14. Since these values lack a value above and below, they default to using the series `1:3` and `12:14` for imputation. When making the calculation for the window, only complete values are passed to the calculation. Take for example the missing value at row 1. The 324 imputed value comes from calculating the median between 323 and 324.
+
+```{r day-12-calc-window-median}
+# We're rounding up here for the imputed value 
+median(c(323, 324))
+```
+
+The same calculation is being done for the 14th value, which looks like this:
+
+```{r day-12-calc-last-tail-median}
+median(c(73, 19))
+```
+
+This brings up the interesting case for the imputed NA value at row 7, or the lack there of. Since all the values within the window are `NA`, an `NA` is imputed (i.e., you can't calculate a median with no known values). To fix this, we would need to expand our window to include more values. We do this by setting `window = 5` within the function.
+
+```{r day-12-expand-rec-window}
+baked_ga <- recipe(~., data = data_ga) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_impute_roll(total_rev, window = 5) |>
+  prep() |>
+  bake(new_data = NULL)
+
+# Now we have complete values, since we expanded the window
+baked_ga
+```
+
+What about other functions to calculate values? To do this, `step_impute_roll()` has the `statistic` argument. Say instead of the median we want to calculate our imputed value using the mean. We just do the following:
+
+```{r day-12-recipe-mean}
+ga_mean_rec <- recipe(~., data_ga) |>
+  update_role(event_date, new_role = "ref_date") |>
+  step_impute_roll(total_rev, window = 5, statistic = mean) |>
+  prep() |>
+  bake(new_data = NULL)
+
+ga_mean_rec
+```
+
+::: {.callout-note}
+According to the docs, the statistic function you use should:
+
+1. contain a single argument for the data to compute the imputed value.
+2. return a double precision value.
+
+They also note only complete values will be passed to the functions specified with the `statistic` argument.
+:::
+
+That's a wrap for `step_imputation_*()` functions. Next we're going to focus on step functions to decorrelate predictors.
+
