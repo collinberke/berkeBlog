@@ -1435,3 +1435,106 @@ correlate(baked_penguin)
 ```
 
 So there you have it, our first `step_*()` function to perform decorrelation preprocessing. Tomorrow I'll be focusing on `step_pca()`, which will use principal components analysis to manage correlations among predictors.
+
+# Day 14 - Perform dimension reduction with `step_pca()`
+
+For today, I'm overviewing `step_pca()`. `step_pca()` performs dimension reduction using [principal components analysis](https://en.wikipedia.org/wiki/Principal_component_analysis). Dimension reduction seeks to combine predictors into latent predictors, while also [retaining as much information](http://www.feat.engineering/numeric-many-to-many) from the full data set as possible. Principal component analysis can seem like an advanced topic, but the [@statquest YouTube channel](https://www.youtube.com/channel/UCtYLUTtgS3k1Fg4y5tAhLbw) has a good step-by-step [video](https://www.youtube.com/watch?v=FgakZw6K1QQ) on how it's performed, in general terms.
+
+We'll use the `mlc_churn` data from the 'modeldata' package for today's examples. This data is an artificial data set representing [customer churn](https://en.wikipedia.org/wiki/Customer_attrition) (i.e., the loss of customers to a service). You can learn more about this data by running `?mlc_churn` within your console. But here's some basic data exploration code to get a sense of what's included within the data.
+
+```{r day-14-data}
+data(mlc_churn, package = "modeldata")
+
+glimpse(mlc_churn)
+
+skim(mlc_churn)
+```
+
+Let's create our training and testing split.
+
+```{r day-14-split}
+set.seed(20240114)
+churn_split <- initial_split(mlc_churn, prop = .8)
+
+churn_tr <- training(churn_split)
+churn_te <- testing(churn_split)
+```
+
+Before we apply the `step_pca()` function, we need to first center and scale our data. To do this, we'll first use `step_normalize()` on all numeric variables within the data set. Normalizing will place all numeric data on the same scale, which is required step to complete before performing principal components analysis. 
+
+Post center and scaling of our variables, we'll use `step_pca()` on `all_numeric()` predictors. We use the `num_comp = 3` argument to specify how many components will be outputted from our principal components analysis. 
+
+Let's `prep()` and `tidy()` our recipe to peek under the hood to get a better sense of what's happening with this recipe step.
+
+```{r day-14-rec}
+churn_rec <- recipe(churn ~ ., data = churn_tr) |>
+  update_role(state, area_code, new_role = "ref_var") |>
+  update_role(ends_with("plan"), new_role = "plan_var") |>
+  step_normalize(all_numeric()) |>
+  step_pca(all_numeric_predictors(), num_comp = 3) |>
+  prep()
+
+churn_rec
+```
+
+It's also important to point out that the `tidy()` method for `step_pca()` has two type options:
+
+1. `type = "coef"`
+2. `type = "variance"`
+
+Each of these options modify what gets printed to the console. I've added some comments below on what gets outputted for each.
+
+```{r day-14-rec-peek}
+tidy(churn_rec)
+
+# Output the variable loadings for each component
+tidy(churn_rec, number = 2, type = "coef")
+
+# Output the variance each component accounts for
+tidy(churn_rec, number = 2, type = "variance")
+```
+
+Great, let's bake our recipe. You'll notice `step_pca()` reduced all numeric data into our three components, `PC1`, `PC2`, and `PC3`. 
+
+```{r day-14-bake}
+bake(churn_rec, new_data = NULL)
+```
+
+Constraining by component works, but `step_pca()` also provides a `threshold` argument. In other words, we can specify the total variance that should be covered by components, and `step_pca()` will create the required number of components based on this threshold. Let's say we want our PCA to create a number of components to cover 70% of the variability in our variables. We can do this by using the following recipe code:
+
+```{r day-14-rec-threshold}
+churn_rec_thresh <- recipe(churn ~ ., data = churn_tr) |>
+  update_role(state, area_code, new_role = "ref_var") |>
+  update_role(ends_with("plan"), new_role = "plan_var") |>
+  step_normalize(all_numeric()) |>
+  step_pca(all_numeric_predictors(), threshold = .7) |>
+  prep()
+
+churn_rec_thresh
+```
+
+Let's `tidy()` our recipe to see what's happening here.
+
+```{r day-14-rec-threshold-peek}
+tidy(churn_rec_thresh)
+
+# variable loadings
+tidy(churn_rec_thresh, number = 2, type = "coef")
+
+# variance accounted for
+tidy(churn_rec_thresh, number = 2, type = "variance")
+```
+
+Now, we'll bake our `churn_rec_thresh` recipe.
+
+```{r day-14-threshold-bake}
+bake(churn_rec_thresh, new_data = NULL)
+```
+
+To meet our threshold, the `step_pca()` recipes step calculated and returned seven principal components, `PC1` - `PC7`.
+
+`step_pca()` makes it pretty easy to do dimension reduction utilizing principal components analysis. Give it a try.
+
+Another day down. See you tomorrow. 
+
+
