@@ -174,6 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-11---impute-values-using-step_impute_lower" id="toc-day-11---impute-values-using-step_impute_lower" class="nav-link" data-scroll-target="#day-11---impute-values-using-step_impute_lower">Day 11 - Impute values using <code>step_impute_lower()</code></a></li>
   <li><a href="#day-12---impute-values-using-a-rolling-window-via-step_impute_roll" id="toc-day-12---impute-values-using-a-rolling-window-via-step_impute_roll" class="nav-link" data-scroll-target="#day-12---impute-values-using-a-rolling-window-via-step_impute_roll">Day 12 - Impute values using a rolling window via <code>step_impute_roll()</code></a></li>
   <li><a href="#day-13---use-step_corr-to-remove-highly-correlated-predictors" id="toc-day-13---use-step_corr-to-remove-highly-correlated-predictors" class="nav-link" data-scroll-target="#day-13---use-step_corr-to-remove-highly-correlated-predictors">Day 13 - Use <code>step_corr()</code> to remove highly correlated predictors</a></li>
+  <li><a href="#day-14---perform-dimension-reduction-with-step_pca" id="toc-day-14---perform-dimension-reduction-with-step_pca" class="nav-link" data-scroll-target="#day-14---perform-dimension-reduction-with-step_pca">Day 14 - Perform dimension reduction with <code>step_pca()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -3870,6 +3871,634 @@ Correlation computed with
 </div>
 </div>
 <p>So there you have it, our first <code>step_*()</code> function to perform decorrelation preprocessing. Tomorrow I’ll be focusing on <code>step_pca()</code>, which will use principal components analysis to manage correlations among predictors.</p>
+</section>
+<section id="day-14---perform-dimension-reduction-with-step_pca" class="level1">
+<h1>Day 14 - Perform dimension reduction with <code>step_pca()</code></h1>
+<p>For today, I’m overviewing <code>step_pca()</code>. <code>step_pca()</code> performs dimension reduction using <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">principal components analysis</a>. Dimension reduction seeks to combine predictors into latent predictors, while also <a href="http://www.feat.engineering/numeric-many-to-many">retaining as much information</a> from the full data set as possible. Principal component analysis can seem like an advanced topic, but the <a href="https://www.youtube.com/channel/UCtYLUTtgS3k1Fg4y5tAhLbw"><span class="citation" data-cites="statquest">@statquest</span> YouTube channel</a> has a good step-by-step <a href="https://www.youtube.com/watch?v=FgakZw6K1QQ">video</a> on how it’s performed, in general terms.</p>
+<p>We’ll use the <code>mlc_churn</code> data from the ‘modeldata’ package for today’s examples. This data is an artificial data set representing <a href="https://en.wikipedia.org/wiki/Customer_attrition">customer churn</a> (i.e., the loss of customers to a service). You can learn more about this data by running <code>?mlc_churn</code> within your console. But here’s some basic data exploration code to get a sense of what’s included within the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb400"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb400-1"><a href="#cb400-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mlc_churn, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb400-2"><a href="#cb400-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb400-3"><a href="#cb400-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mlc_churn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 5,000
+Columns: 20
+$ state                         &lt;fct&gt; KS, OH, NJ, OH, OK, AL, MA, MO, LA, WV, IN, RI, IA, MT, IA, …
+$ account_length                &lt;int&gt; 128, 107, 137, 84, 75, 118, 121, 147, 117, 141, 65, 74, 168,…
+$ area_code                     &lt;fct&gt; area_code_415, area_code_415, area_code_415, area_code_408, …
+$ international_plan            &lt;fct&gt; no, no, no, yes, yes, yes, no, yes, no, yes, no, no, no, no,…
+$ voice_mail_plan               &lt;fct&gt; yes, yes, no, no, no, no, yes, no, no, yes, no, no, no, no, …
+$ number_vmail_messages         &lt;int&gt; 25, 26, 0, 0, 0, 0, 24, 0, 0, 37, 0, 0, 0, 0, 0, 0, 27, 0, 3…
+$ total_day_minutes             &lt;dbl&gt; 265.1, 161.6, 243.4, 299.4, 166.7, 223.4, 218.2, 157.0, 184.…
+$ total_day_calls               &lt;int&gt; 110, 123, 114, 71, 113, 98, 88, 79, 97, 84, 137, 127, 96, 88…
+$ total_day_charge              &lt;dbl&gt; 45.07, 27.47, 41.38, 50.90, 28.34, 37.98, 37.09, 26.69, 31.3…
+$ total_eve_minutes             &lt;dbl&gt; 197.4, 195.5, 121.2, 61.9, 148.3, 220.6, 348.5, 103.1, 351.6…
+$ total_eve_calls               &lt;int&gt; 99, 103, 110, 88, 122, 101, 108, 94, 80, 111, 83, 148, 71, 7…
+$ total_eve_charge              &lt;dbl&gt; 16.78, 16.62, 10.30, 5.26, 12.61, 18.75, 29.62, 8.76, 29.89,…
+$ total_night_minutes           &lt;dbl&gt; 244.7, 254.4, 162.6, 196.9, 186.9, 203.9, 212.6, 211.8, 215.…
+$ total_night_calls             &lt;int&gt; 91, 103, 104, 89, 121, 118, 118, 96, 90, 97, 111, 94, 128, 1…
+$ total_night_charge            &lt;dbl&gt; 11.01, 11.45, 7.32, 8.86, 8.41, 9.18, 9.57, 9.53, 9.71, 14.6…
+$ total_intl_minutes            &lt;dbl&gt; 10.0, 13.7, 12.2, 6.6, 10.1, 6.3, 7.5, 7.1, 8.7, 11.2, 12.7,…
+$ total_intl_calls              &lt;int&gt; 3, 3, 5, 7, 3, 6, 7, 6, 4, 5, 6, 5, 2, 5, 6, 9, 4, 3, 5, 2, …
+$ total_intl_charge             &lt;dbl&gt; 2.70, 3.70, 3.29, 1.78, 2.73, 1.70, 2.03, 1.92, 2.35, 3.02, …
+$ number_customer_service_calls &lt;int&gt; 1, 1, 0, 2, 3, 0, 3, 0, 1, 0, 4, 0, 1, 3, 4, 4, 1, 3, 1, 1, …
+$ churn                         &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, yes, no, no, no, no,…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb402"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb402-1"><a href="#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(mlc_churn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">mlc_churn</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">5000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">ordered</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: left;">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">state</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">WV: 158, MN: 125, AL: 124, ID: 119</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">area_code</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">are: 2495, are: 1259, are: 1246</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">international_plan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">no: 4527, yes: 473</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">voice_mail_plan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">no: 3677, yes: 1323</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">churn</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">no: 4293, yes: 707</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 2%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">account_length</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">100.26</td>
+<td style="text-align: right;">39.69</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">73.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">127.00</td>
+<td style="text-align: right;">243.00</td>
+<td style="text-align: left;">▂▇▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">number_vmail_messages</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.76</td>
+<td style="text-align: right;">13.55</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">17.00</td>
+<td style="text-align: right;">52.00</td>
+<td style="text-align: left;">▇▁▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_day_minutes</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">180.29</td>
+<td style="text-align: right;">53.89</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">143.70</td>
+<td style="text-align: right;">180.10</td>
+<td style="text-align: right;">216.20</td>
+<td style="text-align: right;">351.50</td>
+<td style="text-align: left;">▁▃▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_day_calls</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">100.03</td>
+<td style="text-align: right;">19.83</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">87.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">113.00</td>
+<td style="text-align: right;">165.00</td>
+<td style="text-align: left;">▁▁▇▇▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_day_charge</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30.65</td>
+<td style="text-align: right;">9.16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">24.43</td>
+<td style="text-align: right;">30.62</td>
+<td style="text-align: right;">36.75</td>
+<td style="text-align: right;">59.76</td>
+<td style="text-align: left;">▁▃▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_eve_minutes</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">200.64</td>
+<td style="text-align: right;">50.55</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">166.38</td>
+<td style="text-align: right;">201.00</td>
+<td style="text-align: right;">234.10</td>
+<td style="text-align: right;">363.70</td>
+<td style="text-align: left;">▁▂▇▅▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_eve_calls</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">100.19</td>
+<td style="text-align: right;">19.83</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">87.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">114.00</td>
+<td style="text-align: right;">170.00</td>
+<td style="text-align: left;">▁▁▇▇▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_eve_charge</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17.05</td>
+<td style="text-align: right;">4.30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14.14</td>
+<td style="text-align: right;">17.09</td>
+<td style="text-align: right;">19.90</td>
+<td style="text-align: right;">30.91</td>
+<td style="text-align: left;">▁▂▇▅▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_night_minutes</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">200.39</td>
+<td style="text-align: right;">50.53</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">166.90</td>
+<td style="text-align: right;">200.40</td>
+<td style="text-align: right;">234.70</td>
+<td style="text-align: right;">395.00</td>
+<td style="text-align: left;">▁▃▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_night_calls</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">99.92</td>
+<td style="text-align: right;">19.96</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">87.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">113.00</td>
+<td style="text-align: right;">175.00</td>
+<td style="text-align: left;">▁▁▇▆▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_night_charge</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9.02</td>
+<td style="text-align: right;">2.27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7.51</td>
+<td style="text-align: right;">9.02</td>
+<td style="text-align: right;">10.56</td>
+<td style="text-align: right;">17.77</td>
+<td style="text-align: left;">▁▃▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_intl_minutes</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.26</td>
+<td style="text-align: right;">2.76</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8.50</td>
+<td style="text-align: right;">10.30</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: left;">▁▃▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_intl_calls</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.44</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: left;">▇▅▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_intl_charge</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.77</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.30</td>
+<td style="text-align: right;">2.78</td>
+<td style="text-align: right;">3.24</td>
+<td style="text-align: right;">5.40</td>
+<td style="text-align: left;">▁▃▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">number_customer_service_calls</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.57</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">9.00</td>
+<td style="text-align: left;">▇▅▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Let’s create our training and testing split.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb403"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb403-1"><a href="#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240114</span>)</span>
+<span id="cb403-2"><a href="#cb403-2" aria-hidden="true" tabindex="-1"></a>churn_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(mlc_churn, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb403-3"><a href="#cb403-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb403-4"><a href="#cb403-4" aria-hidden="true" tabindex="-1"></a>churn_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(churn_split)</span>
+<span id="cb403-5"><a href="#cb403-5" aria-hidden="true" tabindex="-1"></a>churn_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(churn_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Before we apply the <code>step_pca()</code> function, we need to first center and scale our data. To do this, we’ll first use <code>step_normalize()</code> on all numeric variables within the data set. Normalizing will place all numeric data on the same scale, which is required step to complete before performing principal components analysis.</p>
+<p>Post center and scaling of our variables, we’ll use <code>step_pca()</code> on <code>all_numeric()</code> predictors. We use the <code>num_comp = 3</code> argument to specify how many components will be outputted from our principal components analysis.</p>
+<p>Let’s <code>prep()</code> and <code>tidy()</code> our recipe to peek under the hood to get a better sense of what’s happening with this recipe step.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb404"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb404-1"><a href="#cb404-1" aria-hidden="true" tabindex="-1"></a>churn_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(churn <span class="sc">~</span> ., <span class="at">data =</span> churn_tr) <span class="sc">|&gt;</span></span>
+<span id="cb404-2"><a href="#cb404-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(state, area_code, <span class="at">new_role =</span> <span class="st">"ref_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb404-3"><a href="#cb404-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(<span class="fu">ends_with</span>(<span class="st">"plan"</span>), <span class="at">new_role =</span> <span class="st">"plan_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb404-4"><a href="#cb404-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb404-5"><a href="#cb404-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pca</span>(<span class="fu">all_numeric_predictors</span>(), <span class="at">num_comp =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb404-6"><a href="#cb404-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb404-7"><a href="#cb404-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb404-8"><a href="#cb404-8" aria-hidden="true" tabindex="-1"></a>churn_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:    1
+predictor: 15
+plan_var:   2
+ref_var:    2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 4000 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Centering and scaling for: account_length and number_vmail_messages, ... | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• PCA extraction with: account_length, number_vmail_messages, total_day_minutes, ... | Trained</code></pre>
+</div>
+</div>
+<p>It’s also important to point out that the <code>tidy()</code> method for <code>step_pca()</code> has two type options:</p>
+<ol type="1">
+<li><code>type = "coef"</code></li>
+<li><code>type = "variance"</code></li>
+</ol>
+<p>Each of these options modify what gets printed to the console. I’ve added some comments below on what gets outputted for each.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb418"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb418-1"><a href="#cb418-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(churn_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  number operation type      trained skip  id             
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;          
+1      1 step      normalize TRUE    FALSE normalize_7hokR
+2      2 step      pca       TRUE    FALSE pca_BXk23      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb420"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb420-1"><a href="#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Output the variable loadings for each component</span></span>
+<span id="cb420-2"><a href="#cb420-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(churn_rec, <span class="at">number =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="st">"coef"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 225 × 4
+   terms                     value component id       
+   &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    
+ 1 account_length         0.0192   PC1       pca_BXk23
+ 2 number_vmail_messages -0.00296  PC1       pca_BXk23
+ 3 total_day_minutes      0.312    PC1       pca_BXk23
+ 4 total_day_calls       -0.000110 PC1       pca_BXk23
+ 5 total_day_charge       0.312    PC1       pca_BXk23
+ 6 total_eve_minutes     -0.462    PC1       pca_BXk23
+ 7 total_eve_calls        0.0230   PC1       pca_BXk23
+ 8 total_eve_charge      -0.462    PC1       pca_BXk23
+ 9 total_night_minutes    0.426    PC1       pca_BXk23
+10 total_night_calls      0.00724  PC1       pca_BXk23
+# ℹ 215 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb422"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb422-1"><a href="#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Output the variance each component accounts for</span></span>
+<span id="cb422-2"><a href="#cb422-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(churn_rec, <span class="at">number =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="st">"variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 60 × 4
+   terms    value component id       
+   &lt;chr&gt;    &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt;    
+ 1 variance 2.07          1 pca_BXk23
+ 2 variance 2.02          2 pca_BXk23
+ 3 variance 1.98          3 pca_BXk23
+ 4 variance 1.94          4 pca_BXk23
+ 5 variance 1.06          5 pca_BXk23
+ 6 variance 1.04          6 pca_BXk23
+ 7 variance 1.01          7 pca_BXk23
+ 8 variance 0.988         8 pca_BXk23
+ 9 variance 0.977         9 pca_BXk23
+10 variance 0.965        10 pca_BXk23
+# ℹ 50 more rows</code></pre>
+</div>
+</div>
+<p>Great, let’s bake our recipe. You’ll notice <code>step_pca()</code> reduced all numeric data into our three components, <code>PC1</code>, <code>PC2</code>, and <code>PC3</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb424"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb424-1"><a href="#cb424-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(churn_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4,000 × 8
+   state area_code     international_plan voice_mail_plan churn    PC1     PC2    PC3
+   &lt;fct&gt; &lt;fct&gt;         &lt;fct&gt;              &lt;fct&gt;           &lt;fct&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 IN    area_code_408 no                 no              no    -0.358  1.03   -1.30 
+ 2 AZ    area_code_415 no                 yes             no     3.04   2.20   -1.28 
+ 3 IL    area_code_415 no                 no              no     1.17  -2.36    0.697
+ 4 IN    area_code_415 no                 no              no    -0.127  0.811   1.14 
+ 5 FL    area_code_415 no                 no              no     0.248  2.06   -0.311
+ 6 NM    area_code_510 yes                no              no    -1.28   0.0720  1.02 
+ 7 DE    area_code_415 no                 no              no    -1.95   0.250  -0.553
+ 8 SD    area_code_408 no                 no              no     0.624  1.36   -0.344
+ 9 DE    area_code_510 no                 no              no    -1.13  -0.663  -0.804
+10 CT    area_code_415 no                 yes             no    -2.60   0.817   0.939
+# ℹ 3,990 more rows</code></pre>
+</div>
+</div>
+<p>Constraining by component works, but <code>step_pca()</code> also provides a <code>threshold</code> argument. In other words, we can specify the total variance that should be covered by components, and <code>step_pca()</code> will create the required number of components based on this threshold. Let’s say we want our PCA to create a number of components to cover 70% of the variability in our variables. We can do this by using the following recipe code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb426"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb426-1"><a href="#cb426-1" aria-hidden="true" tabindex="-1"></a>churn_rec_thresh <span class="ot">&lt;-</span> <span class="fu">recipe</span>(churn <span class="sc">~</span> ., <span class="at">data =</span> churn_tr) <span class="sc">|&gt;</span></span>
+<span id="cb426-2"><a href="#cb426-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(state, area_code, <span class="at">new_role =</span> <span class="st">"ref_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb426-3"><a href="#cb426-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(<span class="fu">ends_with</span>(<span class="st">"plan"</span>), <span class="at">new_role =</span> <span class="st">"plan_var"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb426-4"><a href="#cb426-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb426-5"><a href="#cb426-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pca</span>(<span class="fu">all_numeric_predictors</span>(), <span class="at">threshold =</span> .<span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb426-6"><a href="#cb426-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb426-7"><a href="#cb426-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb426-8"><a href="#cb426-8" aria-hidden="true" tabindex="-1"></a>churn_rec_thresh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:    1
+predictor: 15
+plan_var:   2
+ref_var:    2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 4000 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Centering and scaling for: account_length and number_vmail_messages, ... | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• PCA extraction with: account_length, number_vmail_messages, total_day_minutes, ... | Trained</code></pre>
+</div>
+</div>
+<p>Let’s <code>tidy()</code> our recipe to see what’s happening here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb440"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb440-1"><a href="#cb440-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(churn_rec_thresh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  number operation type      trained skip  id             
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;          
+1      1 step      normalize TRUE    FALSE normalize_8WvPy
+2      2 step      pca       TRUE    FALSE pca_Aj4UJ      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb442"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb442-1"><a href="#cb442-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variable loadings</span></span>
+<span id="cb442-2"><a href="#cb442-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(churn_rec_thresh, <span class="at">number =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="st">"coef"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 225 × 4
+   terms                     value component id       
+   &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    
+ 1 account_length         0.0192   PC1       pca_Aj4UJ
+ 2 number_vmail_messages -0.00296  PC1       pca_Aj4UJ
+ 3 total_day_minutes      0.312    PC1       pca_Aj4UJ
+ 4 total_day_calls       -0.000110 PC1       pca_Aj4UJ
+ 5 total_day_charge       0.312    PC1       pca_Aj4UJ
+ 6 total_eve_minutes     -0.462    PC1       pca_Aj4UJ
+ 7 total_eve_calls        0.0230   PC1       pca_Aj4UJ
+ 8 total_eve_charge      -0.462    PC1       pca_Aj4UJ
+ 9 total_night_minutes    0.426    PC1       pca_Aj4UJ
+10 total_night_calls      0.00724  PC1       pca_Aj4UJ
+# ℹ 215 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb444"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb444-1"><a href="#cb444-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variance accounted for</span></span>
+<span id="cb444-2"><a href="#cb444-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(churn_rec_thresh, <span class="at">number =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="st">"variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 60 × 4
+   terms    value component id       
+   &lt;chr&gt;    &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt;    
+ 1 variance 2.07          1 pca_Aj4UJ
+ 2 variance 2.02          2 pca_Aj4UJ
+ 3 variance 1.98          3 pca_Aj4UJ
+ 4 variance 1.94          4 pca_Aj4UJ
+ 5 variance 1.06          5 pca_Aj4UJ
+ 6 variance 1.04          6 pca_Aj4UJ
+ 7 variance 1.01          7 pca_Aj4UJ
+ 8 variance 0.988         8 pca_Aj4UJ
+ 9 variance 0.977         9 pca_Aj4UJ
+10 variance 0.965        10 pca_Aj4UJ
+# ℹ 50 more rows</code></pre>
+</div>
+</div>
+<p>Now, we’ll bake our <code>churn_rec_thresh</code> recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb446"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb446-1"><a href="#cb446-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(churn_rec_thresh, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4,000 × 12
+   state area_code     international_plan voice_mail_plan churn    PC1     PC2    PC3    PC4    PC5
+   &lt;fct&gt; &lt;fct&gt;         &lt;fct&gt;              &lt;fct&gt;           &lt;fct&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1 IN    area_code_408 no                 no              no    -0.358  1.03   -1.30   0.613  0.402
+ 2 AZ    area_code_415 no                 yes             no     3.04   2.20   -1.28   1.06   1.04 
+ 3 IL    area_code_415 no                 no              no     1.17  -2.36    0.697  1.05   0.218
+ 4 IN    area_code_415 no                 no              no    -0.127  0.811   1.14   1.14   0.177
+ 5 FL    area_code_415 no                 no              no     0.248  2.06   -0.311 -2.28  -1.20 
+ 6 NM    area_code_510 yes                no              no    -1.28   0.0720  1.02   1.05  -1.12 
+ 7 DE    area_code_415 no                 no              no    -1.95   0.250  -0.553  1.80  -0.712
+ 8 SD    area_code_408 no                 no              no     0.624  1.36   -0.344 -0.717 -1.42 
+ 9 DE    area_code_510 no                 no              no    -1.13  -0.663  -0.804 -0.993 -0.159
+10 CT    area_code_415 no                 yes             no    -2.60   0.817   0.939 -1.09   2.53 
+# ℹ 3,990 more rows
+# ℹ 2 more variables: PC6 &lt;dbl&gt;, PC7 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>To meet our threshold, the <code>step_pca()</code> recipes step calculated and returned seven principal components, <code>PC1</code> - <code>PC7</code>.</p>
+<p><code>step_pca()</code> makes it pretty easy to do dimension reduction utilizing principal components analysis. Give it a try.</p>
+<p>Another day down. See you tomorrow.</p>
 
 
 </section>
