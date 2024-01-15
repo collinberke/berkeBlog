@@ -1,0 +1,28 @@
+---
+title: "Past Now Page Updates"
+subtitle: "Here you'll find old updates I've removed from my Now Page."
+format:
+  html:
+    toc: false
+    date-modified: "2024-01-15"
+---
+
+# 2024-01-15 update
+
+#### It's a Python summer
+
+This summer I've been focusing on developing my [Python](https://www.python.org/) programming skills. I have a pretty good handle of R, so I felt it was time to learn Python. This started with learning Python's basic data types, struggling through understanding [Numpy arrays](https://numpy.org/doc/1.25/), getting a handle on the extensive use cases of the [pandas](https://pandas.pydata.org/) library, and learning how to manage environments using [conda](https://docs.conda.io/en/latest/). I'm aiming to write more blog posts focused in this space to document what I'm learning.
+
+# Pre 2024-01-15 updates
+
+#### Project Conduit 
+
+Currently developing and maintaining a data pipeline project built using R and Python. Technology utilized includes Google Cloud resources, Docker, Apache Airflow, Google BigQuery, Google Analytics, Google Data Studio, and Shiny. The goal is to centralize and automate data processing, storage, and reporting.  
+
+#### R for Data Science Online Learning Community book club facilitator
+
+Recently started facilitating an [R for Data Science Online Learning Community](https://www.rfordatasci.com/) online book club (check it out by joining the [Slack workspace](http://r4ds.io/join)). This group is currently reading through Hadley Wickham's [Advanced R](https://adv-r.hadley.nz/) book. The group meets weekly online over Zoom. Meetings are open to anyone who is a part of the Slack group (Join the #book_club-advr channel to keep up with the book club). Check out the playlist of past meeting recordings [here](https://www.youtube.com/watch?v=vfTg6upHvO4&list=PL3x6DOfs2NGi4I1DhjPufFNbqCry_xQLq). I would love for more to join and be a part of this group. 
+
+#### Experimenting with [Neovim](https://neovim.io/)
+
+I've been experimenting more and more with Neovim for my development work. I'm becoming more comfortable with the different modes, movements, actions, and various tools for editing text and code. Still struggling through the configuration and plugin ecosystem to set up workflows that are the most productive. Going through this process has been a challenge, but has me really reflecting on how I approach my work, evaluating what is needed, not needed, and focusing on the bad habits I need to break.  
