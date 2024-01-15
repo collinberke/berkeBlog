@@ -13,7 +13,7 @@ A now page, [why?](https://nownownow.com/about)
 
 #### Working on a 30 day `tidymodels` `recipes` package challenge
 
-I've been developing my machine learning and modeling skills. Specifically, I've been focusing on learning the various steps to preprocess data for modelling and feature engineering. This includes becoming more proficient with the [`tidymodels`]'(https://www.tidymodels.org/) [`recipes`](https://recipes.tidymodels.org/) package. [Check out my post](https://www.collinberke.com/blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/) to keep up with the latest.
+I've been developing my machine learning and modeling skills. Specifically, I've been focusing on learning the various steps to preprocess data for modelling and feature engineering. This includes becoming more proficient with the [`tidymodels`](https://www.tidymodels.org/) [`recipes`](https://recipes.tidymodels.org/) package. [Check out my post](https://www.collinberke.com/blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/) to keep up with the latest.
 
 #### Continuing to experiment with [Neovim](https://neovim.io/)
 
