@@ -1,0 +1,196 @@
+---
+title: "Easily rename files from the command line"
+author: "Collin K. Berke, Ph.D."
+date: "2023-08-05"
+draft: true
+image: thumbnail.png
+description: "Use the `rename` utility to save time when renaming files"
+toc: true
+categories:
+  - command line tools
+  - productivity
+---
+
+# Background
+
+Today I learned how to easily rename groups of files using the `rename` command line tool. From time-to-time, I need to export a multitude of `.csv` and `.xlsx` files from various systems or file stores. When exporting files, the systems I apply standardized, repeated file naming conventions. Often, I'm confronted with--and I'm sure some of you are to--is you export a bunch of files, then open up the directory to these files, and you're confronted with something like this:
+
+`data_export_store_info.csv`
+`data_export_store_info (1).csv`
+`data_export_store_info (2).csv`
+`StationDataInfo.xlsx`
+`StationDataInfo (1).xlsx`
+`StationDataInfo (2).xlsx`
+
+One apporach to fixing these file names is to open your file explorer and manually change the file name one-by-one. This isn't too arduous of a task if you only have a few files. However, what if you have hundreds, or even thousands of file names to change? I don't know about you, but I value my time--time I'd rather spend doing data analysis instead of file name management, yuck.
+
+Manual file name manipulation can not only be time consuming, it can be error prone. We've all been there, Thursday afternoon, under caffinated, you accidentally enter a type into a file name, and you inevitably break something downstream. I know I've done this countless times. There has to be a another approach, right?
+
+This post demonstrates something I learned recently, a better way. I will do this by showing you a few things I learned while using the `rename` command line tool. In this post:
+
+1. I'll start by discussing the basic usage of the `rename` command. 
+2. I'll then share a couple practical examples to show how the command works.
+3. Towards the end, I'll demonstrate a few useful modfications to the command. 
+
+Keep in mind that although the `rename` tool is helpful, it may only get you to about 90% to 95% of your file naming end goal. You may still need to use some more advanced tools like regular expressions or some additional manual manipulation to get to your desired result. A comprehensive discussion of these topics is outside the scope of this post, so I direct you to read the docs (`man rename` or `rename --help` for an overview of the command's options) to learn more advanced usage.
+
+# Prerequisites 
+
+## Install the `rename` command line tool
+
+Depending on your system, you may need to download this utility. As of the writing of this post, I'm using MacOS. `rename` is not a default system utility, so I use [homebrew](https://brew.sh/) to download and install it. This is easily done by doing the following in your terminal:
+
+```bash
+brew install rename
+```
+
+If you're using another operating system, you'll need to identify the steps needed to install the utility. A simple Google search will most likely yield helpful results.
+
+## Follow along with some examples 
+
+To help make the concepts covered in this post more concrete, experimenting with some example files will be helpful. You can create the files used in the examples by running the simple `make_examples_files.py` Python script found in the [`examples`]() directory for this post. Navigate to the directory where you download this file, and run the following command in your terminal to create the example files. **Keep in mind this script will write a few directories and files to the current working directory on your machine.** As such, I suggest placing this file into a new, empty directory while you're experimenting.
+
+```bash
+python3 make_example_files.py
+```
+
+To help clean up, I've also created a Python script to delete the directories and files the `make_examples_files.py` creates. **Be warned, running this file will delte these directories.** So, if you save something into these directories while going through these examples, this information will also be deleted. 
+
+# Getting to know the `rename` command 
+
+A similar command to `rename` is `mv`. The `mv` command can be used to change the name of file(s). `rename`, however, is useful when you need to rename a collection or group of files containing some type of string pattern.
+
+The `rename` command, simply, takes two inputs: a Perl regular expression and the file name or string pattern to apply the rename to. Indeed, this sounds more complicated then it is in practice. To help clarify, I've provided the basic syntax of the command below. 
+
+```bash
+rename 's/old-file-name/new-file-name' files
+```
+
+That's all. Let's now see it in action with a couple of examples. Again, you can follow along with these examples by running the simple Python script linked above. Running this script will set up the directories and files you'll need.
+
+# `rename` dry run
+
+Before we get too far into the examples, though, I do want to introduce the `--dry-run` or `-n` (for short) switch (i.e., option). This flag, when passed along with `rename` command, will print the changes to be made to file names, but it won't make any changes. It's a great way to double check that what you intend to do is what will actually happen when you run the `rename` command for real. This is especially useful in situations where you have to get your naming conventions right, like in cases where mistakes need to be avoided.
+
+Let's start with a simple example. In the `example_test_file` directory, you'll find 10 `.csv` files that have a common naming convention, `*_test_file.csv`. To list these files in the terminal, run `ll` on the command line. You should see something like this (I only show the first three file names here):
+
+```text
+-rw-r--r--@ 1 cberke  staff     0B Aug 27 20:50 01_test_file.csv
+-rw-r--r--@ 1 cberke  staff     0B Aug 27 20:50 02_test_file.csv
+-rw-r--r--@ 1 cberke  staff     0B Aug 27 20:50 03_test_file.csv
+...
+```
+
+Now, say we want to convert the end of these file strings to something like `*_data_for_analysis.csv`. Again, being only 10 or so files this may not seem to be a time-consuming task. But take a second and imagine if this directory contained 100 or even 1,000 files. 
+
+You can preview what file names will be changed by running the following from the command line.
+
+```bash
+rename 's/_test_file/_data_for_analysis/' *.csv --dry-run
+```
+
+After running this command, the following will be printed to the console (I used the `...` here to truncate the output):
+
+```txt
+'01_test_file.csv' would be renamed to '01_data_for_analysis.csv'
+'02_test_file.csv' would be renamed to '02_data_for_analysis.csv'
+...
+'09_test_file.csv' would be renamed to '09_data_for_analysis.csv'
+'10_test_file.csv' would be renamed to '10_data_for_analysis.csv'
+```
+
+What gets printed to the console is the would be result of your rename command.
+
+To recap, the above command contains the substitution expression (`s/_test_file/_data_for_analysis/`) and the files which this substitution should be applied (`*.csv` all files with a `.csv` extension.
+
+If you want to move forward with your rename, just take away the `--dry-run` flag away from the command. To verify these changes have been made, pass along the `--verbose` or shorter `-v` flag to have the console print out all the changes that have been made. You can also see the results of your rename by running `ll` in your console.
+
+```bash
+rename 's/_test_file/_data_for_analysis/' *.csv --verbose
+
+# or for short
+
+rename 's/_test_file/_data_for_analysis/' *.csv -v
+```
+
+# `rename` interactive mode
+
+Another safety net is to include the `--interactive` or `-i` flag for short. This flag prompts you to confirm every write that will take place. For example, I'll use this flag to demonstrate renaming to the files in the `example_station_demos` directory. Specifically, I want to transform my files from `20230827_data_station_demos.csv` to `20230827_data_kzzk_demos.csv`. Here's is what needs to be submitted to the terminal:
+
+```bash
+rename 's/_station_/_kzzk/' *.csv --interactive
+
+# or for short
+
+rename 's/_station_/_kzzk/' *.csv -i
+```
+
+While in interactive mode, you'll be prompted with the following in your console:
+
+```text
+Rename '20230827_data_station_demos.csv' to '20230827_data_kzzk_demos.csv' (y/n)? [n]
+```
+
+As such, you'll see the old file name and what the new file name will be once you accept the change. You'll have to respond to this prompt for every file that is to be renamed.
+
+In reality, interactive mode is only useful if you are modifying a managable number of files. However for changes to a large number of files, it's much more practical to use the `--dry-run` flag.
+
+# `rename` file lower- and upper-case names
+
+Along with string substitutions, the rename tool provides transformation command flags for common string operations. One such operation is to transform character strings to all UPPER CASE or lower case.
+
+Since these files already exist within the directory, you'll need to include the `--force` flag in your command. This is because the files already exist in the directory, so you need to force the operation. 
+
+Take for example the files in the `example_pageview` directory. You'll notice all of these files have strings containing upper case character strings. To convert these to lower, run the following command.
+
+```bash
+rename *.csv --lower-case --force 
+
+# or for short
+rename *.csv -cf
+```
+
+Now, say you want to transform all the file strings back to all in UPPER CASE. Let's swap the `--lower-case` flag with the `--upper-case` flag and do a dry-run to inspect the changes. Once you run the following command, take a close look at the output.
+
+```bash
+rename *.csv --upper-case --force --dry-run
+
+# or for short
+rename *.csv -Cfn
+```
+
+In your console, you should see something like the following. Take a close look at the file extensions.
+
+```text
+'20230904_WEBSITE_PAGEVIEWS.csv' would be renamed to '20230904_WEBSITE_PAGEVIEWS.CSV'
+'20230905_WEBSITE_PAGEVIEWS.csv' would be renamed to '20230905_WEBSITE_PAGEVIEWS.CSV'
+'20230906_WEBSITE_PAGEVIEWS.csv' would be renamed to '20230906_WEBSITE_PAGEVIEWS.CSV'
+...
+```
+
+You should immediately notice our rename command converted the entire string. This included the file extension, `.csv` to `.CSV`. To address this issue, we need to include the `--keep-extension` flag or `-X` to the command. This flag will remove the file extension, make the transformation, and append the original file extension back. Our final command will look something like this:
+
+```bash
+rename *.csv --keep-extension --upper-case --force
+
+# or for short
+rename *.csv -XCf
+```
+
+# Adding a prefix or suffix to each file name
+
+# Wrap
+
+So there you have it. This post was an overview of what I've recently learned while using the `rename` command-line tool. Specifically, I discussed:
+
+* How the `--dry-run` command flag is used to test out file name changes.
+* How `rename` can be used to subsitute string patterns within a file name.
+* What `rename`'s `--interactive` flag does.
+* How you can use other `rename` command flags to perform common string transformations. 
+
+If you have any other uses for `rename` or you have a better approaches to doing something above, I would love to hear about them. 
+
+Happy data file management!
+
+
+
