@@ -6,6 +6,7 @@ draft: false
 image: thumbnail.jpg
 description: "Learning how to use the `recipes` package, one day at a time"
 toc: true
+from: markdown+emoji
 categories:
   - machine learning
   - feature engineering
@@ -25,6 +26,7 @@ library(tidymodels)
 library(here)
 library(corrr)
 library(skimr)
+library(janitor)
 tidymodels_prefer()
 ```
 
@@ -1537,4 +1539,87 @@ To meet our threshold, the `step_pca()` recipes step calculated and returned sev
 
 Another day down. See you tomorrow. 
 
+# Day 15 - Use `step_ica()` for signal extraction
 
+Here we are, the halfway point :tada:.
+
+Today, I'm overviewing the use of `step_ica()`. This step is used to make transformations in signal processing. In general terms, [independent component analysis (ICA)](https://en.wikipedia.org/wiki/Independent_component_analysis) is a dimensionality reduction technique that attempts to isolate signal from noise. 
+
+Before reviewing this step, I had to do some research on what ICA is and how it is used. Here are a few sources I found useful to gain an intuitive sense of this step:
+
+* [Making sense of independent component analysis](https://stats.stackexchange.com/questions/162288/making-sense-of-independent-component-analysis) [Cross Validated](https://stats.stackexchange.com/) post.
+* [Introduction to ICA: Independent Component Analysis](https://towardsdatascience.com/introduction-to-ica-independent-component-analysis-b2c3c4720cd9) by [Jonas Dieckmann](https://medium.com/@jonas_dieckmann)
+* [Independent Component Analysis (ICA) and Automated Component Labeling — EEG Example](https://betterprogramming.pub/independent-component-analysis-ica-and-automated-component-labeling-eeg-example-fccfe9b0ea64) by [Bartek Kulas](https://bartek-kulas.medium.com/)
+
+Across many of these sources, two examples are commonly presented to more clearly explain the purpose of ICA. First, the [cocktail party problem](https://en.wikipedia.org/wiki/Cocktail_party_effect), where we can isolate individual conversations among many during a party. The second comes from audio recording. Take for example a situation where you have multiple microphones. These microphones are being used to capture the sound of several audio sources (e.g., various instruments), and you're attempting to isolate the sound from a single source. Both are situations where you're trying to isolate the signal from surrounding noise. Indeed, these are simplified examples. The linked sources above provide more sophisticated explanations.
+
+Before we use `step_ica()`, we'll need some data. I'm using a portion of the data from the [Independent Component Analysis (ICA) and Automated Component Labeling — EEG Example](https://betterprogramming.pub/independent-component-analysis-ica-and-automated-component-labeling-eeg-example-fccfe9b0ea64). This data comes from the use of [Electroencephalography (EEG)](https://en.wikipedia.org/wiki/Electroencephalography). It was collected to examine EEG correlates of a genetic predisposition to alcoholism, and it was made available via [Kaggle](https://www.kaggle.com/datasets/nnair25/Alcoholics/data).
+
+::: {.callout-warning}
+I am not an EEG professional, and I rarely work with this type of data. The approach I highlight here may not be best practice.
+:::
+
+This data represents EEG sensor measurements of electrical activity during an experimental session for one participant. There are multiple sensors, which collect data intended to observe six known brain wave patterns (again, I'm not an expert here, so this is certainly a more complex topic then I'm making it out to be here). Let's use `step_ica()` to see if we can transform this data into six different signals.
+
+```{r day-15-data}
+data_eeg <- 
+  read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_eeg.csv")
+  ) |>
+  clean_names() |>
+  rename(id = x1)
+
+glimpse(data_eeg)
+
+skim(data_eeg)
+```
+
+I'll have to do some data wrangling here to work with the data first, though. Specifically, I need to go from long to wide data. This will give each EEG sensor measurement its own column.
+
+```{r day-15-wrngl-data}
+data_eeg <- data_eeg |>
+  select(sensor_position, sensor_value, time) |>
+  pivot_wider(
+    names_from = sensor_position, 
+    values_from = sensor_value
+  )
+
+data_eeg
+```
+
+In addition, `step_ica()` requires a few packages to be installed.  This includes `dimRed` and `fastICA`. If these are not installed beforehand, an error will be returned.
+
+Now we create our recipe. Just like principal components analysis, [we need to center and scale our data](http://www.feat.engineering/numeric-many-to-many). We achieve this by applying `step_center()` and `step_scale()` to `all_numeric()` variables. Since we're attempting to create columns to represent  the six brain waves, we'll set `num_comp` to 6.
+
+```{r day-15-rec}
+eeg_rec <- recipe(~., data = data_eeg) |>
+  update_role(time, new_role = "time_ref") |>
+  step_center(all_numeric()) |>
+  step_scale(all_numeric()) |>
+  step_ica(all_numeric(), num_comp = 6) |>
+  prep()
+```
+
+Let's `tidy()` our recipe to get a better sense of what's happening here. You'll notice it's very similar to principal components analysis.
+
+```{r day-15-tidy-rec}
+tidy(eeg_rec, number = 3)
+```
+
+Now let's bake our data and see what the result of the `step_ica()` function.
+
+```{r day-15-baked-rec}
+baked_eeg <- bake(eeg_rec, new_data = NULL) |>
+  bind_cols(data_eeg |> select(time))
+```
+
+For the heck of it, let's plot our baked data. Do you see any of the common [brain wave types](https://en.wikipedia.org/wiki/Electroencephalography#Wave%20patterns:~:text=prominent%20alpha%2Drhythm-,Wave%20patterns,-%5Bedit%5D) in these plots? Remember, this is only one participant, so if additional data were included, the patterns might become more apparent.
+
+```{r day-15-vis-bake}
+walk(
+  baked_eeg |> select(-time), 
+  ~plot(baked_eeg$time, .x, type = "line") 
+)
+```
+
+There you have it, another `step_*()` function to try out. See you tomorrow. 
