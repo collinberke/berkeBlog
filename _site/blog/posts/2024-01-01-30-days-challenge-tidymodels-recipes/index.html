@@ -175,6 +175,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-12---impute-values-using-a-rolling-window-via-step_impute_roll" id="toc-day-12---impute-values-using-a-rolling-window-via-step_impute_roll" class="nav-link" data-scroll-target="#day-12---impute-values-using-a-rolling-window-via-step_impute_roll">Day 12 - Impute values using a rolling window via <code>step_impute_roll()</code></a></li>
   <li><a href="#day-13---use-step_corr-to-remove-highly-correlated-predictors" id="toc-day-13---use-step_corr-to-remove-highly-correlated-predictors" class="nav-link" data-scroll-target="#day-13---use-step_corr-to-remove-highly-correlated-predictors">Day 13 - Use <code>step_corr()</code> to remove highly correlated predictors</a></li>
   <li><a href="#day-14---perform-dimension-reduction-with-step_pca" id="toc-day-14---perform-dimension-reduction-with-step_pca" class="nav-link" data-scroll-target="#day-14---perform-dimension-reduction-with-step_pca">Day 14 - Perform dimension reduction with <code>step_pca()</code></a></li>
+  <li><a href="#day-15---use-step_ica-for-signal-extraction" id="toc-day-15---use-step_ica-for-signal-extraction" class="nav-link" data-scroll-target="#day-15---use-step_ica-for-signal-extraction">Day 15 - Use <code>step_ica()</code> for signal extraction</a></li>
   </ul>
 </nav>
     </div>
@@ -236,7 +237,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="my-spin-on-this" class="level1">
@@ -4499,6 +4501,401 @@ ref_var:    2</code></pre>
 <p>To meet our threshold, the <code>step_pca()</code> recipes step calculated and returned seven principal components, <code>PC1</code> - <code>PC7</code>.</p>
 <p><code>step_pca()</code> makes it pretty easy to do dimension reduction utilizing principal components analysis. Give it a try.</p>
 <p>Another day down. See you tomorrow.</p>
+</section>
+<section id="day-15---use-step_ica-for-signal-extraction" class="level1">
+<h1>Day 15 - Use <code>step_ica()</code> for signal extraction</h1>
+<p>Here we are, the halfway point <span class="emoji" data-emoji="tada">🎉</span>.</p>
+<p>Today, I’m overviewing the use of <code>step_ica()</code>. This step is used to make transformations in signal processing. In general terms, <a href="https://en.wikipedia.org/wiki/Independent_component_analysis">independent component analysis (ICA)</a> is a dimensionality reduction technique that attempts to isolate signal from noise.</p>
+<p>Before reviewing this step, I had to do some research on what ICA is and how it is used. Here are a few sources I found useful to gain an intuitive sense of this step:</p>
+<ul>
+<li><a href="https://stats.stackexchange.com/questions/162288/making-sense-of-independent-component-analysis">Making sense of independent component analysis</a> <a href="https://stats.stackexchange.com/">Cross Validated</a> post.</li>
+<li><a href="https://towardsdatascience.com/introduction-to-ica-independent-component-analysis-b2c3c4720cd9">Introduction to ICA: Independent Component Analysis</a> by <a href="https://medium.com/@jonas_dieckmann">Jonas Dieckmann</a></li>
+<li><a href="https://betterprogramming.pub/independent-component-analysis-ica-and-automated-component-labeling-eeg-example-fccfe9b0ea64">Independent Component Analysis (ICA) and Automated Component Labeling — EEG Example</a> by <a href="https://bartek-kulas.medium.com/">Bartek Kulas</a></li>
+</ul>
+<p>Across many of these sources, two examples are commonly presented to more clearly explain the purpose of ICA. First, the <a href="https://en.wikipedia.org/wiki/Cocktail_party_effect">cocktail party problem</a>, where we can isolate individual conversations among many during a party. The second comes from audio recording. Take for example a situation where you have multiple microphones. These microphones are being used to capture the sound of several audio sources (e.g., various instruments), and you’re attempting to isolate the sound from a single source. Both are situations where you’re trying to isolate the signal from surrounding noise. Indeed, these are simplified examples. The linked sources above provide more sophisticated explanations.</p>
+<p>Before we use <code>step_ica()</code>, we’ll need some data. I’m using a portion of the data from the <a href="https://betterprogramming.pub/independent-component-analysis-ica-and-automated-component-labeling-eeg-example-fccfe9b0ea64">Independent Component Analysis (ICA) and Automated Component Labeling — EEG Example</a>. This data comes from the use of <a href="https://en.wikipedia.org/wiki/Electroencephalography">Electroencephalography (EEG)</a>. It was collected to examine EEG correlates of a genetic predisposition to alcoholism, and it was made available via <a href="https://www.kaggle.com/datasets/nnair25/Alcoholics/data">Kaggle</a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I am not an EEG professional, and I rarely work with this type of data. The approach I highlight here may not be best practice.</p>
+</div>
+</div>
+<p>This data represents EEG sensor measurements of electrical activity during an experimental session for one participant. There are multiple sensors, which collect data intended to observe six known brain wave patterns (again, I’m not an expert here, so this is certainly a more complex topic then I’m making it out to be here). Let’s use <code>step_ica()</code> to see if we can transform this data into six different signals.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb448"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb448-1"><a href="#cb448-1" aria-hidden="true" tabindex="-1"></a>data_eeg <span class="ot">&lt;-</span> </span>
+<span id="cb448-2"><a href="#cb448-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(</span>
+<span id="cb448-3"><a href="#cb448-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_eeg.csv"</span>)</span>
+<span id="cb448-4"><a href="#cb448-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb448-5"><a href="#cb448-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb448-6"><a href="#cb448-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id =</span> x1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 16384 Columns: 10
+── Column specification
+──────────────────────────────────────────────────────────────────────────── Delimiter: "," chr
+(4): sensor position, subject identifier, matching condition, name dbl (6): ...1, trial number,
+sample num, sensor value, channel, time
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types
+or set `show_col_types = FALSE` to quiet this message.
+• `` -&gt; `...1`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb450"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb450-1"><a href="#cb450-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(data_eeg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 16,384
+Columns: 10
+$ id                 &lt;dbl&gt; 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, …
+$ trial_number       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ sensor_position    &lt;chr&gt; "FP1", "FP1", "FP1", "FP1", "FP1", "FP1", "FP1", "FP1", "FP1", "FP1", "…
+$ sample_num         &lt;dbl&gt; 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2…
+$ sensor_value       &lt;dbl&gt; -8.921, -8.433, -2.574, 5.239, 11.587, 14.028, 11.587, 6.704, 1.821, -1…
+$ subject_identifier &lt;chr&gt; "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "…
+$ matching_condition &lt;chr&gt; "S1 obj", "S1 obj", "S1 obj", "S1 obj", "S1 obj", "S1 obj", "S1 obj", "…
+$ channel            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ name               &lt;chr&gt; "co2a0000364", "co2a0000364", "co2a0000364", "co2a0000364", "co2a000036…
+$ time               &lt;dbl&gt; 0.00000000, 0.00390625, 0.00781250, 0.01171875, 0.01562500, 0.01953125,…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb452"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb452-1"><a href="#cb452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data_eeg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">data_eeg</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">16384</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 12%">
+<col style="width: 18%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sensor_position</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subject_identifier</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">matching_condition</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">id</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8228.00</td>
+<td style="text-align: right;">4748.27</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">4116.50</td>
+<td style="text-align: right;">8228.00</td>
+<td style="text-align: right;">12339.50</td>
+<td style="text-align: right;">16451.0</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">trial_number</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: left;">▁▁▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sample_num</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">127.50</td>
+<td style="text-align: right;">73.90</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">63.75</td>
+<td style="text-align: right;">127.50</td>
+<td style="text-align: right;">191.25</td>
+<td style="text-align: right;">255.0</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sensor_value</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.99</td>
+<td style="text-align: right;">7.51</td>
+<td style="text-align: right;">-39.83</td>
+<td style="text-align: right;">-2.23</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: right;">5.40</td>
+<td style="text-align: right;">51.9</td>
+<td style="text-align: left;">▁▂▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">channel</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31.50</td>
+<td style="text-align: right;">18.47</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">15.75</td>
+<td style="text-align: right;">31.50</td>
+<td style="text-align: right;">47.25</td>
+<td style="text-align: right;">63.0</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">time</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>I’ll have to do some data wrangling here to work with the data first, though. Specifically, I need to go from long to wide data. This will give each EEG sensor measurement its own column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb453"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb453-1"><a href="#cb453-1" aria-hidden="true" tabindex="-1"></a>data_eeg <span class="ot">&lt;-</span> data_eeg <span class="sc">|&gt;</span></span>
+<span id="cb453-2"><a href="#cb453-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sensor_position, sensor_value, time) <span class="sc">|&gt;</span></span>
+<span id="cb453-3"><a href="#cb453-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb453-4"><a href="#cb453-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> sensor_position, </span>
+<span id="cb453-5"><a href="#cb453-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> sensor_value</span>
+<span id="cb453-6"><a href="#cb453-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb453-7"><a href="#cb453-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb453-8"><a href="#cb453-8" aria-hidden="true" tabindex="-1"></a>data_eeg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 256 × 65
+      time   FP1    FP2      F7     F8    AF1    AF2     FZ    F4     F3   FC6    FC5    FC2    FC1
+     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1 0       -8.92  0.834 -19.8    8.15  -2.15   1.13  -0.071 3.41  -0.092 4.83  -2.43   0.488  0.824
+ 2 0.00391 -8.43  3.28  -12.5    1.80  -2.15   0.641 -0.559 1.46   0.397 6.30  -4.38  -0.977  0.824
+ 3 0.00781 -2.57  5.72    1.15  -2.59  -1.66  -0.336 -1.05  0.478 -1.07  5.81  -5.36  -1.46   0.336
+ 4 0.0117   5.24  7.67   14.8   -4.55  -0.682 -0.824 -0.559 0.966 -3.51  3.37  -5.36   0     -0.641
+ 5 0.0156  11.6   9.62   20.7   -5.04   2.25   0.641  0.905 1.94  -5.46  1.41  -0.966  1.95  -1.13 
+ 6 0.0195  14.0   9.62   17.3   -5.52   5.18   3.57   2.37  2.92  -4.49  0.437  6.85   3.42  -1.62 
+ 7 0.0234  11.6   8.65    8.96  -4.55   6.64   6.01   3.84  1.94  -1.07  0.926 13.7    3.42  -1.13 
+ 8 0.0273   6.70  5.23    0.173 -0.641  5.18   6.99   4.32  0.478  3.33  1.90  15.6    1.95   0.824
+ 9 0.0312   1.82  1.32   -3.73   5.71   1.76   5.52   3.35  0.478  6.74  1.90  11.7    0.977  3.75 
+10 0.0352  -1.11 -2.10   -2.27  10.6   -1.66   2.59   1.88  1.94   7.23  1.90   3.92   0.977  5.22 
+# ℹ 246 more rows
+# ℹ 51 more variables: T8 &lt;dbl&gt;, T7 &lt;dbl&gt;, CZ &lt;dbl&gt;, C3 &lt;dbl&gt;, C4 &lt;dbl&gt;, CP5 &lt;dbl&gt;, CP6 &lt;dbl&gt;,
+#   CP1 &lt;dbl&gt;, CP2 &lt;dbl&gt;, P3 &lt;dbl&gt;, P4 &lt;dbl&gt;, PZ &lt;dbl&gt;, P8 &lt;dbl&gt;, P7 &lt;dbl&gt;, PO2 &lt;dbl&gt;, PO1 &lt;dbl&gt;,
+#   O2 &lt;dbl&gt;, O1 &lt;dbl&gt;, X &lt;dbl&gt;, AF7 &lt;dbl&gt;, AF8 &lt;dbl&gt;, F5 &lt;dbl&gt;, F6 &lt;dbl&gt;, FT7 &lt;dbl&gt;, FT8 &lt;dbl&gt;,
+#   FPZ &lt;dbl&gt;, FC4 &lt;dbl&gt;, FC3 &lt;dbl&gt;, C6 &lt;dbl&gt;, C5 &lt;dbl&gt;, F2 &lt;dbl&gt;, F1 &lt;dbl&gt;, TP8 &lt;dbl&gt;, TP7 &lt;dbl&gt;,
+#   AFZ &lt;dbl&gt;, CP3 &lt;dbl&gt;, CP4 &lt;dbl&gt;, P5 &lt;dbl&gt;, P6 &lt;dbl&gt;, C1 &lt;dbl&gt;, C2 &lt;dbl&gt;, PO7 &lt;dbl&gt;, PO8 &lt;dbl&gt;,
+#   FCZ &lt;dbl&gt;, POZ &lt;dbl&gt;, OZ &lt;dbl&gt;, P2 &lt;dbl&gt;, P1 &lt;dbl&gt;, CPZ &lt;dbl&gt;, nd &lt;dbl&gt;, Y &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>In addition, <code>step_ica()</code> requires a few packages to be installed. This includes <code>dimRed</code> and <code>fastICA</code>. If these are not installed beforehand, an error will be returned.</p>
+<p>Now we create our recipe. Just like principal components analysis, <a href="http://www.feat.engineering/numeric-many-to-many">we need to center and scale our data</a>. We achieve this by applying <code>step_center()</code> and <code>step_scale()</code> to <code>all_numeric()</code> variables. Since we’re attempting to create columns to represent the six brain waves, we’ll set <code>num_comp</code> to 6.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb455"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb455-1"><a href="#cb455-1" aria-hidden="true" tabindex="-1"></a>eeg_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_eeg) <span class="sc">|&gt;</span></span>
+<span id="cb455-2"><a href="#cb455-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(time, <span class="at">new_role =</span> <span class="st">"time_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb455-3"><a href="#cb455-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(<span class="fu">all_numeric</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb455-4"><a href="#cb455-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_scale</span>(<span class="fu">all_numeric</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb455-5"><a href="#cb455-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ica</span>(<span class="fu">all_numeric</span>(), <span class="at">num_comp =</span> <span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb455-6"><a href="#cb455-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s <code>tidy()</code> our recipe to get a better sense of what’s happening here. You’ll notice it’s very similar to principal components analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb456"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb456-1"><a href="#cb456-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(eeg_rec, <span class="at">number =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 390 × 4
+   terms component     value id       
+   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;    
+ 1 AF1   IC1       -0.0446   ica_xymfX
+ 2 AF1   IC2        0.0123   ica_xymfX
+ 3 AF1   IC3        0.00928  ica_xymfX
+ 4 AF1   IC4        0.000524 ica_xymfX
+ 5 AF1   IC5       -0.0280   ica_xymfX
+ 6 AF1   IC6       -0.0415   ica_xymfX
+ 7 AF2   IC1       -0.0489   ica_xymfX
+ 8 AF2   IC2        0.0667   ica_xymfX
+ 9 AF2   IC3       -0.00168  ica_xymfX
+10 AF2   IC4       -0.0385   ica_xymfX
+# ℹ 380 more rows</code></pre>
+</div>
+</div>
+<p>Now let’s bake our data and see what the result of the <code>step_ica()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb458"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb458-1"><a href="#cb458-1" aria-hidden="true" tabindex="-1"></a>baked_eeg <span class="ot">&lt;-</span> <span class="fu">bake</span>(eeg_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb458-2"><a href="#cb458-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(data_eeg <span class="sc">|&gt;</span> <span class="fu">select</span>(time))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For the heck of it, let’s plot our baked data. Do you see any of the common <a href="https://en.wikipedia.org/wiki/Electroencephalography#Wave%20patterns:~:text=prominent%20alpha%2Drhythm-,Wave%20patterns,-%5Bedit%5D">brain wave types</a> in these plots? Remember, this is only one participant, so if additional data were included, the patterns might become more apparent.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb459"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb459-1"><a href="#cb459-1" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(</span>
+<span id="cb459-2"><a href="#cb459-2" aria-hidden="true" tabindex="-1"></a>  baked_eeg <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>time), </span>
+<span id="cb459-3"><a href="#cb459-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span><span class="fu">plot</span>(baked_eeg<span class="sc">$</span>time, .x, <span class="at">type =</span> <span class="st">"line"</span>) </span>
+<span id="cb459-4"><a href="#cb459-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-15-vis-bake-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-15-vis-bake-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-15-vis-bake-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-15-vis-bake-4.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-15-vis-bake-5.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-15-vis-bake-6.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>There you have it, another <code>step_*()</code> function to try out. See you tomorrow.</p>
 
 
 </section>
