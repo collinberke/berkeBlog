@@ -176,6 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-13---use-step_corr-to-remove-highly-correlated-predictors" id="toc-day-13---use-step_corr-to-remove-highly-correlated-predictors" class="nav-link" data-scroll-target="#day-13---use-step_corr-to-remove-highly-correlated-predictors">Day 13 - Use <code>step_corr()</code> to remove highly correlated predictors</a></li>
   <li><a href="#day-14---perform-dimension-reduction-with-step_pca" id="toc-day-14---perform-dimension-reduction-with-step_pca" class="nav-link" data-scroll-target="#day-14---perform-dimension-reduction-with-step_pca">Day 14 - Perform dimension reduction with <code>step_pca()</code></a></li>
   <li><a href="#day-15---use-step_ica-for-signal-extraction" id="toc-day-15---use-step_ica-for-signal-extraction" class="nav-link" data-scroll-target="#day-15---use-step_ica-for-signal-extraction">Day 15 - Use <code>step_ica()</code> for signal extraction</a></li>
+  <li><a href="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" id="toc-day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" class="nav-link" data-scroll-target="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other">Day 16 - Use <code>step_other()</code> to collapse low occurring categorical levels into <code>other</code></a></li>
   </ul>
 </nav>
     </div>
@@ -4896,6 +4897,584 @@ $ time               &lt;dbl&gt; 0.00000000, 0.00390625, 0.00781250, 0.01171875,
 </div>
 </div>
 <p>There you have it, another <code>step_*()</code> function to try out. See you tomorrow.</p>
+</section>
+<section id="day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" class="level1">
+<h1>Day 16 - Use <code>step_other()</code> to collapse low occurring categorical levels into <code>other</code></h1>
+<p>For today, I’m going to highlight the use of <code>step_other()</code>. <code>step_other()</code> is used to collapse infrequent categorical values into an <code>other</code> category. To do this, the function has a <code>threshold</code> argument to modify the cutoff for determining values within this category. Let’s highlight its use with an example.</p>
+<p>For data, I’m going back to our Google Analytics data. I’ve used this data for several examples already, so I’m not going to detail it too much here. However, here is some quick data exploration code for you to review.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb466"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb466-1"><a href="#cb466-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb466-2"><a href="#cb466-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb466-3"><a href="#cb466-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb468"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb468-1"><a href="#cb468-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(data_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 9,365
+Columns: 14
+$ event_date              &lt;dbl&gt; 20201201, 20201201, 20201201, 20201201, 20201201, 20201201, 202012…
+$ purchase_revenue_in_usd &lt;dbl&gt; 40, 40, 40, 40, 40, 40, 40, 62, 62, 44, 28, 28, 36, 36, 36, 36, 92…
+$ transaction_id          &lt;dbl&gt; 10648, 10648, 10648, 10648, 10648, 10648, 10648, 171491, 171491, 1…
+$ item_name               &lt;chr&gt; "Google Hemp Tote", "Android SM S/F18 Sticker Sheet", "Android Buo…
+$ item_category           &lt;chr&gt; "Clearance", "Accessories", "Drinkware", "Small Goods", "Office", …
+$ price_in_usd            &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14, 1, 4, 16, 7, 92, 7, 14,…
+$ quantity                &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 53, 1, 1, 1, 1,…
+$ item_revenue_in_usd     &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14, 1, 4, 16, 14, 92, 371, …
+$ shipping_tier           &lt;chr&gt; "FedEx Ground", "FedEx Ground", "FedEx Ground", "FedEx Ground", "F…
+$ payment_type            &lt;chr&gt; "Pay with credit card", "Pay with credit card", "Pay with credit c…
+$ category                &lt;chr&gt; "mobile", "mobile", "mobile", "mobile", "mobile", "mobile", "mobil…
+$ country                 &lt;chr&gt; "United States", "United States", "United States", "United States"…
+$ region                  &lt;chr&gt; "California", "California", "California", "California", "Californi…
+$ city                    &lt;chr&gt; "San Jose", "San Jose", "San Jose", "San Jose", "San Jose", "San J…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb470"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb470-1"><a href="#cb470-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">data_ga</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">9365</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">item_name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">385</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">item_category</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shipping_tier</td>
+<td style="text-align: right;">109</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">payment_type</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">category</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">country</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">region</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">289</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">city</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">434</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">event_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20203675.03</td>
+<td style="text-align: right;">3983.09</td>
+<td style="text-align: right;">20201201</td>
+<td style="text-align: right;">20201209</td>
+<td style="text-align: right;">20201216</td>
+<td style="text-align: right;">20210106</td>
+<td style="text-align: right;">20210130</td>
+<td style="text-align: left;">▇▁▁▁▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">purchase_revenue_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">101.84</td>
+<td style="text-align: right;">118.06</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">1530</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">transaction_id</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">487977.44</td>
+<td style="text-align: right;">282873.71</td>
+<td style="text-align: right;">546</td>
+<td style="text-align: right;">249662</td>
+<td style="text-align: right;">479506</td>
+<td style="text-align: right;">724658</td>
+<td style="text-align: right;">999850</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">price_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.52</td>
+<td style="text-align: right;">18.74</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quantity</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.45</td>
+<td style="text-align: right;">2.77</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">item_revenue_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.26</td>
+<td style="text-align: right;">28.61</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">704</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>First, let’s create a split.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb471"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb471-1"><a href="#cb471-1" aria-hidden="true" tabindex="-1"></a>split_ga <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb471-2"><a href="#cb471-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb471-3"><a href="#cb471-3" aria-hidden="true" tabindex="-1"></a>data_ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(split_ga)</span>
+<span id="cb471-4"><a href="#cb471-4" aria-hidden="true" tabindex="-1"></a>data_ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(split_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I’m interested in the <code>item_category</code> variable here. Let’s get a sense of the unique values and counts of each value within the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb472"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb472-1"><a href="#cb472-1" aria-hidden="true" tabindex="-1"></a>data_ga_tr <span class="sc">|&gt;</span></span>
+<span id="cb472-2"><a href="#cb472-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(item_category, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb472-3"><a href="#cb472-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb472-4"><a href="#cb472-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">25</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 21 × 3
+   item_category               n     prop
+   &lt;chr&gt;                   &lt;int&gt;    &lt;dbl&gt;
+ 1 Apparel                  2199 0.294   
+ 2 Campus Collection         755 0.101   
+ 3 New                       724 0.0966  
+ 4 Accessories               632 0.0844  
+ 5 Shop by Brand             463 0.0618  
+ 6 Office                    408 0.0545  
+ 7 Bags                      372 0.0497  
+ 8 Drinkware                 343 0.0458  
+ 9 Clearance                 336 0.0448  
+10 Lifestyle                 263 0.0351  
+11 Uncategorized Items       242 0.0323  
+12 Google                    148 0.0198  
+13 Stationery                146 0.0195  
+14 &lt;NA&gt;                      140 0.0187  
+15 Writing Instruments       121 0.0162  
+16 Small Goods               106 0.0141  
+17 Gift Cards                 48 0.00641 
+18 Electronics Accessories    20 0.00267 
+19 Notebooks &amp; Journals       16 0.00214 
+20 Fun                         9 0.00120 
+21 Black Lives Matter          1 0.000133</code></pre>
+</div>
+</div>
+<p>Indeed, there are certainly some item categories that are purchased less than 5% of the time in our training data. Let’s create our recipe, where we focus on using <code>step_other()</code> to create an <code>other</code> category.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb474"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb474-1"><a href="#cb474-1" aria-hidden="true" tabindex="-1"></a><span class="co"># threshold defaults to .05</span></span>
+<span id="cb474-2"><a href="#cb474-2" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb474-3"><a href="#cb474-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(item_category) <span class="sc">|&gt;</span></span>
+<span id="cb474-4"><a href="#cb474-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb474-5"><a href="#cb474-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb474-6"><a href="#cb474-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 230 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Collapsing factor levels for: item_category | Trained</code></pre>
+</div>
+</div>
+<p>We’ll now <code>tidy()</code> our recipe to drill down and get more information on what’s happening. When we look deeper into the first step, a tibble describing what columns will be affected by the step and what variables will not be converted into an <code>other</code> category is returned. In our case, <code>Accessories</code>, <code>Apparel</code>, <code>Bags</code>, <code>Campus Collection</code>, <code>New</code>, <code>Office</code>, and <code>Shop by Brand</code> will remain as factor levels. All others will be converted to the <code>other</code> category.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb487"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb487-1"><a href="#cb487-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type  trained skip  id         
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;      
+1      1 step      other TRUE    FALSE other_MsyPy</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb489"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb489-1"><a href="#cb489-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 3
+  terms         retained          id         
+  &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;      
+1 item_category Accessories       other_MsyPy
+2 item_category Apparel           other_MsyPy
+3 item_category Bags              other_MsyPy
+4 item_category Campus Collection other_MsyPy
+5 item_category New               other_MsyPy
+6 item_category Office            other_MsyPy
+7 item_category Shop by Brand     other_MsyPy</code></pre>
+</div>
+</div>
+<p>We can bake to see what happens as a result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb491"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb491-1"><a href="#cb491-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb491-2"><a href="#cb491-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb491-3"><a href="#cb491-3" aria-hidden="true" tabindex="-1"></a>baked_ga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 14
+   event_date purchase_revenue_in_usd transaction_id item_name   item_category price_in_usd quantity
+        &lt;dbl&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+ 1   20201210                      49         166937 Android Ic… New                      4        1
+ 2   20201208                      63         776080 Android SM… Accessories              2        2
+ 3   20201209                     163         517829 Womens Goo… Apparel                 16        1
+ 4   20201214                    1530         396355 Noogler An… Accessories             13       15
+ 5   20201210                     275         104071 Gift Card … other                   25        1
+ 6   20210113                      18         865692 Google Met… Office                   6        1
+ 7   20201203                     311         652984 Android Bu… other                    4        5
+ 8   20210120                      84         482111 Google See… other                   10        1
+ 9   20201202                      45         541131 Google Chr… Accessories             30        1
+10   20201222                      54         125445 Google Tot… New                     19        1
+# ℹ 7,482 more rows
+# ℹ 7 more variables: item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;,
+#   category &lt;fct&gt;, country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb493"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb493-1"><a href="#cb493-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="sc">|&gt;</span></span>
+<span id="cb493-2"><a href="#cb493-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(item_category, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 2
+  item_category         n
+  &lt;fct&gt;             &lt;int&gt;
+1 Apparel            2199
+2 other              1799
+3 Campus Collection   755
+4 New                 724
+5 Accessories         632
+6 Shop by Brand       463
+7 Office              408
+8 Bags                372
+9 &lt;NA&gt;                140</code></pre>
+</div>
+</div>
+<p>Say we want to modify the threshold to be 10%. All we need to do is pass this value to the function via the <code>threshold</code> argument in <code>step_other()</code>. This looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb495"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb495-1"><a href="#cb495-1" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb495-2"><a href="#cb495-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(item_category, <span class="at">threshold =</span> .<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb495-3"><a href="#cb495-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb495-4"><a href="#cb495-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb495-5"><a href="#cb495-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb495-6"><a href="#cb495-6" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 14
+   event_date purchase_revenue_in_usd transaction_id item_name   item_category price_in_usd quantity
+        &lt;dbl&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+ 1   20201210                      49         166937 Android Ic… other                    4        1
+ 2   20201208                      63         776080 Android SM… other                    2        2
+ 3   20201209                     163         517829 Womens Goo… Apparel                 16        1
+ 4   20201214                    1530         396355 Noogler An… other                   13       15
+ 5   20201210                     275         104071 Gift Card … other                   25        1
+ 6   20210113                      18         865692 Google Met… other                    6        1
+ 7   20201203                     311         652984 Android Bu… other                    4        5
+ 8   20210120                      84         482111 Google See… other                   10        1
+ 9   20201202                      45         541131 Google Chr… other                   30        1
+10   20201222                      54         125445 Google Tot… other                   19        1
+# ℹ 7,482 more rows
+# ℹ 7 more variables: item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;,
+#   category &lt;fct&gt;, country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb497"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb497-1"><a href="#cb497-1" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh <span class="sc">|&gt;</span></span>
+<span id="cb497-2"><a href="#cb497-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(item_category, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  item_category         n
+  &lt;fct&gt;             &lt;int&gt;
+1 other              4398
+2 Apparel            2199
+3 Campus Collection   755
+4 &lt;NA&gt;                140</code></pre>
+</div>
+</div>
+<p>This might be too restrictive. You can also pass an integer to <code>threshold</code> to use a frequency as a cutoff. This looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb499"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb499-1"><a href="#cb499-1" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb499-2"><a href="#cb499-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(item_category, <span class="at">threshold =</span> <span class="dv">300</span>) <span class="sc">|&gt;</span></span>
+<span id="cb499-3"><a href="#cb499-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb499-4"><a href="#cb499-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb499-5"><a href="#cb499-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb499-6"><a href="#cb499-6" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 14
+   event_date purchase_revenue_in_usd transaction_id item_name   item_category price_in_usd quantity
+        &lt;dbl&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+ 1   20201210                      49         166937 Android Ic… New                      4        1
+ 2   20201208                      63         776080 Android SM… Accessories              2        2
+ 3   20201209                     163         517829 Womens Goo… Apparel                 16        1
+ 4   20201214                    1530         396355 Noogler An… Accessories             13       15
+ 5   20201210                     275         104071 Gift Card … other                   25        1
+ 6   20210113                      18         865692 Google Met… Office                   6        1
+ 7   20201203                     311         652984 Android Bu… Drinkware                4        5
+ 8   20210120                      84         482111 Google See… other                   10        1
+ 9   20201202                      45         541131 Google Chr… Accessories             30        1
+10   20201222                      54         125445 Google Tot… New                     19        1
+# ℹ 7,482 more rows
+# ℹ 7 more variables: item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;,
+#   category &lt;fct&gt;, country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb501"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb501-1"><a href="#cb501-1" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh <span class="sc">|&gt;</span></span>
+<span id="cb501-2"><a href="#cb501-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(item_category, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   item_category         n
+   &lt;fct&gt;             &lt;int&gt;
+ 1 Apparel            2199
+ 2 other              1120
+ 3 Campus Collection   755
+ 4 New                 724
+ 5 Accessories         632
+ 6 Shop by Brand       463
+ 7 Office              408
+ 8 Bags                372
+ 9 Drinkware           343
+10 Clearance           336
+11 &lt;NA&gt;                140</code></pre>
+</div>
+</div>
+<p>If you don’t like the <code>other</code> category label, you can modify it by passing a string to the <code>other</code>argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb503"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb503-1"><a href="#cb503-1" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb503-2"><a href="#cb503-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(item_category, <span class="at">threshold =</span> <span class="dv">300</span>, <span class="at">other =</span> <span class="st">"Other items"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb503-3"><a href="#cb503-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb503-4"><a href="#cb503-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb503-5"><a href="#cb503-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb503-6"><a href="#cb503-6" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 14
+   event_date purchase_revenue_in_usd transaction_id item_name   item_category price_in_usd quantity
+        &lt;dbl&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+ 1   20201210                      49         166937 Android Ic… New                      4        1
+ 2   20201208                      63         776080 Android SM… Accessories              2        2
+ 3   20201209                     163         517829 Womens Goo… Apparel                 16        1
+ 4   20201214                    1530         396355 Noogler An… Accessories             13       15
+ 5   20201210                     275         104071 Gift Card … Other items             25        1
+ 6   20210113                      18         865692 Google Met… Office                   6        1
+ 7   20201203                     311         652984 Android Bu… Drinkware                4        5
+ 8   20210120                      84         482111 Google See… Other items             10        1
+ 9   20201202                      45         541131 Google Chr… Accessories             30        1
+10   20201222                      54         125445 Google Tot… New                     19        1
+# ℹ 7,482 more rows
+# ℹ 7 more variables: item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;,
+#   category &lt;fct&gt;, country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb505"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb505-1"><a href="#cb505-1" aria-hidden="true" tabindex="-1"></a>ga_rec_thresh <span class="sc">|&gt;</span></span>
+<span id="cb505-2"><a href="#cb505-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(item_category, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   item_category         n
+   &lt;fct&gt;             &lt;int&gt;
+ 1 Apparel            2199
+ 2 Other items        1120
+ 3 Campus Collection   755
+ 4 New                 724
+ 5 Accessories         632
+ 6 Shop by Brand       463
+ 7 Office              408
+ 8 Bags                372
+ 9 Drinkware           343
+10 Clearance           336
+11 &lt;NA&gt;                140</code></pre>
+</div>
+</div>
+<p>Check mark next to another day. <code>step_other()</code> is pretty useful in cases where you have many factor levels in a categorical variable. Take it for a test drive. See you tomorrow.</p>
 
 
 </section>

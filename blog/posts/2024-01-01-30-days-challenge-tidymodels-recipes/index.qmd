@@ -1623,3 +1623,110 @@ walk(
 ```
 
 There you have it, another `step_*()` function to try out. See you tomorrow. 
+
+# Day 16 - Use `step_other()` to collapse low occurring categorical levels into `other`
+
+For today, I'm going to highlight the use of `step_other()`. `step_other()` is used to collapse infrequent categorical values into an `other` category. To do this, the function has a `threshold` argument to modify the cutoff for determining values within this category. Let's highlight its use with an example.
+
+For data, I'm going back to our Google Analytics data. I've used this data for several examples already, so I'm not going to detail it too much here. However, here is some quick data exploration code for you to review.
+
+```{r day-16-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+glimpse(data_ga)
+
+skim(data_ga)
+```
+
+First, let's create a split.
+
+```{r day-16-data-split}
+split_ga <- initial_split(data_ga, prop = .8)
+
+data_ga_tr <- training(split_ga)
+data_ga_te <- testing(split_ga)
+```
+
+I'm interested in the `item_category` variable here. Let's get a sense of the unique values and counts of each value within the data. 
+
+```{r day-16-explore-items}
+data_ga_tr |>
+  count(item_category, sort = TRUE) |>
+  mutate(prop = n / sum(n)) |>
+  print(n = 25) 
+```
+
+Indeed, there are certainly some item categories that are purchased less than 5% of the time in our training data. Let's create our recipe, where we focus on using `step_other()` to create an `other` category.
+
+```{r day-16-rec}
+# threshold defaults to .05
+ga_rec <- recipe(~., data = data_ga_tr) |>
+  step_other(item_category) |>
+  prep()
+
+ga_rec
+```
+
+We'll now `tidy()` our recipe to drill down and get more information on what's happening. When we look deeper into the first step, a tibble describing what columns will be affected by the step and what variables will not be converted into an `other` category is returned. In our case, `Accessories`, `Apparel`, `Bags`, `Campus Collection`, `New`, `Office`, and `Shop by Brand` will remain as factor levels. All others will be converted to the `other` category.
+
+```{r day-16-tidy-rec}
+tidy(ga_rec)
+tidy(ga_rec, number = 1)
+```
+
+We can bake to see what happens as a result.
+
+```{r day-16-bake-rec}
+baked_ga <- bake(ga_rec, new_data = NULL)
+
+baked_ga
+
+baked_ga |>
+  count(item_category, sort = TRUE)
+```
+
+Say we want to modify the threshold to be 10%. All we need to do is pass this value to the function via the `threshold` argument in `step_other()`. This looks like this:
+
+```{r day-16-modify-threshold}
+ga_rec_thresh <- recipe(~., data = data_ga_tr) |>
+  step_other(item_category, threshold = .1) |>
+  prep() |>
+  bake(new_data = NULL)
+
+ga_rec_thresh 
+
+ga_rec_thresh |>
+  count(item_category, sort = TRUE)
+```
+
+This might be too restrictive. You can also pass an integer to `threshold` to use a frequency as a cutoff. This looks like:
+
+```{r day-16-modify-threshold-integer}
+ga_rec_thresh <- recipe(~., data = data_ga_tr) |>
+  step_other(item_category, threshold = 300) |>
+  prep() |>
+  bake(new_data = NULL)
+
+ga_rec_thresh
+
+ga_rec_thresh |>
+  count(item_category, sort = TRUE)
+```
+
+If you don't like the `other` category label, you can modify it by passing a string to the `other`argument.
+
+```{r day-16-modify-other-label}
+ga_rec_thresh <- recipe(~., data = data_ga_tr) |>
+  step_other(item_category, threshold = 300, other = "Other items") |>
+  prep() |>
+  bake(new_data = NULL)
+
+ga_rec_thresh
+
+ga_rec_thresh |>
+  count(item_category, sort = TRUE)
+```
+
+Check mark next to another day. `step_other()` is pretty useful in cases where you have many factor levels in a categorical variable. Take it for a test drive. See you tomorrow. 
