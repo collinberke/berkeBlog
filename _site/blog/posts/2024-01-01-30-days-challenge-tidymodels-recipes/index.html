@@ -177,6 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-14---perform-dimension-reduction-with-step_pca" id="toc-day-14---perform-dimension-reduction-with-step_pca" class="nav-link" data-scroll-target="#day-14---perform-dimension-reduction-with-step_pca">Day 14 - Perform dimension reduction with <code>step_pca()</code></a></li>
   <li><a href="#day-15---use-step_ica-for-signal-extraction" id="toc-day-15---use-step_ica-for-signal-extraction" class="nav-link" data-scroll-target="#day-15---use-step_ica-for-signal-extraction">Day 15 - Use <code>step_ica()</code> for signal extraction</a></li>
   <li><a href="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" id="toc-day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" class="nav-link" data-scroll-target="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other">Day 16 - Use <code>step_other()</code> to collapse low occurring categorical levels into <code>other</code></a></li>
+  <li><a href="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" id="toc-day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" class="nav-link" data-scroll-target="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date">Day 17 - Convert date data into factor or numeric variables with <code>step_date()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -5475,6 +5476,318 @@ $ city                    &lt;chr&gt; "San Jose", "San Jose", "San Jose", "San J
 </div>
 </div>
 <p>Check mark next to another day. <code>step_other()</code> is pretty useful in cases where you have many factor levels in a categorical variable. Take it for a test drive. See you tomorrow.</p>
+</section>
+<section id="day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" class="level1">
+<h1>Day 17 - Convert date data into factor or numeric variables with <code>step_date()</code></h1>
+<p>Do you ever work with date variables? Do these tasks often require you to parse date variables into various components (e.g., month, year, day of the week, etc.)? <code>recipes</code>’ <code>step_date()</code> simplifies these operations.</p>
+<p>Let’s continue using our Google Analytics ecommerce data from yesterday. I’ve overviewed this data a few times now, so I’m not going to discuss it in depth here. Rather, I’m going to jump right into today’s examples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb507"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb507-1"><a href="#cb507-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb507-2"><a href="#cb507-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb507-3"><a href="#cb507-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb509"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb509-1"><a href="#cb509-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240117</span>)</span>
+<span id="cb509-2"><a href="#cb509-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb509-3"><a href="#cb509-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb509-4"><a href="#cb509-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Within this data is an <code>event_date</code> column. Let’s say I want to create two new columns from this data: <code>month</code> and <code>year</code>. First, we need to utilize <code>step_mutate()</code> to convert <code>event_date</code> to type <code>date</code> (i.e., <code>20201202</code> to <code>2020-12-02</code>). <code>lubridate</code>’s <code>ymd()</code> function is used to do this. We do this by doing the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb510"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb510-1"><a href="#cb510-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb510-2"><a href="#cb510-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb510-3"><a href="#cb510-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_date</span>(event_date, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"month"</span>, <span class="st">"year"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb510-4"><a href="#cb510-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb510-5"><a href="#cb510-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb510-6"><a href="#cb510-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Date features from: event_date | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb524"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb524-1"><a href="#cb524-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  terms      value           id          
+  &lt;chr&gt;      &lt;chr&gt;           &lt;chr&gt;       
+1 event_date ymd(event_date) mutate_1gITK</code></pre>
+</div>
+</div>
+<p>Let’s bake our recipe and take a look at what’s happening. You should notice two new variables are created, each prefixed with the original variable name <code>event_date_</code>. The data now contains <code>event_date_month</code> and <code>event_date_year</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb526"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb526-1"><a href="#cb526-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb526-2"><a href="#cb526-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="fu">starts_with</span>(<span class="st">"event_"</span>), <span class="at">.after =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 16
+   event_date event_date_month event_date_year purchase_revenue_in_usd transaction_id item_name     
+   &lt;date&gt;     &lt;fct&gt;                      &lt;int&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;         
+ 1 2020-12-02 Dec                         2020                      41          11395 Google Navy S…
+ 2 2020-12-07 Dec                         2020                      22         190059 Google Super …
+ 3 2020-12-08 Dec                         2020                      29         147010 Google SF Cam…
+ 4 2021-01-20 Jan                         2021                      86         101328 Google Speckl…
+ 5 2020-12-04 Dec                         2020                     142         469624 Google Men's …
+ 6 2020-12-28 Dec                         2020                      79         797936 Google Kirkla…
+ 7 2020-12-28 Dec                         2020                      79         797936 Google Kirkla…
+ 8 2020-12-17 Dec                         2020                     139         439292 Google Speckl…
+ 9 2021-01-24 Jan                         2021                      55         172750 Google Black …
+10 2020-12-18 Dec                         2020                     128         878199 #IamRemarkabl…
+# ℹ 7,482 more rows
+# ℹ 10 more variables: item_category &lt;fct&gt;, price_in_usd &lt;dbl&gt;, quantity &lt;dbl&gt;,
+#   item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;, category &lt;fct&gt;,
+#   country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+</div>
+<p>Say we don’t like the use of the abbreviation for <code>event_date_month</code>, we can change this by setting the <code>abbr</code> argument to <code>FALSE</code> in our recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb528"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb528-1"><a href="#cb528-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb528-2"><a href="#cb528-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb528-3"><a href="#cb528-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_date</span>(event_date, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"month"</span>, <span class="st">"year"</span>), <span class="at">abbr =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb528-4"><a href="#cb528-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb528-5"><a href="#cb528-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb528-6"><a href="#cb528-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Date features from: event_date | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb542"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb542-1"><a href="#cb542-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb542-2"><a href="#cb542-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="fu">starts_with</span>(<span class="st">"event_"</span>), <span class="at">.after =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 16
+   event_date event_date_month event_date_year purchase_revenue_in_usd transaction_id item_name     
+   &lt;date&gt;     &lt;fct&gt;                      &lt;int&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;         
+ 1 2020-12-02 December                    2020                      41          11395 Google Navy S…
+ 2 2020-12-07 December                    2020                      22         190059 Google Super …
+ 3 2020-12-08 December                    2020                      29         147010 Google SF Cam…
+ 4 2021-01-20 January                     2021                      86         101328 Google Speckl…
+ 5 2020-12-04 December                    2020                     142         469624 Google Men's …
+ 6 2020-12-28 December                    2020                      79         797936 Google Kirkla…
+ 7 2020-12-28 December                    2020                      79         797936 Google Kirkla…
+ 8 2020-12-17 December                    2020                     139         439292 Google Speckl…
+ 9 2021-01-24 January                     2021                      55         172750 Google Black …
+10 2020-12-18 December                    2020                     128         878199 #IamRemarkabl…
+# ℹ 7,482 more rows
+# ℹ 10 more variables: item_category &lt;fct&gt;, price_in_usd &lt;dbl&gt;, quantity &lt;dbl&gt;,
+#   item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;, category &lt;fct&gt;,
+#   country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+</div>
+<p>Also of note is <code>step_date()</code> converted the <code>event_date_month</code> column into an ordered factor for us.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb544"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb544-1"><a href="#cb544-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb544-2"><a href="#cb544-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(event_date_month) <span class="sc">|&gt;</span></span>
+<span id="cb544-3"><a href="#cb544-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">levels</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "January"   "February"  "March"     "April"     "May"       "June"      "July"      "August"   
+ [9] "September" "October"   "November"  "December" </code></pre>
+</div>
+</div>
+<p><code>step_date()</code>’s <code>feature</code> argument has many different options. This includes:</p>
+<ul>
+<li><code>month</code></li>
+<li><code>dow</code> (day of week)</li>
+<li><code>doy</code> (day of year)</li>
+<li><code>week</code></li>
+<li><code>month</code></li>
+<li><code>decimal</code> (decimal date)</li>
+<li><code>quarter</code></li>
+<li><code>semester</code></li>
+<li><code>year</code></li>
+</ul>
+<p>Just for the heck of it, let’s create features using all of the available options.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb546"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb546-1"><a href="#cb546-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb546-2"><a href="#cb546-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb546-3"><a href="#cb546-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_date</span>(</span>
+<span id="cb546-4"><a href="#cb546-4" aria-hidden="true" tabindex="-1"></a>    event_date, </span>
+<span id="cb546-5"><a href="#cb546-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"month"</span>, <span class="st">"dow"</span>, <span class="st">"doy"</span>, <span class="st">"week"</span>, <span class="st">"decimal"</span>, <span class="st">"quarter"</span>, <span class="st">"semester"</span>, <span class="st">"year"</span>)</span>
+<span id="cb546-6"><a href="#cb546-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb546-7"><a href="#cb546-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb546-8"><a href="#cb546-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb546-9"><a href="#cb546-9" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Date features from: event_date | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb560"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb560-1"><a href="#cb560-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb560-2"><a href="#cb560-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="fu">starts_with</span>(<span class="st">"event_"</span>), <span class="at">.after =</span> <span class="dv">1</span>)</span>
+<span id="cb560-3"><a href="#cb560-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb560-4"><a href="#cb560-4" aria-hidden="true" tabindex="-1"></a>baked_ga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 22
+   event_date event_date_month event_date_dow event_date_doy event_date_week event_date_decimal
+   &lt;date&gt;     &lt;fct&gt;            &lt;fct&gt;                   &lt;int&gt;           &lt;int&gt;              &lt;dbl&gt;
+ 1 2020-12-02 Dec              Wed                       337              49              2021.
+ 2 2020-12-07 Dec              Mon                       342              49              2021.
+ 3 2020-12-08 Dec              Tue                       343              49              2021.
+ 4 2021-01-20 Jan              Wed                        20               3              2021.
+ 5 2020-12-04 Dec              Fri                       339              49              2021.
+ 6 2020-12-28 Dec              Mon                       363              52              2021.
+ 7 2020-12-28 Dec              Mon                       363              52              2021.
+ 8 2020-12-17 Dec              Thu                       352              51              2021.
+ 9 2021-01-24 Jan              Sun                        24               4              2021.
+10 2020-12-18 Dec              Fri                       353              51              2021.
+# ℹ 7,482 more rows
+# ℹ 16 more variables: event_date_quarter &lt;int&gt;, event_date_semester &lt;int&gt;, event_date_year &lt;int&gt;,
+#   purchase_revenue_in_usd &lt;dbl&gt;, transaction_id &lt;dbl&gt;, item_name &lt;fct&gt;, item_category &lt;fct&gt;,
+#   price_in_usd &lt;dbl&gt;, quantity &lt;dbl&gt;, item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;,
+#   payment_type &lt;fct&gt;, category &lt;fct&gt;, country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Unlike other <code>step_*()</code> functions, <code>step_date</code> does not remove the original column. If needed you can modify this with the <code>keep_original_columns</code> argument.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb562"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb562-1"><a href="#cb562-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(baked_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 7,492
+Columns: 22
+$ event_date              &lt;date&gt; 2020-12-02, 2020-12-07, 2020-12-08, 2021-01-20, 2020-12-04, 2020-…
+$ event_date_month        &lt;fct&gt; Dec, Dec, Dec, Jan, Dec, Dec, Dec, Dec, Jan, Dec, Dec, Dec, Jan, D…
+$ event_date_dow          &lt;fct&gt; Wed, Mon, Tue, Wed, Fri, Mon, Mon, Thu, Sun, Fri, Thu, Thu, Fri, T…
+$ event_date_doy          &lt;int&gt; 337, 342, 343, 20, 339, 363, 363, 352, 24, 353, 345, 352, 22, 352,…
+$ event_date_week         &lt;int&gt; 49, 49, 49, 3, 49, 52, 52, 51, 4, 51, 50, 51, 4, 51, 50, 49, 51, 5…
+$ event_date_decimal      &lt;dbl&gt; 2020.918, 2020.932, 2020.934, 2021.052, 2020.923, 2020.989, 2020.9…
+$ event_date_quarter      &lt;int&gt; 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4, 4, 4, 1, …
+$ event_date_semester     &lt;int&gt; 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, …
+$ event_date_year         &lt;int&gt; 2020, 2020, 2020, 2021, 2020, 2020, 2020, 2020, 2021, 2020, 2020, …
+$ purchase_revenue_in_usd &lt;dbl&gt; 41, 22, 29, 86, 142, 79, 79, 139, 55, 128, 23, 41, 20, 15, 223, 18…
+$ transaction_id          &lt;dbl&gt; 11395, 190059, 147010, 101328, 469624, 797936, 797936, 439292, 172…
+$ item_name               &lt;fct&gt; Google Navy Speckled Tee, Google Super G Tumbler (Red Lid), Google…
+$ item_category           &lt;fct&gt; Apparel, Lifestyle, Campus Collection, New, Apparel, Clearance, Cl…
+$ price_in_usd            &lt;dbl&gt; 24, 22, 6, 16, 71, 14, 14, 16, 55, 10, 16, 11, 10, 14, 3, 71, 11, …
+$ quantity                &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, …
+$ item_revenue_in_usd     &lt;dbl&gt; 24, 22, 6, 16, 71, 14, 14, 16, 55, 19, 16, 11, 10, 14, 6, 71, 11, …
+$ shipping_tier           &lt;fct&gt; FedEx Ground, FedEx Ground, UPS Ground, FedEx Ground, FedEx Ground…
+$ payment_type            &lt;fct&gt; Pay with credit card, Pay with credit card, Pay with credit card, …
+$ category                &lt;fct&gt; desktop, desktop, mobile, desktop, desktop, desktop, desktop, mobi…
+$ country                 &lt;fct&gt; France, United States, Thailand, United Kingdom, United States, Un…
+$ region                  &lt;fct&gt; Nouvelle-Aquitaine, Missouri, Bangkok, England, Washington, Califo…
+$ city                    &lt;fct&gt; (not set), (not set), Bangkok, (not set), (not set), (not set), (n…</code></pre>
+</div>
+</div>
+<p>Pretty neat! <code>step_date()</code> provides some pretty good utility, especially if you tend to work with a lot of dates needing to be transformed into different representations. We’ll see you tomorrow everybody.</p>
 
 
 </section>
