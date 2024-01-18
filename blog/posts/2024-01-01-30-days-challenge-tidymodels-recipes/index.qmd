@@ -1730,3 +1730,104 @@ ga_rec_thresh |>
 ```
 
 Check mark next to another day. `step_other()` is pretty useful in cases where you have many factor levels in a categorical variable. Take it for a test drive. See you tomorrow. 
+
+# Day 17 - Convert date data into factor or numeric variables with `step_date()`
+
+Do you ever work with date variables? Do these tasks often require you to parse date variables into various components (e.g., month, year, day of the week, etc.)? `recipes`' `step_date()` simplifies these operations.
+
+Let's continue using our Google Analytics ecommerce data from yesterday. I've overviewed this data a few times now, so I'm not going to discuss it in depth here. Rather, I'm going to jump right into today's examples.
+
+```{r day-17-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+set.seed(20240117)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+Within this data is an `event_date` column. Let's say I want to create two new columns from this data: `month` and `year`. First, we need to utilize `step_mutate()` to convert `event_date` to type `date` (i.e., `20201202` to `2020-12-02`). `lubridate`'s `ymd()` function is used to do this. We do this by doing the following:
+
+```{r day-17-rec}
+ga_rec <- recipe(~., data = ga_tr) |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_date(event_date, features = c("month", "year")) |>
+  prep()
+
+ga_rec
+
+tidy(ga_rec, number = 1)
+```
+
+Let's bake our recipe and take a look at what's happening. You should notice two new variables are created, each prefixed with the original variable name `event_date_`. The data now contains `event_date_month` and `event_date_year`.
+
+```{r day-17-bake-rec}
+bake(ga_rec, new_data = NULL) |>
+  relocate(starts_with("event_"), .after = 1)
+```
+
+Say we don't like the use of the abbreviation for `event_date_month`, we can change this by setting the `abbr` argument to `FALSE` in our recipe.
+
+```{r day-17-rec-no-abbr}
+ga_rec <- recipe(~., data = ga_tr) |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_date(event_date, features = c("month", "year"), abbr = FALSE) |>
+  prep()
+
+ga_rec
+
+bake(ga_rec, new_data = NULL) |>
+  relocate(starts_with("event_"), .after = 1)
+```
+
+Also of note is `step_date()` converted the `event_date_month` column into an ordered factor for us.
+
+```{r day-17-month-factor}
+bake(ga_rec, new_data = NULL) |>
+  pull(event_date_month) |>
+  levels()
+```
+
+`step_date()`'s `feature` argument has many different options. This includes:
+
+* `month`
+* `dow` (day of week)
+* `doy` (day of year)
+* `week`
+* `month`
+* `decimal` (decimal date)
+* `quarter`
+* `semester`
+* `year`
+
+Just for the heck of it, let's create features using all of the available options.
+
+```{r day-17-all-features}
+ga_rec <- recipe(~., data = ga_tr) |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_date(
+    event_date, 
+    features = c("month", "dow", "doy", "week", "decimal", "quarter", "semester", "year")
+  ) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL) |>
+  relocate(starts_with("event_"), .after = 1)
+
+baked_ga
+```
+
+::: {.callout-note}
+Unlike other `step_*()` functions, `step_date` does not remove the original column. If needed you can modify this with the `keep_original_columns` argument.
+:::
+
+```{r day-17-glimpse-baked-data}
+glimpse(baked_ga)
+```
+
+Pretty neat! `step_date()` provides some pretty good utility, especially if you tend to work with a lot of dates needing to be transformed into different representations. We'll see you tomorrow everybody. 
+
