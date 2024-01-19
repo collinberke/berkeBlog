@@ -1831,6 +1831,7 @@ glimpse(baked_ga)
 
 Pretty neat! `step_date()` provides some pretty good utility, especially if you tend to work with a lot of dates needing to be transformed into different representations. We'll see you tomorrow everybody. 
 
+<<<<<<< Updated upstream
 # Day 18 - Create a lagged variable using `step_lag()`
 
 Welcome back, fellow readers! Another day, another `step_*()` function. 
@@ -1931,3 +1932,31 @@ glimpse(baked_ga)
 ```
 
 There you have it, another useful `step_*()` function. `step_lag()` is pretty straightforward, but the `lag` argument makes it easy to create many different lagged variables. See you tomorrow. 
+
+# Day 19 - Use `step_log()` to log transform variables
+
+Let's pivot topics at this point in this post. Another type of preprocessing step `recipes` can perform is data transformations. For today's example, I'll spend some time learning about `step_log()`. `step_log()` creates a recipe step that will log transform data.
+
+Before highlighting the use of this step function, I wanted to revisit this topic from my Stats 101 course. To refresh my memory, I went to find explanations on what a log transformation is, while also looking for views on why you might employ it as a data preprocessing step in machine learning contexts.
+
+What is a log transformation? In simple terms, it's using a mathematical function (i.e., a logarithim) to transform variables from one representation to another. The @statquest YouTube channel has a pretty good [video](https://www.youtube.com/watch?v=VSi0Z04fWj0) explaining what a log transformation does when applied to a variable.
+
+Why use a log transformation? In most of what I've read, a log transformation for a variable is used to transform skewed distributions to a distribution that is more normal. This normality is important because some models (e.g., linear regression) assume variables are normally distributed. In addition, when employed in modeling contexts, its application may lead to more accurate model predictions. Several of the articles stated log transformations are useful when working in domains that tend to have variables with skewed distributions, like financial data (i.e., salaries, housing prices, etc.).
+
+The answers to the above questions are quite general and simplified, so here are a few resources I found that gave me a deeper understanding of the topic:
+
+* [Logs (logarithims), Clearly Explained!!! - @statquest YouTube video](https://www.youtube.com/watch?v=VSi0Z04fWj0)
+* [What is the reason behind taking log transformation of few continuous variables? - Stack Exhchange post](https://datascience.stackexchange.com/questions/40089/what-is-the-reason-behind-taking-log-transformation-of-few-continuous-variables)
+
+To highlight the use of this step function, let's continue using our obfuscated Google Analytics data. Here's the code to get started with this data. 
+
+```{r day-19-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+set.seed(20240117)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
