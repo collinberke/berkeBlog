@@ -178,6 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-15---use-step_ica-for-signal-extraction" id="toc-day-15---use-step_ica-for-signal-extraction" class="nav-link" data-scroll-target="#day-15---use-step_ica-for-signal-extraction">Day 15 - Use <code>step_ica()</code> for signal extraction</a></li>
   <li><a href="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" id="toc-day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" class="nav-link" data-scroll-target="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other">Day 16 - Use <code>step_other()</code> to collapse low occurring categorical levels into <code>other</code></a></li>
   <li><a href="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" id="toc-day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" class="nav-link" data-scroll-target="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date">Day 17 - Convert date data into factor or numeric variables with <code>step_date()</code></a></li>
+  <li><a href="#day-18---create-a-lagged-variable-using-step_lag" id="toc-day-18---create-a-lagged-variable-using-step_lag" class="nav-link" data-scroll-target="#day-18---create-a-lagged-variable-using-step_lag">Day 18 - Create a lagged variable using <code>step_lag()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -5788,6 +5789,325 @@ $ city                    &lt;fct&gt; (not set), (not set), Bangkok, (not set), 
 </div>
 </div>
 <p>Pretty neat! <code>step_date()</code> provides some pretty good utility, especially if you tend to work with a lot of dates needing to be transformed into different representations. We’ll see you tomorrow everybody.</p>
+</section>
+<section id="day-18---create-a-lagged-variable-using-step_lag" class="level1">
+<h1>Day 18 - Create a lagged variable using <code>step_lag()</code></h1>
+<p>Welcome back, fellow readers! Another day, another <code>step_*()</code> function.</p>
+<p>Currently, I tend to work with timeseries data. As such, I need to create lagged variables from time-to-time. <code>recipes</code>’ <code>step_lag()</code> function is handy in these situations. Let’s highlight an example using this function. But first, we need some data.</p>
+<p>Once again, I’m going to use the obfuscated Google Analytics ecommerce data. You can read more about this data in my previous posts. I’m not going to detail it much here, other than importing it, doing a little wrangling to calculate total revenue and total number of items purchased, and creating a training testing split. Here’s all the code to do this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb564"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb564-1"><a href="#cb564-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> </span>
+<span id="cb564-2"><a href="#cb564-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb566"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb566-1"><a href="#cb566-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> data_ga <span class="sc">|&gt;</span></span>
+<span id="cb566-2"><a href="#cb566-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb566-3"><a href="#cb566-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb566-4"><a href="#cb566-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">items_purchased =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb566-5"><a href="#cb566-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(item_revenue_in_usd)</span>
+<span id="cb566-6"><a href="#cb566-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb567"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb567-1"><a href="#cb567-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240118</span>)</span>
+<span id="cb567-2"><a href="#cb567-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb567-3"><a href="#cb567-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb567-4"><a href="#cb567-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s create our recipe, prep, and bake it. The <code>tidy()</code> method doesn’t provide too much useful information about our step, other than what columns lagged columns will be created from, so no use in looking at it here. The important argument is <code>lag</code>. This argument is where we specify how much we want to lag our variable by.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb568"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb568-1"><a href="#cb568-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb568-2"><a href="#cb568-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb568-3"><a href="#cb568-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb568-4"><a href="#cb568-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_lag</span>(items_purchased, revenue, <span class="at">lag =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb568-5"><a href="#cb568-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb568-6"><a href="#cb568-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb568-7"><a href="#cb568-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 5
+   event_date items_purchased revenue lag_1_items_purchased lag_1_revenue
+   &lt;date&gt;               &lt;dbl&gt;   &lt;dbl&gt;                 &lt;dbl&gt;         &lt;dbl&gt;
+ 1 2020-12-28             187    2097                    NA            NA
+ 2 2021-01-27              51     457                   187          2097
+ 3 2020-12-30             317    1606                    51           457
+ 4 2020-12-18             398    6617                   317          1606
+ 5 2021-01-09              68    1362                   398          6617
+ 6 2021-01-24             133    2406                    68          1362
+ 7 2020-12-06             140    2328                   133          2406
+ 8 2020-12-14             527    8498                   140          2328
+ 9 2021-01-04              63     835                   527          8498
+10 2020-12-01             356    6260                    63           835
+# ℹ 38 more rows</code></pre>
+</div>
+</div>
+<p>The lag argument also makes it convenient to create multiple lagged variables in one step. We just need to pass along a vector of positive vectors (e.g., <code>1:3</code>) to the <code>lag</code> argument. This looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb570"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb570-1"><a href="#cb570-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb570-2"><a href="#cb570-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb570-3"><a href="#cb570-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb570-4"><a href="#cb570-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_lag</span>(items_purchased, revenue, <span class="at">lag =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb570-5"><a href="#cb570-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb570-6"><a href="#cb570-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb570-7"><a href="#cb570-7" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 2
+date_ref:  1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 48 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Lagging: items_purchased and revenue | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb584"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb584-1"><a href="#cb584-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb584-2"><a href="#cb584-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(baked_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 48
+Columns: 9
+$ event_date            &lt;date&gt; 2020-12-28, 2021-01-27, 2020-12-30, 2020-12-18, 2021-01-09, 2021-01…
+$ items_purchased       &lt;dbl&gt; 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 156, …
+$ revenue               &lt;dbl&gt; 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, 551,…
+$ lag_1_items_purchased &lt;dbl&gt; NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 1…
+$ lag_2_items_purchased &lt;dbl&gt; NA, NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 6…
+$ lag_3_items_purchased &lt;dbl&gt; NA, NA, NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 2…
+$ lag_1_revenue         &lt;dbl&gt; NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, …
+$ lag_2_revenue         &lt;dbl&gt; NA, NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 12…
+$ lag_3_revenue         &lt;dbl&gt; NA, NA, NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260…</code></pre>
+</div>
+</div>
+<p>Say we want a variable lagged by 1, 3, and 5 values. We can do this by doing the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb586"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb586-1"><a href="#cb586-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb586-2"><a href="#cb586-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb586-3"><a href="#cb586-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb586-4"><a href="#cb586-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_lag</span>(items_purchased, revenue, <span class="at">lag =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb586-5"><a href="#cb586-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb586-6"><a href="#cb586-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb586-7"><a href="#cb586-7" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 2
+date_ref:  1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 48 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Lagging: items_purchased and revenue | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb600"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb600-1"><a href="#cb600-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb600-2"><a href="#cb600-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(baked_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 48
+Columns: 9
+$ event_date            &lt;date&gt; 2020-12-28, 2021-01-27, 2020-12-30, 2020-12-18, 2021-01-09, 2021-01…
+$ items_purchased       &lt;dbl&gt; 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 156, …
+$ revenue               &lt;dbl&gt; 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, 551,…
+$ lag_1_items_purchased &lt;dbl&gt; NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 1…
+$ lag_3_items_purchased &lt;dbl&gt; NA, NA, NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 2…
+$ lag_5_items_purchased &lt;dbl&gt; NA, NA, NA, NA, NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 9…
+$ lag_1_revenue         &lt;dbl&gt; NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, …
+$ lag_3_revenue         &lt;dbl&gt; NA, NA, NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260…
+$ lag_5_revenue         &lt;dbl&gt; NA, NA, NA, NA, NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 8…</code></pre>
+</div>
+</div>
+<p>Not happy with the default <code>NA</code> value. We can change that by passing a value to the <code>default</code> argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb602"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb602-1"><a href="#cb602-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb602-2"><a href="#cb602-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb602-3"><a href="#cb602-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb602-4"><a href="#cb602-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_lag</span>(items_purchased, revenue, <span class="at">lag =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">default =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb602-5"><a href="#cb602-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb602-6"><a href="#cb602-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb602-7"><a href="#cb602-7" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 2
+date_ref:  1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 48 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Lagging: items_purchased and revenue | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb616"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb616-1"><a href="#cb616-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb616-2"><a href="#cb616-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(baked_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 48
+Columns: 9
+$ event_date            &lt;date&gt; 2020-12-28, 2021-01-27, 2020-12-30, 2020-12-18, 2021-01-09, 2021-01…
+$ items_purchased       &lt;dbl&gt; 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 156, …
+$ revenue               &lt;dbl&gt; 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, 551,…
+$ lag_1_items_purchased &lt;dbl&gt; 0, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 15…
+$ lag_2_items_purchased &lt;dbl&gt; 0, 0, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64,…
+$ lag_3_items_purchased &lt;dbl&gt; 0, 0, 0, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, …
+$ lag_1_revenue         &lt;dbl&gt; 0, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, 5…
+$ lag_2_revenue         &lt;dbl&gt; 0, 0, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224…
+$ lag_3_revenue         &lt;dbl&gt; 0, 0, 0, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1…</code></pre>
+</div>
+</div>
+<p>The <code>prefix</code> argument also makes it easy to modify the prefix of the outputted column names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb618"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb618-1"><a href="#cb618-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb618-2"><a href="#cb618-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb618-3"><a href="#cb618-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb618-4"><a href="#cb618-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_lag</span>(items_purchased, revenue, <span class="at">lag =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">prefix =</span> <span class="st">"diff_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb618-5"><a href="#cb618-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb618-6"><a href="#cb618-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb618-7"><a href="#cb618-7" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 2
+date_ref:  1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 48 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variable mutation for: ~ymd(event_date) | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Lagging: items_purchased and revenue | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb632"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb632-1"><a href="#cb632-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb632-2"><a href="#cb632-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(baked_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 48
+Columns: 9
+$ event_date             &lt;date&gt; 2020-12-28, 2021-01-27, 2020-12-30, 2020-12-18, 2021-01-09, 2021-0…
+$ items_purchased        &lt;dbl&gt; 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, 156,…
+$ revenue                &lt;dbl&gt; 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224, 551…
+$ diff_1_items_purchased &lt;dbl&gt; NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, 64, …
+$ diff_2_items_purchased &lt;dbl&gt; NA, NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, 26, …
+$ diff_3_items_purchased &lt;dbl&gt; NA, NA, NA, 187, 51, 317, 398, 68, 133, 140, 527, 63, 356, 96, 40, …
+$ diff_1_revenue         &lt;dbl&gt; NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1224,…
+$ diff_2_revenue         &lt;dbl&gt; NA, NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 6260, 1…
+$ diff_3_revenue         &lt;dbl&gt; NA, NA, NA, 2097, 457, 1606, 6617, 1362, 2406, 2328, 8498, 835, 626…</code></pre>
+</div>
+</div>
+<p>There you have it, another useful <code>step_*()</code> function. <code>step_lag()</code> is pretty straightforward, but the <code>lag</code> argument makes it easy to create many different lagged variables. See you tomorrow.</p>
 
 
 </section>

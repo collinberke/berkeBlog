@@ -1831,3 +1831,103 @@ glimpse(baked_ga)
 
 Pretty neat! `step_date()` provides some pretty good utility, especially if you tend to work with a lot of dates needing to be transformed into different representations. We'll see you tomorrow everybody. 
 
+# Day 18 - Create a lagged variable using `step_lag()`
+
+Welcome back, fellow readers! Another day, another `step_*()` function. 
+
+Currently, I tend to work with timeseries data. As such, I need to create lagged variables from time-to-time. `recipes`' `step_lag()` function is handy in these situations. Let's highlight an example using this function. But first, we need some data.
+
+Once again, I'm going to use the obfuscated Google Analytics ecommerce data. You can read more about this data in my previous posts. I'm not going to detail it much here, other than importing it, doing a little wrangling to calculate total revenue and total number of items purchased, and creating a training testing split. Here's all the code to do this:
+
+```{r day-18-data}
+data_ga <- 
+  read_csv(here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"))
+
+data_ga <- data_ga |>
+  group_by(event_date) |>
+  summarise(
+    items_purchased = sum(quantity),
+    revenue = sum(item_revenue_in_usd)
+  )
+```
+
+```{r day-18-split}
+set.seed(20240118)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+Let's create our recipe, prep, and bake it. The `tidy()` method doesn't provide too much useful information about our step, other than what columns lagged columns will be created from, so no use in looking at it here. The important argument is `lag`. This argument is where we specify how much we want to lag our variable by. 
+
+```{r day-18-recipe}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_lag(items_purchased, revenue, lag = 1) |>
+  prep()
+
+bake(ga_rec, new_data = NULL)
+```
+
+The lag argument also makes it convenient to create multiple lagged variables in one step. We just need to pass along a vector of positive vectors (e.g., `1:3`) to the `lag` argument. This looks like this:
+
+```{r day-18-more-lag}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_lag(items_purchased, revenue, lag = 1:3) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+glimpse(baked_ga)
+```
+
+Say we want a variable lagged by 1, 3, and 5 values. We can do this by doing the following:
+
+```{r day-18-even-more-lag}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_lag(items_purchased, revenue, lag = c(1, 3, 5)) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+glimpse(baked_ga)
+```
+
+Not happy with the default `NA` value. We can change that by passing a value to the `default` argument.
+
+```{r day-18-lag-default}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_lag(items_purchased, revenue, lag = 1:3, default = 0) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+glimpse(baked_ga)
+```
+
+The `prefix` argument also makes it easy to modify the prefix of the outputted column names.
+
+```{r day-18-lag-change-prefix}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_mutate(event_date = ymd(event_date)) |>
+  step_lag(items_purchased, revenue, lag = 1:3, prefix = "diff_") |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+glimpse(baked_ga)
+```
+
+There you have it, another useful `step_*()` function. `step_lag()` is pretty straightforward, but the `lag` argument makes it easy to create many different lagged variables. See you tomorrow. 
