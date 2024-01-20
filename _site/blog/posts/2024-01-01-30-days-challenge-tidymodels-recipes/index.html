@@ -179,6 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" id="toc-day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other" class="nav-link" data-scroll-target="#day-16---use-step_other-to-collapse-low-occurring-categorical-levels-into-other">Day 16 - Use <code>step_other()</code> to collapse low occurring categorical levels into <code>other</code></a></li>
   <li><a href="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" id="toc-day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" class="nav-link" data-scroll-target="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date">Day 17 - Convert date data into factor or numeric variables with <code>step_date()</code></a></li>
   <li><a href="#day-18---create-a-lagged-variable-using-step_lag" id="toc-day-18---create-a-lagged-variable-using-step_lag" class="nav-link" data-scroll-target="#day-18---create-a-lagged-variable-using-step_lag">Day 18 - Create a lagged variable using <code>step_lag()</code></a></li>
+  <li><a href="#day-19---use-step_log-to-log-transform-variables" id="toc-day-19---use-step_log-to-log-transform-variables" class="nav-link" data-scroll-target="#day-19---use-step_log-to-log-transform-variables">Day 19 - Use <code>step_log()</code> to log transform variables</a></li>
   </ul>
 </nav>
     </div>
@@ -6108,6 +6109,518 @@ $ diff_3_revenue         &lt;dbl&gt; NA, NA, NA, 2097, 457, 1606, 6617, 1362, 24
 </div>
 </div>
 <p>There you have it, another useful <code>step_*()</code> function. <code>step_lag()</code> is pretty straightforward, but the <code>lag</code> argument makes it easy to create many different lagged variables. See you tomorrow.</p>
+</section>
+<section id="day-19---use-step_log-to-log-transform-variables" class="level1">
+<h1>Day 19 - Use <code>step_log()</code> to log transform variables</h1>
+<p>Let’s pivot topics at this point in the post. Another type of preprocessing step <code>recipes</code> can perform is data transformations. For today’s example, I’ll spend some time learning about <code>step_log()</code>. <code>step_log()</code> creates a recipe step that will log transform data.</p>
+<p>Before highlighting the use of this step function, I wanted to revisit this topic from my Stats 101 course. To refresh my memory, I went to find explanations on what a log transformation is, while also looking for views on why you might employ it as a data preprocessing step in machine learning contexts.</p>
+<p>What is a log transformation? In simple terms, it’s using a mathematical function (i.e., a logarithim) to transform variables from one representation to another. The <span class="citation" data-cites="statquest">@statquest</span> YouTube channel has a pretty good <a href="https://www.youtube.com/watch?v=VSi0Z04fWj0">video</a> explaining what a log transformation does when applied to a variable.</p>
+<p>Why use a log transformation? In most of what I’ve read, a log transformation is used to address skewed distributions, where it seeks to make the distribution more normal. This normality is important because some models (e.g., linear regression) assume variables are normally distributed. In addition, when employed in various modeling contexts, its application may lead to more accurate model predictions. Several of the articles I read stated log transformations are useful when working in domains that tend to have variables with skewed distributions, like financial data (i.e., salaries, housing prices, etc.). This Stack Exchange <a href="https://datascience.stackexchange.com/questions/40089/what-is-the-reason-behind-taking-log-transformation-of-few-continuous-variables">post</a> provides a pretty good explanation on the use of a log transformation.</p>
+<p>To highlight the use of this step function, let’s continue using our obfuscated Google Analytics data. Here’s the code to get started with this data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb634"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb634-1"><a href="#cb634-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb634-2"><a href="#cb634-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb634-3"><a href="#cb634-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb636"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb636-1"><a href="#cb636-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240117</span>)</span>
+<span id="cb636-2"><a href="#cb636-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb636-3"><a href="#cb636-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb636-4"><a href="#cb636-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span>
+<span id="cb636-5"><a href="#cb636-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb636-6"><a href="#cb636-6" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(ga_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">ga_tr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">7492</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">item_name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">384</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">item_category</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shipping_tier</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">payment_type</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">category</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">country</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">region</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">285</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">city</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">420</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">event_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20203701.15</td>
+<td style="text-align: right;">3996.13</td>
+<td style="text-align: right;">20201201</td>
+<td style="text-align: right;">20201209</td>
+<td style="text-align: right;">20201216</td>
+<td style="text-align: right;">20210106.0</td>
+<td style="text-align: right;">20210130</td>
+<td style="text-align: left;">▇▁▁▁▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">purchase_revenue_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">101.74</td>
+<td style="text-align: right;">119.22</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">124.0</td>
+<td style="text-align: right;">1530</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">transaction_id</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">487314.88</td>
+<td style="text-align: right;">283530.55</td>
+<td style="text-align: right;">546</td>
+<td style="text-align: right;">246420</td>
+<td style="text-align: right;">479575</td>
+<td style="text-align: right;">724942.5</td>
+<td style="text-align: right;">999850</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">price_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.57</td>
+<td style="text-align: right;">18.85</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">24.0</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quantity</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.41</td>
+<td style="text-align: right;">2.13</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">item_revenue_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.26</td>
+<td style="text-align: right;">28.89</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">30.0</td>
+<td style="text-align: right;">704</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Let’s take a quick look at <code>item_revenue_in_usd</code>. Using <code>skim()</code>, this variable ranges from $1 to $704. Now let’s peek at the distribution of the <code>item_revenue_in_usd</code> using base R plotting.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb637"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb637-1"><a href="#cb637-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-19-vis-item-rev-hist-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Indeed, this variable is skewed to the right. A log transformation would be appropriate here. Let’s do this by using <code>step_log()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb638"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb638-1"><a href="#cb638-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb638-2"><a href="#cb638-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb638-3"><a href="#cb638-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(item_revenue_in_usd) <span class="sc">|&gt;</span></span>
+<span id="cb638-4"><a href="#cb638-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb638-5"><a href="#cb638-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb638-6"><a href="#cb638-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 13
+date_ref:   1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Log transformation on: item_revenue_in_usd | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb651"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb651-1"><a href="#cb651-1" aria-hidden="true" tabindex="-1"></a>bake_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we transformed the variable, let’s explore the histogram of our baked variable and see its effect on the distribution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb652"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb652-1"><a href="#cb652-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-19-vis-item-rev-bake-hist-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Not bad. The transformed <code>item_revenue_in_usd</code> now exhibits a more normal distribution.</p>
+<p><code>step_log()</code> also has a few useful arguments. The first useful argument is <code>base</code>. When taking the log, R defaults to using the natural log, or <code>exp(1)</code>. Say we want to log using base 10? This is certainly useful when dealing with money, since money makes more since in multiples of 10 (e.g., $100, $1,000, $10,000, etc.). Lets change the base of our recipe and see what happens.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb653"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb653-1"><a href="#cb653-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb653-2"><a href="#cb653-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb653-3"><a href="#cb653-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(item_revenue_in_usd, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb653-4"><a href="#cb653-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb653-5"><a href="#cb653-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb653-6"><a href="#cb653-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 13
+date_ref:   1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Log transformation on: item_revenue_in_usd | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb666"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb666-1"><a href="#cb666-1" aria-hidden="true" tabindex="-1"></a>bake_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb667"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb667-1"><a href="#cb667-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-19-change-base-bake-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The second useful argument is the <code>offset</code> argument. This argument accepts a value to offset the data prior to logging, which helps us avoid <code>log(0)</code>. Here’s some example code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb668"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb668-1"><a href="#cb668-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb668-2"><a href="#cb668-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb668-3"><a href="#cb668-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(item_revenue_in_usd, <span class="at">offset =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb668-4"><a href="#cb668-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb668-5"><a href="#cb668-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb668-6"><a href="#cb668-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 13
+date_ref:   1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Log transformation on: item_revenue_in_usd | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb681"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb681-1"><a href="#cb681-1" aria-hidden="true" tabindex="-1"></a>bake_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb682"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb682-1"><a href="#cb682-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-19-offset-bake-hist-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The final useful argument is <code>signed</code>, which accepts a boolean. Setting this argument to <code>TRUE</code> will make <code>step_log()</code> calculate the signed log. This is useful in cases where you have negative values, since a standard log transformation can’t be used to transform negative values. I found this <a href="https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/">article</a> useful for getting an intuitive sense of what the signed log is and how it can useful for modeling. Here’s the code to serve as an example, even though we don’t have any negative values in our data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb683"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb683-1"><a href="#cb683-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb683-2"><a href="#cb683-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(event_date, <span class="at">new_role =</span> <span class="st">"date_ref"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb683-3"><a href="#cb683-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(item_revenue_in_usd, <span class="at">signed =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb683-4"><a href="#cb683-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb683-5"><a href="#cb683-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb683-6"><a href="#cb683-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 13
+date_ref:   1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 216 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Signed log transformation on: item_revenue_in_usd | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb696"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb696-1"><a href="#cb696-1" aria-hidden="true" tabindex="-1"></a>bake_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb697"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb697-1"><a href="#cb697-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-19-signed-log-bake-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>That’s it for today. <code>step_log()</code> is a great first step in learning all the transformations <code>recipes</code> can do. I’m looking forward to tomorrow.</p>
 
 
 </section>
