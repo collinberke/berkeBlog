@@ -1931,3 +1931,109 @@ glimpse(baked_ga)
 ```
 
 There you have it, another useful `step_*()` function. `step_lag()` is pretty straightforward, but the `lag` argument makes it easy to create many different lagged variables. See you tomorrow. 
+
+# Day 19 - Use `step_log()` to log transform variables
+
+Let's pivot topics at this point in the post. Another type of preprocessing step `recipes` can perform is data transformations. For today's example, I'll spend some time learning about `step_log()`. `step_log()` creates a recipe step that will log transform data.
+
+Before highlighting the use of this step function, I wanted to revisit this topic from my Stats 101 course. To refresh my memory, I went to find explanations on what a log transformation is, while also looking for views on why you might employ it as a data preprocessing step in machine learning contexts.
+
+What is a log transformation? In simple terms, it's using a mathematical function (i.e., a logarithim) to transform variables from one representation to another. The @statquest YouTube channel has a pretty good [video](https://www.youtube.com/watch?v=VSi0Z04fWj0) explaining what a log transformation does when applied to a variable.
+
+Why use a log transformation? In most of what I've read, a log transformation is used to address skewed distributions, where it seeks to make the distribution more normal. This normality is important because some models (e.g., linear regression) assume variables are normally distributed. In addition, when employed in various modeling contexts, its application may lead to more accurate model predictions. Several of the articles I read stated log transformations are useful when working in domains that tend to have variables with skewed distributions, like financial data (i.e., salaries, housing prices, etc.). This Stack Exchange [post](https://datascience.stackexchange.com/questions/40089/what-is-the-reason-behind-taking-log-transformation-of-few-continuous-variables) provides a pretty good explanation on the use of a log transformation.
+
+To highlight the use of this step function, let's continue using our obfuscated Google Analytics data. Here's the code to get started with this data. 
+
+```{r day-19-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+set.seed(20240117)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+
+skim(ga_tr)
+```
+
+Let's take a quick look at `item_revenue_in_usd`. Using `skim()`, this variable ranges from $1 to $704. Now let's peek at the distribution of the `item_revenue_in_usd` using base R plotting. 
+
+```{r day-19-vis-item-rev-hist}
+hist(ga_tr$item_revenue_in_usd)
+```
+
+Indeed, this variable is skewed to the right. A log transformation would be appropriate here. Let's do this by using `step_log()`.
+
+```{r day-19-rec}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_log(item_revenue_in_usd) |>
+  prep()
+
+ga_rec
+
+bake_ga <- bake(ga_rec, new_data = NULL)
+```
+
+Now that we transformed the variable, let's explore the histogram 
+of our baked variable and see its effect on the distribution.
+
+```{r day-19-vis-item-rev-bake-hist}
+hist(bake_ga$item_revenue_in_usd)
+```
+
+Not bad. The transformed `item_revenue_in_usd` now exhibits a more normal distribution.
+
+`step_log()` also has a few useful arguments. The first useful argument is `base`. When taking the log, R defaults to using the natural log, or `exp(1)`. Say we want to log using base 10? This is certainly useful when dealing with money, since money makes more since in multiples of 10 (e.g., $100, $1,000, $10,000, etc.). Lets change the base of our recipe and see what happens.
+
+```{r day-19-change-base}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_log(item_revenue_in_usd, base = 10) |>
+  prep()
+
+ga_rec
+
+bake_ga <- bake(ga_rec, new_data = NULL)
+```
+
+```{r day-19-change-base-bake}
+hist(bake_ga$item_revenue_in_usd)
+```
+
+The second useful argument is the `offset` argument. This argument accepts a value to offset the data prior to logging, which helps us avoid `log(0)`. Here's some example code:
+
+```{r day-19-offset}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_log(item_revenue_in_usd, offset = 5) |>
+  prep()
+
+ga_rec
+
+bake_ga <- bake(ga_rec, new_data = NULL)
+```
+
+```{r day-19-offset-bake-hist}
+hist(bake_ga$item_revenue_in_usd)
+```
+
+The final useful argument is `signed`, which accepts a boolean. Setting this argument to `TRUE` will make `step_log()` calculate the signed log. This is useful in cases where you have negative values, since a standard log transformation can't be used to transform negative values. I found this [article](https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/) useful for getting an intuitive sense of what the signed log is and how it can useful for modeling. Here's the code to serve as an example, even though we don't have any negative values in our data:
+
+```{r day-19-signed-log}
+ga_rec <- recipe(~., data = ga_tr) |>
+  update_role(event_date, new_role = "date_ref") |>
+  step_log(item_revenue_in_usd, signed = TRUE) |>
+  prep()
+
+ga_rec
+
+bake_ga <- bake(ga_rec, new_data = NULL)
+```
+
+```{r day-19-signed-log-bake}
+hist(bake_ga$item_revenue_in_usd)
+```
+
+That's it for today. `step_log()` is a great first step in learning all the transformations `recipes` can do. I'm looking forward to tomorrow. 
