@@ -2037,3 +2037,64 @@ hist(bake_ga$item_revenue_in_usd)
 ```
 
 That's it for today. `step_log()` is a great first step in learning all the transformations `recipes` can do. I'm looking forward to tomorrow. 
+
+# Day 20 - Use `step_sqrt()` to apply a square root transformation 
+
+Welcome back fellow learners. I had to take a couple days off because my schedule didn't allow me the time to focus on this post. Nevertheless, let's get back to it. 
+
+Today I'm focusing on another transformation function, `step_sqrt()`. `step_sqrt()` applies a square root transformation to variables. This function is similair to `step_log()`--it's just applying a different function to the variable.
+
+The square root transformation is pretty straightforward, but I did some digging to more deeply understand what it is and why it's useful. Here's what I came up with:
+
+* [What could be the reason for using square root transformation on data? - Cross Validated post](https://stats.stackexchange.com/questions/11359/what-could-be-the-reason-for-using-square-root-transformation-on-data)
+
+* [Why is the square root transformation recommended for count data? - Cross Validated post](https://stats.stackexchange.com/questions/46418/why-is-the-square-root-transformation-recommended-for-count-data)
+
+Let's get our data. I'm going to continue using the obfuscated Google Analytics ecommerce data we've been working with. 
+
+```{r day-20-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+set.seed(20240122)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+
+skim(ga_tr)
+```
+
+We do have some count data, `quantity`. This is the number of times a specific item was purchased. Let's take a look at its distribution before we apply our transformation.
+
+```{r day-20-vis-quantity-distribution}
+hist(ga_tr$quantity)
+```
+
+Indeed, this data seems to follow a Poisson Distribution. Let's see if we can transform it to be more normal (Gaussian) with a square root transformation.
+
+```{r day-20-rec}
+ga_rec <- recipe(~., data = ga_tr) |>
+  step_sqrt(quantity) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+
+baked_ga
+```
+
+Now we'll check out the effect of the transformation by looking at a histogram of the baked data's `quantity` variable.
+
+```{r day-20-vis-baked-hist}
+hist(baked_ga$quantity)
+```
+
+We can further explore the effect of this transformation by plotting the un-transformed variable on a scatter plot with the baked variable.
+
+```{r day-20-vis-baked-scatter}
+plot(ga_tr$quantity, baked_ga$quantity)
+```
+
+Eh, looking at the histogram it seems this transformation didn't really help very much. My assumption is this is due to many items only being purchased once. Thus, no transformation would likely be helpful in this case. Nonetheless, `step_sqrt()` is a pretty simple transformation function. You might find it useful when working with your data.
