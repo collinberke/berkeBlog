@@ -180,6 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" id="toc-day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date" class="nav-link" data-scroll-target="#day-17---convert-date-data-into-factor-or-numeric-variables-with-step_date">Day 17 - Convert date data into factor or numeric variables with <code>step_date()</code></a></li>
   <li><a href="#day-18---create-a-lagged-variable-using-step_lag" id="toc-day-18---create-a-lagged-variable-using-step_lag" class="nav-link" data-scroll-target="#day-18---create-a-lagged-variable-using-step_lag">Day 18 - Create a lagged variable using <code>step_lag()</code></a></li>
   <li><a href="#day-19---use-step_log-to-log-transform-variables" id="toc-day-19---use-step_log-to-log-transform-variables" class="nav-link" data-scroll-target="#day-19---use-step_log-to-log-transform-variables">Day 19 - Use <code>step_log()</code> to log transform variables</a></li>
+  <li><a href="#day-20---use-step_sqrt-to-apply-a-square-root-transformation" id="toc-day-20---use-step_sqrt-to-apply-a-square-root-transformation" class="nav-link" data-scroll-target="#day-20---use-step_sqrt-to-apply-a-square-root-transformation">Day 20 - Use <code>step_sqrt()</code> to apply a square root transformation</a></li>
   </ul>
 </nav>
     </div>
@@ -6621,6 +6622,386 @@ date_ref:   1</code></pre>
 </div>
 </div>
 <p>That’s it for today. <code>step_log()</code> is a great first step in learning all the transformations <code>recipes</code> can do. I’m looking forward to tomorrow.</p>
+</section>
+<section id="day-20---use-step_sqrt-to-apply-a-square-root-transformation" class="level1">
+<h1>Day 20 - Use <code>step_sqrt()</code> to apply a square root transformation</h1>
+<p>Welcome back fellow learners. I had to take a couple days off because my schedule didn’t allow me the time to focus on this post. Nevertheless, let’s get back to it.</p>
+<p>Today I’m focusing on another transformation function, <code>step_sqrt()</code>. <code>step_sqrt()</code> applies a square root transformation to variables. This function is similair to <code>step_log()</code>–it’s just applying a different function to the variable.</p>
+<p>The square root transformation is pretty straightforward, but I did some digging to more deeply understand what it is and why it’s useful. Here’s what I came up with:</p>
+<ul>
+<li><p><a href="https://stats.stackexchange.com/questions/11359/what-could-be-the-reason-for-using-square-root-transformation-on-data">What could be the reason for using square root transformation on data? - Cross Validated post</a></p></li>
+<li><p><a href="https://stats.stackexchange.com/questions/46418/why-is-the-square-root-transformation-recommended-for-count-data">Why is the square root transformation recommended for count data? - Cross Validated post</a></p></li>
+</ul>
+<p>Let’s get our data. I’m going to continue using the obfuscated Google Analytics ecommerce data we’ve been working with.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb698"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb698-1"><a href="#cb698-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb698-2"><a href="#cb698-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb698-3"><a href="#cb698-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb700"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb700-1"><a href="#cb700-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240122</span>)</span>
+<span id="cb700-2"><a href="#cb700-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb700-3"><a href="#cb700-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb700-4"><a href="#cb700-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span>
+<span id="cb700-5"><a href="#cb700-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb700-6"><a href="#cb700-6" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(ga_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">ga_tr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">7492</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">item_name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">382</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">item_category</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shipping_tier</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">payment_type</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">category</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">country</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">region</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">282</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">city</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">419</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">event_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20203682.14</td>
+<td style="text-align: right;">3986.72</td>
+<td style="text-align: right;">20201201</td>
+<td style="text-align: right;">20201209</td>
+<td style="text-align: right;">20201216</td>
+<td style="text-align: right;">20210106.0</td>
+<td style="text-align: right;">20210130</td>
+<td style="text-align: left;">▇▁▁▁▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">purchase_revenue_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">101.68</td>
+<td style="text-align: right;">118.25</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">124.0</td>
+<td style="text-align: right;">1530</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">transaction_id</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">487567.11</td>
+<td style="text-align: right;">282529.44</td>
+<td style="text-align: right;">546</td>
+<td style="text-align: right;">250363</td>
+<td style="text-align: right;">477087</td>
+<td style="text-align: right;">723799.8</td>
+<td style="text-align: right;">999850</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">price_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.55</td>
+<td style="text-align: right;">18.80</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">24.0</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quantity</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.45</td>
+<td style="text-align: right;">2.89</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">item_revenue_in_usd</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.40</td>
+<td style="text-align: right;">29.67</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">30.0</td>
+<td style="text-align: right;">704</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We do have some count data, <code>quantity</code>. This is the number of times a specific item was purchased. Let’s take a look at its distribution before we apply our transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb701"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb701-1"><a href="#cb701-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>quantity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-20-vis-quantity-distribution-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Indeed, this data seems to follow a Poisson Distribution. Let’s see if we can transform it to be more normal (Gaussian) with a square root transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb702"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb702-1"><a href="#cb702-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb702-2"><a href="#cb702-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_sqrt</span>(quantity) <span class="sc">|&gt;</span></span>
+<span id="cb702-3"><a href="#cb702-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb702-4"><a href="#cb702-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb702-5"><a href="#cb702-5" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 7492 data points and 221 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Square root transformation on: quantity | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb715"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb715-1"><a href="#cb715-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb715-2"><a href="#cb715-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb715-3"><a href="#cb715-3" aria-hidden="true" tabindex="-1"></a>baked_ga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,492 × 14
+   event_date purchase_revenue_in_usd transaction_id item_name   item_category price_in_usd quantity
+        &lt;dbl&gt;                   &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+ 1   20201211                      60         411613 Supernatur… Bags                    46     1   
+ 2   20210126                      68         315802 Google Sea… Campus Colle…            7     1   
+ 3   20201217                      75         940161 Google Inc… Bags                    75     1   
+ 4   20210114                      83          22807 Google Pen… Office                   1     1.41
+ 5   20201215                      95         892183 Google Fel… Clearance               16     1.41
+ 6   20210102                     183         548270 Google Wom… Apparel                 50     1   
+ 7   20201217                      16         199350 Google Per… Lifestyle               16     1   
+ 8   20201228                      44         302288 Google Lap… New                      8     1   
+ 9   20210124                     104          19596 Google Key… New                      6     1.41
+10   20201212                      74         539684 Google Bou… Clearance               14     1   
+# ℹ 7,482 more rows
+# ℹ 7 more variables: item_revenue_in_usd &lt;dbl&gt;, shipping_tier &lt;fct&gt;, payment_type &lt;fct&gt;,
+#   category &lt;fct&gt;, country &lt;fct&gt;, region &lt;fct&gt;, city &lt;fct&gt;</code></pre>
+</div>
+</div>
+<p>Now we’ll check out the effect of the transformation by looking at a histogram of the baked data’s <code>quantity</code> variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb717"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb717-1"><a href="#cb717-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(baked_ga<span class="sc">$</span>quantity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-20-vis-baked-hist-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can further explore the effect of this transformation by plotting the un-transformed variable on a scatter plot with the baked variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb718"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb718-1"><a href="#cb718-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ga_tr<span class="sc">$</span>quantity, baked_ga<span class="sc">$</span>quantity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-20-vis-baked-scatter-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Eh, looking at the histogram it seems this transformation didn’t really help very much. My assumption is this is due to many items only being purchased once. Thus, no transformation would likely be helpful in this case. Nonetheless, <code>step_sqrt()</code> is a pretty simple transformation function. You might find it useful when working with your data.</p>
 
 
 </section>
