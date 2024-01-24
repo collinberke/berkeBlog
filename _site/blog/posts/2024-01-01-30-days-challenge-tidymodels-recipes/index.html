@@ -181,6 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-18---create-a-lagged-variable-using-step_lag" id="toc-day-18---create-a-lagged-variable-using-step_lag" class="nav-link" data-scroll-target="#day-18---create-a-lagged-variable-using-step_lag">Day 18 - Create a lagged variable using <code>step_lag()</code></a></li>
   <li><a href="#day-19---use-step_log-to-log-transform-variables" id="toc-day-19---use-step_log-to-log-transform-variables" class="nav-link" data-scroll-target="#day-19---use-step_log-to-log-transform-variables">Day 19 - Use <code>step_log()</code> to log transform variables</a></li>
   <li><a href="#day-20---use-step_sqrt-to-apply-a-square-root-transformation" id="toc-day-20---use-step_sqrt-to-apply-a-square-root-transformation" class="nav-link" data-scroll-target="#day-20---use-step_sqrt-to-apply-a-square-root-transformation">Day 20 - Use <code>step_sqrt()</code> to apply a square root transformation</a></li>
+  <li><a href="#day-21---apply-the-box-cox-transformation-using-step_boxcox" id="toc-day-21---apply-the-box-cox-transformation-using-step_boxcox" class="nav-link" data-scroll-target="#day-21---apply-the-box-cox-transformation-using-step_boxcox">Day 21 - Apply the Box-Cox transformation using <code>step_BoxCox()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -7002,6 +7003,138 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </div>
 </div>
 <p>Eh, looking at the histogram it seems this transformation didn’t really help very much. My assumption is this is due to many items only being purchased once. Thus, no transformation would likely be helpful in this case. Nonetheless, <code>step_sqrt()</code> is a pretty simple transformation function. You might find it useful when working with your data.</p>
+</section>
+<section id="day-21---apply-the-box-cox-transformation-using-step_boxcox" class="level1">
+<h1>Day 21 - Apply the Box-Cox transformation using <code>step_BoxCox()</code></h1>
+<p>Here we are, another day of transformations. To get us started, I turned to <a href="https://chat.openai.com/">ChatGPT</a> for a joke about data transformations.</p>
+<p>Hey ChatGPT, tell me a joke about data transformations (prompt).</p>
+<blockquote class="blockquote">
+<p>Why do data transformations never get invited to parties?</p>
+<p>Because they always skew the conversation and standard deviations can be quite awkward!</p>
+</blockquote>
+<p>Not bad … Okay, let’s talk about <code>step_BoxCox()</code>. This function applies a <a href="https://en.wikipedia.org/wiki/Power_transform#Box%E2%80%93Cox_transformation">Box Cox Transformation</a> to our variables. I haven’t used this transformation in some time, so I scoured the internet to get back up to speed. I found these sources helpful in reminding me what this transformation is and how it can be useful:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=zYeTyEWt7Cw">Transforming the response(Y) in regression: Box Cox transformation (7 mins)</a> from the <span class="citation" data-cites="PhilChanstats">@PhilChanstats</span> YouTube channel</li>
+<li><a href="https://www.youtube.com/watch?v=2gVA3TudAXI&amp;t=4s">Box Cox transformation formula in regression analysis</a> from the <span class="citation" data-cites="PhilChanstats">@PhilChanstats</span> YouTube channel</li>
+<li><a href="https://www.youtube.com/watch?v=vGOpEpjz2Ks">Box-Cox Transformation + R Demo</a> from the <span class="citation" data-cites="mathetal">@mathetal</span> YouTube channel</li>
+</ul>
+<p>Though the following is a simplified explanation, many of these sources mention the Box Cox transformation attempts to make our distribution more normal. It does this by focusing on the tails of the distribution. Box Cox can be applied in situations where variance is not equal (i.e., heteroscedasticity). This transformation also allows us to better meet the assumptions of our models, and its application can result in a better predictive model. Lastly, many of these sources suggest this transformation is applied to the outcome variable of our model.</p>
+<p>Let’s go back to our Google Analytics obfuscated ecommerce data for today’s examples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb719"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb719-1"><a href="#cb719-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb719-2"><a href="#cb719-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb719-3"><a href="#cb719-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb721"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb721-1"><a href="#cb721-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> data_ga <span class="sc">|&gt;</span></span>
+<span id="cb721-2"><a href="#cb721-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb721-3"><a href="#cb721-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb721-4"><a href="#cb721-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">items_purchased =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb721-5"><a href="#cb721-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(item_revenue_in_usd)</span>
+<span id="cb721-6"><a href="#cb721-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb721-7"><a href="#cb721-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb721-8"><a href="#cb721-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240122</span>)</span>
+<span id="cb721-9"><a href="#cb721-9" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb721-10"><a href="#cb721-10" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb721-11"><a href="#cb721-11" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since we can use the Box Cox transformation to rescale a variable to be more normal, let’s see if the <code>revenue</code> variable will be a good candidate. You’ll notice the application of the Box Cox transformation is pretty straightforward (like most of <code>recipes</code>’ transformation functions) with <code>step_BoxCox()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb722"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb722-1"><a href="#cb722-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>revenue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-21-vis-hist-revenue-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Indeed, this varible exhibits a slight right skew. Let’s use the <code>step_BoxCox()</code> function here to perform the transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb723"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb723-1"><a href="#cb723-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(revenue <span class="sc">~</span> ., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb723-2"><a href="#cb723-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_BoxCox</span>(revenue) <span class="sc">|&gt;</span></span>
+<span id="cb723-3"><a href="#cb723-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb723-4"><a href="#cb723-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb723-5"><a href="#cb723-5" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:   1
+predictor: 2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 48 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Box-Cox transformation on: revenue | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb736"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb736-1"><a href="#cb736-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb736-2"><a href="#cb736-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb736-3"><a href="#cb736-3" aria-hidden="true" tabindex="-1"></a>baked_ga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 3
+   event_date items_purchased revenue
+        &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;
+ 1   20210101              97    14.2
+ 2   20210126              61    15.2
+ 3   20201225              40    12.2
+ 4   20210125             199    19.4
+ 5   20201211             617    25.3
+ 6   20210115             119    17.2
+ 7   20210120             400    22.8
+ 8   20201201             356    22.5
+ 9   20201205             333    22.6
+10   20201224              69    15.0
+# ℹ 38 more rows</code></pre>
+</div>
+</div>
+<p>Not too bad. The distribution has been rescaled to resemble a slightly more normal distribution. The following histogram shows the effect of this transformation on the distribution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb738"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb738-1"><a href="#cb738-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(baked_ga<span class="sc">$</span>revenue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-21-vis-hist-transform-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>If for some reason you wanted to inspect the lambda value used by the transformation, you can inspect it by tidying the recipe. The outputted table shows lambda in the <code>value</code> column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb739"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb739-1"><a href="#cb739-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  terms   value id          
+  &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;       
+1 revenue 0.190 BoxCox_GMKqI</code></pre>
+</div>
+</div>
+<p><code>step_BoxCox()</code> is pretty simple, but useful. You might give it a try if you have some data of positive values exihibiting skewness. Until tomorrow, keep having fun with <code>recipes</code>.</p>
 
 
 </section>
