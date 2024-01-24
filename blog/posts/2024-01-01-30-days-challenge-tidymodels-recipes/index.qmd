@@ -2098,3 +2098,75 @@ plot(ga_tr$quantity, baked_ga$quantity)
 ```
 
 Eh, looking at the histogram it seems this transformation didn't really help very much. My assumption is this is due to many items only being purchased once. Thus, no transformation would likely be helpful in this case. Nonetheless, `step_sqrt()` is a pretty simple transformation function. You might find it useful when working with your data.
+
+# Day 21 - Apply the Box-Cox transformation using `step_BoxCox()` 
+
+Here we are, another day of transformations. To get us started, I turned to [ChatGPT](https://chat.openai.com/) for a joke about data transformations. 
+
+Hey ChatGPT, tell me a joke about data transformations (prompt).
+
+> Why do data transformations never get invited to parties?
+>
+> Because they always skew the conversation and standard deviations can be quite awkward!
+
+Not bad ... Okay, let's talk about `step_BoxCox()`. This function applies a [Box Cox Transformation](https://en.wikipedia.org/wiki/Power_transform#Box%E2%80%93Cox_transformation) to our variables. I haven't used this transformation in some time, so I scoured the internet to get back up to speed. I found these sources helpful in reminding me what this transformation is and how it can be useful:
+
+* [Transforming the response(Y) in regression: Box Cox transformation (7 mins)](https://www.youtube.com/watch?v=zYeTyEWt7Cw) from the @PhilChanstats YouTube channel
+* [Box Cox transformation formula in regression analysis ](https://www.youtube.com/watch?v=2gVA3TudAXI&t=4s) from the @PhilChanstats YouTube channel
+* [Box-Cox Transformation + R Demo](https://www.youtube.com/watch?v=vGOpEpjz2Ks) from the @mathetal YouTube channel
+
+Though the following is a simplified explanation, many of these sources mention the Box Cox transformation attempts to make our distribution more normal. It does this by focusing on the tails of the distribution. Box Cox can be applied in situations where variance is not equal (i.e., heteroscedasticity). This transformation also allows us to better meet the assumptions of our models, and its application can result in a better predictive model. Lastly, many of these sources suggest this transformation is applied to the outcome variable of our model.
+
+Let's go back to our Google Analytics obfuscated ecommerce data for today's examples. 
+
+```{r day-21-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+data_ga <- data_ga |>
+  group_by(event_date) |>
+  summarise(
+    items_purchased = sum(quantity),
+    revenue = sum(item_revenue_in_usd)
+  )
+
+set.seed(20240122)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+Since we can use the Box Cox transformation to rescale a variable to be more normal, let's see if the `revenue` variable will be a good candidate. You'll notice the application of the Box Cox transformation is pretty straightforward (like most of `recipes`' transformation functions) with `step_BoxCox()`. 
+
+```{r day-21-vis-hist-revenue}
+hist(ga_tr$revenue)
+```
+
+Indeed, this varible exhibits a slight right skew. Let's use the `step_BoxCox()` function here to perform the transformation.
+
+```{r day-21-recipe}
+ga_rec <- recipe(revenue ~ ., data = ga_tr) |>
+  step_BoxCox(revenue) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+
+baked_ga
+```
+
+Not too bad. The distribution has been rescaled to resemble a slightly more normal distribution. The following histogram shows the effect of this transformation on the distribution. 
+
+```{r day-21-vis-hist-transform}
+hist(baked_ga$revenue)
+```
+
+If for some reason you wanted to inspect the lambda value used by the transformation, you can inspect it by tidying the recipe. The outputted table shows lambda in the `value` column.
+
+```{r day-21-tidy-recipe}
+tidy(ga_rec, number = 1)
+```
+
+`step_BoxCox()` is pretty simple, but useful. You might give it a try if you have some data of positive values exihibiting skewness. Until tomorrow, keep having fun with `recipes`.
