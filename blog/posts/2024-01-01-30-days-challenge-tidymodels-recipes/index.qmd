@@ -2170,3 +2170,65 @@ tidy(ga_rec, number = 1)
 ```
 
 `step_BoxCox()` is pretty simple, but useful. You might give it a try if you have some data of positive values exihibiting skewness. Until tomorrow, keep having fun with `recipes`.
+
+# Day 22 - Apply an inverse transformation using `step_inverse()`
+
+I'm keeping things simple today; `step_inverse()` is my focus. This step function will inverse transform our data. Just like the other transformation functions, `recipes` makes it pretty easy to perform.
+
+Let's continue using our Google Analytics ecommerce data for today's example.
+
+```{r day-22-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+data_ga <- data_ga |>
+  group_by(event_date) |>
+  summarise(
+    items_purchased = sum(quantity),
+    revenue = sum(item_revenue_in_usd)
+  )
+
+set.seed(20240122)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+Just as a quick reminder, let's take a look at the histogram of `items_purchased`.
+
+```{r day-22-vis-items-purchased-hist}
+hist(ga_tr$items_purchased)
+```
+
+To apply an inverse transformation to our variable, we do the following in our recipe.
+
+```{r day-22-rec}
+ga_rec <- recipe(~., data = ga_te) |>
+  step_inverse(items_purchased) |>
+  prep()
+
+ga_rec
+```
+
+Now bake.
+
+```{r day-22-baked-rec}
+ga_baked <- bake(ga_rec, new_data = NULL)
+
+ga_baked
+```
+
+Here's the effect of the transformation on our variable in two plots.
+
+```{r day-22-vis-effect-trans}
+hist(ga_baked$items_purchased)
+
+plot(ga_te$items_purchased, ga_baked$items_purchased)
+```
+
+The inverse did a pretty good job of making this distribution more normal. 
+
+Like I said, keeping things simple today with a straight forward `step_*()` function. `recipes` makes it pretty easy to perform the inverse transformation with the `step_inverse()` function. 
+
+

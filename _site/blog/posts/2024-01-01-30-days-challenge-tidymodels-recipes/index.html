@@ -182,6 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-19---use-step_log-to-log-transform-variables" id="toc-day-19---use-step_log-to-log-transform-variables" class="nav-link" data-scroll-target="#day-19---use-step_log-to-log-transform-variables">Day 19 - Use <code>step_log()</code> to log transform variables</a></li>
   <li><a href="#day-20---use-step_sqrt-to-apply-a-square-root-transformation" id="toc-day-20---use-step_sqrt-to-apply-a-square-root-transformation" class="nav-link" data-scroll-target="#day-20---use-step_sqrt-to-apply-a-square-root-transformation">Day 20 - Use <code>step_sqrt()</code> to apply a square root transformation</a></li>
   <li><a href="#day-21---apply-the-box-cox-transformation-using-step_boxcox" id="toc-day-21---apply-the-box-cox-transformation-using-step_boxcox" class="nav-link" data-scroll-target="#day-21---apply-the-box-cox-transformation-using-step_boxcox">Day 21 - Apply the Box-Cox transformation using <code>step_BoxCox()</code></a></li>
+  <li><a href="#day-22---apply-an-inverse-transformation-using-step_inverse" id="toc-day-22---apply-an-inverse-transformation-using-step_inverse" class="nav-link" data-scroll-target="#day-22---apply-an-inverse-transformation-using-step_inverse">Day 22 - Apply an inverse transformation using <code>step_inverse()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -7135,6 +7136,125 @@ predictor: 2</code></pre>
 </div>
 </div>
 <p><code>step_BoxCox()</code> is pretty simple, but useful. You might give it a try if you have some data of positive values exihibiting skewness. Until tomorrow, keep having fun with <code>recipes</code>.</p>
+</section>
+<section id="day-22---apply-an-inverse-transformation-using-step_inverse" class="level1">
+<h1>Day 22 - Apply an inverse transformation using <code>step_inverse()</code></h1>
+<p>I’m keeping things simple today; <code>step_inverse()</code> is my focus. This step function will inverse transform our data. Just like the other transformation functions, <code>recipes</code> makes it pretty easy to perform.</p>
+<p>Let’s continue using our Google Analytics ecommerce data for today’s example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb741"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb741-1"><a href="#cb741-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb741-2"><a href="#cb741-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb741-3"><a href="#cb741-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb743"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb743-1"><a href="#cb743-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> data_ga <span class="sc">|&gt;</span></span>
+<span id="cb743-2"><a href="#cb743-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb743-3"><a href="#cb743-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb743-4"><a href="#cb743-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">items_purchased =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb743-5"><a href="#cb743-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(item_revenue_in_usd)</span>
+<span id="cb743-6"><a href="#cb743-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb743-7"><a href="#cb743-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb743-8"><a href="#cb743-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240122</span>)</span>
+<span id="cb743-9"><a href="#cb743-9" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb743-10"><a href="#cb743-10" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb743-11"><a href="#cb743-11" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Just as a quick reminder, let’s take a look at the histogram of <code>items_purchased</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb744"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb744-1"><a href="#cb744-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>items_purchased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-22-vis-items-purchased-hist-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To apply an inverse transformation to our variable, we do the following in our recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb745"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb745-1"><a href="#cb745-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_te) <span class="sc">|&gt;</span></span>
+<span id="cb745-2"><a href="#cb745-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_inverse</span>(items_purchased) <span class="sc">|&gt;</span></span>
+<span id="cb745-3"><a href="#cb745-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb745-4"><a href="#cb745-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb745-5"><a href="#cb745-5" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 13 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Inverse transformation on: items_purchased | Trained</code></pre>
+</div>
+</div>
+<p>Now bake.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb758"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb758-1"><a href="#cb758-1" aria-hidden="true" tabindex="-1"></a>ga_baked <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb758-2"><a href="#cb758-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb758-3"><a href="#cb758-3" aria-hidden="true" tabindex="-1"></a>ga_baked</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 3
+   event_date items_purchased revenue
+        &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;
+ 1   20201202         0.00366    5202
+ 2   20201203         0.00319    4313
+ 3   20201207         0.00215    8466
+ 4   20201208         0.00161    8691
+ 5   20201214         0.00190    8498
+ 6   20201219         0.00714    2778
+ 7   20201222         0.00474    3226
+ 8   20201230         0.00315    1606
+ 9   20201231         0.0106     2595
+10   20210102         0.00990    1025
+11   20210113         0.00990    1859
+12   20210116         0.0139     1462
+13   20210123         0.00524    2744</code></pre>
+</div>
+</div>
+<p>Here’s the effect of the transformation on our variable in two plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb760"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb760-1"><a href="#cb760-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_baked<span class="sc">$</span>items_purchased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-22-vis-effect-trans-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb761"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb761-1"><a href="#cb761-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ga_te<span class="sc">$</span>items_purchased, ga_baked<span class="sc">$</span>items_purchased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-22-vis-effect-trans-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The inverse did a pretty good job of making this distribution more normal.</p>
+<p>Like I said, keeping things simple today with a straight forward <code>step_*()</code> function. <code>recipes</code> makes it pretty easy to perform the inverse transformation with the <code>step_inverse()</code> function.</p>
 
 
 </section>
