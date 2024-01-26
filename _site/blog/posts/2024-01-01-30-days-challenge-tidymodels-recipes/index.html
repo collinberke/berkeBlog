@@ -183,6 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-20---use-step_sqrt-to-apply-a-square-root-transformation" id="toc-day-20---use-step_sqrt-to-apply-a-square-root-transformation" class="nav-link" data-scroll-target="#day-20---use-step_sqrt-to-apply-a-square-root-transformation">Day 20 - Use <code>step_sqrt()</code> to apply a square root transformation</a></li>
   <li><a href="#day-21---apply-the-box-cox-transformation-using-step_boxcox" id="toc-day-21---apply-the-box-cox-transformation-using-step_boxcox" class="nav-link" data-scroll-target="#day-21---apply-the-box-cox-transformation-using-step_boxcox">Day 21 - Apply the Box-Cox transformation using <code>step_BoxCox()</code></a></li>
   <li><a href="#day-22---apply-an-inverse-transformation-using-step_inverse" id="toc-day-22---apply-an-inverse-transformation-using-step_inverse" class="nav-link" data-scroll-target="#day-22---apply-an-inverse-transformation-using-step_inverse">Day 22 - Apply an inverse transformation using <code>step_inverse()</code></a></li>
+  <li><a href="#day-23---use-extension-packages-to-get-even-more-steps" id="toc-day-23---use-extension-packages-to-get-even-more-steps" class="nav-link" data-scroll-target="#day-23---use-extension-packages-to-get-even-more-steps">Day 23 - Use extension packages to get even more steps</a></li>
   </ul>
 </nav>
     </div>
@@ -7255,6 +7256,39 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </div>
 <p>The inverse did a pretty good job of making this distribution more normal.</p>
 <p>Like I said, keeping things simple today with a straight forward <code>step_*()</code> function. <code>recipes</code> makes it pretty easy to perform the inverse transformation with the <code>step_inverse()</code> function.</p>
+</section>
+<section id="day-23---use-extension-packages-to-get-even-more-steps" class="level1">
+<h1>Day 23 - Use extension packages to get even more steps</h1>
+<p>Recently, I’ve felt these posts have become a little stale and templated. So today, I’m switching it up a bit. I’m highlighting <code>recipes</code> extension packages. I’m also using this post for a bit of inspiration; I’m exploring other <code>step_*</code> functions to highlight. As such, I most likely won’t describe specific examples from each package in today’s post (there’s too many to cover). However, I’m aiming to list them here and highlight some packages that would be useful for the work I do.</p>
+<p>Several packages are available that provide additional <code>step_*()</code> functions, which are outside the core functionality of the <code>recipes</code> package. At the time of this writing, these include but are not limited to:</p>
+<ul>
+<li><a href="https://mattheaphy.github.io/actxps/"><code>actxps</code></a></li>
+<li><a href="https://petersonr.github.io/bestNormalize/"><code>bestNormalize</code></a></li>
+<li><a href="https://github.com/smaakage85/customsteps"><code>customsteps</code></a></li>
+<li><a href="https://embed.tidymodels.org/"><code>embed</code></a></li>
+<li><a href="https://emilhvitfeldt.github.io/extrasteps/"><code>extrasteps</code></a></li>
+<li><a href="https://github.com/rstudio/tfhub"><code>tfhub</code></a></li>
+<li><a href="https://docs.healthcare.ai/"><code>healthcareai</code></a></li>
+<li><a href="https://www.spsanderson.com/healthyR.ai/"><code>healthyR.ai</code></a></li>
+<li><a href="https://www.spsanderson.com/healthyR.ts/"><code>healthyR.ts</code></a></li>
+<li><a href="https://github.com/jkennel/hydrorecipes"><code>hydrorecipes</code></a></li>
+<li><a href="https://brian-j-smith.github.io/MachineShop/"><code>MachineShop</code></a></li>
+<li><a href="https://brian-j-smith.github.io/MachineShop/"><code>measure</code></a></li>
+<li><a href="https://ashbythorpe.github.io/nestedmodels/"><code>nestedmodels</code></a></li>
+<li><a href="https://petersonr.github.io/sparseR/"><code>sparseR</code></a></li>
+<li><a href="https://textrecipes.tidymodels.org/"><code>textrecipes</code></a></li>
+<li><a href="https://themis.tidymodels.org/"><code>themis</code></a></li>
+<li><a href="https://business-science.github.io/timetk/"><code>timetk</code></a></li>
+</ul>
+<p>The <code>tidymodels</code> site provides a <a href="https://www.tidymodels.org/find/recipes/">table</a> of a good majority of <code>step_*()</code> functions made available via these extension packages. Shout out to <span class="citation" data-cites="jonthegeek">@jonthegeek</span> from the R4DS Online Learning Community for pointing me to this table, and much praise to <code>@Emil Hvitfeldt</code> for pointing me in the direction of additional <code>recipes</code> extension packages I wasn’t aware. Keep in mind, not all of these extension packages are made available on <a href="https://cran.r-project.org/">CRAN</a>.</p>
+<p>Taking a moment to read the descriptions of each extension package, I found <code>textrecipes</code>, <code>themis</code>, and <code>timetk</code> to be the most applicable to my work. Here’s a brief description of what each does. I also included some functions that could be interesting to explore in future posts. Note, some of these packages are meant to be applied in a specific domain, so their purpose may not solely be to be an extension of <code>recipes</code> (e.g., <code>timetk</code>).</p>
+<ul>
+<li><p>The <code>textrecipes</code> package provides extra <code>step_*()</code> functions to preprocess text data. Looking through the package’s <a href="https://textrecipes.tidymodels.org/reference/index.html"><code>reference</code></a> section, the <code>step_tokenize()</code> family of functions look useful. I also find the token modification (e.g., <code>step_stem()</code> and <code>step_stopwords()</code>) and text cleaning functions (e.g.&nbsp;<code>step_clean_levels()</code>) to be intriguing and worth further exploration.</p></li>
+<li><p>The <code>themis</code> package provides additional <code>step_*()</code> functions to assist in the preprocessing of unbalanced data. Specifically, this package provides functions to apply over-sampling or under-sampling methods to unbalance the data used for modeling. There’s several functions in here that seem to be useful when dealing with unbalanced data. I highly suggest checking out its <a href="https://themis.tidymodels.org/reference/index.html">reference page</a> to get an idea of what all is available.</p></li>
+<li><p>The <code>timetk</code> package does more than extend <code>recipes</code>. It’s main focus is to assist in the analysis of timeseries data. The package contains some similar functions we’ve highlighted before (e.g., <code>step_holiday_signature()</code> and <code>step_box_cox()</code>). However, there’s some additional functions of interest. <code>step_ts_pad()</code> seems useful in cases where you need to add rows to fill in gaps. <code>step_ts_clean()</code> helps to clean outliers and missing data for timeseries analysis. <code>step_diff()</code> also looks helpful if you need to create a differenced predictor. If you’re working with timeseries, you might want to explore this package some more.</p></li>
+</ul>
+<p>Indeed, the <code>tidymodels</code> ecosystem is quite vast. This is especially true in the area of preprocessing steps achieved by extension packages for the <code>recipes</code> package.</p>
+<p>I wanted to shake it up a little bit. Today’s post was a little different, but in a good, refreshing way. See you tomorrow.</p>
 
 
 </section>

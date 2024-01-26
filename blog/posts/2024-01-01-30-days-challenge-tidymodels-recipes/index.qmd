@@ -2231,4 +2231,40 @@ The inverse did a pretty good job of making this distribution more normal.
 
 Like I said, keeping things simple today with a straight forward `step_*()` function. `recipes` makes it pretty easy to perform the inverse transformation with the `step_inverse()` function. 
 
+# Day 23 - Use extension packages to get even more steps
 
+Recently, I've felt these posts have become a little stale and templated. So today, I'm switching it up a bit. I'm highlighting `recipes` extension packages. I'm also using this post for a bit of inspiration; I'm exploring other `step_*` functions to highlight. As such, I most likely won't describe specific examples from each package in today's post (there's too many to cover). However, I'm aiming to list them here and highlight some packages that would be useful for the work I do.
+
+Several packages are available that provide additional `step_*()` functions, which are outside the core functionality of the `recipes` package. At the time of this writing, these include but are not limited to:
+
+* [`actxps`](https://mattheaphy.github.io/actxps/)
+* [`bestNormalize`](https://petersonr.github.io/bestNormalize/)
+* [`customsteps`](https://github.com/smaakage85/customsteps)
+* [`embed`](https://embed.tidymodels.org/)
+* [`extrasteps`](https://emilhvitfeldt.github.io/extrasteps/)
+* [`tfhub`](https://github.com/rstudio/tfhub)
+* [`healthcareai`](https://docs.healthcare.ai/)
+* [`healthyR.ai`](https://www.spsanderson.com/healthyR.ai/)
+* [`healthyR.ts`](https://www.spsanderson.com/healthyR.ts/)
+* [`hydrorecipes`](https://github.com/jkennel/hydrorecipes)
+* [`MachineShop`](https://brian-j-smith.github.io/MachineShop/)
+* [`measure`](https://brian-j-smith.github.io/MachineShop/)
+* [`nestedmodels`](https://ashbythorpe.github.io/nestedmodels/)
+* [`sparseR`](https://petersonr.github.io/sparseR/)
+* [`textrecipes`](https://textrecipes.tidymodels.org/)
+* [`themis`](https://themis.tidymodels.org/)
+* [`timetk`](https://business-science.github.io/timetk/)
+
+The `tidymodels` site provides a [table](https://www.tidymodels.org/find/recipes/) of a good majority of `step_*()` functions made available via these extension packages. Shout out to @jonthegeek from the R4DS Online Learning Community for pointing me to this table, and much praise to `@Emil Hvitfeldt` for pointing me in the direction of additional `recipes` extension packages I wasn't aware. Keep in mind, not all of these extension packages are made available on [CRAN](https://cran.r-project.org/).
+
+Taking a moment to read the descriptions of each extension package, I found `textrecipes`, `themis`, and `timetk` to be the most applicable to my work. Here's a brief description of what each does. I also included some functions that could be interesting to explore in future posts. Note, some of these packages are meant to be applied in a specific domain, so their purpose may not solely be to be an extension of `recipes` (e.g., `timetk`).
+
+* The `textrecipes` package provides extra `step_*()` functions to preprocess text data. Looking through the package's [`reference`](https://textrecipes.tidymodels.org/reference/index.html) section, the `step_tokenize()` family of functions look useful. I also find the token modification (e.g., `step_stem()` and `step_stopwords()`) and text cleaning functions (e.g. `step_clean_levels()`) to be intriguing and worth further exploration.
+
+* The `themis` package provides additional `step_*()` functions to assist in the preprocessing of unbalanced data. Specifically, this package provides functions to apply over-sampling or under-sampling methods to unbalance the data used for modeling. There's several functions in here that seem to be useful when dealing with unbalanced data. I highly suggest checking out its [reference page](https://themis.tidymodels.org/reference/index.html) to get an idea of what all is available. 
+
+* The `timetk` package does more than extend `recipes`. It's main focus is to assist in the analysis of timeseries data. The package contains some similar functions we've highlighted before (e.g., `step_holiday_signature()` and `step_box_cox()`). However, there's some additional functions of interest. `step_ts_pad()` seems useful in cases where you need to add rows to fill in gaps. `step_ts_clean()` helps to clean outliers and missing data for timeseries analysis. `step_diff()` also looks helpful if you need to create a differenced predictor. If you're working with timeseries, you might want to explore this package some more.
+
+Indeed, the `tidymodels` ecosystem is quite vast. This is especially true in the area of preprocessing steps achieved by extension packages for the `recipes` package.
+
+I wanted to shake it up a little bit. Today's post was a little different, but in a good, refreshing way. See you tomorrow.
