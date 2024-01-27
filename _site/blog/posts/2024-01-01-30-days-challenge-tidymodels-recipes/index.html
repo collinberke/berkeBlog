@@ -184,6 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-21---apply-the-box-cox-transformation-using-step_boxcox" id="toc-day-21---apply-the-box-cox-transformation-using-step_boxcox" class="nav-link" data-scroll-target="#day-21---apply-the-box-cox-transformation-using-step_boxcox">Day 21 - Apply the Box-Cox transformation using <code>step_BoxCox()</code></a></li>
   <li><a href="#day-22---apply-an-inverse-transformation-using-step_inverse" id="toc-day-22---apply-an-inverse-transformation-using-step_inverse" class="nav-link" data-scroll-target="#day-22---apply-an-inverse-transformation-using-step_inverse">Day 22 - Apply an inverse transformation using <code>step_inverse()</code></a></li>
   <li><a href="#day-23---use-extension-packages-to-get-even-more-steps" id="toc-day-23---use-extension-packages-to-get-even-more-steps" class="nav-link" data-scroll-target="#day-23---use-extension-packages-to-get-even-more-steps">Day 23 - Use extension packages to get even more steps</a></li>
+  <li><a href="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" id="toc-day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" class="nav-link" data-scroll-target="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable">Day 24 - Use <code>step_tokenize()</code> from <code>textrecipes</code> to convert a character predictor into a <code>token</code> variable</a></li>
   </ul>
 </nav>
     </div>
@@ -246,7 +247,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="my-spin-on-this" class="level1">
@@ -7289,6 +7291,227 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </ul>
 <p>Indeed, the <code>tidymodels</code> ecosystem is quite vast. This is especially true in the area of preprocessing steps achieved by extension packages for the <code>recipes</code> package.</p>
 <p>I wanted to shake it up a little bit. Today’s post was a little different, but in a good, refreshing way. See you tomorrow.</p>
+</section>
+<section id="day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" class="level1">
+<h1>Day 24 - Use <code>step_tokenize()</code> from <code>textrecipes</code> to convert a character predictor into a <code>token</code> variable</h1>
+<p>Building on yesterday’s post, I’ll begin exploring <code>recipes</code> extension packages’ functions. <code>step_tokenize()</code> from <a href="https://textrecipes.tidymodels.org/"><code>textrecipes</code></a> is first up. This function is useful when we need to convert a character variable into a token variable. If you’re unfamiliar with the concept of tokenization, the <a href="https://www.tidytextmining.com/tidytext">Text Mining with R: A Tidy Approach</a> provides an overview.</p>
+<p>I’ll keep things simple here by using a pared down data set. This will make it easier to see what this <code>step_function()</code> is doing. How about some <a href="https://stats.stackexchange.com/questions/726/famous-statistical-quotations?page=1&amp;tab=scoredesc#tab-top">quotes</a> about statistics?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb762"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb762-1"><a href="#cb762-1" aria-hidden="true" tabindex="-1"></a>quotes <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb762-2"><a href="#cb762-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">c</span>(</span>
+<span id="cb762-3"><a href="#cb762-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"All models are wrong, but some are useful."</span>,</span>
+<span id="cb762-4"><a href="#cb762-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Statisticians, like artists, have the bad habit of falling in love with their models."</span>,</span>
+<span id="cb762-5"><a href="#cb762-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"If you torture the data enough, nature will always confess."</span>,</span>
+<span id="cb762-6"><a href="#cb762-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"All generalizations are false, including this one."</span></span>
+<span id="cb762-7"><a href="#cb762-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb762-8"><a href="#cb762-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s create our recipe to tokenize by word.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb763"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb763-1"><a href="#cb763-1" aria-hidden="true" tabindex="-1"></a>quotes_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb763-2"><a href="#cb763-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">|&gt;</span></span>
+<span id="cb763-3"><a href="#cb763-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span>
+<span id="cb763-4"><a href="#cb763-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb763-5"><a href="#cb763-5" aria-hidden="true" tabindex="-1"></a>quotes_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 4 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Tokenization for: text | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb776"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb776-1"><a href="#cb776-1" aria-hidden="true" tabindex="-1"></a>baked_quotes <span class="ot">&lt;-</span> <span class="fu">bake</span>(quotes_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb776-2"><a href="#cb776-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb776-3"><a href="#cb776-3" aria-hidden="true" tabindex="-1"></a>baked_quotes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 1
+         text
+    &lt;tknlist&gt;
+1  [8 tokens]
+2 [14 tokens]
+3 [10 tokens]
+4  [7 tokens]</code></pre>
+</div>
+</div>
+<p>One thing I didn’t expect, but learned, was <code>step_tokenize()</code> creates a <code>tknlist</code> column. Indeed, I expected the column to still be a character with every token in a row, like what happens when you use <a href="https://juliasilge.github.io/tidytext/"><code>tidytext</code></a> functions. This certainly makes the object more compact and easier to work with, an excellent design decision. To see the tokens, though, we need to use <code>recipes</code> <code>show_tokens()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb778"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb778-1"><a href="#cb778-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb778-2"><a href="#cb778-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">|&gt;</span></span>
+<span id="cb778-3"><a href="#cb778-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_tokens</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "all"    "models" "are"    "wrong"  "but"    "some"   "are"    "useful"
+
+[[2]]
+ [1] "statisticians" "like"          "artists"       "have"          "the"           "bad"          
+ [7] "habit"         "of"            "falling"       "in"            "love"          "with"         
+[13] "their"         "models"       
+
+[[3]]
+ [1] "if"      "you"     "torture" "the"     "data"    "enough"  "nature"  "will"    "always" 
+[10] "confess"
+
+[[4]]
+[1] "all"             "generalizations" "are"             "false"           "including"      
+[6] "this"            "one"            </code></pre>
+</div>
+</div>
+<p><code>step_tokenize()</code> defaults to tokenizing by word. However, there are several ways we can tokenize by. To do this, we modify the <code>tokenizers</code> argument. For example, say we want to tokenize by character instead of word. We do the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb780"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb780-1"><a href="#cb780-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb780-2"><a href="#cb780-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text, <span class="at">token =</span> <span class="st">"characters"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb780-3"><a href="#cb780-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_tokens</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+ [1] "a" "l" "l" "m" "o" "d" "e" "l" "s" "a" "r" "e" "w" "r" "o" "n" "g" "b" "u" "t" "s" "o" "m" "e"
+[25] "a" "r" "e" "u" "s" "e" "f" "u" "l"
+
+[[2]]
+ [1] "s" "t" "a" "t" "i" "s" "t" "i" "c" "i" "a" "n" "s" "l" "i" "k" "e" "a" "r" "t" "i" "s" "t" "s"
+[25] "h" "a" "v" "e" "t" "h" "e" "b" "a" "d" "h" "a" "b" "i" "t" "o" "f" "f" "a" "l" "l" "i" "n" "g"
+[49] "i" "n" "l" "o" "v" "e" "w" "i" "t" "h" "t" "h" "e" "i" "r" "m" "o" "d" "e" "l" "s"
+
+[[3]]
+ [1] "i" "f" "y" "o" "u" "t" "o" "r" "t" "u" "r" "e" "t" "h" "e" "d" "a" "t" "a" "e" "n" "o" "u" "g"
+[25] "h" "n" "a" "t" "u" "r" "e" "w" "i" "l" "l" "a" "l" "w" "a" "y" "s" "c" "o" "n" "f" "e" "s" "s"
+
+[[4]]
+ [1] "a" "l" "l" "g" "e" "n" "e" "r" "a" "l" "i" "z" "a" "t" "i" "o" "n" "s" "a" "r" "e" "f" "a" "l"
+[25] "s" "e" "i" "n" "c" "l" "u" "d" "i" "n" "g" "t" "h" "i" "s" "o" "n" "e"</code></pre>
+</div>
+</div>
+<p>How about by word stems?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb782"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb782-1"><a href="#cb782-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb782-2"><a href="#cb782-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text, <span class="at">token =</span> <span class="st">"word_stems"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb782-3"><a href="#cb782-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_tokens</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "all"   "model" "are"   "wrong" "but"   "some"  "are"   "use"  
+
+[[2]]
+ [1] "statistician" "like"         "artist"       "have"         "the"          "bad"         
+ [7] "habit"        "of"           "fall"         "in"           "love"         "with"        
+[13] "their"        "model"       
+
+[[3]]
+ [1] "if"      "you"     "tortur"  "the"     "data"    "enough"  "natur"   "will"    "alway"  
+[10] "confess"
+
+[[4]]
+[1] "all"     "general" "are"     "fals"    "includ"  "this"    "one"    </code></pre>
+</div>
+</div>
+<p>ngrams?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb784"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb784-1"><a href="#cb784-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb784-2"><a href="#cb784-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text, <span class="at">token =</span> <span class="st">"ngrams"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb784-3"><a href="#cb784-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_tokens</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "all models are"   "models are wrong" "are wrong but"    "wrong but some"   "but some are"    
+[6] "some are useful" 
+
+[[2]]
+ [1] "statisticians like artists" "like artists have"          "artists have the"          
+ [4] "have the bad"               "the bad habit"              "bad habit of"              
+ [7] "habit of falling"           "of falling in"              "falling in love"           
+[10] "in love with"               "love with their"            "with their models"         
+
+[[3]]
+[1] "if you torture"      "you torture the"     "torture the data"    "the data enough"    
+[5] "data enough nature"  "enough nature will"  "nature will always"  "will always confess"
+
+[[4]]
+[1] "all generalizations are"   "generalizations are false" "are false including"      
+[4] "false including this"      "including this one"       </code></pre>
+</div>
+</div>
+<p>Say we only want 2 words in our ngram tokens. In this case, we need to pass argument values to the <code>tokenizers::tokenize_ngrams()</code> function using <code>step_tokenize()</code>’s <code>options</code> argument. Here we pass all the argument values in a list.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb786"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb786-1"><a href="#cb786-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb786-2"><a href="#cb786-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(</span>
+<span id="cb786-3"><a href="#cb786-3" aria-hidden="true" tabindex="-1"></a>    text, </span>
+<span id="cb786-4"><a href="#cb786-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token =</span> <span class="st">"ngrams"</span>,</span>
+<span id="cb786-5"><a href="#cb786-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb786-6"><a href="#cb786-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb786-7"><a href="#cb786-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_tokens</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "all models" "models are" "are wrong"  "wrong but"  "but some"   "some are"   "are useful"
+
+[[2]]
+ [1] "statisticians like" "like artists"       "artists have"       "have the"          
+ [5] "the bad"            "bad habit"          "habit of"           "of falling"        
+ [9] "falling in"         "in love"            "love with"          "with their"        
+[13] "their models"      
+
+[[3]]
+[1] "if you"         "you torture"    "torture the"    "the data"       "data enough"   
+[6] "enough nature"  "nature will"    "will always"    "always confess"
+
+[[4]]
+[1] "all generalizations" "generalizations are" "are false"           "false including"    
+[5] "including this"      "this one"           </code></pre>
+</div>
+</div>
+<p>Going further, say we want to also exclude stop words (e.g., the, is, and) from being included within our ngrams. We just pass this option along in our list of options.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb788"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb788-1"><a href="#cb788-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
+<span id="cb788-2"><a href="#cb788-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(</span>
+<span id="cb788-3"><a href="#cb788-3" aria-hidden="true" tabindex="-1"></a>    text, </span>
+<span id="cb788-4"><a href="#cb788-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token =</span> <span class="st">"ngrams"</span>,</span>
+<span id="cb788-5"><a href="#cb788-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">stopwords =</span> <span class="fu">c</span>(<span class="st">"the"</span>, <span class="st">"is"</span>, <span class="st">"and"</span>))</span>
+<span id="cb788-6"><a href="#cb788-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb788-7"><a href="#cb788-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_tokens</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "all models" "models are" "are wrong"  "wrong but"  "but some"   "some are"   "are useful"
+
+[[2]]
+ [1] "statisticians like" "like artists"       "artists have"       "have bad"          
+ [5] "bad habit"          "habit of"           "of falling"         "falling in"        
+ [9] "in love"            "love with"          "with their"         "their models"      
+
+[[3]]
+[1] "if you"         "you torture"    "torture data"   "data enough"    "enough nature" 
+[6] "nature will"    "will always"    "always confess"
+
+[[4]]
+[1] "all generalizations" "generalizations are" "are false"           "false including"    
+[5] "including this"      "this one"           </code></pre>
+</div>
+</div>
+<p>That’s all the time I have for today. There’s some other things <code>step_tokenize()</code> can do. I highly suggest checking out it’s <a href="https://textrecipes.tidymodels.org/reference/step_tokenize.html">documentation</a> to see all of its functionality.</p>
 
 
 </section>
