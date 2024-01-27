@@ -27,6 +27,7 @@ library(here)
 library(corrr)
 library(skimr)
 library(janitor)
+library(textrecipes)
 tidymodels_prefer()
 ```
 
@@ -2268,3 +2269,93 @@ Taking a moment to read the descriptions of each extension package, I found `tex
 Indeed, the `tidymodels` ecosystem is quite vast. This is especially true in the area of preprocessing steps achieved by extension packages for the `recipes` package.
 
 I wanted to shake it up a little bit. Today's post was a little different, but in a good, refreshing way. See you tomorrow.
+
+# Day 24 - Use `step_tokenize()` from `textrecipes` to convert a character predictor into a `token` variable
+
+Building on yesterday's post, I'll begin exploring `recipes` extension packages' functions. `step_tokenize()` from [`textrecipes`](https://textrecipes.tidymodels.org/) is first up. This function is useful when we need to convert a character variable into a token variable. If you're unfamiliar with the concept of tokenization, the [Text Mining with R: A Tidy Approach](https://www.tidytextmining.com/tidytext) provides an overview.
+
+I'll keep things simple here by using a pared down data set. This will make it easier to see what this `step_function()` is doing. How about some [quotes](https://stats.stackexchange.com/questions/726/famous-statistical-quotations?page=1&tab=scoredesc#tab-top) about statistics?
+
+```{r day-24-data}
+quotes <- tibble(
+  text = c(
+    "All models are wrong, but some are useful.",
+    "Statisticians, like artists, have the bad habit of falling in love with their models.",
+    "If you torture the data enough, nature will always confess.",
+    "All generalizations are false, including this one."
+  )
+)
+```
+
+Let's create our recipe to tokenize by word. 
+
+```{r day-24-rec}
+quotes_rec <- recipe(~ text, data = quotes) |>
+  step_tokenize(text) |>
+  prep() 
+
+quotes_rec
+
+baked_quotes <- bake(quotes_rec, new_data = NULL)
+
+baked_quotes
+```
+
+One thing I didn't expect, but learned, was `step_tokenize()` creates a `tknlist` column. Indeed, I expected the column to still be a character with every token in a row, like what happens when you use [`tidytext`](https://juliasilge.github.io/tidytext/) functions. This certainly makes the object more compact and easier to work with, an excellent design decision. To see the tokens, though, we need to use `recipes` `show_tokens()` function.
+
+```{r day-24-show-tokens}
+recipe(~ text, data = quotes) |>
+  step_tokenize(text) |>
+  show_tokens(text)
+```
+
+`step_tokenize()` defaults to tokenizing by word. However, there are several ways we can tokenize by. To do this, we modify the `tokenizers` argument. For example, say we want to tokenize by character instead of word. We do the following:
+
+```{r day-24-tokenize-by-char}
+recipe(~ text, data = quotes) |>
+  step_tokenize(text, token = "characters") |>
+  show_tokens(text)
+```
+
+How about by word stems?
+
+```{r day-24-tokenize-by-stem}
+recipe(~ text, data = quotes) |>
+  step_tokenize(text, token = "word_stems") |>
+  show_tokens(text)
+```
+
+ngrams?
+
+```{r day-24-tokenize-by-ngram}
+recipe(~ text, data = quotes) |>
+  step_tokenize(text, token = "ngrams") |>
+  show_tokens(text)
+```
+
+Say we only want 2 words in our ngram tokens. In this case, we need to pass argument values to the `tokenizers::tokenize_ngrams()` function using `step_tokenize()`'s `options` argument. Here we pass all the argument values in a list.
+
+```{r day-24-tokenize-by-2-ngram}
+recipe(~ text, data = quotes) |>
+  step_tokenize(
+    text, 
+    token = "ngrams",
+    options = list(n = 2)
+  ) |>
+  show_tokens(text)
+```
+
+Going further, say we want to also exclude stop words (e.g., the, is, and) from being included within our ngrams. We just pass this option along in our list of options.
+
+```{r day-24-tokenize-by-2-ngram-no-stop}
+recipe(~ text, data = quotes) |>
+  step_tokenize(
+    text, 
+    token = "ngrams",
+    options = list(n = 2, stopwords = c("the", "is", "and"))
+  ) |>
+  show_tokens(text)
+```
+
+That's all the time I have for today. There's some other things `step_tokenize()` can do. I highly suggest checking out it's [documentation](https://textrecipes.tidymodels.org/reference/step_tokenize.html) to see all of its functionality.
+
