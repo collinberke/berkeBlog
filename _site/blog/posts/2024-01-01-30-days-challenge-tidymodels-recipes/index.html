@@ -185,6 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-22---apply-an-inverse-transformation-using-step_inverse" id="toc-day-22---apply-an-inverse-transformation-using-step_inverse" class="nav-link" data-scroll-target="#day-22---apply-an-inverse-transformation-using-step_inverse">Day 22 - Apply an inverse transformation using <code>step_inverse()</code></a></li>
   <li><a href="#day-23---use-extension-packages-to-get-even-more-steps" id="toc-day-23---use-extension-packages-to-get-even-more-steps" class="nav-link" data-scroll-target="#day-23---use-extension-packages-to-get-even-more-steps">Day 23 - Use extension packages to get even more steps</a></li>
   <li><a href="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" id="toc-day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" class="nav-link" data-scroll-target="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable">Day 24 - Use <code>step_tokenize()</code> from <code>textrecipes</code> to convert a character predictor into a <code>token</code> variable</a></li>
+  <li><a href="#day-25---use-step_clean_level-to-clean-categorical-levels" id="toc-day-25---use-step_clean_level-to-clean-categorical-levels" class="nav-link" data-scroll-target="#day-25---use-step_clean_level-to-clean-categorical-levels">Day 25 - Use <code>step_clean_level()</code> to clean categorical levels</a></li>
   </ul>
 </nav>
     </div>
@@ -7362,7 +7363,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 4  [7 tokens]</code></pre>
 </div>
 </div>
-<p>One thing I didn’t expect, but learned, was <code>step_tokenize()</code> creates a <code>tknlist</code> column. Indeed, I expected the column to still be a character with every token in a row, like what happens when you use <a href="https://juliasilge.github.io/tidytext/"><code>tidytext</code></a> functions. This certainly makes the object more compact and easier to work with, an excellent design decision. To see the tokens, though, we need to use <code>recipes</code> <code>show_tokens()</code> function.</p>
+<p>One thing I didn’t expect, but learned, was <code>step_tokenize()</code> creates a <code>tknlist</code> column. Indeed, I expected the column to still be a character where every token was placed on it’s own row, like what happens when you use <a href="https://juliasilge.github.io/tidytext/"><code>tidytext</code></a> functions. This certainly makes the object more compact and easier to work with, an excellent design decision in my opinion. To see the tokens, though, we need to use <code>recipes</code> <code>show_tokens()</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb778"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb778-1"><a href="#cb778-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> text, <span class="at">data =</span> quotes) <span class="sc">|&gt;</span></span>
 <span id="cb778-2"><a href="#cb778-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">|&gt;</span></span>
@@ -7512,6 +7513,154 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </div>
 </div>
 <p>That’s all the time I have for today. There’s some other things <code>step_tokenize()</code> can do. I highly suggest checking out it’s <a href="https://textrecipes.tidymodels.org/reference/step_tokenize.html">documentation</a> to see all of its functionality.</p>
+</section>
+<section id="day-25---use-step_clean_level-to-clean-categorical-levels" class="level1">
+<h1>Day 25 - Use <code>step_clean_level()</code> to clean categorical levels</h1>
+<p>Keeping our focus on <code>textrecipes</code>, I’m going to highlight the use of <code>step_clean_levels()</code>. This function is useful for cleaning up the text used within character or factor variables. Specifically, this function will clean text values in our variable to only include:</p>
+<ul>
+<li>letters</li>
+<li>numbers</li>
+<li>underscores</li>
+</ul>
+<p>Let’s apply this text cleaning recipe step to the <code>item_name</code> variable in our obfuscated Google Analytics data. In fact, to make it easier to see what’s happening, I’ll <code>select()</code> just the <code>item_name</code> within our example data set. I’ll also go ahead and just create our training and testing split here as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb790"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb790-1"><a href="#cb790-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb790-2"><a href="#cb790-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb790-3"><a href="#cb790-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb790-4"><a href="#cb790-4" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(item_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb792"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb792-1"><a href="#cb792-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240127</span>)</span>
+<span id="cb792-2"><a href="#cb792-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb792-3"><a href="#cb792-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb792-4"><a href="#cb792-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you scan through the items, you’ll begin to notice some of the text could be cleaned. For example, the data contains item names like:</p>
+<ul>
+<li><code>Google Medium Pet Collar (Red/Yellow)</code></li>
+<li><code>#IamRemarkable Unisex T-Shirt</code></li>
+<li><code>Android SM S/F18 Sticker Sheet</code></li>
+</ul>
+<p>If you’ve ever worked with ecommerce or website data, these strings are actually not too bad. However, we can use <code>step_clean_levels()</code> to make them easier to compute on.</p>
+<p>Here’s our recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb793"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb793-1"><a href="#cb793-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_te) <span class="sc">|&gt;</span></span>
+<span id="cb793-2"><a href="#cb793-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_clean_levels</span>(item_name) <span class="sc">|&gt;</span></span>
+<span id="cb793-3"><a href="#cb793-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb793-4"><a href="#cb793-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb793-5"><a href="#cb793-5" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 1873 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Cleaning factor levels for: item_name | Trained</code></pre>
+</div>
+</div>
+<p><code>step_clean_levels()</code>’ tidy method is pretty informative. It provides one column with the original value and a second column with the cleaned value. Take a look at what it will do to our values once baked.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb806"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb806-1"><a href="#cb806-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 332 × 4
+   terms     original                      value                                id                
+   &lt;chr&gt;     &lt;chr&gt;                         &lt;chr&gt;                                &lt;chr&gt;             
+ 1 item_name #IamRemarkable Journal        number_iam_remarkable_journal        clean_levels_JONrr
+ 2 item_name #IamRemarkable Ladies T-Shirt number_iam_remarkable_ladies_t_shirt clean_levels_JONrr
+ 3 item_name #IamRemarkable Lapel Pin      number_iam_remarkable_lapel_pin      clean_levels_JONrr
+ 4 item_name #IamRemarkable Pen            number_iam_remarkable_pen            clean_levels_JONrr
+ 5 item_name #IamRemarkable Unisex Hoodie  number_iam_remarkable_unisex_hoodie  clean_levels_JONrr
+ 6 item_name #IamRemarkable Unisex T-Shirt number_iam_remarkable_unisex_t_shirt clean_levels_JONrr
+ 7 item_name #IamRemarkable Water Bottle   number_iam_remarkable_water_bottle   clean_levels_JONrr
+ 8 item_name Android Buoy Bottle           android_buoy_bottle                  clean_levels_JONrr
+ 9 item_name Android Garden Tee Orange     android_garden_tee_orange            clean_levels_JONrr
+10 item_name Android Geek Pin              android_geek_pin                     clean_levels_JONrr
+# ℹ 322 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It’s interesting to see that the hashtag (i.e., <code>#</code>) was converted to the value <code>number</code>. I couldn’t find any options in <code>step_clean_levels()</code>to modify this, so you may need to first do some pre-cleaning before applying this function.</p>
+</div>
+</div>
+<p>Now, we bake.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>step_clean_levels()</code> will convert character vectors to factors for us.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb808"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb808-1"><a href="#cb808-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,873 × 1
+   item_name                           
+   &lt;fct&gt;                               
+ 1 google_thermal_tumbler_navy         
+ 2 noogler_android_figure              
+ 3 google_leather_strap_hat_blue       
+ 4 you_tube_jotter_task_pad            
+ 5 google_nyc_campus_mug               
+ 6 google_nyc_campus_zip_hoodie        
+ 7 number_iam_remarkable_ladies_t_shirt
+ 8 number_iam_remarkable_lapel_pin     
+ 9 google_leather_strap_hat_blue       
+10 google_f_c_longsleeve_ash           
+# ℹ 1,863 more rows</code></pre>
+</div>
+</div>
+<p>All in all, a pretty useful step function from <code>textrecipes</code>. Take some time to apply the <code>step_clean_levels()</code> to your data. It might save you a great deal of time if you’re working with some messy text data.</p>
 
 
 </section>
