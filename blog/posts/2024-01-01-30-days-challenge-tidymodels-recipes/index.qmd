@@ -2301,7 +2301,7 @@ baked_quotes <- bake(quotes_rec, new_data = NULL)
 baked_quotes
 ```
 
-One thing I didn't expect, but learned, was `step_tokenize()` creates a `tknlist` column. Indeed, I expected the column to still be a character with every token in a row, like what happens when you use [`tidytext`](https://juliasilge.github.io/tidytext/) functions. This certainly makes the object more compact and easier to work with, an excellent design decision. To see the tokens, though, we need to use `recipes` `show_tokens()` function.
+One thing I didn't expect, but learned, was `step_tokenize()` creates a `tknlist` column. Indeed, I expected the column to still be a character where every token was placed on it's own row, like what happens when you use [`tidytext`](https://juliasilge.github.io/tidytext/) functions. This certainly makes the object more compact and easier to work with, an excellent design decision in my opinion. To see the tokens, though, we need to use `recipes` `show_tokens()` function.
 
 ```{r day-24-show-tokens}
 recipe(~ text, data = quotes) |>
@@ -2359,3 +2359,64 @@ recipe(~ text, data = quotes) |>
 
 That's all the time I have for today. There's some other things `step_tokenize()` can do. I highly suggest checking out it's [documentation](https://textrecipes.tidymodels.org/reference/step_tokenize.html) to see all of its functionality.
 
+# Day 25 - Use `step_clean_level()` to clean categorical levels
+
+Keeping our focus on `textrecipes`, I'm going to highlight the use of `step_clean_levels()`. This function is useful for cleaning up the text used within character or factor variables. Specifically, this function will clean text values in our variable to only include:
+
+* letters
+* numbers
+* underscores
+
+Let's apply this text cleaning recipe step to the `item_name` variable in our obfuscated Google Analytics data. In fact, to make it easier to see what's happening, I'll `select()` just the `item_name` within our example data set. I'll also go ahead and just create our training and testing split here as well.
+
+```{r day-25-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  ) |>
+select(item_name)
+
+set.seed(20240127)
+ga_split <- initial_split(data_ga, prop = .8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+If you scan through the items, you'll begin to notice some of the text could be cleaned. For example, the data contains item names like:
+
+* `Google Medium Pet Collar (Red/Yellow)` 
+* `#IamRemarkable Unisex T-Shirt`
+* `Android SM S/F18 Sticker Sheet`
+
+If you've ever worked with ecommerce or website data, these strings are actually not too bad. However, we can use `step_clean_levels()` to make them easier to compute on.
+
+Here's our recipe.
+
+```{r day-25-rec}
+ga_rec <- recipe(~., data = ga_te) |>
+  step_clean_levels(item_name) |>
+  prep()
+
+ga_rec
+```
+
+`step_clean_levels()`' tidy method is pretty informative. It provides one column with the original value and a second column with the cleaned value. Take a look at what it will do to our values once baked. 
+
+```{r day-25-tidy-rec}
+tidy(ga_rec, number = 1)
+```
+
+::: {.callout-note}
+It's interesting to see that the hashtag (i.e., `#`) was converted to the value `number`. I couldn't find any options in `step_clean_levels()`to modify this, so you may need to first do some pre-cleaning before applying this function.
+:::
+
+Now, we bake. 
+
+::: {.callout-note}
+`step_clean_levels()` will convert character vectors to factors for us.
+:::
+
+```{r day-25-rec-bake}
+bake(ga_rec, new_data = NULL)
+```
+
+All in all, a pretty useful step function from `textrecipes`. Take some time to apply the `step_clean_levels()` to your data. It might save you a great deal of time if you're working with some messy text data.
