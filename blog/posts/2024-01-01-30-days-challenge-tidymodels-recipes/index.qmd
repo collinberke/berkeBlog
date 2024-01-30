@@ -28,6 +28,7 @@ library(corrr)
 library(skimr)
 library(janitor)
 library(textrecipes)
+library(themis)
 tidymodels_prefer()
 ```
 
@@ -2420,3 +2421,120 @@ bake(ga_rec, new_data = NULL)
 ```
 
 All in all, a pretty useful step function from `textrecipes`. Take some time to apply the `step_clean_levels()` to your data. It might save you a great deal of time if you're working with some messy text data.
+
+# Day 26 - Use over-sampling and under-sampling methods with the `themis` package 
+
+Today I'm going to highlight some basic uses of the [`themis`](https://themis.tidymodels.org/reference/index.html) package. `themis` makes over- and under-sampling methods available. These methods are useful to address imbalanced class data. You can read more about these methods [here](https://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis) and [here](https://www.mastersindatascience.org/learning/statistics-data-science/undersampling/). In short, these methods allow us to extract more accurate information from imbalanced data.
+
+To highlight this, let's use our obfuscated Google Analytics ecommerce data. Specifically, let's check out our `shipping_tier` variable for each transaction. Here's the code we'll need to wrangle the data for our example:
+
+```{r day-26-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+data_ga <- data_ga |>
+  group_by(transaction_id) |>
+  summarise(
+    revenue = sum(item_revenue_in_usd),
+    shipping_tier = max(shipping_tier)
+  ) |>
+  mutate(shipping_tier = factor(shipping_tier))
+```
+
+```{r day-26-data-split}
+set.seed(20240128)
+ga_split <- initial_split(data_ga, prop = 0.8)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+Let's take a moment to check for the presence of imbalanced data. We can do this with a simple `count()` and a quick bar chart using `ggplot2`.
+
+```{r day-26-count-shipping}
+ga_tr |>
+  count(shipping_tier, sort = TRUE)
+```
+
+```{r day-26-vis-shipping}
+ggplot(
+  count(ga_tr, shipping_tier, sort = TRUE),
+  aes(reorder(shipping_tier, n), y = n)
+) +
+  geom_col() +
+  coord_flip() +
+  labs(y = "Shipping Tier") +
+  theme_minimal()
+```
+
+You'll notice the presence of a severe imbalance in the `shipping_tier` variable, as most transactions selected FedEx ground as the shipping tier (most likely the cheapest and default shipping tier). We can use `step_upsample()` and `step_downsample()` to create synthetic samples to address this imbalance with our recipe.
+
+When over- or under-sampling, we need to select an `over_ratio` or `under_raio`. These values specify the ratio of the majority-to-minority or minority-to-majority frequencies, which are used to determine how many of the minority samples are added or how many of the majority class are removed.
+
+For instance, if we are upsampling, we can set the `over_ratio` to 1. This will synthetically add points to the minority class so the minority and majority classes are equal. 
+
+::: {.callout-note}
+I'm omitting `NA`s here with `step_naomit()`, just to make things easier.
+:::
+
+```{r day-26-recipe}
+ga_rec <- recipe(~., data = data_ga) |>
+  step_naomit(shipping_tier) |>
+  step_upsample(shipping_tier, over_ratio = 1) |>
+  prep()
+
+ga_rec
+
+baked_ga <- bake(ga_rec, new_data = NULL)
+
+baked_ga
+```
+
+```{r day-26-baked-upsample-over-vis}
+ggplot(
+  count(baked_ga, shipping_tier, sort = TRUE),
+  aes(reorder(shipping_tier, n), y = n)
+) +
+  geom_col() +
+  coord_flip() +
+  labs(y = "Shipping Tier") +
+  theme_minimal()
+```
+
+Say we only want the minority levels to have about half the amount of values of the majority class. We can do this by passing `.5` to the `over_ratio` argument.
+
+```{r day-26-recipe-half-upsample}
+recipe(~., data = data_ga) |>
+  step_naomit(shipping_tier) |>
+  step_upsample(shipping_tier, over_ratio = .5) |>
+  prep() |>
+  bake(new_data = NULL) |>
+  count(shipping_tier, sort = TRUE) |>
+  ggplot(
+    aes(reorder(shipping_tier, n), y = n)
+  ) +
+    geom_col() +
+    coord_flip() +
+    labs(y = "Shipping Tier") +
+    theme_minimal()
+```
+
+Under-sampling is pretty much the same, but we use `step_downsample()` and the `under_ratio` argument. Here's some example code to get you started.
+
+```{r day-26-recipe-downsample}
+recipe(~., data = data_ga) |>
+  step_naomit(shipping_tier) |>
+  step_downsample(shipping_tier, under_ratio = 100) |>
+  prep() |>
+  bake(new_data = NULL) |>
+  count(shipping_tier, sort = TRUE) |>
+  ggplot(
+    aes(reorder(shipping_tier, n), y = n)
+  ) +
+    geom_col() +
+    coord_flip() +
+    labs(y = "Shipping Tier") +
+    theme_minimal()
+```
+
+`themis` makes it pretty easy to utilize over- and under-sampling methods. Indeed, this was just a highlight of some of the package's basics. `themis` also has implemented some more advanced methods to address imbalanced data (e.g., [SMOTE](https://arxiv.org/abs/1106.1813)). If you work with imbalanced data, I suggest checking out the `themis` package.

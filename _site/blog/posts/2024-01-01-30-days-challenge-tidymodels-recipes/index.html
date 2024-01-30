@@ -186,6 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-23---use-extension-packages-to-get-even-more-steps" id="toc-day-23---use-extension-packages-to-get-even-more-steps" class="nav-link" data-scroll-target="#day-23---use-extension-packages-to-get-even-more-steps">Day 23 - Use extension packages to get even more steps</a></li>
   <li><a href="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" id="toc-day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" class="nav-link" data-scroll-target="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable">Day 24 - Use <code>step_tokenize()</code> from <code>textrecipes</code> to convert a character predictor into a <code>token</code> variable</a></li>
   <li><a href="#day-25---use-step_clean_level-to-clean-categorical-levels" id="toc-day-25---use-step_clean_level-to-clean-categorical-levels" class="nav-link" data-scroll-target="#day-25---use-step_clean_level-to-clean-categorical-levels">Day 25 - Use <code>step_clean_level()</code> to clean categorical levels</a></li>
+  <li><a href="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" id="toc-day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" class="nav-link" data-scroll-target="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package">Day 26 - Use over-sampling and under-sampling methods with the <code>themis</code> package</a></li>
   </ul>
 </nav>
     </div>
@@ -249,7 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="my-spin-on-this" class="level1">
@@ -7661,6 +7663,210 @@ Note
 </div>
 </div>
 <p>All in all, a pretty useful step function from <code>textrecipes</code>. Take some time to apply the <code>step_clean_levels()</code> to your data. It might save you a great deal of time if you’re working with some messy text data.</p>
+</section>
+<section id="day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" class="level1">
+<h1>Day 26 - Use over-sampling and under-sampling methods with the <code>themis</code> package</h1>
+<p>Today I’m going to highlight some basic uses of the <a href="https://themis.tidymodels.org/reference/index.html"><code>themis</code></a> package. <code>themis</code> makes over- and under-sampling methods available. These methods are useful to address imbalanced class data. You can read more about these methods <a href="https://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis">here</a> and <a href="https://www.mastersindatascience.org/learning/statistics-data-science/undersampling/">here</a>. In short, these methods allow us to extract more accurate information from imbalanced data.</p>
+<p>To highlight this, let’s use our obfuscated Google Analytics ecommerce data. Specifically, let’s check out our <code>shipping_tier</code> variable for each transaction. Here’s the code we’ll need to wrangle the data for our example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb810"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb810-1"><a href="#cb810-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb810-2"><a href="#cb810-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb810-3"><a href="#cb810-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb812"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb812-1"><a href="#cb812-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> data_ga <span class="sc">|&gt;</span></span>
+<span id="cb812-2"><a href="#cb812-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(transaction_id) <span class="sc">|&gt;</span></span>
+<span id="cb812-3"><a href="#cb812-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb812-4"><a href="#cb812-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(item_revenue_in_usd),</span>
+<span id="cb812-5"><a href="#cb812-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">shipping_tier =</span> <span class="fu">max</span>(shipping_tier)</span>
+<span id="cb812-6"><a href="#cb812-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb812-7"><a href="#cb812-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">shipping_tier =</span> <span class="fu">factor</span>(shipping_tier))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb813"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb813-1"><a href="#cb813-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240128</span>)</span>
+<span id="cb813-2"><a href="#cb813-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_ga, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb813-3"><a href="#cb813-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb813-4"><a href="#cb813-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a moment to check for the presence of imbalanced data. We can do this with a simple <code>count()</code> and a quick bar chart using <code>ggplot2</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb814"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb814-1"><a href="#cb814-1" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="sc">|&gt;</span></span>
+<span id="cb814-2"><a href="#cb814-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(shipping_tier, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 14 × 2
+   shipping_tier              n
+   &lt;fct&gt;                  &lt;int&gt;
+ 1 FedEx Ground            2048
+ 2 UPS Ground               270
+ 3 FedEx 2Day               125
+ 4 International Shipping    34
+ 5 FedEx Overnight           25
+ 6 &lt;NA&gt;                      25
+ 7 FedEx Ground-T            12
+ 8 FedEx Ground-V             7
+ 9 UPS 2nd Day Air            5
+10 UPS 3 Day Select           5
+11 FedEx Ground-GI            2
+12 FedEx 2Day-V               1
+13 UPS 2nd Day Air-F-V        1
+14 UPS Next Day Air           1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb816"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb816-1"><a href="#cb816-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb816-2"><a href="#cb816-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(ga_tr, shipping_tier, <span class="at">sort =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb816-3"><a href="#cb816-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="fu">reorder</span>(shipping_tier, n), <span class="at">y =</span> n)</span>
+<span id="cb816-4"><a href="#cb816-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb816-5"><a href="#cb816-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb816-6"><a href="#cb816-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb816-7"><a href="#cb816-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
+<span id="cb816-8"><a href="#cb816-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-26-vis-shipping-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>You’ll notice the presence of a severe imbalance in the <code>shipping_tier</code> variable, as most transactions selected FedEx ground as the shipping tier (most likely the cheapest and default shipping tier). We can use <code>step_upsample()</code> and <code>step_downsample()</code> to create synthetic samples to address this imbalance with our recipe.</p>
+<p>When over- or under-sampling, we need to select an <code>over_ratio</code> or <code>under_raio</code>. These values specify the ratio of the majority-to-minority or minority-to-majority frequencies, which are used to determine how many of the minority samples are added or how many of the majority class are removed.</p>
+<p>For instance, if we are upsampling, we can set the <code>over_ratio</code> to 1. This will synthetically add points to the minority class so the minority and majority classes are equal.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I’m omitting <code>NA</code>s here with <code>step_naomit()</code>, just to make things easier.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb817"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb817-1"><a href="#cb817-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb817-2"><a href="#cb817-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(shipping_tier) <span class="sc">|&gt;</span></span>
+<span id="cb817-3"><a href="#cb817-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_upsample</span>(shipping_tier, <span class="at">over_ratio =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb817-4"><a href="#cb817-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb817-5"><a href="#cb817-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb817-6"><a href="#cb817-6" aria-hidden="true" tabindex="-1"></a>ga_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 3202 data points and 27 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Removing rows with NA values in: shipping_tier | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Up-sampling based on: shipping_tier | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb831"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb831-1"><a href="#cb831-1" aria-hidden="true" tabindex="-1"></a>baked_ga <span class="ot">&lt;-</span> <span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb831-2"><a href="#cb831-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb831-3"><a href="#cb831-3" aria-hidden="true" tabindex="-1"></a>baked_ga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 33,436 × 3
+   transaction_id revenue shipping_tier
+            &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;        
+ 1         551345     137 FedEx 2Day   
+ 2         548006      71 FedEx 2Day   
+ 3         843790      40 FedEx 2Day   
+ 4         852510      50 FedEx 2Day   
+ 5         318033      48 FedEx 2Day   
+ 6         392135      57 FedEx 2Day   
+ 7         888228      90 FedEx 2Day   
+ 8         396838     671 FedEx 2Day   
+ 9         975263      24 FedEx 2Day   
+10         859104      14 FedEx 2Day   
+# ℹ 33,426 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb833"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb833-1"><a href="#cb833-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb833-2"><a href="#cb833-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(baked_ga, shipping_tier, <span class="at">sort =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb833-3"><a href="#cb833-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="fu">reorder</span>(shipping_tier, n), <span class="at">y =</span> n)</span>
+<span id="cb833-4"><a href="#cb833-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb833-5"><a href="#cb833-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb833-6"><a href="#cb833-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb833-7"><a href="#cb833-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
+<span id="cb833-8"><a href="#cb833-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-26-baked-upsample-over-vis-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Say we only want the minority levels to have about half the amount of values of the majority class. We can do this by passing <code>.5</code> to the <code>over_ratio</code> argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb834"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb834-1"><a href="#cb834-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb834-2"><a href="#cb834-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(shipping_tier) <span class="sc">|&gt;</span></span>
+<span id="cb834-3"><a href="#cb834-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_upsample</span>(shipping_tier, <span class="at">over_ratio =</span> .<span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb834-4"><a href="#cb834-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb834-5"><a href="#cb834-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb834-6"><a href="#cb834-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(shipping_tier, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb834-7"><a href="#cb834-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb834-8"><a href="#cb834-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="fu">reorder</span>(shipping_tier, n), <span class="at">y =</span> n)</span>
+<span id="cb834-9"><a href="#cb834-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb834-10"><a href="#cb834-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb834-11"><a href="#cb834-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb834-12"><a href="#cb834-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
+<span id="cb834-13"><a href="#cb834-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-26-recipe-half-upsample-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Under-sampling is pretty much the same, but we use <code>step_downsample()</code> and the <code>under_ratio</code> argument. Here’s some example code to get you started.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb835"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb835-1"><a href="#cb835-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb835-2"><a href="#cb835-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(shipping_tier) <span class="sc">|&gt;</span></span>
+<span id="cb835-3"><a href="#cb835-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_downsample</span>(shipping_tier, <span class="at">under_ratio =</span> <span class="dv">100</span>) <span class="sc">|&gt;</span></span>
+<span id="cb835-4"><a href="#cb835-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb835-5"><a href="#cb835-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb835-6"><a href="#cb835-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(shipping_tier, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb835-7"><a href="#cb835-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb835-8"><a href="#cb835-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="fu">reorder</span>(shipping_tier, n), <span class="at">y =</span> n)</span>
+<span id="cb835-9"><a href="#cb835-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb835-10"><a href="#cb835-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb835-11"><a href="#cb835-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb835-12"><a href="#cb835-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
+<span id="cb835-13"><a href="#cb835-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/day-26-recipe-downsample-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><code>themis</code> makes it pretty easy to utilize over- and under-sampling methods. Indeed, this was just a highlight of some of the package’s basics. <code>themis</code> also has implemented some more advanced methods to address imbalanced data (e.g., <a href="https://arxiv.org/abs/1106.1813">SMOTE</a>). If you work with imbalanced data, I suggest checking out the <code>themis</code> package.</p>
 
 
 </section>
