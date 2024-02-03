@@ -2645,3 +2645,111 @@ bake(drinks_rec, new_data = NULL)
 ```
 
 `timetk`'s `step_ts_pad()` function is pretty useful. If you need to pad values in a set of timeseries data, then check it out. 
+
+# Day 28 - Specify an interaction variable using `step_interact()`
+
+Today, I'm taking a step back. I forgot to cover a very important `step_*()` function. Interaction terms are an essential component to modeling, and so I need to highlight the use of `recipes`' `step_interact()` function.
+
+`recipes`' `step_interact()` function specifies new columns of interaction terms between two or more variables within our recipe. Let's apply this step function to some example data. Going back to a previous data set, let's use `credit_data` from the `modeldata` package for our examples. I've used this data several times in previous posts, so I just provide the code to wrangle and create the testing and training split without much exploration or explanation.
+
+```{r day-28-data}
+data("credit_data", package = "modeldata")
+
+# Remove NAs to make it easier to work with data
+credit_data <- credit_data |> na.omit()
+
+set.seed(20240203)
+credit_split <- initial_split(credit_data, prop = .8)
+
+credit_tr <- training(credit_split)
+credit_te <- testing(credit_split)
+```
+
+How about we add a simple interaction between `Expenses` and `Income` to our recipe. We can do this by doing the following:
+
+```{r day-28-rec}
+credit_rec <- recipe(~., data = credit_tr) |>
+  step_interact(terms = ~Expenses:Income) |>
+  prep()
+
+credit_rec
+
+tidy(credit_rec)
+tidy(credit_rec, number = 1)
+
+# Select just the interaction term, just to make it easier to see
+bake(credit_rec, new_data = NULL) |>
+  select(Expenses_x_Income)
+```
+
+::: {.callout-note}
+`step_interact()`'s docs mention this function is intended for **numeric data**, and categorical variables should be converted to dummy variables first. This can be done using `step_dummy()` (see my previous day 04 post).
+:::
+
+You'll notice `step_interact()` modifies the interaction variable's name by using `_x_` as the separator. If for some reason you want to change this, you just pass a character string to `step_interact()`'s `sep` argument.
+
+This naming convention is useful, especially if you intend to specify higher order interaction variables within your model, like a 3-way interaction.
+
+```{r day-28-rec-three-way}
+credit_rec <- recipe(~., data = credit_tr) |>
+  step_interact(terms = ~Expenses:Income:Assets) |>
+  prep()
+
+bake(credit_rec, new_data = NULL) |>
+  select(Expenses_x_Income_x_Assets)
+```
+
+`step_interact()` also allows the use of traditional R model formula when specifying interaction variables. This is really convenient. Say we want to include all the two-way interactions along with our three way interaction, we could do something like this:
+
+```{r day-28-rec-verbose}
+credit_rec <- recipe(~., data = credit_tr) |>
+  step_interact(
+    terms = ~Expenses:Income + Expenses:Assets + Income:Assets + Expenses:Income:Assets) |>
+  prep()
+
+bake(credit_rec, new_data = NULL) |>
+  select(starts_with("Expenses"), starts_with("Income"))
+```
+
+::: {.callout-note}
+Add additional interactions using the `+`
+:::
+
+However, a short-cut would be to do something like this:
+
+```{r day-28-rec-simple-many-interactions}
+credit_rec <- recipe(~., data = credit_tr) |>
+  step_interact(
+    terms = ~(Expenses + Income + Assets)^3) |>
+  prep()
+
+credit_rec
+
+bake(credit_rec, new_data = NULL) |>
+  select(starts_with("Expenses"), starts_with("Income"))
+```
+
+::: {.callout-warning}
+Although traditional model formula syntax can be used, `step_interact()`'s docs warn that inline functions (e.g., `log`) should not be used.
+:::
+
+It's also important to mention, again, categorical variables should be converted into numeric variables before being used within an interaction. Let's say we want to specify an interaction between `Debt` and `Home` variables within our `credit_data` recipe. We would use `step_dummy()` first on `Home`, then specify all the interactions between the dummy variables and `Debt`. `step_interact()` makes this very easy with the use of [`dplyr`-like selection functions](https://dplyr.tidyverse.org/reference/select.html).
+
+```{r day-28-rec-dummy-interaction}
+credit_rec <- recipe(~., data = credit_data) |>
+  step_dummy(Home) |>
+  step_interact(~starts_with("Home"):Debt) |>
+  prep()
+
+credit_rec
+
+tidy(credit_rec, number = 1)
+tidy(credit_rec, number = 2)
+
+bake(credit_rec, new_data = NULL)
+```
+
+The `tidy` methods are useful here, especially if you want to know what variables will be created as a result of the recipe.
+
+To sum up today's post, `step_interact()` has a nice, intuitive interface. It allows for traditional interaction variable specification, while also adding some convenient functionality. A really great `step_*()` function.
+
