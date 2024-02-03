@@ -29,6 +29,7 @@ library(skimr)
 library(janitor)
 library(textrecipes)
 library(themis)
+library(timetk)
 tidymodels_prefer()
 ```
 
@@ -2538,3 +2539,109 @@ recipe(~., data = data_ga) |>
 ```
 
 `themis` makes it pretty easy to utilize over- and under-sampling methods. Indeed, this was just a highlight of some of the package's basics. `themis` also has implemented some more advanced methods to address imbalanced data (e.g., [SMOTE](https://arxiv.org/abs/1106.1813)). If you work with imbalanced data, I suggest checking out the `themis` package.
+
+# Day 27 - Use `step_ts_pad()` from `timetk` to pad timeseries data
+
+It's been a few of days. Work was getting busy, so I didn't have time to focus on this post as much as I would have liked. So, let's pick up where we left off, focusing on some `step_*()` functions from extension packages. Today, I'm focusing on the `step_ts_pad()` from the [`timetk`](https://business-science.github.io/timetk/) package. 
+
+`timetk` is it's own package. It serves as a toolkit for working with timeseries data, so it's not just an extension package to `recipes`. However, it contains some useful `step_*()` functions when modeling timeseries data. `step_ts_pad()` is highlighted in today's post.
+
+`step_ts_pad()` fills in the gaps of timeseries data with a specified value. Let's take a look at some example data. Specifically, we're returning to our obfuscated Google Analytics ecommerce data. To make it more clear what this function is doing, I'll remove some values. 
+
+```{r day-27-data}
+data_ga <- read_csv(
+    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  )
+
+data_ga <- data_ga |>
+  mutate(event_date = ymd(event_date)) |>
+  group_by(event_date) |>
+  summarise(
+    revenue = sum(item_revenue_in_usd),
+  ) 
+
+# Remove some values to better highlight the example
+data_ga <- data_ga[1:61 %% 2 == 0, ]
+
+data_ga
+```
+
+We're working with timeseries data, so the training and testing split is created using `rsamples`' `initital_time_split()` function. This split function performs the same action as `initial_split()`, however, it takes the first `prop` samples for training, instead of a random selection (checkout `?initial_time_split` for more info).
+
+```{r day-27-split}
+set.seed(20240202)
+ga_split <- initial_time_split(data_ga)
+ga_tr <- training(ga_split)
+ga_te <- testing(ga_split)
+```
+
+We don't have a complete timeseries here, since this data is aggregated by day and we removed some days in the wrangling step. However, we can use `step_ts_pad()` to fill in values for missing days. This can be as simple as filling in missing values with `NA`. Here's the code to do this:
+
+```{r day-27-recipe-pad-value}
+ga_rec <- recipe(~., data = ga_tr) |>
+  step_ts_pad(event_date, by = "day", pad_value = NA) |>
+  prep()
+
+tidy(ga_rec)
+tidy(ga_rec, number = 1)
+
+bake(ga_rec, new_data = NULL)
+```
+
+Now we have a complete series. However, say we want to fill in this padded value with another value, say the mean of revenue from our training data.
+
+```{r day-27-recipe-pad-value-mean}
+ga_rec <- recipe(~., data = data_ga) |>
+  step_ts_pad(event_date, by = "day", pad_value = mean(ga_tr$revenue)) |>
+  prep()
+
+tidy(ga_rec)
+tidy(ga_rec, number = 1)
+
+bake(ga_rec, new_data = NULL)
+```
+
+The `by` argument can be used to modify the padding interval. This argument can take values like:
+
+* "auto"
+* "year"
+* "month"
+* "day"
+* "hour"
+* "7 days"
+
+For example, let's use the `drinks` timeseries data from the `modeldata` package. This data is a monthly timeseries of drink sales from 1992-01-01 to 2017-09-01. You can get more information about this data by running `?drinks` in your console. I'm going to remove some rows again to make it more clear on what this function is doing to our data.
+
+```{r day-27-data-by-month}
+data(drinks, package = "modeldata")
+
+# Remove some values to better highlight the example
+data_drinks <- drinks[1:nrow(drinks) %% 2 == 0, ]
+
+set.seed(20240202)
+drinks_split <- initial_time_split(data_drinks)
+drinks_tr <- training(drinks_split)
+drinks_te <- testing(drinks_split)
+```
+
+To pad by month, all we do is pass "month" to the `by` argument of the function.
+
+```{r day-27-rec-month}
+drinks_rec <- recipe(~., data = drinks_tr) |>
+  step_ts_pad(date, by = "month") |>
+  prep()
+
+bake(drinks_rec, new_data = NULL)
+```
+
+We can also pad with an alternative value, just like we did above. We just do the following:
+
+```{r day-27-rec-month-other-value}
+drinks_rec <- recipe(~., data = drinks_tr) |>
+  step_ts_pad(date, by = "month", pad_value = mean(drinks_tr$S4248SM144NCEN)) |>
+  prep()
+
+bake(drinks_rec, new_data = NULL)
+```
+
+`timetk`'s `step_ts_pad()` function is pretty useful. If you need to pad values in a set of timeseries data, then check it out. 
