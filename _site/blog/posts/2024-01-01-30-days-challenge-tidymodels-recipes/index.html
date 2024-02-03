@@ -187,6 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" id="toc-day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable" class="nav-link" data-scroll-target="#day-24---use-step_tokenize-from-textrecipes-to-convert-a-character-predictor-into-a-token-variable">Day 24 - Use <code>step_tokenize()</code> from <code>textrecipes</code> to convert a character predictor into a <code>token</code> variable</a></li>
   <li><a href="#day-25---use-step_clean_level-to-clean-categorical-levels" id="toc-day-25---use-step_clean_level-to-clean-categorical-levels" class="nav-link" data-scroll-target="#day-25---use-step_clean_level-to-clean-categorical-levels">Day 25 - Use <code>step_clean_level()</code> to clean categorical levels</a></li>
   <li><a href="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" id="toc-day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" class="nav-link" data-scroll-target="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package">Day 26 - Use over-sampling and under-sampling methods with the <code>themis</code> package</a></li>
+  <li><a href="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" id="toc-day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" class="nav-link" data-scroll-target="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data">Day 27 - Use <code>step_ts_pad()</code> from <code>timetk</code> to pad timeseries data</a></li>
   </ul>
 </nav>
     </div>
@@ -251,7 +252,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(themis)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(timetk)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="my-spin-on-this" class="level1">
@@ -7867,6 +7869,207 @@ Note
 </div>
 </div>
 <p><code>themis</code> makes it pretty easy to utilize over- and under-sampling methods. Indeed, this was just a highlight of some of the package’s basics. <code>themis</code> also has implemented some more advanced methods to address imbalanced data (e.g., <a href="https://arxiv.org/abs/1106.1813">SMOTE</a>). If you work with imbalanced data, I suggest checking out the <code>themis</code> package.</p>
+</section>
+<section id="day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" class="level1">
+<h1>Day 27 - Use <code>step_ts_pad()</code> from <code>timetk</code> to pad timeseries data</h1>
+<p>It’s been a few of days. Work was getting busy, so I didn’t have time to focus on this post as much as I would have liked. So, let’s pick up where we left off, focusing on some <code>step_*()</code> functions from extension packages. Today, I’m focusing on the <code>step_ts_pad()</code> from the <a href="https://business-science.github.io/timetk/"><code>timetk</code></a> package.</p>
+<p><code>timetk</code> is it’s own package. It serves as a toolkit for working with timeseries data, so it’s not just an extension package to <code>recipes</code>. However, it contains some useful <code>step_*()</code> functions when modeling timeseries data. <code>step_ts_pad()</code> is highlighted in today’s post.</p>
+<p><code>step_ts_pad()</code> fills in the gaps of timeseries data with a specified value. Let’s take a look at some example data. Specifically, we’re returning to our obfuscated Google Analytics ecommerce data. To make it more clear what this function is doing, I’ll remove some values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb836"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb836-1"><a href="#cb836-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb836-2"><a href="#cb836-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">here</span>(<span class="st">"blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"</span>)</span>
+<span id="cb836-3"><a href="#cb836-3" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 9365 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────
+Delimiter: ","
+chr (8): item_name, item_category, shipping_tier, payment_type, category, country, region, city
+dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quantity, item_reven...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb838"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb838-1"><a href="#cb838-1" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> data_ga <span class="sc">|&gt;</span></span>
+<span id="cb838-2"><a href="#cb838-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event_date =</span> <span class="fu">ymd</span>(event_date)) <span class="sc">|&gt;</span></span>
+<span id="cb838-3"><a href="#cb838-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(event_date) <span class="sc">|&gt;</span></span>
+<span id="cb838-4"><a href="#cb838-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb838-5"><a href="#cb838-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(item_revenue_in_usd),</span>
+<span id="cb838-6"><a href="#cb838-6" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb838-7"><a href="#cb838-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb838-8"><a href="#cb838-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove some values to better highlight the example</span></span>
+<span id="cb838-9"><a href="#cb838-9" aria-hidden="true" tabindex="-1"></a>data_ga <span class="ot">&lt;-</span> data_ga[<span class="dv">1</span><span class="sc">:</span><span class="dv">61</span> <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, ]</span>
+<span id="cb838-10"><a href="#cb838-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb838-11"><a href="#cb838-11" aria-hidden="true" tabindex="-1"></a>data_ga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 30 × 2
+   event_date revenue
+   &lt;date&gt;       &lt;dbl&gt;
+ 1 2020-12-02    5202
+ 2 2020-12-04    6454
+ 3 2020-12-06    2328
+ 4 2020-12-08    8691
+ 5 2020-12-10   10760
+ 6 2020-12-12    6280
+ 7 2020-12-14    8498
+ 8 2020-12-16   11505
+ 9 2020-12-18    6617
+10 2020-12-20    1401
+# ℹ 20 more rows</code></pre>
+</div>
+</div>
+<p>We’re working with timeseries data, so the training and testing split is created using <code>rsamples</code>’ <code>initital_time_split()</code> function. This split function performs the same action as <code>initial_split()</code>, however, it takes the first <code>prop</code> samples for training, instead of a random selection (checkout <code>?initial_time_split</code> for more info).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb840"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb840-1"><a href="#cb840-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240202</span>)</span>
+<span id="cb840-2"><a href="#cb840-2" aria-hidden="true" tabindex="-1"></a>ga_split <span class="ot">&lt;-</span> <span class="fu">initial_time_split</span>(data_ga)</span>
+<span id="cb840-3"><a href="#cb840-3" aria-hidden="true" tabindex="-1"></a>ga_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(ga_split)</span>
+<span id="cb840-4"><a href="#cb840-4" aria-hidden="true" tabindex="-1"></a>ga_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(ga_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We don’t have a complete timeseries here, since this data is aggregated by day and we removed some days in the wrangling step. However, we can use <code>step_ts_pad()</code> to fill in values for missing days. This can be as simple as filling in missing values with <code>NA</code>. Here’s the code to do this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb841"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb841-1"><a href="#cb841-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> ga_tr) <span class="sc">|&gt;</span></span>
+<span id="cb841-2"><a href="#cb841-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ts_pad</span>(event_date, <span class="at">by =</span> <span class="st">"day"</span>, <span class="at">pad_value =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span></span>
+<span id="cb841-3"><a href="#cb841-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb841-4"><a href="#cb841-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb841-5"><a href="#cb841-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type   trained skip  id              
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;           
+1      1 step      ts_pad TRUE    FALSE ts_padding_KR6BU</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb843"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb843-1"><a href="#cb843-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  terms      by    pad_value id              
+  &lt;chr&gt;      &lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;           
+1 event_date day   NA        ts_padding_KR6BU</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb845"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb845-1"><a href="#cb845-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 43 × 2
+   event_date revenue
+   &lt;date&gt;       &lt;dbl&gt;
+ 1 2020-12-02    5202
+ 2 2020-12-03      NA
+ 3 2020-12-04    6454
+ 4 2020-12-05      NA
+ 5 2020-12-06    2328
+ 6 2020-12-07      NA
+ 7 2020-12-08    8691
+ 8 2020-12-09      NA
+ 9 2020-12-10   10760
+10 2020-12-11      NA
+# ℹ 33 more rows</code></pre>
+</div>
+</div>
+<p>Now we have a complete series. However, say we want to fill in this padded value with another value, say the mean of revenue from our training data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb847"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb847-1"><a href="#cb847-1" aria-hidden="true" tabindex="-1"></a>ga_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> data_ga) <span class="sc">|&gt;</span></span>
+<span id="cb847-2"><a href="#cb847-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ts_pad</span>(event_date, <span class="at">by =</span> <span class="st">"day"</span>, <span class="at">pad_value =</span> <span class="fu">mean</span>(ga_tr<span class="sc">$</span>revenue)) <span class="sc">|&gt;</span></span>
+<span id="cb847-3"><a href="#cb847-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb847-4"><a href="#cb847-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb847-5"><a href="#cb847-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type   trained skip  id              
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;           
+1      1 step      ts_pad TRUE    FALSE ts_padding_wvkNb</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb849"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb849-1"><a href="#cb849-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ga_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  terms      by    pad_value id              
+  &lt;chr&gt;      &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;           
+1 event_date day       3883. ts_padding_wvkNb</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb851"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb851-1"><a href="#cb851-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(ga_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 59 × 2
+   event_date revenue
+   &lt;date&gt;       &lt;dbl&gt;
+ 1 2020-12-02   5202 
+ 2 2020-12-03   3883.
+ 3 2020-12-04   6454 
+ 4 2020-12-05   3883.
+ 5 2020-12-06   2328 
+ 6 2020-12-07   3883.
+ 7 2020-12-08   8691 
+ 8 2020-12-09   3883.
+ 9 2020-12-10  10760 
+10 2020-12-11   3883.
+# ℹ 49 more rows</code></pre>
+</div>
+</div>
+<p>The <code>by</code> argument can be used to modify the padding interval. This argument can take values like:</p>
+<ul>
+<li>“auto”</li>
+<li>“year”</li>
+<li>“month”</li>
+<li>“day”</li>
+<li>“hour”</li>
+<li>“7 days”</li>
+</ul>
+<p>For example, let’s use the <code>drinks</code> timeseries data from the <code>modeldata</code> package. This data is a monthly timeseries of drink sales from 1992-01-01 to 2017-09-01. You can get more information about this data by running <code>?drinks</code> in your console. I’m going to remove some rows again to make it more clear on what this function is doing to our data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb853"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb853-1"><a href="#cb853-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(drinks, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb853-2"><a href="#cb853-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb853-3"><a href="#cb853-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove some values to better highlight the example</span></span>
+<span id="cb853-4"><a href="#cb853-4" aria-hidden="true" tabindex="-1"></a>data_drinks <span class="ot">&lt;-</span> drinks[<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(drinks) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, ]</span>
+<span id="cb853-5"><a href="#cb853-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb853-6"><a href="#cb853-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240202</span>)</span>
+<span id="cb853-7"><a href="#cb853-7" aria-hidden="true" tabindex="-1"></a>drinks_split <span class="ot">&lt;-</span> <span class="fu">initial_time_split</span>(data_drinks)</span>
+<span id="cb853-8"><a href="#cb853-8" aria-hidden="true" tabindex="-1"></a>drinks_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(drinks_split)</span>
+<span id="cb853-9"><a href="#cb853-9" aria-hidden="true" tabindex="-1"></a>drinks_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(drinks_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To pad by month, all we do is pass “month” to the <code>by</code> argument of the function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb854"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb854-1"><a href="#cb854-1" aria-hidden="true" tabindex="-1"></a>drinks_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> drinks_tr) <span class="sc">|&gt;</span></span>
+<span id="cb854-2"><a href="#cb854-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ts_pad</span>(date, <span class="at">by =</span> <span class="st">"month"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb854-3"><a href="#cb854-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb854-4"><a href="#cb854-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb854-5"><a href="#cb854-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(drinks_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 229 × 2
+   date       S4248SM144NCEN
+   &lt;date&gt;              &lt;dbl&gt;
+ 1 1992-02-01           3458
+ 2 1992-03-01             NA
+ 3 1992-04-01           4564
+ 4 1992-05-01             NA
+ 5 1992-06-01           4529
+ 6 1992-07-01             NA
+ 7 1992-08-01           4137
+ 8 1992-09-01             NA
+ 9 1992-10-01           4259
+10 1992-11-01             NA
+# ℹ 219 more rows</code></pre>
+</div>
+</div>
+<p>We can also pad with an alternative value, just like we did above. We just do the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb856"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb856-1"><a href="#cb856-1" aria-hidden="true" tabindex="-1"></a>drinks_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> drinks_tr) <span class="sc">|&gt;</span></span>
+<span id="cb856-2"><a href="#cb856-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ts_pad</span>(date, <span class="at">by =</span> <span class="st">"month"</span>, <span class="at">pad_value =</span> <span class="fu">mean</span>(drinks_tr<span class="sc">$</span>S4248SM144NCEN)) <span class="sc">|&gt;</span></span>
+<span id="cb856-3"><a href="#cb856-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb856-4"><a href="#cb856-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb856-5"><a href="#cb856-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(drinks_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 229 × 2
+   date       S4248SM144NCEN
+   &lt;date&gt;              &lt;dbl&gt;
+ 1 1992-02-01          3458 
+ 2 1992-03-01          6628.
+ 3 1992-04-01          4564 
+ 4 1992-05-01          6628.
+ 5 1992-06-01          4529 
+ 6 1992-07-01          6628.
+ 7 1992-08-01          4137 
+ 8 1992-09-01          6628.
+ 9 1992-10-01          4259 
+10 1992-11-01          6628.
+# ℹ 219 more rows</code></pre>
+</div>
+</div>
+<p><code>timetk</code>’s <code>step_ts_pad()</code> function is pretty useful. If you need to pad values in a set of timeseries data, then check it out.</p>
 
 
 </section>
