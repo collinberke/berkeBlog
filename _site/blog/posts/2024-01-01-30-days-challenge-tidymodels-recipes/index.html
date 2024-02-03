@@ -188,6 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-25---use-step_clean_level-to-clean-categorical-levels" id="toc-day-25---use-step_clean_level-to-clean-categorical-levels" class="nav-link" data-scroll-target="#day-25---use-step_clean_level-to-clean-categorical-levels">Day 25 - Use <code>step_clean_level()</code> to clean categorical levels</a></li>
   <li><a href="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" id="toc-day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" class="nav-link" data-scroll-target="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package">Day 26 - Use over-sampling and under-sampling methods with the <code>themis</code> package</a></li>
   <li><a href="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" id="toc-day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" class="nav-link" data-scroll-target="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data">Day 27 - Use <code>step_ts_pad()</code> from <code>timetk</code> to pad timeseries data</a></li>
+  <li><a href="#day-28---specify-an-interaction-variable-using-step_interact" id="toc-day-28---specify-an-interaction-variable-using-step_interact" class="nav-link" data-scroll-target="#day-28---specify-an-interaction-variable-using-step_interact">Day 28 - Specify an interaction variable using <code>step_interact()</code></a></li>
   </ul>
 </nav>
     </div>
@@ -8070,6 +8071,347 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </div>
 </div>
 <p><code>timetk</code>’s <code>step_ts_pad()</code> function is pretty useful. If you need to pad values in a set of timeseries data, then check it out.</p>
+</section>
+<section id="day-28---specify-an-interaction-variable-using-step_interact" class="level1">
+<h1>Day 28 - Specify an interaction variable using <code>step_interact()</code></h1>
+<p>Today, I’m taking a step back. I forgot to cover a very important <code>step_*()</code> function. Interaction terms are an essential component to modeling, and so I need to highlight the use of <code>recipes</code>’ <code>step_interact()</code> function.</p>
+<p><code>recipes</code>’ <code>step_interact()</code> function specifies new columns of interaction terms between two or more variables within our recipe. Let’s apply this step function to some example data. Going back to a previous data set, let’s use <code>credit_data</code> from the <code>modeldata</code> package for our examples. I’ve used this data several times in previous posts, so I just provide the code to wrangle and create the testing and training split without much exploration or explanation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb858"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb858-1"><a href="#cb858-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"credit_data"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb858-2"><a href="#cb858-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb858-3"><a href="#cb858-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove NAs to make it easier to work with data</span></span>
+<span id="cb858-4"><a href="#cb858-4" aria-hidden="true" tabindex="-1"></a>credit_data <span class="ot">&lt;-</span> credit_data <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
+<span id="cb858-5"><a href="#cb858-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb858-6"><a href="#cb858-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240203</span>)</span>
+<span id="cb858-7"><a href="#cb858-7" aria-hidden="true" tabindex="-1"></a>credit_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(credit_data, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb858-8"><a href="#cb858-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb858-9"><a href="#cb858-9" aria-hidden="true" tabindex="-1"></a>credit_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(credit_split)</span>
+<span id="cb858-10"><a href="#cb858-10" aria-hidden="true" tabindex="-1"></a>credit_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(credit_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How about we add a simple interaction between <code>Expenses</code> and <code>Income</code> to our recipe. We can do this by doing the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb859"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb859-1"><a href="#cb859-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb859-2"><a href="#cb859-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income) <span class="sc">|&gt;</span></span>
+<span id="cb859-3"><a href="#cb859-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb859-4"><a href="#cb859-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb859-5"><a href="#cb859-5" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 3231 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Interactions with: Expenses:Income | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb872"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb872-1"><a href="#cb872-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  number operation type     trained skip  id            
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;         
+1      1 step      interact TRUE    FALSE interact_xYaaz</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb874"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb874-1"><a href="#cb874-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  terms           id            
+  &lt;chr&gt;           &lt;chr&gt;         
+1 Expenses:Income interact_xYaaz</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb876"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb876-1"><a href="#cb876-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select just the interaction term, just to make it easier to see</span></span>
+<span id="cb876-2"><a href="#cb876-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb876-3"><a href="#cb876-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Expenses_x_Income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 1
+   Expenses_x_Income
+               &lt;dbl&gt;
+ 1              7200
+ 2              4125
+ 3              2835
+ 4              8100
+ 5              2345
+ 6              7500
+ 7              4500
+ 8              7200
+ 9              4500
+10              6525
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>step_interact()</code>’s docs mention this function is intended for <strong>numeric data</strong>, and categorical variables should be converted to dummy variables first. This can be done using <code>step_dummy()</code> (see my previous day 04 post).</p>
+</div>
+</div>
+<p>You’ll notice <code>step_interact()</code> modifies the interaction variable’s name by using <code>_x_</code> as the separator. If for some reason you want to change this, you just pass a character string to <code>step_interact()</code>’s <code>sep</code> argument.</p>
+<p>This naming convention is useful, especially if you intend to specify higher order interaction variables within your model, like a 3-way interaction.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb878"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb878-1"><a href="#cb878-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb878-2"><a href="#cb878-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income<span class="sc">:</span>Assets) <span class="sc">|&gt;</span></span>
+<span id="cb878-3"><a href="#cb878-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb878-4"><a href="#cb878-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb878-5"><a href="#cb878-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb878-6"><a href="#cb878-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Expenses_x_Income_x_Assets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 1
+   Expenses_x_Income_x_Assets
+                        &lt;dbl&gt;
+ 1                          0
+ 2                   16500000
+ 3                          0
+ 4                  243000000
+ 5                          0
+ 6                   60000000
+ 7                   15750000
+ 8                   21600000
+ 9                   24750000
+10                   45675000
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<p><code>step_interact()</code> also allows the use of traditional R model formula when specifying interaction variables. This is really convenient. Say we want to include all the two-way interactions along with our three way interaction, we could do something like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb880"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb880-1"><a href="#cb880-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb880-2"><a href="#cb880-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(</span>
+<span id="cb880-3"><a href="#cb880-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income <span class="sc">+</span> Expenses<span class="sc">:</span>Assets <span class="sc">+</span> Income<span class="sc">:</span>Assets <span class="sc">+</span> Expenses<span class="sc">:</span>Income<span class="sc">:</span>Assets) <span class="sc">|&gt;</span></span>
+<span id="cb880-4"><a href="#cb880-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb880-5"><a href="#cb880-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb880-6"><a href="#cb880-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb880-7"><a href="#cb880-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Expenses"</span>), <span class="fu">starts_with</span>(<span class="st">"Income"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 6
+   Expenses Expenses_x_Income Expenses_x_Assets Expenses_x_Income_x_Assets Income Income_x_Assets
+      &lt;int&gt;             &lt;dbl&gt;             &lt;dbl&gt;                      &lt;dbl&gt;  &lt;int&gt;           &lt;dbl&gt;
+ 1       60              7200                 0                          0    120               0
+ 2       75              4125            300000                   16500000     55          220000
+ 3       35              2835                 0                          0     81               0
+ 4       90              8100           2700000                  243000000     90         2700000
+ 5       35              2345                 0                          0     67               0
+ 6       75              7500            600000                   60000000    100          800000
+ 7       45              4500            157500                   15750000    100          350000
+ 8       60              7200            180000                   21600000    120          360000
+ 9       60              4500            330000                   24750000     75          412500
+10       45              6525            315000                   45675000    145         1015000
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Add additional interactions using the <code>+</code></p>
+</div>
+</div>
+<p>However, a short-cut would be to do something like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb882"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb882-1"><a href="#cb882-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb882-2"><a href="#cb882-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(</span>
+<span id="cb882-3"><a href="#cb882-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="sc">~</span>(Expenses <span class="sc">+</span> Income <span class="sc">+</span> Assets)<span class="sc">^</span><span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb882-4"><a href="#cb882-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb882-5"><a href="#cb882-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb882-6"><a href="#cb882-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 3231 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Interactions with: (Expenses + Income + Assets)^3 | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb895"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb895-1"><a href="#cb895-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb895-2"><a href="#cb895-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Expenses"</span>), <span class="fu">starts_with</span>(<span class="st">"Income"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 6
+   Expenses Expenses_x_Income Expenses_x_Assets Expenses_x_Income_x_Assets Income Income_x_Assets
+      &lt;int&gt;             &lt;dbl&gt;             &lt;dbl&gt;                      &lt;dbl&gt;  &lt;int&gt;           &lt;dbl&gt;
+ 1       60              7200                 0                          0    120               0
+ 2       75              4125            300000                   16500000     55          220000
+ 3       35              2835                 0                          0     81               0
+ 4       90              8100           2700000                  243000000     90         2700000
+ 5       35              2345                 0                          0     67               0
+ 6       75              7500            600000                   60000000    100          800000
+ 7       45              4500            157500                   15750000    100          350000
+ 8       60              7200            180000                   21600000    120          360000
+ 9       60              4500            330000                   24750000     75          412500
+10       45              6525            315000                   45675000    145         1015000
+# ℹ 3,221 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although traditional model formula syntax can be used, <code>step_interact()</code>’s docs warn that inline functions (e.g., <code>log</code>) should not be used.</p>
+</div>
+</div>
+<p>It’s also important to mention, again, categorical variables should be converted into numeric variables before being used within an interaction. Let’s say we want to specify an interaction between <code>Debt</code> and <code>Home</code> variables within our <code>credit_data</code> recipe. We would use <code>step_dummy()</code> first on <code>Home</code>, then specify all the interactions between the dummy variables and <code>Debt</code>. <code>step_interact()</code> makes this very easy with the use of <a href="https://dplyr.tidyverse.org/reference/select.html"><code>dplyr</code>-like selection functions</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb897"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb897-1"><a href="#cb897-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_data) <span class="sc">|&gt;</span></span>
+<span id="cb897-2"><a href="#cb897-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Home) <span class="sc">|&gt;</span></span>
+<span id="cb897-3"><a href="#cb897-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="sc">~</span><span class="fu">starts_with</span>(<span class="st">"Home"</span>)<span class="sc">:</span>Debt) <span class="sc">|&gt;</span></span>
+<span id="cb897-4"><a href="#cb897-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb897-5"><a href="#cb897-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb897-6"><a href="#cb897-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 4039 data points and no incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Dummy variables from: Home | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Interactions with: (Home_other + Home_owner + Home_parents + Home_priv + Home_rent):Debt |
+  Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb911"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb911-1"><a href="#cb911-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  terms columns id         
+  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;      
+1 Home  other   dummy_asve2
+2 Home  owner   dummy_asve2
+3 Home  parents dummy_asve2
+4 Home  priv    dummy_asve2
+5 Home  rent    dummy_asve2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb913"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb913-1"><a href="#cb913-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  terms             id            
+  &lt;chr&gt;             &lt;chr&gt;         
+1 Home_other:Debt   interact_hgBQM
+2 Home_owner:Debt   interact_hgBQM
+3 Home_parents:Debt interact_hgBQM
+4 Home_priv:Debt    interact_hgBQM
+5 Home_rent:Debt    interact_hgBQM</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb915"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb915-1"><a href="#cb915-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4,039 × 23
+   Status Seniority  Time   Age Marital Records Job       Expenses Income Assets  Debt Amount Price
+   &lt;fct&gt;      &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;        &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt;
+ 1 good           9    60    30 married no      freelance       73    129      0     0    800   846
+ 2 good          17    60    58 widow   no      fixed           48    131      0     0   1000  1658
+ 3 bad           10    36    46 married yes     freelance       90    200   3000     0   2000  2985
+ 4 good           0    60    24 single  no      fixed           63    182   2500     0    900  1325
+ 5 good           0    36    26 single  no      fixed           46    107      0     0    310   910
+ 6 good           1    60    36 married no      fixed           75    214   3500     0    650  1645
+ 7 good          29    60    44 married no      fixed           75    125  10000     0   1600  1800
+ 8 good           9    12    27 single  no      fixed           35     80      0     0    200  1093
+ 9 good           0    60    32 married no      freelance       90    107  15000     0   1200  1957
+10 bad            0    48    41 married no      partime         90     80      0     0   1200  1468
+# ℹ 4,029 more rows
+# ℹ 10 more variables: Home_other &lt;dbl&gt;, Home_owner &lt;dbl&gt;, Home_parents &lt;dbl&gt;, Home_priv &lt;dbl&gt;,
+#   Home_rent &lt;dbl&gt;, Home_other_x_Debt &lt;dbl&gt;, Home_owner_x_Debt &lt;dbl&gt;, Home_parents_x_Debt &lt;dbl&gt;,
+#   Home_priv_x_Debt &lt;dbl&gt;, Home_rent_x_Debt &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>The <code>tidy</code> methods are useful here, especially if you want to know what variables will be created as a result of the recipe.</p>
+<p>To sum up today’s post, <code>step_interact()</code> has a nice, intuitive interface. It allows for traditional interaction variable specification, while also adding some convenient functionality. A really great <code>step_*()</code> function.</p>
 
 
 </section>
