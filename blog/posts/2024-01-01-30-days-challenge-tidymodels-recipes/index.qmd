@@ -2753,3 +2753,143 @@ The `tidy` methods are useful here, especially if you want to know what variable
 
 To sum up today's post, `step_interact()` has a nice, intuitive interface. It allows for traditional interaction variable specification, while also adding some convenient functionality. A really great `step_*()` function.
 
+# Day 29 - Use `recipes`' `check_*()` functions to validate steps
+
+`recipes` has several [`check_*()`](https://recipes.tidymodels.org/reference/index.html#check-functions) functions. These functions are useful for validating data returned from recipe steps. Specifically, `recipes` includes the following `check_*()` functions:
+
+* `check_class()` - checks variable classes
+* `check_cols()` - checks if all columns are present
+* `check_missing()` - checks for any missing values
+* `check_new_values()` - checks for the presence of any new values
+* `check_range()` - checks for whether a variable's range changes 
+
+Today, I'm going to highlight a couple of these `check_*` functions: `check_class()`, `check_cols()`, and `check_missing()`. Let's start with `check_class()`. 
+
+We'll continue to use our `credit_data` for some of today's examples. Towards the end, I'll use the `penguins` data for the final example.
+
+```{r day-29-data}
+data("credit_data", package = "modeldata")
+
+credit_data <- credit_data |> na.omit()
+
+set.seed(20240204)
+credit_split <- initial_split(credit_data, prop = 0.8)
+credit_tr <- training(credit_split)
+credit_te <- testing(credit_split)
+```
+
+`check_class()` is useful for verifying variables are expected classes. Two methods are used to check variable classes. First, this check function uses values provided to the `class` argument. If `NULL`, the check will then learn the classes from the `prep`. A variable can have multiple classes, which will be used within the check.
+
+Here's how to use the training set to learn variable classes for the check:
+
+```{r day-29-rec}
+credit_rec <- recipe(~., data = credit_tr) |>
+  check_class(everything()) |>
+  prep() |>
+  bake(new_data = NULL)
+
+credit_rec
+```
+
+Indeed, nothing happens because our recipe resulted in variables to not change their class. If any unexpected changes did occur, then the `bake` would be broken with an error.
+
+We can manually specify our variable class expectations using the `class_nm` argument:
+
+```{r day-29-rec-manual-col-check}
+credit_rec <- recipe(~., data = credit_tr) |>
+  check_class(
+    Status, Home, Marital, Records, Job, class_nm = "factor"
+  ) |>
+  check_class(
+    Seniority, Time, Age, Expenses, Income, 
+    Assets, Debt, Amount, Price, class_nm = "integer"
+  ) |>
+  prep(strings_as_factors = FALSE) |>
+  bake(new_data = NULL)
+
+credit_rec
+```
+
+::: {.callout-note}
+If you intend to have a variable with multiple classes, you can specify this with `allow_additional = TRUE` in the `check_class()` function. Check out the function's examples section for more details (run `?check_class` in your console).
+:::
+
+Just to highlight what happens when the check fails, let's set the second check to expect a `numeric` rather than an `integer` class for the variable.
+
+```{r day-29-rec-col-bad-check, error=TRUE}
+credit_rec <- recipe(~., data = credit_tr) |>
+  check_class(
+    Status, Home, Marital, Records, Job, class_nm = "factor"
+  ) |>
+  check_class(
+    Seniority, Time, Age, Expenses, Income, 
+    Assets, Debt, Amount, Price, class_nm = "numeric"
+  ) |>
+  prep(strings_as_factors = FALSE) |>
+  bake(new_data = NULL)
+
+credit_rec
+```
+
+Another useful check is `check_cols()`. This function checks if all the columns from the training frame are also present within the new data. Here's what this looks like:
+
+```{r day-29-rec-check-cols, error = TRUE}
+credit_rec <- recipe(~., data = credit_tr) |>
+  check_cols(everything()) |>
+  step_dummy(Job) |>
+  prep()
+
+# Omit Job variable in the new data to show the error
+bake(credit_rec, new_data = credit_te[, -8])
+```
+
+You'll notice an error stops our `bake`. This is because the variable used to make our dummy variables, `Job`, was omitted from the new data. Indeed, this is a very useful check, especially to verify if variables needed in our new data are available when the recipe is baked.
+
+Okay, I'll highlight one more useful `check_*` function for today, `check_missing()`. This function's purpose is simple--check if variables contain any missing values. `check_missing()` can fail either on `prep` or `bake`. Both help catch if missing values are present in the training or new data.
+
+The `check_missing()` documentation (run `?check_missing` in your console), uses the `credit_data` data for its examples. So, let's switch it up a bit here. Instead, I'll use the `penguins` data for this final example. Here's the code to get us up to the specification of the recipe.
+
+```{r day-29-data-penguins}
+data("penguins", package = "modeldata")
+
+set.seed(20240204)
+penguins_split <- initial_split(penguins, prop = .8)
+penguins_tr <- training(penguins_split)
+penguins_te <- testing(penguins_split)
+```
+
+```{r day-29-penguins-check-missing, error=TRUE}
+recipe(~., data = penguins_tr) |>
+  check_missing(everything()) |>
+  prep() |>
+  bake(new_data = NULL)
+```
+
+You'll notice the above code errors because all the columns listed in the error contain a missing value(s).
+
+```{r day-29-missing-values}
+is.na(penguins_tr) |> colSums()
+```
+
+If for some reason your training data doesn't contain missing values, but your new data does, then the check will push an error during the `bake`. 
+
+Here I'll use `step_naomit()` to remove missing values from the training set to show how `check_missing()` throws an error during the `bake`.
+
+```{r day-29-rec-fail-missing-new-data}
+# No error
+penguin_rec <- recipe(~., data = penguins_tr) |>
+  step_naomit(everything()) |>
+  check_missing(everything()) |>
+  prep()
+```
+
+```{r day-29-missing-fail-bake, error=TRUE}
+# Error
+bake(penguin_rec, new_data = penguins_te)
+```
+
+A pretty useful `check_*()` function, especially if you're concerned data might contain missing values.  
+
+Indeed, recipes provides some other `check_*()` functions. I highly suggest looking over `recipes`' [reference page](https://recipes.tidymodels.org/reference/index.html#check-functions) to see the other functions that are provided.
+
+That's all for day 29. Tomorrow is day 30 of this challenge. I'm excited to wrap this post up.

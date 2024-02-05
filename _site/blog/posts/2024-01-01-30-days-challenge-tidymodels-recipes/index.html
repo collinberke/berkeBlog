@@ -189,6 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" id="toc-day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package" class="nav-link" data-scroll-target="#day-26---use-over-sampling-and-under-sampling-methods-with-the-themis-package">Day 26 - Use over-sampling and under-sampling methods with the <code>themis</code> package</a></li>
   <li><a href="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" id="toc-day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" class="nav-link" data-scroll-target="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data">Day 27 - Use <code>step_ts_pad()</code> from <code>timetk</code> to pad timeseries data</a></li>
   <li><a href="#day-28---specify-an-interaction-variable-using-step_interact" id="toc-day-28---specify-an-interaction-variable-using-step_interact" class="nav-link" data-scroll-target="#day-28---specify-an-interaction-variable-using-step_interact">Day 28 - Specify an interaction variable using <code>step_interact()</code></a></li>
+  <li><a href="#day-29---use-recipes-check_-functions-to-validate-steps" id="toc-day-29---use-recipes-check_-functions-to-validate-steps" class="nav-link" data-scroll-target="#day-29---use-recipes-check_-functions-to-validate-steps">Day 29 - Use <code>recipes</code>’ <code>check_*()</code> functions to validate steps</a></li>
   </ul>
 </nav>
     </div>
@@ -8412,6 +8413,205 @@ Warning
 </div>
 <p>The <code>tidy</code> methods are useful here, especially if you want to know what variables will be created as a result of the recipe.</p>
 <p>To sum up today’s post, <code>step_interact()</code> has a nice, intuitive interface. It allows for traditional interaction variable specification, while also adding some convenient functionality. A really great <code>step_*()</code> function.</p>
+</section>
+<section id="day-29---use-recipes-check_-functions-to-validate-steps" class="level1">
+<h1>Day 29 - Use <code>recipes</code>’ <code>check_*()</code> functions to validate steps</h1>
+<p><code>recipes</code> has several <a href="https://recipes.tidymodels.org/reference/index.html#check-functions"><code>check_*()</code></a> functions. These functions are useful for validating data returned from recipe steps. Specifically, <code>recipes</code> includes the following <code>check_*()</code> functions:</p>
+<ul>
+<li><code>check_class()</code> - checks variable classes</li>
+<li><code>check_cols()</code> - checks if all columns are present</li>
+<li><code>check_missing()</code> - checks for any missing values</li>
+<li><code>check_new_values()</code> - checks for the presence of any new values</li>
+<li><code>check_range()</code> - checks for whether a variable’s range changes</li>
+</ul>
+<p>Today, I’m going to highlight a couple of these <code>check_*</code> functions: <code>check_class()</code>, <code>check_cols()</code>, and <code>check_missing()</code>. Let’s start with <code>check_class()</code>.</p>
+<p>We’ll continue to use our <code>credit_data</code> for some of today’s examples. Towards the end, I’ll use the <code>penguins</code> data for the final example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb917"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb917-1"><a href="#cb917-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"credit_data"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb917-2"><a href="#cb917-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb917-3"><a href="#cb917-3" aria-hidden="true" tabindex="-1"></a>credit_data <span class="ot">&lt;-</span> credit_data <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
+<span id="cb917-4"><a href="#cb917-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb917-5"><a href="#cb917-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240204</span>)</span>
+<span id="cb917-6"><a href="#cb917-6" aria-hidden="true" tabindex="-1"></a>credit_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(credit_data, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb917-7"><a href="#cb917-7" aria-hidden="true" tabindex="-1"></a>credit_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(credit_split)</span>
+<span id="cb917-8"><a href="#cb917-8" aria-hidden="true" tabindex="-1"></a>credit_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(credit_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>check_class()</code> is useful for verifying variables are expected classes. Two methods are used to check variable classes. First, this check function uses values provided to the <code>class</code> argument. If <code>NULL</code>, the check will then learn the classes from the <code>prep</code>. A variable can have multiple classes, which will be used within the check.</p>
+<p>Here’s how to use the training set to learn variable classes for the check:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb918"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb918-1"><a href="#cb918-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb918-2"><a href="#cb918-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb918-3"><a href="#cb918-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb918-4"><a href="#cb918-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb918-5"><a href="#cb918-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb918-6"><a href="#cb918-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 14
+   Status Seniority Home     Time   Age Marital   Records Job    Expenses Income Assets  Debt Amount
+   &lt;fct&gt;      &lt;int&gt; &lt;fct&gt;   &lt;int&gt; &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;
+ 1 good           1 other      30    26 single    no      fixed        35    110      0     0    700
+ 2 good           1 parents    48    22 married   no      fixed        45    117      0     0    768
+ 3 good          25 priv       48    55 married   no      fixed        60    169   4000     0   1000
+ 4 good          34 owner      60    50 married   yes     fixed        60    150   9000     0   1300
+ 5 good           0 parents    60    21 single    no      parti…       45    312  10000     0   1033
+ 6 good          15 owner      60    35 single    yes     fixed        35    150   5000  2800   1300
+ 7 good           3 other      12    30 single    no      freel…       35    150      0     0    920
+ 8 good          23 other      54    38 separated no      fixed        60    178      0     0    740
+ 9 bad            2 owner      60    38 married   yes     fixed        75     74   3500   500   1700
+10 good           0 parents    36    22 single    no      parti…       35    105   3000     0    750
+# ℹ 3,221 more rows
+# ℹ 1 more variable: Price &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Indeed, nothing happens because our recipe resulted in variables to not change their class. If any unexpected changes did occur, then the <code>bake</code> would be broken with an error.</p>
+<p>We can manually specify our variable class expectations using the <code>class_nm</code> argument:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb920"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb920-1"><a href="#cb920-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb920-2"><a href="#cb920-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb920-3"><a href="#cb920-3" aria-hidden="true" tabindex="-1"></a>    Status, Home, Marital, Records, Job, <span class="at">class_nm =</span> <span class="st">"factor"</span></span>
+<span id="cb920-4"><a href="#cb920-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb920-5"><a href="#cb920-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb920-6"><a href="#cb920-6" aria-hidden="true" tabindex="-1"></a>    Seniority, Time, Age, Expenses, Income, </span>
+<span id="cb920-7"><a href="#cb920-7" aria-hidden="true" tabindex="-1"></a>    Assets, Debt, Amount, Price, <span class="at">class_nm =</span> <span class="st">"integer"</span></span>
+<span id="cb920-8"><a href="#cb920-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb920-9"><a href="#cb920-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">strings_as_factors =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb920-10"><a href="#cb920-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb920-11"><a href="#cb920-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb920-12"><a href="#cb920-12" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 14
+   Status Seniority Home     Time   Age Marital   Records Job    Expenses Income Assets  Debt Amount
+   &lt;fct&gt;      &lt;int&gt; &lt;fct&gt;   &lt;int&gt; &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;
+ 1 good           1 other      30    26 single    no      fixed        35    110      0     0    700
+ 2 good           1 parents    48    22 married   no      fixed        45    117      0     0    768
+ 3 good          25 priv       48    55 married   no      fixed        60    169   4000     0   1000
+ 4 good          34 owner      60    50 married   yes     fixed        60    150   9000     0   1300
+ 5 good           0 parents    60    21 single    no      parti…       45    312  10000     0   1033
+ 6 good          15 owner      60    35 single    yes     fixed        35    150   5000  2800   1300
+ 7 good           3 other      12    30 single    no      freel…       35    150      0     0    920
+ 8 good          23 other      54    38 separated no      fixed        60    178      0     0    740
+ 9 bad            2 owner      60    38 married   yes     fixed        75     74   3500   500   1700
+10 good           0 parents    36    22 single    no      parti…       35    105   3000     0    750
+# ℹ 3,221 more rows
+# ℹ 1 more variable: Price &lt;int&gt;</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you intend to have a variable with multiple classes, you can specify this with <code>allow_additional = TRUE</code> in the <code>check_class()</code> function. Check out the function’s examples section for more details (run <code>?check_class</code> in your console).</p>
+</div>
+</div>
+<p>Just to highlight what happens when the check fails, let’s set the second check to expect a <code>numeric</code> rather than an <code>integer</code> class for the variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb922"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb922-1"><a href="#cb922-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb922-2"><a href="#cb922-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb922-3"><a href="#cb922-3" aria-hidden="true" tabindex="-1"></a>    Status, Home, Marital, Records, Job, <span class="at">class_nm =</span> <span class="st">"factor"</span></span>
+<span id="cb922-4"><a href="#cb922-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb922-5"><a href="#cb922-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb922-6"><a href="#cb922-6" aria-hidden="true" tabindex="-1"></a>    Seniority, Time, Age, Expenses, Income, </span>
+<span id="cb922-7"><a href="#cb922-7" aria-hidden="true" tabindex="-1"></a>    Assets, Debt, Amount, Price, <span class="at">class_nm =</span> <span class="st">"numeric"</span></span>
+<span id="cb922-8"><a href="#cb922-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb922-9"><a href="#cb922-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">strings_as_factors =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb922-10"><a href="#cb922-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `check_class()`:
+Caused by error:
+! Seniority should have the class(es) numeric but has the class(es) integer.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb924"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb924-1"><a href="#cb924-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,231 × 14
+   Status Seniority Home     Time   Age Marital   Records Job    Expenses Income Assets  Debt Amount
+   &lt;fct&gt;      &lt;int&gt; &lt;fct&gt;   &lt;int&gt; &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;  &lt;int&gt;
+ 1 good           1 other      30    26 single    no      fixed        35    110      0     0    700
+ 2 good           1 parents    48    22 married   no      fixed        45    117      0     0    768
+ 3 good          25 priv       48    55 married   no      fixed        60    169   4000     0   1000
+ 4 good          34 owner      60    50 married   yes     fixed        60    150   9000     0   1300
+ 5 good           0 parents    60    21 single    no      parti…       45    312  10000     0   1033
+ 6 good          15 owner      60    35 single    yes     fixed        35    150   5000  2800   1300
+ 7 good           3 other      12    30 single    no      freel…       35    150      0     0    920
+ 8 good          23 other      54    38 separated no      fixed        60    178      0     0    740
+ 9 bad            2 owner      60    38 married   yes     fixed        75     74   3500   500   1700
+10 good           0 parents    36    22 single    no      parti…       35    105   3000     0    750
+# ℹ 3,221 more rows
+# ℹ 1 more variable: Price &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Another useful check is <code>check_cols()</code>. This function checks if all the columns from the training frame are also present within the new data. Here’s what this looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb926"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb926-1"><a href="#cb926-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb926-2"><a href="#cb926-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_cols</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb926-3"><a href="#cb926-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Job) <span class="sc">|&gt;</span></span>
+<span id="cb926-4"><a href="#cb926-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb926-5"><a href="#cb926-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb926-6"><a href="#cb926-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Omit Job variable in the new data to show the error</span></span>
+<span id="cb926-7"><a href="#cb926-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> credit_te[, <span class="sc">-</span><span class="dv">8</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `bake()`:
+! The following required columns are missing from `new_data`: "Job".
+ℹ These columns have one of the following roles, which are required at `bake()` time: "predictor".</code></pre>
+</div>
+</div>
+<p>You’ll notice an error stops our <code>bake</code>. This is because the variable used to make our dummy variables, <code>Job</code>, was omitted from the new data. Indeed, this is a very useful check, especially to verify if variables needed in our new data are available when the recipe is baked.</p>
+<p>Okay, I’ll highlight one more useful <code>check_*</code> function for today, <code>check_missing()</code>. This function’s purpose is simple–check if variables contain any missing values. <code>check_missing()</code> can fail either on <code>prep</code> or <code>bake</code>. Both help catch if missing values are present in the training or new data.</p>
+<p>The <code>check_missing()</code> documentation (run <code>?check_missing</code> in your console), uses the <code>credit_data</code> data for its examples. So, let’s switch it up a bit here. Instead, I’ll use the <code>penguins</code> data for this final example. Here’s the code to get us up to the specification of the recipe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb928"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb928-1"><a href="#cb928-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb928-2"><a href="#cb928-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb928-3"><a href="#cb928-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240204</span>)</span>
+<span id="cb928-4"><a href="#cb928-4" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb928-5"><a href="#cb928-5" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb928-6"><a href="#cb928-6" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb929"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb929-1"><a href="#cb929-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb929-2"><a href="#cb929-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_missing</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb929-3"><a href="#cb929-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb929-4"><a href="#cb929-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `check_missing()`:
+Caused by error in `bake()`:
+! The following columns contain missing values: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `sex`.</code></pre>
+</div>
+</div>
+<p>You’ll notice the above code errors because all the columns listed in the error contain a missing value(s).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb931"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb931-1"><a href="#cb931-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(penguins_tr) <span class="sc">|&gt;</span> <span class="fu">colSums</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          species            island    bill_length_mm     bill_depth_mm flipper_length_mm 
+                0                 0                 1                 1                 1 
+      body_mass_g               sex 
+                1                 9 </code></pre>
+</div>
+</div>
+<p>If for some reason your training data doesn’t contain missing values, but your new data does, then the check will push an error during the <code>bake</code>.</p>
+<p>Here I’ll use <code>step_naomit()</code> to remove missing values from the training set to show how <code>check_missing()</code> throws an error during the <code>bake</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb933"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb933-1"><a href="#cb933-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No error</span></span>
+<span id="cb933-2"><a href="#cb933-2" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb933-3"><a href="#cb933-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb933-4"><a href="#cb933-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_missing</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb933-5"><a href="#cb933-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb934"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb934-1"><a href="#cb934-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Error</span></span>
+<span id="cb934-2"><a href="#cb934-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> penguins_te)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `bake()`:
+! The following columns contain missing values: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `sex`.</code></pre>
+</div>
+</div>
+<p>A pretty useful <code>check_*()</code> function, especially if you’re concerned data might contain missing values.</p>
+<p>Indeed, recipes provides some other <code>check_*()</code> functions. I highly suggest looking over <code>recipes</code>’ <a href="https://recipes.tidymodels.org/reference/index.html#check-functions">reference page</a> to see the other functions that are provided.</p>
+<p>That’s all for day 29. Tomorrow is day 30 of this challenge. I’m excited to wrap this post up.</p>
 
 
 </section>
