@@ -190,6 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" id="toc-day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data" class="nav-link" data-scroll-target="#day-27---use-step_ts_pad-from-timetk-to-pad-timeseries-data">Day 27 - Use <code>step_ts_pad()</code> from <code>timetk</code> to pad timeseries data</a></li>
   <li><a href="#day-28---specify-an-interaction-variable-using-step_interact" id="toc-day-28---specify-an-interaction-variable-using-step_interact" class="nav-link" data-scroll-target="#day-28---specify-an-interaction-variable-using-step_interact">Day 28 - Specify an interaction variable using <code>step_interact()</code></a></li>
   <li><a href="#day-29---use-recipes-check_-functions-to-validate-steps" id="toc-day-29---use-recipes-check_-functions-to-validate-steps" class="nav-link" data-scroll-target="#day-29---use-recipes-check_-functions-to-validate-steps">Day 29 - Use <code>recipes</code>’ <code>check_*()</code> functions to validate steps</a></li>
+  <li><a href="#day-30---use-step_cut-to-turn-a-numeric-variable-into-a-factor" id="toc-day-30---use-step_cut-to-turn-a-numeric-variable-into-a-factor" class="nav-link" data-scroll-target="#day-30---use-step_cut-to-turn-a-numeric-variable-into-a-factor">Day 30 - Use <code>step_cut()</code> to turn a numeric variable into a factor</a></li>
   </ul>
 </nav>
     </div>
@@ -8612,6 +8613,217 @@ Caused by error in `bake()`:
 <p>A pretty useful <code>check_*()</code> function, especially if you’re concerned data might contain missing values.</p>
 <p>Indeed, recipes provides some other <code>check_*()</code> functions. I highly suggest looking over <code>recipes</code>’ <a href="https://recipes.tidymodels.org/reference/index.html#check-functions">reference page</a> to see the other functions that are provided.</p>
 <p>That’s all for day 29. Tomorrow is day 30 of this challenge. I’m excited to wrap this post up.</p>
+</section>
+<section id="day-30---use-step_cut-to-turn-a-numeric-variable-into-a-factor" class="level1">
+<h1>Day 30 - Use <code>step_cut()</code> to turn a numeric variable into a factor</h1>
+<p>Here we are, day 30. We made it! <span class="emoji" data-emoji="tada">🎉</span></p>
+<p><code>step_cut()</code> is my focus for our final day. This step function creates factor variables from numeric variables. If you’re familiar with <code>base::cut()</code>, you’ll have a pretty good idea of what <code>step_cut()</code> does within a recipe.</p>
+<p>Let’s use our <code>penguins</code> data for our final day of examples. Here’s the code to split the data into our training and testing sets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb936"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb936-1"><a href="#cb936-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb936-2"><a href="#cb936-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb936-3"><a href="#cb936-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240206</span>)</span>
+<span id="cb936-4"><a href="#cb936-4" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb936-5"><a href="#cb936-5" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb936-6"><a href="#cb936-6" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I want to split our penguins into three categories: small, medium, and large. We’ll do this by cutting the <code>body_mass_g</code> column into three categories. Let’s first obtain some summary statistics to inform us on the cut values we should use.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb937"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb937-1"><a href="#cb937-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(penguins_tr, body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">penguins_tr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">275</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 16%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">body_mass_g</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">4185.07</td>
+<td style="text-align: right;">789.06</td>
+<td style="text-align: right;">2850</td>
+<td style="text-align: right;">3550</td>
+<td style="text-align: right;">4000</td>
+<td style="text-align: right;">4750</td>
+<td style="text-align: right;">6300</td>
+<td style="text-align: left;">▅▇▅▃▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Great, let’s use <code>body_mass_g</code>’s 25th and 75th percentiles as the cut offs in our recipe. You’ll notice I use <code>step_naomit()</code> here to remove rows with missing values. If I didn’t do this, <code>step_cut()</code> would error.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>step_naomit()</code>’s <code>skip</code> argument is set to <code>TRUE</code> by default. This will cause the <code>bake</code> step to skip this step, and <code>NA</code> values will still be present within our data.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb938"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb938-1"><a href="#cb938-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb938-2"><a href="#cb938-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb938-3"><a href="#cb938-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_cut</span>(body_mass_g, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3550</span>, <span class="dv">4750</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb938-4"><a href="#cb938-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span>
+<span id="cb938-5"><a href="#cb938-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb938-6"><a href="#cb938-6" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>predictor: 7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Training information </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Training data contained 275 data points and 10 incomplete rows.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Removing rows with NA values in: body_mass_g | Trained</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Cut numeric for: body_mass_g | Trained</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb952"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb952-1"><a href="#cb952-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguins_rec, penguins_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 7
+   species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g         sex   
+   &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt; &lt;fct&gt;               &lt;fct&gt; 
+ 1 Adelie    Biscoe              43.2          19                 197 (4.75e+03,6.3e+03]  male  
+ 2 Chinstrap Dream               45.7          17.3               193 (3.55e+03,4.75e+03] female
+ 3 Gentoo    Biscoe              48.4          16.3               220 (4.75e+03,6.3e+03]  male  
+ 4 Adelie    Torgersen           34.6          21.1               198 (3.55e+03,4.75e+03] male  
+ 5 Gentoo    Biscoe              45.2          15.8               215 (4.75e+03,6.3e+03]  male  
+ 6 Gentoo    Biscoe              49.2          15.2               221 (4.75e+03,6.3e+03]  male  
+ 7 Adelie    Torgersen           38.5          17.9               190 [2.85e+03,3.55e+03] female
+ 8 Gentoo    Biscoe              45.1          14.5               215 (4.75e+03,6.3e+03]  female
+ 9 Adelie    Torgersen           46            21.5               194 (3.55e+03,4.75e+03] male  
+10 Chinstrap Dream               46.4          17.8               191 (3.55e+03,4.75e+03] female
+# ℹ 265 more rows</code></pre>
+</div>
+</div>
+<p>Say we wanted to keep the original variable along with the newly created factor variable. We need to first use <code>step_mutate()</code> to retain the original before cutting. Here’s the code to do this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb954"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb954-1"><a href="#cb954-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb954-2"><a href="#cb954-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb954-3"><a href="#cb954-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">body_mass_g_orig =</span> body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb954-4"><a href="#cb954-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_cut</span>(body_mass_g, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3550</span>, <span class="dv">4750</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb954-5"><a href="#cb954-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb954-6"><a href="#cb954-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb954-7"><a href="#cb954-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguins_rec, penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb954-8"><a href="#cb954-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"body"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 275 × 2
+   body_mass_g         body_mass_g_orig
+   &lt;fct&gt;                          &lt;int&gt;
+ 1 (4.75e+03,6.3e+03]              4775
+ 2 (3.55e+03,4.75e+03]             3600
+ 3 (4.75e+03,6.3e+03]              5400
+ 4 (3.55e+03,4.75e+03]             4400
+ 5 (4.75e+03,6.3e+03]              5300
+ 6 (4.75e+03,6.3e+03]              6300
+ 7 [2.85e+03,3.55e+03]             3325
+ 8 (4.75e+03,6.3e+03]              5000
+ 9 (3.55e+03,4.75e+03]             4200
+10 (3.55e+03,4.75e+03]             3700
+# ℹ 265 more rows</code></pre>
+</div>
+</div>
+<p>One other note about <code>step_cut()</code>, it also has an <code>include_outside_range</code> argument. This argument accepts a boolean value (<code>TRUE</code> / <code>FALSE</code>), which specifies what you want to do with ranges outside of the cut values learned during the prep phase. <code>TRUE</code> will include values outside of the range. <code>FALSE</code> will exclude them and apply an <code>NA</code> as the value.</p>
+<p>I’m ending today’s post on an easy one. <code>step_cut()</code> is pretty straightforward, but it is very useful for creating factor variables out of numeric variables within our recipe.</p>
+<p>Although this is the end of the 30ish days, I’m going to take some time–hopefully tomorrow–to draft up a quick summary about what I’ve learned during this process. Until then, keep working on those recipes.</p>
 
 
 </section>

@@ -2893,3 +2893,62 @@ A pretty useful `check_*()` function, especially if you're concerned data might 
 Indeed, recipes provides some other `check_*()` functions. I highly suggest looking over `recipes`' [reference page](https://recipes.tidymodels.org/reference/index.html#check-functions) to see the other functions that are provided.
 
 That's all for day 29. Tomorrow is day 30 of this challenge. I'm excited to wrap this post up.
+
+# Day 30 - Use `step_cut()` to turn a numeric variable into a factor 
+
+Here we are, day 30. We made it! :tada:
+
+`step_cut()` is my focus for our final day. This step function creates factor variables from numeric variables. If you're familiar with `base::cut()`, you'll have a pretty good idea of what `step_cut()` does within a recipe.
+
+Let's use our `penguins` data for our final day of examples. Here's the code to split the data into our training and testing sets.
+
+```{r day-30-data}
+data(penguins, package = "modeldata")
+
+set.seed(20240206)
+penguins_split <- initial_split(penguins, prop = .8)
+penguins_tr <- training(penguins_split)
+penguins_te <- testing(penguins_split)
+```
+
+I want to split our penguins into three categories: small, medium, and large. We'll do this by cutting the `body_mass_g` column into three categories. Let's first obtain some summary statistics to inform us on the cut values we should use.
+
+```{r day-30-summ-data}
+skim(penguins_tr, body_mass_g)
+```
+
+Great, let's use `body_mass_g`'s 25th and 75th percentiles as the cut offs in our recipe. You'll notice I use `step_naomit()` here to remove rows with missing values. If I didn't do this, `step_cut()` would error.
+
+::: {.callout-note}
+`step_naomit()`'s `skip` argument is set to `TRUE` by default. This will cause the `bake` step to skip this step, and `NA` values will still be present within our data.
+:::
+
+```{r day-30-rec}
+penguins_rec <- recipe(~., data = penguins_tr) |>
+  step_naomit(body_mass_g) |>
+  step_cut(body_mass_g, breaks = c(3550, 4750)) |>
+  prep() 
+
+penguins_rec
+
+bake(penguins_rec, penguins_tr)
+```
+
+Say we wanted to keep the original variable along with the newly created factor variable. We need to first use `step_mutate()` to retain the original before cutting. Here's the code to do this:
+
+```{r day-30-rec-keep-orig}
+penguins_rec <- recipe(~., data = penguins_tr) |>
+  step_naomit(body_mass_g) |>
+  step_mutate(body_mass_g_orig = body_mass_g) |>
+  step_cut(body_mass_g, breaks = c(3550, 4750)) |>
+  prep()
+
+bake(penguins_rec, penguins_tr) |>
+  select(starts_with("body"))
+```
+
+One other note about `step_cut()`, it also has an `include_outside_range` argument. This argument accepts a boolean value (`TRUE` / `FALSE`), which specifies what you want to do with ranges outside of the cut values learned during the prep phase. `TRUE` will include values outside of the range. `FALSE` will exclude them and apply an `NA` as the value. 
+
+I'm ending today's post on an easy one. `step_cut()` is pretty straightforward, but it is very useful for creating factor variables out of numeric variables within our recipe. 
+
+Although this is the end of the 30ish days, I'm going to take some time--hopefully tomorrow--to draft up a quick summary about what I've learned during this process. Until then, keep working on those recipes.
