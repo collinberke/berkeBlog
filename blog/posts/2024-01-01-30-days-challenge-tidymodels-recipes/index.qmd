@@ -2952,3 +2952,29 @@ One other note about `step_cut()`, it also has an `include_outside_range` argume
 I'm ending today's post on an easy one. `step_cut()` is pretty straightforward, but it is very useful for creating factor variables out of numeric variables within our recipe. 
 
 Although this is the end of the 30ish days, I'm going to take some time--hopefully tomorrow--to draft up a quick summary about what I've learned during this process. Until then, keep working on those recipes.
+
+# Day 31 and beyond
+
+For the past 30ish days (I surely wasn't perfect and missed some days), I devoted time to learning more about `tidymodels`' `recipes` package. Being the end of this challenge, I thought a post reflecting on what I've learned would be valuable. Here's a grab bag of things I've learned throughout this process. Some are related to the specific focus of this post, the use of the `recipes` package. Others are things I learned while taking on this personal challenge.
+
+`recipes` makes it really easy to perform most data preprocessing steps for modelling tasks. Most `step_function()`s I came across made intuitive sense, and when a function had various options and functionality, the interfaces made them easy to work with. Most of the time I recognized you just needed to pass a variable name to perform the intended step.
+
+`recipes`' `summary()` and `tidy()` methods are great for understanding what's happening under the hood. At times, I wasn't exactly sure what was occurring in the background with each step. However, taking the `prep()`ped recipe and throwing it into a `summary()` or `tidy()` function helped provide more information on what was taking place in the background.
+
+I certainly got some things wrong, but that's okay. This post was intended to be a form of 'learning out loud'. Indeed, getting things wrong was great for multiple reasons. First, it challenged me to go deeper. If I didn't know how something worked or what concepts I needed to know to understand what each `step_*()` function was doing, I read further and wider. Doing this additional reading introduced me to many other topics, some I've been introduced to, and others I didn't know existed. Second, it allowed me to experiment with how functions worked. As a result, allowing me to better understand *how* a function worked. If a recipe errored or pushed a warning, I was forced to ask: 'Why is this failing?', 'What is wrong with my recipe?', and 'Am I specifying the arguments correctly?'. Answering these questions made me *really* 'read the docs' to understand what is happening. 
+
+Reading the docs closely also led me to identify areas I could contribute to open-source software. Indeed, I wasn't adding features or fixing critical bugs, but I was able to provide little fixes, hopefully making the documentation more clear for the next person. Even though my contributions were small, I was elated to see my name was added to the [`tidyverse`'s](https://www.tidyverse.org/), [Q4 2023 tidymodels digest](https://www.tidyverse.org/blog/2024/01/tidymodels-2023-q4/) blog post. Having my name highlighted has been a catalyst to find other areas to contribute.
+
+Writing's tough. This especially becomes apparent when you're forced to get something on the page every day. Some days I just wasn't into it. Other days I didn't know what to cover. From time-to-time, I was just busy and didn't have the time to write. During these times, I found taking a break to be best. Taking breaks usually resulted in the reset I needed, allowing me to be even more focused the next day.
+
+Aside from learning the above, here's a brief list of additional things I learned that were helpful in getting me to finish writing this post (future-self, take note):
+
+* Have a plan for what you're going to write next.
+* Set a timer and just write. You'll be amazed how much you can output in 50 - 60 minutes. 
+* Don't care about quality at first, you can always revise later (there are certainly revisions to be made here).
+
+# Wrap up
+
+So there you have it. 30ish days of learning how to use `tidymodels`' `recipes` package. I started off by discussing what a recipe is and how to specify it. I highlighted various `step_*()` functions that get added to recipes. Then, I covered some `recipes`' extension packages I've found to be useful. Finally, I highlighted the use of some of the `recipes`' check functions.
+
+There's certainly more to explore with this package and others in the `tidymodels` ecosystem. I'm excited to explore what its other packages have to offer. 
