@@ -1,0 +1,198 @@
+---
+title: "Exploring R Consortium ISC Grants"
+date: "2024-02-26"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpg
+description: "A contribution to the 2024-02-20 #tidytuesday social data project"
+toc: true
+from: markdown+emoji
+categories:
+  - data wrangling
+  - data visualization
+  - tidytuesday 
+---
+
+![Photo by [Markus Winkler](https://unsplash.com/photos/green-and-white-braille-typewriter-jF1CqFpE62k)](thumbnail-wide.jpg)
+
+```{r setup}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+library(skimr)
+library(tidytext)
+library(here)
+library(scales)
+```
+
+# Background
+
+I've never really contributed to [`tidytuesday`](https://github.com/rfordatascience/tidytuesday/tree/master). Recently, I've been trying to spark some inspiration, so I thought contributing to this social data project would be a good start. I used this post as an opportunity to get more comfortble using [`plotly`](https://plotly.com/r/) and [Tableau](https://www.tableau.com/) for creating data visualizations. 
+
+```{r import-data, message=FALSE, warning=FALSE}
+data_isc_grants <- 
+  read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-02-20/isc_grants.csv')
+```
+
+# Data description
+
+The data represents information about past projects funded by the R Consortium Infrastructure Committee (ISC) Grant Program. The purpose of these grants is to support projects contributing to the R community. Learn more about the most recent round of funding by checking out their [blog post](https://www.r-consortium.org/blog/2024/02/08/r-consortium-infrastructure-steering-committee-isc-grant-program-accepting-proposals-starting-march-1st) announcing this round of grants.
+
+The data includes columns like: `year`, `group` (i.e., funding cycle), `title`, `funded` (i.e., funding amount), and `summary`. Before creating some data visualizations, let's do some quick exploratory analysis. 
+
+```{r view-data-str}
+glimpse(data_isc_grants)
+```
+
+```{r explore-data}
+skim(data_isc_grants)
+```
+
+# What's the trend for grant funding? 
+
+Let's take a look at the funding trend by funding cycle (i.e., fall and spring).
+
+```{r wrngl-data-by-year-group}
+#| code-fold: true
+data_by_year_grp <- data_isc_grants |>
+  mutate(group = case_when(
+    group == 1 ~ "Spring", 
+    group == 2 ~ "Fall")
+  ) |>
+  group_by(year, group) |>
+  summarise(funded = sum(funded), .groups = "drop") |>
+  arrange(group, year) |> 
+  pivot_wider(names_from = group, values_from = funded)
+```
+
+```{r write-data-for-tableau-1, eval=FALSE, include=FALSE}
+data_by_year_grp <- data_isc_grants |>
+  mutate(group = case_when(
+    group == 1 ~ "Spring", 
+    group == 2 ~ "Fall")
+  ) |>
+  group_by(year, group) |>
+  summarise(funded = sum(funded), .groups = "drop") |>
+  arrange(group, year)
+
+write_csv(data_by_year_grp, here("2024-02-23-tidytuesday-attempts/data_by_year_grp.csv"))
+```
+
+```{r vis-funding-trend}
+#| code-fold: true
+plot_ly(
+  data_by_year_grp, 
+  x = ~year, 
+  y = ~Fall, 
+  name = "Fall", 
+  type = 'scatter', 
+  mode = 'lines',
+  line = list(width = 5),
+  text = ~paste(
+    "Funding awarded: $", comma(Fall),
+    "<br>Year: ", year
+  ),
+  hoverinfo = "text"
+) |>
+add_trace(
+  y = ~Spring,
+  name = "Spring",
+  text = ~paste(
+    "Funding awarded: $", comma(Spring),
+    "<br>Year: ", year
+  ),
+  hoverinfo = "text"
+) |>
+layout(
+  title = list(
+    text = "<b>Funding trend for R Consortium ISC grants by funding round</b>",
+    xanchor = "center",
+    yanchor = "top",
+    font = list(family = "arial", size = 24)
+  ),
+  xaxis = list(title = ""),
+  yaxis = list(title = "Funding amount ($US)")
+)
+```
+
+# What words are used most often within descriptions of funded projects?
+
+Now, let's explore the words used within descriptions most often in awarded grant applications.
+
+```{r wrngl-text-data}
+#| code-fold: true
+#| message: false
+data_word_fund_trend <- data_isc_grants |>
+  mutate(
+    summary = str_remove_all(str_to_lower(summary), "[[:punct:]]"),
+    summary = str_remove_all(summary, "[0-9]"),
+  ) |>
+  unnest_tokens(word, summary) |>
+  anti_join(get_stopwords()) |>
+  group_by(year) |>
+  count(word) |>
+  arrange(word, year) |>
+  group_by(word) |>
+  mutate(
+    n_cume = cumsum(n)
+  )
+```
+
+```{r write-data-for-tableau-2, eval=FALSE, include=FALSE}
+write_csv(data_word_fund_trend, here("2024-02-23-tidytuesday-attempts/data_by_word.csv"))
+```
+
+```{r vis-cumulative-top-words}
+#| code-fold: true
+#| message: false
+top_words <- data_word_fund_trend |>
+  ungroup() |>
+  summarise(top = quantile(n_cume, .99)) |>
+  pull(top)
+
+data_top_words <- data_word_fund_trend |>
+  filter(n_cume >= top_words) |>
+  distinct(word)
+
+plot_ly(
+  data = data_word_fund_trend, 
+  x = ~year,
+  y = ~n_cume,
+  mode = "lines",
+  line = list(color = "#d3d3d3", width = 3),
+  type = "scatter",
+  mode = "lines",
+  name = "",
+  text = ~paste(
+    "Word: ", word,
+    "<br>Cumulative mentions: ", n_cume,
+    "<br>Year: ", year
+  ),
+  hoverinfo = "text"
+) |>
+add_lines(
+  data = data_word_fund_trend |> semi_join(data_top_words),
+  x = ~year,
+  y = ~n_cume,
+  line = list(color = "#0C2D48", width = 3),
+  type = "scatter",
+  mode = "lines",
+  name = ""
+) |>
+layout(
+  title = list(
+    text = "<b>Aiming for RConsortium grant funding? Consider using these words</b>",
+    xanchor = "center",
+    yanchor = "top",
+    font = list(family = "arial", size = 24)
+  ),
+  xaxis = list(title = ""),
+  yaxis = list(title = "Cumulative mentions"),
+  showlegend = FALSE
+)
+```
+
+# An attempt using Tableau
+
+To learn more about using Tableau, I took this week's data as an opportunity to learn more. [Here's](https://public.tableau.com/app/profile/collin.berke/viz/TableauTuesday_17089936427980/2024-02-20-r-consortium-grants) what I came up with.
