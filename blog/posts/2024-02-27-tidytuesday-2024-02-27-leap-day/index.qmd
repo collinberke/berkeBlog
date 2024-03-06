@@ -1,0 +1,123 @@
+---
+title: "Exploring the lifespans of historical figures born on a Leap Day"
+date: "2024-03-05"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpg
+description: "A contribution to the 2024-02-27 #tidytuesday social data project"
+toc: true
+from: markdown+emoji
+categories:
+  - data wrangling
+  - data visualization
+  - tidytuesday 
+  - plotly
+  - Tableau
+---
+
+![Photo by [Nick Hillier](https://unsplash.com/photos/assorted-numbers-photography-yD5rv8_WzxA)](thumbnail-wide.jpg)
+
+```{r setup}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(skimr)
+library(plotly)
+library(here)
+```
+
+# Background
+
+Happy belated Leap Day! This week's [#tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-02-27/readme.md) is focused on significant historical events and people who were born or died on a Leap Day. The aim of this post is to contribute a couple data visualizations to this social data project. Specifically, I used [`plotly`](https://plotly.com/r/) and [Tableau](https://www.tableau.com/) to create my contributions.
+
+```{r import-data}
+#| message: false
+#| warning: false
+data_births <- read_csv(
+  here(
+    "blog",
+    "posts",
+    "2024-02-27-tidytuesday-2024-02-27-leap-day",
+    "births.csv"
+  )
+)
+```
+
+Let's do a quick `glimpse()` and `skim()` of our data, just so we get an idea of what we're working with here. 
+
+```{r glimpse-data}
+glimpse(data_births)
+```
+
+```{r skim-data}
+skim(data_births)
+```
+
+# Data description
+
+This week's data comes from the [February 29th Wikipedia page](https://en.wikipedia.org/wiki/February_29). Three data sets are made available, one focused on significant events, as well as births and deaths of historical figures that occurred on a Leap Day. Given what's available, I was interested in exploring the age and lifespan of the historical figures born on a Leap Day. Here's the wrangling code I created to explore the data.
+
+```{r wrngl-dates-age}
+data_age <- data_births |>
+  mutate(
+    is_alive = ifelse(is.na(year_death), 1, 0),
+    year_death = ifelse(is.na(year_death), 2024, year_death),
+    age = year_death - year_birth
+  ) |>
+  arrange(desc(age)) |> 
+  relocate(person, description, year_birth, year_death, age)
+
+data_age$person <- factor(data_age$person, levels = data_age$person[order(data_age$year_birth)])
+```
+
+```{r write-data-tableau, eval=FALSE, include=FALSE}
+data_age_long <- data_age |>
+  pivot_longer(cols = c(year_birth, year_death))
+
+# Export data for Tableau
+write_csv(
+  data_age_long, 
+  here("2024-02-27-tidytuesday-2024-02-27-leap-day/data_age.csv")
+)
+```
+
+# What are the lifespans of historical figures born on a leap day?
+
+To explore this question, I decided to create a dumbbell chart. In the chart, the blue dots represent the person's birth year. The black dot represents the year the person died. Absence of the black dot indicates a person is still alive, while the grey line represents the person's lifespan. If you hover over the dots, a tool tip with information about each person is shown.
+
+```{r vis-dumbbell-leap-year-people}
+#| fig-height: 12 
+not_alive <- data_age |> filter(is_alive == 0)
+
+plot_ly(
+  data_age, 
+  color = I("gray80"),
+  text = ~paste(
+    person, "<br>",
+    "Age: ", age, "<br>",
+    description 
+  ),
+  hoverinfo = "text"
+) |>
+  add_segments(x = ~year_birth, xend = ~year_death, y = ~person, yend = ~person, showlegend = FALSE) |>
+  add_markers(x = ~year_birth, y = ~person, color = I("#0000FF"), name = "Birth year") |>
+  add_markers(data = not_alive, x = ~year_death, y = ~person, color = I("black"), name = "Year passed") |>
+  layout(
+    title = list(
+      text = "<b>Lifespans of historical figures born on a Leap Day</b>",
+      xanchor = "center",
+      yanchor = "top",
+      font = list(family = "arial", size = 24)
+    ),
+    xaxis = list(
+      title = "Year born | Year died"
+    ),
+    yaxis = list(
+      title = ""
+    )
+  )
+```
+
+# An attempt using Tableau
+
+I also created a version of this visualization using Tableau. You can view my attempt [here](https://public.tableau.com/shared/WRX94RDS3?:display_count=n&:origin=viz_share_link). I was required to make a few concessions with this attempt, as I was unable to have as much fine control of the plot elements as I would have liked. However, I'm happy with what turned out.
