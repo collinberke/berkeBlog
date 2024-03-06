@@ -11,6 +11,8 @@ categories:
   - data wrangling
   - data visualization
   - tidytuesday 
+  - plotly
+  - Tableau
 ---
 
 ![Photo by [Markus Winkler](https://unsplash.com/photos/green-and-white-braille-typewriter-jF1CqFpE62k)](thumbnail-wide.jpg)
