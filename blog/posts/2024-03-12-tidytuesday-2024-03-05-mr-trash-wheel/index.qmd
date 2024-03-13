@@ -1,0 +1,262 @@
+---
+title: "Exploring the relationship between trash processed by Mr. Trash Wheel and precipitation"
+date: "2024-03-12"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpg
+description: "A contribution to the 2024-03-05 #tidytuesday social data project"
+toc: true
+from: markdown+emoji
+categories:
+  - data wrangling
+  - data visualization
+  - tidytuesday 
+  - plotly 
+  - Tableau
+---
+
+![Photo by [Nareeta Martin](https://unsplash.com/photos/assorted-clothes-hanging-on-rack-UKs_rzIYE6M)](thumbnail-wide.jpg)
+
+# 👋 Say hello to Mr. Trash Wheel and friends 
+
+This week's #tidytuesday we're looking into data related to [Mr. Trash Wheel](https://www.mrtrashwheel.com/) and [friends](https://www.mrtrashwheel.com/meet-the-trash-wheels/). Mr. Trash Wheel is a semi-autonomous trash interceptor, who's main purpose is to collect trash floating into the [Baltimore Inner Harbor](https://en.wikipedia.org/wiki/Inner_Harbor). Mr. Trash Wheel is a pretty neat invention. If you're interested in how it works, check out the information found [here](https://www.mrtrashwheel.com/technology/).
+
+My curiosity peaked when I came across the [statement](https://youtu.be/H84d8eyhfyY?feature=shared&t=114) that most of the trash collected by Mr. Trash wheel is the result of water runoff, and not from people disposing trash directly into the habor. So, I wanted to explore the relationship between precipitation and the amount of trash being collected by Mr. Trash Wheel and friends for my contribution this week. 
+
+In this post, I created my visualizations using [`plotly`](https://plotly.com/r/) and [Tableau](https://www.tableau.com/). 
+
+```{r setup}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(skimr)
+library(plotly)
+library(here)
+library(janitor)
+library(tidymodels)
+tidymodels_prefer()
+```
+
+```{r import-data}
+data_trash <- read_csv(
+  here(
+    "blog",
+    "posts",
+    "2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel", 
+    "trashwheel.csv"
+  )
+)
+
+data_balt_precip <- read_csv(
+  here(
+    "blog",
+    "posts",
+    "2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel", 
+    "balt_precip.csv"
+  )
+)
+```
+
+# Data description
+
+The [data](https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-03-05/readme.md) contains observations related to trash collected from 2014 to 2023 by multiple trash wheels. The Baltimore precipitation data came from a tool found [here](https://www.weather.gov/wrh/climate?wfo=lwx). I simply just copy pasted this data into a Google sheet and saved it as a `.csv` file. Further wrangling steps for both data sets are included below.
+
+To get a better sense of what's in the data, I did a quick `glimpse()` and `skim()` of both the `data_trash` and `data_balt_precip` data sets.
+
+```{r glimpse-data}
+glimpse(data_trash)
+
+glimpse(data_balt_precip)
+```
+
+```{r skim-data}
+skim(data_trash)
+
+skim(data_balt_precip)
+```
+
+Looking further into the data, I noticed a few things of note. Here's some things to keep in mind:
+
+  - There are missing data (e.g., `NA`s) within several variables: `PlasticBottles`, `Polystyrene`, `CigaretteButts`, `GlassBottles`, `PlasticBags`, `Wrappers`, and `SportsBalls`. The documentation didn't reference why these were missing and since I wasn't using these for my contribution, I didn't dig any further.
+  - The month has an issue with capitalization. Some string formatting should fix this issue, though I'm not using this column for my contribution.
+  - The `Date` column needed to be transformed into a `date`. This can be addressed by using some functions from the [`lubridate`](https://lubridate.tidyverse.org/) package. 
+
+# Data wrangling
+
+Now that we have a better sense of the data, let's wrangle it. Below is the code to wrangle both the `data_balt_precip` and `data_trash` data sets. Since my precipitation data was aggregated by month, I decided to aggregate the trash data by month.
+
+::: {.callout-note}
+While working on my contribution, I learned [`dplyr`'s](https://dplyr.tidyverse.org/) [`transmute`](https://dplyr.tidyverse.org/reference/transmute.html?q=transmute#ref-usage) function is superseded, and it's now suggested to use `mutate()`'s `.keep = "none'` argument.
+:::
+
+```{r wrngl-precip}
+data_balt_precip <- data_balt_precip |>
+  pivot_longer(cols = january:december, names_to = "month", values_to = "precip") |>
+  mutate(
+    month = match(month, str_to_lower(month.name)),
+    day = 1,
+    month_date = ymd(str_c(year, month, day, sep = "-"))
+  ) |>
+  select(
+    month_date, 
+    precip
+  )
+```
+
+```{r wrngl-trash-data}
+data_trash <- data_trash |>
+  clean_names() |>
+  mutate(
+    id,
+    name,
+    date = mdy(date),
+    month_date = floor_date(date, "month"),
+    dumpster,
+    name = str_to_lower(name),
+    weight,
+    volume,
+    .keep = "none"
+  ) 
+```
+
+```{r summ-total-trash-month}
+data_trash_summ <- data_trash |>
+  group_by(month_date) |>
+  summarise(
+    total_weight = sum(weight),
+    total_volume = sum(volume) 
+  ) |>
+  left_join(data_balt_precip)
+
+min(data_trash_summ$month_date)
+max(data_trash_summ$month_date)
+```
+
+```{r write-for-tableau, eval=FALSE, include=FALSE}
+write_csv(
+  data_trash_summ, 
+  here(
+    "blog",
+    "posts",
+    "2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel",
+    "data_trash_summ.csv"
+  )
+)
+```
+
+# What is the relationship between rainfall and the weight and volume of trash processed by the trash wheels?
+
+To explore this relationship, I created two scatter plots. The first plot included precipitation and total weight. The second included volume and precipitation. I did this because weight and volume represent different things. Here's the code to create the two scatter plots using `plotly`:
+
+```{r vis-plotly-weight}
+plot_ly(
+  data = data_trash_summ,
+  x = ~precip,
+  y = ~total_weight,
+  type = "scatter", 
+  mode = "markers",
+  marker = list(
+    size = 10, 
+    color = "#6495ED",
+    line = list(
+      color = "#151B54",
+      width = 2
+    )
+  ),
+  text = ~paste(
+    month_date,
+    "<br>Precipitation (inches): ", precip, 
+    "<br>Weight (tons): ", total_weight
+  ),
+  hoverinfo = "text"
+) |>
+plotly::layout(
+  title = list(
+    text = "<b>More precipitation is related to heavier amounts of trash for Mr. Trash Wheel and friends to process </b>",
+    font = list(size = 18),
+    xanchor = "center"
+  ),
+  yaxis = list(
+    title = "Total weight of trash (tons)/month",
+    titlefont = list(size = 14)
+  ),
+  xaxis = list(
+    title = "Total precipitation in Baltimore (inches)/month",
+    titlefont = list(size = 14)
+  ),
+  font  = list(family = "arial", size = 18, face = "bold")
+)
+```
+
+```{r vis-plotly-volume}
+plot_ly(
+  data = data_trash_summ,
+  x = ~precip,
+  y = ~total_volume,
+  type = "scatter", 
+  mode = "markers",
+  marker = list(
+    size = 10, 
+    color = "#FFAA33",
+    line = list(
+      color = "#151B54",
+      width = 2
+    )
+  ),
+  text = ~paste(
+    month_date,
+    "<br>Precipitation (inches): ", precip, 
+    "<br>Volume (cubic yards): ", total_volume 
+  ),
+  hoverinfo = "text"
+) |>
+plotly::layout(
+  title = list(
+    text = "<b>More precipitation is related to a greater volume of trash for Mr. Trash Wheel and friends to process</b>",
+    font = list(size = 18),
+    xanchor = "center"
+  ),
+  yaxis = list(
+    title = "Total volume of trash (cubic yards)/month",
+    titlefont = list(size = 14)
+  ),
+  xaxis = list(
+    title = "Total precipitation in Baltimore (inches)/month",
+    titlefont = list(size = 14)
+  ),
+  font  = list(family = "arial", size = 18, face = "bold")
+)
+```
+
+Looking at the individual observations, I had a hard time fathoming how much trash Mr. Trash Wheel and friends were processing. So, here's a [video](https://www.youtube.com/watch?v=wqMwKjw2Lrs) giving you a sense of dimension of how much trash is really being collected--it's a lot once you put it into perspective. I mean, in one month, the trash wheels processed nearly 25 of these 20 cubic yard dumpsters worth of trash. If you've ever seen these dumpters in real-life, they're huge.
+
+Although upon visual inspection it seems a positive relationship is present for both weight and volume of trash, I wanted to further quantify this relationship using a linear model. To do this, I utilized [`tidymodels`](https://www.tidymodels.org/) to create two simple linear models, one for volume and the other for weight of trash.
+
+```{r set-model-type}
+lm_mdl <- linear_reg() |> 
+  set_engine("lm")
+```
+
+```{r mdl-volume-precip}
+volume_mdl <- 
+  lm_mdl |>
+  fit(total_volume ~ precip, data = data_trash_summ)
+
+tidy(volume_mdl)
+```
+
+```{r mdl-weight-precip}
+weight_mdl <- 
+  lm_mdl |>
+  fit(total_weight ~ precip, data = data_trash_summ)
+
+tidy(weight_mdl)
+```
+
+Both models indicate a statistically significant positive relationship between precipitation, volume, and weight of trash processed. In fact, for every additional inch of precipitation a month in Baltimore, the volume of trash processed increases by 16 cubic yards and the weight of trash increases by 3.53 tons.
+
+The bottom line, throw your trash away properly. It has down stream effects, literally ... no pun intended.
+
+# An attempt using Tableau
+
+To further practice my data visualization tool skills, I recreated these plots using Tableau. You can view this version by clicking [here](https://public.tableau.com/app/profile/collin.berke/viz/TableauTuesday_17089936427980/tableautuesday?publish=yes).
