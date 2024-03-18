@@ -7,6 +7,16 @@ format:
     date-modified: "2024-01-15"
 ---
 
+# 2024-03-17 update
+
+#### Working on a 30 day `tidymodels` `recipes` package challenge
+
+I've been developing my machine learning and modeling skills. Specifically, I've been focusing on learning the various steps to preprocess data for modelling and feature engineering. This includes becoming more proficient with the [`tidymodels`](https://www.tidymodels.org/) [`recipes`](https://recipes.tidymodels.org/) package. [Check out my post](https://www.collinberke.com/blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/) to keep up with the latest.
+
+#### Continuing to experiment with [Neovim](https://neovim.io/)
+
+I've heavily leaned into using [Neovim](https://neovim.io/) for most of my workflows. During this transition, I've come across some really useful tools, like [`telescope`](https://github.com/nvim-telescope/telescope.nvim), [`harpoon`](https://github.com/ThePrimeagen/harpoon), and [`vim-fugitive`](https://github.com/tpope/vim-fugitive). I'm trying to learn as much as I can, as I still don't know if my configuration is correct ... lol
+
 # 2024-01-15 update
 
 #### It's a Python summer
