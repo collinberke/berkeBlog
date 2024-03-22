@@ -1,0 +1,205 @@
+---
+title: "Exploring data from the Fiscal Sponsor Directory"
+date: "2024-03-22"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpeg
+description: "A contribution to the 2024-03-12 #tidytuesday social data project"
+toc: true
+from: markdown+emoji
+categories:
+  - data wrangling
+  - data visualization
+  - tidytuesday 
+  - plotly 
+  - Tableau
+---
+
+![Image generated using the prompt 'Hexagonal pattern in a grey palette' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
+
+# Background
+
+I'm a little behind on this submission. My time to focus on #tidytuesday contributions has been limited recently. Nevertheless, here's my submission for the 2024-03-12 data set. 
+
+This week's data comes from the [Fiscal Sponsor Directory](https://fiscalsponsordirectory.org/?page_id=1330). In short, this directory is a listing of groups supporting non-profits through the fiscal sponsorship of projects. I was unfamilar with this space, so I found the Fiscal Sponsor Directory's [About Us](https://fiscalsponsordirectory.org/?page_id=247) page helpful.
+
+Why the Fiscal Sponsorship Directory this week? Well, the organizer of #tidytuesday is the [R4DS Online Learning Community](https://rfordatasci.com/about.html), a group I actively participate in. This group has been [on the search for a new fiscal sponsor](https://rfordatasci.com/donate.html) recently. The aim, thus, was to lean on the community to create data visualizations that may be helpful in identifying another fiscal sponsor for the group. So, below is what I came up with. 
+
+Before getting to my contribution, let's take a moment to explore the data.
+
+```{r setup}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(here)
+library(skimr)
+library(tidytext)
+library(plotly)
+```
+
+```{r import-data}
+data_sponsor_dir <- read_csv(
+  here(
+    "blog", 
+    "posts",
+    "2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory",
+    "fiscal_sponsor_directory.csv"
+  )
+)
+```
+
+# Data description
+
+This week was tough. The data was pretty dirty, and I relied heavily on string processing for data wrangling. I think, however, I've come up with something that is a little more informative than just a listing of the different sponsorship groups. 
+
+```{r glimpse-data}
+glimpse(data_sponsor_dir)
+```
+
+```{r skim-data}
+skim(data_sponsor_dir)
+```
+
+```{r print-head-project-types}
+head(data_sponsor_dir$project_types)
+```
+
+# Data wrangling
+
+The first step in the data wrangling process was to clean up the string data in the `project_types` column. I wanted to use this as a dimension to filter out fiscal sponsor potentially relevant to the the R4DS community. Take note, I used a regular expression to remove string values after the `other` in the column. These free text responses would have made it harder to filter data on this dimension.
+
+```{r wrngl-data}
+# Remove any string text after 'other' 
+data_sponsor_dir <- data_sponsor_dir |>
+  select(
+    details_url, 
+    name, 
+    year_fiscal_sponsor,
+    n_sponsored,
+    project_types,
+    website
+  ) |>
+  mutate(
+    project_types = str_to_lower(project_types),
+    project_types = str_remove(project_types, ":.*")
+  ) 
+```
+
+The next step was to [tokenize](https://www.tidytextmining.com/tidytext#the-unnest_tokens-function) `project_types`' categories into it's own rows. I did this by using the [`unnest_tokens()`](https://juliasilge.github.io/tidytext/reference/unnest_tokens.html) function from the [`tidytext`](https://juliasilge.github.io/tidytext/) package.
+
+```{r wrngl-data-cat}
+# What are the unique categories?
+data_sponsor_cat <- data_sponsor_dir |>
+  unnest_tokens(cat, project_types, token = 'regex', pattern = "\\|") 
+
+head(unique(data_sponsor_cat$cat), n = 10)
+```
+
+:::::: {.callout-note}
+While wrangling this data, I learned you can pass a `regex` pattern to tokenize when using `unnest_tokens()`. I found this to be useful in this case.
+:::
+
+Outputted above are 10 example categories found in the `project_types` column. Looking through all of these categories, the following might be fiscal sponsors whose purpose aligns with that of the R4DS community. These include the following categories:
+
+  * `conference/event management` 
+  * `education environment/sustainable growth` 
+  * `education` 
+  * `economic development` 
+  * `organizational development` 
+
+However, before I go about creating a visualization using these categories, let's see if there's enough data within each category to make the visualization informative.
+
+```{r wrngl-data-cat-count}
+cat_filter <- c(
+  "education",
+  "education environment/sustainable growth",
+  "economic development",
+  "conference/event management",
+  "organizational development"
+)
+
+data_sponsor_cat |>
+  filter(cat %in% cat_filter) |>
+  count(cat, sort = TRUE)
+```
+
+Indeed, some categories don't have enough data. Really, the only two categories worth plotting would be 'economic development' and 'education'. So, let's filter for just these two categories. Let's also drop `NA` values for simplicity sake. 
+
+```{r wrngl-data-filter-cat}
+cat_filter <- c(
+  "education",
+  "economic development"
+)
+
+data_cat_filter <- data_sponsor_cat |>
+  filter(cat %in% cat_filter) |>
+  mutate(cat = str_to_title(cat)) |>
+  arrange(name, cat) |>
+  drop_na() |>
+  select(-details_url)
+```
+
+```{r write-data-tableau, include=FALSE, eval=FALSE}
+write_csv(
+  data_cat_filter, 
+  "blog/posts/2024-03-19-tidytuesday-2024-03-12-fiscal-sponsor-directory/data_cat_filter.csv"
+)
+```
+
+# Creating a Box and Whisker plot
+
+Given I had a numeric variable, `n_sponsored`, I thought a [Box and Whisker plot](https://en.wikipedia.org/wiki/Box_plot) split by the two categories would be informative. It would certainly help identify fiscal sponsors who support many or very little projects based on the types of projects they support. Another thing I had to do was log the `n_sponsored` column. When I first plotted the untransformed variables, it was challenging to see the distribution of values. Logging `n_sponsored` made it easier to see the values. However, the hover tool provides the untransformed value for each fiscal sponsor in the data set.
+
+::: {.callout-warning}
+There will be duplicates in this visualization, as some sponsors will support both education and economic development focused projects.
+:::
+
+```{r vis-education-num-sponsors-established}
+plot_ly(type = "box") |>
+  add_boxplot(
+    data = data_cat_filter |> filter(cat == "Education"),
+    x = ~log(n_sponsored),
+    y = ~cat,
+    boxpoints = "all",
+    name = "Education",
+    color = I("#189AB4"),
+    marker = list(color = "#189AB4"),
+    line = list(color = "#000000"),
+    text = ~paste(
+      "Sponsor: ", name,
+      "<br>Projects: ", n_sponsored,
+      "<br>Website: ", website
+    ),
+    hoverinfo = "text"
+  ) |>
+  add_boxplot(
+    data = data_cat_filter |> 
+      filter(cat == "Economic Development"),
+    x = ~log(n_sponsored),
+    y = ~cat,
+    boxpoints = "all",
+    name = "Economic development",
+    color = I("#191970"),
+    marker = list(color = "#191970"),
+    line = list(color = "#000000"),
+    text = ~paste(
+      "Sponsor: ", name,
+      "<br>Projects: ", n_sponsored,
+      "<br>Website: ", website
+    ),
+    hoverinfo = "text"
+  ) |>
+layout(
+  title = "<b>Distribution of the number of projects (logged) supported by fiscal sponsors",
+  yaxis = list(title = ""),
+  xaxis = list(title = "Projects sponsored on log scale")
+)
+```
+
+Not bad. The only thing I ran out of time on was related to the hover tool. I really wanted separate hovers, one for the five number summary in the box and whisker plot and one for the individual data points. Unfortunately, I wasn't able to figure out how to do this with the time I had. Oh well, what resulted was still a useful data visualization, given where we started with the data. 
+
+So there you have it. Not the cleanest data to work with. Nonetheless, we came up with a visualization we could still learn something from. 
+
+# An attempt using Tableau
+
+To continue developing my skills and to practice using other data visualization tools, I created this same visualization using Tableau. You can check out this version of the visualization [here](https://public.tableau.com/app/profile/collin.berke/viz/TableauTuesday_17089936427980/tableautuesday?publish=yes).
