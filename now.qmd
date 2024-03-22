@@ -4,20 +4,24 @@ subtitle: "Here you'll find what I'm currently up to."
 format:
   html:
     toc: false
-    date-modified: "2024-01-15"
+    date-modified: "2024-03-17"
 ---
 
 A now page, [why?](https://nownownow.com/about) 
 
 ## Projects I'm working on
 
-#### Working on a 30 day `tidymodels` `recipes` package challenge
+#### Experimenting more with Tableau and `plotly`
 
-I've been developing my machine learning and modeling skills. Specifically, I've been focusing on learning the various steps to preprocess data for modelling and feature engineering. This includes becoming more proficient with the [`tidymodels`](https://www.tidymodels.org/) [`recipes`](https://recipes.tidymodels.org/) package. [Check out my post](https://www.collinberke.com/blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/) to keep up with the latest.
+> If the only tool you have is a hammer, it is tempting to treat everything as if it were a nail. 
+>
+> \- Abraham Maslow
 
-#### Continuing to experiment with [Neovim](https://neovim.io/)
+Although I prefer to do the majority of my analysis and visualization work using code based tools like R, I'm attempting to broaden my experience by experimenting more with different BI tools. This includes [Tableau](https://www.tableau.com/). I've also been experimenting with creating interactive data visualizations with [`plotly`](https://plotly.com/r/). To develop these skills, I've been contributing to the [#tidytuesday](https://github.com/rfordatascience/tidytuesday) social data project. Check out my recent [blog posts](https://www.collinberke.com/blog/) to view my contributions. If you're interested in what I've created using Tableau, check out my [public profile](https://public.tableau.com/app/profile/collin.berke/vizzes).
 
-I've heavily leaned into using [Neovim](https://neovim.io/) for most of my workflows. During this transition, I've come across some really useful tools, like [`telescope`](https://github.com/nvim-telescope/telescope.nvim), [`harpoon`](https://github.com/ThePrimeagen/harpoon), and [`vim-fugitive`](https://github.com/tpope/vim-fugitive). I'm trying to learn as much as I can, as I still don't know if my configuration is correct ... lol
+#### Burning it all down and building it back up, my [Neovim](https://neovim.io/) setup
+
+It was inevitable; I'm revamping my Neovim configuration. It started with a kickstarter, but now I'm looking to further customize. I'm also attempting to address some bugs that have creeped into my configuration. I've recently come to the conclusion that I need to burn everything down and start anew. Alas, I'm not weary. It's another great learning experience.
 
 #### Attended [Posit::conf(2023)](https://posit.co/conference/) Chicago
 
@@ -32,17 +36,23 @@ If you're interested in what I've focused on in the past, [check out my past upd
 
 ## Books I'm reading
 
-#### [HBR Guide to Making Every Meeting Matter](https://www.amazon.com/Guide-Making-Every-Meeting-Matter/dp/1633692175) from the Harvard Business Review
+#### [Practical Tableau](https://www.amazon.com/Practical-Tableau-Tutorials-Strategies-Master/dp/1491977310) by Ryan Sleeper
 
-For this coming year, I'll be leading more organizational meetings. So, my manager suggested I pick up this book. This book provides some practical, quick to read chapters on different topics surrounding effective meetings. This includes topics like determining if you need to have a meeting, planning and facilitating meetings, and a grab bag of other topics. I've found the information useful thus far.
+Since I'm broadening my data visualization skills, I've picked up this book to develop my foundational understanding of Tableau. Reading this has also broadened my understanding of general data visualization concepts. In truth, I've gained a better understanding by seeing how other tools approach the creation of data visualizations.
 
-#### [The Naked Sun (The Robot Series Book 2)](https://www.amazon.com/Naked-Sun-Robot-Book-ebook/dp/B004JHYRDQ/) by Isaac Asimov 
+#### [Machine Learning with R - Fourth Edition](https://www.amazon.com/Machine-Learning-cleansing-modeling-tidyverse/dp/1801071322/) by Brett Lantz 
 
-I'm continuing to read Isaac Asimov's work. It started with I, Robot. Then, it was The Caves of Steel. Now, I've started The Naked Sun. Robots, sci-fi ... What's not to like?
+This is a bit of a stretch read for me. I read this book when I have the time. I'm mostly using it to become more familiar with other machine learning models and techniques available in R. I'm also looking to write some more blog posts utilizing machine learning. Again, when I can find the time.
+
+#### [The Robots of Dawn (The Robot Series 3)](https://www.amazon.com/Robots-Dawn-Robot-Isaac-Asimov/dp/0553299492/) by Isaac Asimov 
+
+I'm continuing to read more of The Robot Series from Issac Asimov. More robots, another case to solve, and all within the sci-fi genre. I've become a bit of a fan of this series. 
 
 ## A list of books I've read (ever since I've started keeping track)
 
 ### Professional development reads
+
+#### [HBR Guide to Making Every Meeting Matter](https://www.amazon.com/Guide-Making-Every-Meeting-Matter/dp/1633692175) from the Harvard Business Review
 
 #### [The Checklist Manifesto: How to Get Things Right](https://www.amazon.com/Checklist-Manifesto-How-Things-Right/dp/0312430000) by Atul Gawande 
 
@@ -69,6 +79,8 @@ I'm continuing to read Isaac Asimov's work. It started with I, Robot. Then, it w
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [The Naked Sun (The Robot Series Book 2)](https://www.amazon.com/Naked-Sun-Robot-Book-ebook/dp/B004JHYRDQ/) by Isaac Asimov 
 
 #### [The Caves of Steel (The Robot Series Book 1)](https://www.amazon.com/Caves-Steel-Daneel-Olivaw-Book/dp/0553293400) by Isaac Asimov 
 
