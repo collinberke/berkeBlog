@@ -44,9 +44,9 @@ Since I'm broadening my data visualization skills, I've picked up this book to d
 
 This is a bit of a stretch read for me. I read this book when I have the time. I'm mostly using it to become more familiar with other machine learning models and techniques available in R. I'm also looking to write some more blog posts utilizing machine learning. Again, when I can find the time.
 
-#### [The Robots of Dawn (The Robot Series 3)](https://www.amazon.com/Robots-Dawn-Robot-Isaac-Asimov/dp/0553299492/) by Isaac Asimov 
+#### [The Stars, Like Dust (The Galactic Empire 1)](https://www.amazon.com/The-Stars-Like-Dust/dp/B08CFSK8GG/)
 
-I'm continuing to read more of The Robot Series from Issac Asimov. More robots, another case to solve, and all within the sci-fi genre. I've become a bit of a fan of this series. 
+I finished Asimov's The Robot Series, and I was interested in reading more of his work. This book's synopsis seemed intriguing, so I picked it up as another personal read. It's also sci-fi, a genre I've gravitated to as of late.  
 
 ## A list of books I've read (ever since I've started keeping track)
 
@@ -79,6 +79,10 @@ I'm continuing to read more of The Robot Series from Issac Asimov. More robots, 
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [Robots and Empire (The Robot Series 4)](https://www.amazon.com/Robots-Empire-I-Asimov/dp/0008277796/) by Issac Asimov
+
+#### [The Robots of Dawn (The Robot Series 3)](https://www.amazon.com/Robots-Dawn-Robot-Isaac-Asimov/dp/0553299492/) by Isaac Asimov 
 
 #### [The Naked Sun (The Robot Series Book 2)](https://www.amazon.com/Naked-Sun-Robot-Book-ebook/dp/B004JHYRDQ/) by Isaac Asimov 
 
