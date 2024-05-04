@@ -1,0 +1,302 @@
+---
+title: "Exploring objects launched into space and gross domestic product"
+date: "2024-05-03"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpeg
+description: "A contribution to the 2024-04-23 #tidytuesday social data project"
+toc: true
+from: markdown+emoji
+categories:
+  - data wrangling
+  - data visualization
+  - tidytuesday 
+  - plotly 
+  - regression
+---
+
+![Image generated using the prompt 'boxy robot throwing a satellite into outer space from earth in a pop art style' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
+
+# Background
+
+3... 2... 1... blastoff 🚀. This [week's](https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-04-23/readme.md) `#tidytuesday` dataset focuses on annual objects launched into space by various entities.
+
+This data is maintained by the [United Nations Office for Outer Space Affairs](https://www.unoosa.org/), and it is made available via the [Online Index of Objects Launched into Outer Space](https://www.unoosa.org/oosa/osoindex/search-ng.jspx). Objects include things like satellites, probes, landers, crewed spacecrafts, and space station flight elements launched into Earth orbit or beyond. Although this list aims to be comprehensive, it only includes launches submitted to the UN by participating nations. In addition, joint launches count as one launch for each country (i.e., counts when examined by country may be duplicated). Initially, [Our World in Data](https://ourworldindata.org/grapher/yearly-number-of-objects-launched-into-outer-space) processed this data and created an annual trend for each country.
+
+Since this data is focused on country, my interest peaked by asking the following question: what is the relationship between a country's [Gross Domestic Product (GDP)](https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP), a broad indicator or a country's economic output, and objects launched into space? To answer this question, I create a scatter plot and quantify this relationship using a simple linear regression in this post.
+
+# But first, some space banjo music
+
+Seeing as we're exploring objects launched into space, I felt a little music was in order. Here's some space banjo ambient for your listening pleasure.
+
+{{< video  https://youtu.be/Zi88cEV3r6s?si=cJl3F2wH-tnTIfQV width="600" height="300" >}}
+
+Deep Space Banjo🪕 - Ambient Spacefolk Chillwave by [Timber Zeal](https://timbrzeal.bandcamp.com/)
+
+# Setup and data import
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(wbstats)
+library(here)
+library(skimr)
+library(janitor)
+library(plotly)
+library(scales)
+library(psych)
+```
+
+First, let's import the `#tidytuesday` dataset. While we're importing, I'll also go ahead and use `janitor`'s `clean_names()` function to clean up the dataset's variable names in one step. Here's the code needed to do this:
+
+```{r import-space-obj-data}
+data_space_objs <- read_csv(
+  here(
+    "blog/posts/",
+    "2024-04-25-tidytuesday-2024-05-03-space-launches",
+    "outer_space_objects.csv"
+  )
+) |>
+clean_names()
+```
+
+## Use `wbstats` package to obtain GDP
+
+The original dataset didn't contain Gross Domestic Product (GDP). As such, I had to supplement it with additional data from the [World Bank](https://www.worldbank.org/en/who-we-are). The world bank makes data containing an estimate of GDP available via an API. In fact, the [`wbstats`](https://github.com/gshs-ornl/wbstats) R package provides an intuitive interface to access data via this API. Here's the code I used to return data from the API using the `wbstats` package:
+
+```{r import-wb-data, eval=FALSE}
+# Interested in looking at:
+#   * Gross Domestic Product (GDP)
+wb_variables <- c(
+  "gdp" = "NY.GDP.MKTP.CD"
+)
+
+data_wb <- wb_data(
+  wb_variables,
+  start_date = 1957, 
+  end_date = 2023
+) |>
+select(
+  code = iso3c, 
+  year = date, 
+  country, 
+  gdp,
+  starts_with("tax")
+)
+```
+
+```{r write-wb-data, eval=FALSE, include=FALSE}
+# Make it so I don't need to hit the WB API every time
+# the post builds
+write_csv(
+  data_wb,
+  here(
+    "blog/posts/",
+    "2024-04-25-tidytuesday-2024-05-03-space-launches",
+    "data_wb.csv"
+  )
+)
+```
+
+```{r read-wb-data, include=FALSE}
+data_wb <- read_csv(here(
+  "blog/posts/",
+  "2024-04-25-tidytuesday-2024-05-03-space-launches",
+  "data_wb.csv"
+))
+```
+
+# Explore the data
+
+Now with the data available, let's do some data exploration. Here I'll use `dplyr`'s `glimpse()` function to get a sense of the data's structure and column names.
+
+```{r glimpse-space-data}
+glimpse(data_space_objs)
+```
+
+```{r glimpse-wb-data}
+glimpse(data_wb)
+```
+
+Since there's a common column between these datasets, `code`, we'll do a left join to only include GDP data for countries that launched a space object. While exploring the data, though, I noticed that the `data_space_objs` data had entities other than countries. In addition, some of the World Bank data had `NA` values present in the GDP variable. Indeed, an argument could be made to apply imputation methods to address these missing values. However, I'm just going to drop any missing values to make things easy. I do this by using the `drop_na()` function from `dplyr`.
+
+```{r wrngl-data}
+data_space_wb <- data_space_objs |>
+  left_join(data_wb, by = c("year", "code")) |>
+  drop_na(c(code, gdp))
+```
+
+With data wrangling complete, we can quickly get a sense of the shape of our data with `skimr`'s `skim()` function. What becomes immediately apparent is both the `num_objects` and `gdp` variables exhibit a distribution that is skewed to the right.
+
+```{r summ-skim-data}
+skim(data_space_wb)
+```
+
+We can further confirm this visually by creating some histograms. I'll do this using R's base `hist()` function.
+
+```{r vis-hist-objs}
+hist(data_space_wb$num_objects)
+```
+
+```{r vis-hist-gdp}
+hist(data_space_wb$gdp)
+```
+
+# Scatter plot of objects and GDP
+
+Let's get a sense of the relationship between space objects launched and a country's GDP. To do this, we'll create a scatter plot using `plotly`. 
+
+```{r vis-space-gdp-plotly}
+vis_space_scatter <- plot_ly(
+  data = data_space_wb
+) |>
+add_trace(
+  x = ~gdp,
+  y = ~num_objects,
+  type = "scatter",
+  mode = "markers",
+  marker = list(
+    color = "#006cd8",
+    size = 10,
+    line = list(
+      color = "#00008c",
+      width = 2
+    )
+  ),
+  text = ~paste(
+    "Year: ", year,
+    "<br>Country: ", entity,
+    "<br>Objects launched: ", comma(num_objects),
+    "<br>GDP: ", comma(gdp)
+  ),
+  hoverinfo = "text"
+) |>
+plotly::layout(
+  title = "<b>A country's GDP is positively related to the number of space objects launched",
+  xaxis = list(title = "Gross Domestic Product (GDP)"),
+  yaxis = list(
+    title = "Objects launced into space", 
+    range = c(0, NULL),
+    tickformat = ","
+  )
+) 
+
+vis_space_scatter
+```
+
+Given the distribution of the data, it's challenging to see the individual values. As such, I decided to recreate the plot by log transforming both GDP and the number of objects launched into space.
+
+```{r vis-space-gdp-plotly-logged}
+plot_ly(
+  data = data_space_wb
+) |>
+add_trace(
+  x = ~log(gdp),
+  y = ~log(num_objects),
+  type = "scatter",
+  mode = "markers",
+  marker = list(
+    color = "#006cd8",
+    size = 10,
+    line = list(
+      color = "#00008c",
+      width = 2
+    )
+  ),
+  text = ~paste(
+    "Year: ", year,
+    "<br>Country: ", entity,
+    "<br>Objects launched: ", comma(num_objects),
+    "<br>GDP: ", comma(gdp)
+  ),
+  hoverinfo = "text"
+) |>
+plotly::layout(
+  title = "<b>A country's GDP is positively related to the number of space objects launched",
+  xaxis = list(title = "Gross Domestic Product (GDP) (logged)"),
+  yaxis = list(
+    title = "Objects launced into space (logged)", 
+    range = c(0, NULL),
+    tickformat = ","
+  )
+) 
+```
+
+Log transforming these variables now allows us to more easily view the individual values for each country.
+
+# Explore the correlation
+
+Visual inspection points to a positive relationship between these two variables. We can use `psychs`'s `pairs.panels()` function to create a quick visualization and value quantifying this relationship.
+
+```{r summ-correlation}
+pairs.panels(data_space_wb[c("num_objects", "gdp")])
+```
+
+The output provides further evidence of the presence of a positive correlation between these two variables. Now, let's go one step further and use a simple linear regression to further explore this relationship.
+
+# Use simple linear regression to explore launched objects and GDP
+
+Given this is a simple linear regression, I'll use `stats`' `lm()` function to specify the model. Given the scale of the values, I also went ahead and set the `scipen` option to avoid printing the output in scientific notation.
+
+```{r mdl-space-obj-gdp}
+# Set the `scipen` object to avoid printing in scientific notation 
+options(scipen=999)
+space_gdp_mdl <- lm(num_objects ~ gdp, data = data_space_wb)
+```
+
+Using the `space_gdp_model` object, we can use `summary()` to output information about our model. We'll also use this information to interpret the results.
+
+```{r mdl-space-obj-gdp-summary}
+summary(space_gdp_mdl)
+```
+
+It's interesting to see the R-squared value is .291, which is fairly large. This was kind of unexpected, given the complexities inherent within a country's economy, how GDP results in the funding of space projects, and the technology and infrastructure needed to launch objects into space. Indeed, I was expecting a much smaller R-squared value. It's also important to recognize this could be some statistical artifact, as there's a wide discrepancy between countries. Some countries launched space objects in the single digits, while only a few launched hundereds or even thousands for some years.
+
+In addition to the R-squared value, we can use the coefficients to draw further conclusions about this relationship. For instance, we can get a sense of how much GDP a country might require before launching a single object into space. Using our model estimates, it seems a country needs to have a GDP of nearly $66B dollars to begin considering launching objects into space. Another way to look at this $66B estimate is that if countries want to send more objects into space, they need to improve their GDP by this much to launch one additional object into space. Indeed, there are many factors that go into a a country's ability to launch an object into space. However, the results from this model still give a very general estimate of the economic output a country needs to have before considering these types of projects.
+
+Now that we have the model, we can go ahead and use `predict()` to append model predictions to the original data set. We can then plot those values on our original scatter plot to get a better sense of what this relationship looks like. The following code will do this for us:
+
+```{r mdl-predict}
+data_space_wb$obj_pred <- predict(space_gdp_mdl, data_space_wb)
+```
+
+```{r vis-mdl}
+vis_space_scatter |> 
+  add_trace(
+    data = data_space_wb,
+    x = ~gdp, 
+    y = ~obj_pred, 
+    type = "scatter", 
+    mode = "lines", 
+    showlegend = FALSE,
+    line = list(width = 5),
+    text = ~paste(
+      "Prediction: ", obj_pred
+    ),
+    hoverinfo = "text"
+  ) |>
+plotly::layout(
+  title = "<b>A country's GDP is positively related to the number of space objects launched",
+  xaxis = list(title = "Gross Domestic Product (GDP)"),
+  yaxis = list(
+    title = "Objects launced into space",
+    range = c(0, NULL),
+    tickformat = ","
+  )
+) 
+```
+
+# Why is the USA so much further away from what is predicted?
+
+Exploring the plot, I began to question why the US doesn't fall within what was expected from our model. My hunch is this is due to the rise in commerical space flight here in the US. In fact, here's a couple references I came across that go into more detail about the booming commercial space industry. One such reference even goes so far to state private space flight has lead us into the fourth industrial revolution. Learn more:
+
+* [U.S. private space launch industry is out of this world](https://www.usitc.gov/publications/332/executive_briefings/ebot_us_private_space_launch_industry_is_out_of_this_world.pdf)
+* [How space exploration is fueling the Fourth Industrial Revolution](https://www.brookings.edu/articles/how-space-exploration-is-fueling-the-fourth-industrial-revolution/)
+* [The commercial space age is here](https://hbr.org/2021/02/the-commercial-space-age-is-here)
+
+Indeed, it's reasonable to assume that if the US can shuttle contracts to private space companies rather than funding whole space programs to launch objects into space, then you'll likely launch more objects than would be expected. In other words, the US government gets more bang for its buck working with commercial space companies. It's also important to recognize that the commerical space industry makes launching objects into space more viable for companys and startups, like [Varda Space Industries](https://www.varda.com/), who's [using space vehicles to manufacture pharmaceuticals](https://www.marketplace.org/2023/11/29/low-earth-orbit-open-for-business-varda-space-industries/) (seriously listen to this interesting report from [Marketplace](https://www.marketplace.org/)). 
+
+# Wrap up
+
+In this post, we explored data representing objects launched into space from the [United Nations Office for Outer Space Affairs](https://www.unoosa.org/). Specifically, we explored and found a relationship between a country's gross domestic product and the number of objects it launches into space. This was done by creating a scatter plot and using the results from a simple linear regression. Surprisingly, it was interesting to see how the US far and away exceeded the predictions of our model. I posited and provided a few sources that attributes this result to the rise of the commercial space flight industry here in the US. I did all this while also peppering in some poorly delivered space puns, with a backdrop of some space banjo music. 
+
+I hope you enjoyed this post as much as I did writing it. This was a fun little data set. Check out the `#tidytuesday` GitHub [repo](https://github.com/rfordatascience/tidytuesday) for other fun data sets to explore. 
