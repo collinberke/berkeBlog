@@ -4,7 +4,7 @@ subtitle: "Here you'll find what I'm currently up to."
 format:
   html:
     toc: false
-    date-modified: "2024-04-26"
+    date-modified: "2024-05-05"
 ---
 
 A now page, [why?](https://nownownow.com/about) 
@@ -44,9 +44,9 @@ Since I'm broadening my data visualization skills, I've picked up this book to d
 
 This is a bit of a stretch read for me. I read this book when I have the time. I'm mostly using it to become more familiar with other machine learning models and techniques available in R. I'm also looking to write some more blog posts utilizing machine learning. Again, when I can find the time.
 
-#### [The Stars, Like Dust (The Galactic Empire 1)](https://www.amazon.com/The-Stars-Like-Dust/dp/B08CFSK8GG/)
+#### [The Currents of Space (Galactic Empire 2)](https://www.amazon.com/Currents-Space-Galactic-Empire-Book-ebook/dp/B08GK12F2P) by Issac Asimov
 
-I finished Asimov's The Robot Series, and I was interested in reading more of his work. This book's synopsis seemed intriguing, so I picked it up as another personal read. It's also sci-fi, a genre I've gravitated to as of late.  
+Continuing on with the second book in the Galactic Empire series. This book is another precursor to Asimov's Foundation series, which I'm aiming to read in the next couple of monhts. Just some more Sci-Fi when I have time to read for fun.
 
 ## A list of books I've read (ever since I've started keeping track)
 
@@ -79,6 +79,8 @@ I finished Asimov's The Robot Series, and I was interested in reading more of hi
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [The Stars, Like Dust (Galactic Empire 1)](https://www.amazon.com/The-Stars-Like-Dust/dp/B08CFSK8GG/) by Issac Asimov
 
 #### [Robots and Empire (The Robot Series 4)](https://www.amazon.com/Robots-Empire-I-Asimov/dp/0008277796/) by Issac Asimov
 
