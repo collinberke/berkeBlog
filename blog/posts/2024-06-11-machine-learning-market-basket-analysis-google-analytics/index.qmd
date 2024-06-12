@@ -1,0 +1,650 @@
+---
+title: "Messing with models: Market basket analysis of online merchandise store data" 
+date: "2024-06-11"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpeg
+description: "A tutorial on how to perform a market basket analysis using Google Analytics data"
+toc: true
+from: markdown+emoji
+bibliography: references.bib
+categories:
+  - machine learning 
+  - unsupervised learning
+  - association rules
+  - market basket analysis
+---
+
+![Image generated using the prompt 'robot browsing an e-commerce store on laptop in pixel art, warm colors' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
+
+# Background
+
+According to [estimates](https://www.forbes.com/advisor/business/ecommerce-statistics/) cited by Forbes, the 2024 global e-commerce market is expected to be worth over $6.3 trillion [@snyderAditham2024]. Behind this figure is an unfathomable amount of transaction data. If you work in marketing, you more than likely have encountered this type of data, where customer purchases are tracked and each item is logged. How, then, can this data be used to create actionable insights about customer's purchasing behavior? Market basket analysis is one such tool.
+
+Market basket analysis is used to identify actionable rules about customers' purchase behavior. As an unsupervised machine learning method, market basket analysis utilizes an algorithm to create association rules from a set of unlabeled data [@lantz2023]. If you're working with transaction data, this type of analysis is essential to know. It's an interpretable, useful machine learning technique.
+
+This post explores the use of market basket analysis to identify clear and interesting insights about customer purchase behavior, in the context of an online merchandise store. Specifically, this post uses [obfuscated Google Analytics data](https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset) from the [Google Analytics Merchandise Store](https://shop.merch.google/).
+
+::: {.callout-warning}
+The data used in this post is example data, and it is used for tutorial purposes. Conclusions drawn here are not representative, at least to my knowledge, of real customer purchasing behavior.
+:::
+
+Specifically, this post overviews the steps involved when performing market basket analysis using Google Analytics data. The data used in this analysis represents transaction data collected during the 2020 [US holiday season](https://en.wikipedia.org/wiki/Christmas_and_holiday_season) (2020-11-01 to 2020-12-31). First, I highlight the use of [Google BigQuery](https://cloud.google.com/bigquery?nis=6&hl=en) and the [`bigrquery`](https://bigrquery.r-dbi.org/) R package to extract Google Analytics data. Second, I overview the wrangling and exploratory steps involved when performing a market basket analysis. Then, I utilize the [`arules`](https://mhahsler.github.io/arules/) package to generate association rules from the data. Finally, the last section discusses rule interpretation, where I aim to identify clear and interesting insights from the generated rules.
+
+```{r}
+#| label: setup
+#| message: FALSE
+library(tidyverse)
+library(bigrquery)
+library(here)
+library(glue)
+library(skimr)
+library(plotly)
+library(reactable)
+library(arules)
+library(arulesViz)
+```
+
+# Extract Google Analytics data
+
+::: {.callout-note}
+I'm going to take a moment to describe the data extraction process. If you're already familiar with how to extract data from Google BigQuery, you might skip ahead to the next section.
+:::
+
+Google Analytics provides [several interfaces](https://support.google.com/analytics/answer/9317657?hl=en) to access analytics data. I've found the [BigQuery export](https://support.google.com/analytics/answer/9358801?hl=en) very useful for this type of work. To extract analytics data in this way, I utilize the [`bigrquery`](https://bigrquery.r-dbi.org/) package, which provides an interface to submit queries to the service and return data to your R session.
+
+BigQuery is a cloud service which [incurs costs](https://cloud.google.com/bigquery/pricing) based on use, and some setup steps are required to authenticate and use the service. These steps are outside the scope of this post, however [Google](https://cloud.google.com/bigquery/docs/introduction) and the [`bigrquery`](https://bigrquery.r-dbi.org/) package have some great resources on how to get started.
+
+The `bigrquery` package makes the process of submitting queries to BigQuery pretty straightforward. Here is a list summarizing the steps:
+
+1. Set up a variable that contains the BigQuery dataset name.
+2. Create a variable containing your query string.
+3. Use the package's `bq_project_query()` and `bq_table_download()` function to submit the query and return data.
+
+These steps look like the following in code. 
+
+::: {.callout-tip}
+Towards the end of this example code, I write a `.csv` file using `readr`'s `write_csv()` function. This way I don't need to re-submit my query to BigQuery every time the post is built. I've found this to be useful in other analysis contexts as well, as it limits the amount of times I need to use the service, and it helps reduce cost.
+:::
+
+```{r}
+#| label: setup-bq-dataset-table
+#| eval: FALSE
+data_ga <- bq_dataset(
+  "bigquery-public-data",
+  "ga4_obfuscated_sample_ecommerce"
+)
+
+# Check if the dataset exists
+bq_dataset_exists(data_ga)
+```
+
+```{r}
+#| label: query-ga-transactions 
+#| eval: FALSE
+query <- "
+  select 
+    event_date,
+    ecommerce.transaction_id,
+    items.item_name as item_name
+  from `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`, unnest(items) as items
+  where _table_suffix between '20201101' and '20201231' and
+  event_name = 'purchase'
+  order by event_date, transaction_id
+"
+```
+
+```{r}
+#| label: extract-ga-transactions 
+#| eval: FALSE
+data_ga_transactions <- bq_project_query(
+  "insert-your-project-name",
+  query
+) |>
+bq_table_download()
+
+# Write and read the data to limit calls to BigQuery
+write_csv(data_ga_transactions, "data_ga_transactions.csv")
+```
+
+Now that I have a `.csv` file containing transactions from 2020-11-01 to 2020-12-31, I can use `readr`'s `read_csv()` function to import data into the session. Again, this will help limit the number of times I need to query the dataset, as a result, reducing cost.
+
+```{r}
+#| label: read-data-ga-transactions 
+data_ga_transactions <- read_csv("data_ga_transactions.csv")
+```
+
+Before we go about wrangling data, let's get a sense of its structure. `dplyr`'s `glimpse()` function can be used to do this.
+
+```{r}
+#| label: summ-glimpse-data 
+glimpse(data_ga_transactions)
+```
+
+At first glance, we see the dataset contains 13,113 logged events (i.e., rows) and three columns: `event_date`, `transaction_id`, and `item_name`. Examining the first few examples, a few issues are immediately apparent. Our data wrangling steps will need to address these issues. For one, we'll need to do some date parsing. We'll also need to address the `NA` (i.e., missing) values in the `transaction_id` column.
+
+# Wrangle data
+
+## Address missing transaction ids
+
+After reviewing the dataset's structure, my first question is how many examples are missing a `transaction_id`? `transaction_id`s are critical here, as they are used to group items into transactions. To answer this question, I used the following code:
+
+```{r}
+#| label: summ-missing-id 
+data_ga_transactions |>
+  mutate(
+    has_id = case_when(
+      is.na(transaction_id) | transaction_id == "(not set)" ~ FALSE,
+      TRUE ~ TRUE 
+    )
+  ) |>
+  count(has_id) |>
+  mutate(prop = n / sum(n))
+```
+
+Out of the 13,113 events, 1,498 (or 11.4%) are missing a `transaction_id`. Missing `transaction_id`'s can take two forms. First, a missing value can be an `NA` value. Second, missing values occur when examples contain the `(not set)` character string.
+
+I address missing values by dropping them. Indeed, other approaches are available to handle missing values. Given the data and context you're working within, you may decide dropping over 11% of examples is not appropriate. As such, the use of nearest neighbor or imputation methods might be explored.
+
+Although the temporal aspects of the data are not relevant for this analysis, for consistency, I'm also going to parse the `event_date` column into type `date`. `lubridate`'s `ymd()` function can be used for this task. 
+
+Here's the code to perform the wrangling steps described above:
+
+```{r}
+#| label: wrngl-data-ga-transactions 
+data_ga_transactions <- 
+  data_ga_transactions |>
+  drop_na(transaction_id) |>
+  filter(transaction_id != "(not set)") |>
+  mutate(event_date = ymd(event_date)) |>
+  arrange(event_date, transaction_id)
+```
+
+We can verify these steps have been applied by once again using `dplyr`'s `glimpse()` function. Base R's `summary()` function is also useful to verify the data is as expected.
+
+```{r}
+#| label: view-wrngl-data-structure 
+glimpse(data_ga_transactions)
+```
+
+```{r}
+#| label: summ-wrngl-data 
+summary(data_ga_transactions)
+```
+
+Looks good from a structural standpoint. However, I did notice that our wrangling procedure resulted in events occurring before 2020-11-11 to be removed. This might indicate some data issues prior to this date, which might be worth further exploration. Given that I don't have the ability to speak with the developers of the Google Merchandise Store to explore a potential measurement issue, I'm just going to move forward with the analysis. Indeed, our initial goal was to identify association rules during the holiday shopping season, so our data is still within the date range intended for our analysis.
+
+# Explore data
+
+Data exploration is the next step. How many transactions are represented in the data? Let's use `summarise()` with `n_distinct()` on the `transaction_id` to get a unique count of the total number of transactions. Our distinct count reveals a total of 3,562 transactions are present within the data. We'll use each transaction to generate association rules here in a little bit. 
+
+```{r}
+#| label: summ-total-transactions 
+# Number of transactions
+data_ga_transactions |>
+  summarise(transactions = n_distinct(transaction_id))
+```
+
+`skim()` from the `skimr` package can now be used to calculate summary statistics for our data. Given the type of data we're working with, there's not much to report from this output. The output does confirm our previous count of transactions we got above. We also can see there are 371 unique items purchased during this 51 day period.
+
+```{r}
+#| label: summ-skim-data 
+skim(data_ga_transactions)
+```
+
+Let's get a sense of what the most purchased items were during this time. Here we'll use `dplyr`'s `count()` function. 
+
+We can view the top ten items purchased during this period with the use of a simple bar chart. I'm using `plotly` for its interactivity. You could use any other plotting package. I've also created a table embedded in a tabset using `reactable`'s `reactable()` function. This is useful if you want to explore all the items within the dataset.
+
+```{r summ-item-counts}
+#| label: summ-item-counts
+data_item_counts <- 
+  data_ga_transactions |>
+  count(item_name, name = "purchased", sort = TRUE) 
+```
+
+::: {.panel-tabset}
+## Top 10 Plot
+```{r}
+#| label: vis-item-counts 
+#| code-fold: TRUE
+plot_ly(
+  data = slice_head(data_item_counts, n = 10),
+  x = ~purchased,
+  y = ~item_name,
+  type = "bar",
+  orientation = "h"
+) |>
+layout(
+  title = list(
+    text = "<b>Top 10 Google Merchandise Store items purchased during the 2020 holiday season (2020-11-11 to 2020-12-31)</b>",
+    font = list(size = 24, family = "Arial"),
+    x = 0.1 
+  ),
+  yaxis = list(title = "", categoryorder = "total ascending"),
+  xaxis = list(title = "Number of items purchased"),
+  margin = list(t = 105)
+)
+```
+
+## Table
+```{r}
+#| label: tbl-item-counts 
+#| code-fold: TRUE
+#| tbl-cap: "Top 10 Google Merchandise Store items purchased during the 2020 holiday season (2020-11-11 to 2020-12-31)" 
+
+options(reactable.theme = reactableTheme(
+  color = "#000000",
+  backgroundColor = "#ffffff"
+ )
+)
+
+reactable(
+  data_ga_transactions |> count(item_name, sort = TRUE),
+  searchable = TRUE,
+  columns = list(
+    item_name = colDef(name = "Item name"), 
+    n = colDef(name = "Purchases")
+  )
+)
+```
+:::
+
+# Create a sparse matrix 
+
+We're now at the point where we can start performing our market basket analysis. To perform the analysis, I'll be using the [`arules`](https://mhahsler.github.io/arules/) R package [@hahslerEtAl2005]. Specifically, I'll be using the package's `apriori()` function. This function will use the apriori algorithm to create the association rules for us [@lantz2023]. 
+
+Before we can go about creating association rules, though, we need to transform the `data_ga_transactions` tibble into an object that can be used by `arules`' functions. Indeed, the `arules` package [works well](https://mhahsler.github.io/arules/) when writing code in a tidyverse style, especially if you're used to working with tibbles. In fact, the `transactions()` function accepts a tibble as an input and outputs the needed data structure used by the package's functions. You do, however, need to be aware of and specify if your data is in 'wide' or 'long' format. Since this post's data initially is in a long format, we specify `"long"` for the `format` argument in the `transactions()` function.
+
+```{r}
+#| label: wrngl-ga-transactions 
+ga_transactions <- data_ga_transactions |> 
+  select(-event_date) |>
+  mutate(across(transaction_id:item_name, factor)) |>
+  transactions(format = "long")
+
+ga_transactions
+```
+
+Now we have a `ga_transactions` object we can use with `arules`' functions. Specifically, this `transactions()` function is creating a sparse matrix, where the matrix has 3,562 rows (the number of transactions) and 371 columns (the number of unique items). If we do some simple multiplication, we can calculate that the matrix contains over 1.3 million spaces. 
+
+```{r}
+#| label: summ-size-sparse-matrix 
+3562 * 371
+```
+
+# Explore the sparse matrix
+
+Each space within the matrix either contains a value (i.e., an item was purchased during a transaction) or it does not (i.e., an item was not purchased during a transaction). It's essentially a 1 or 0 representing whether an item was purchased within a transaction. In fact, it's called a *sparse* matrix because many of the matrix's spaces will not contain a value. 
+
+We can now pass the `ga_transactions` object into `summary()`. Outputted will be some summary information about the transactions.
+
+```{r}
+#| label: summ-ga-transactions 
+summary(ga_transactions)
+```
+
+In addition, the summary contains information about various items and transactions. Some of this info we've already identified. Other information is new. The first section of the output confirms what we found in our exploratory analysis, the number of transactions and unique items. This section does provide one additional useful metric, `density`.
+
+The `density` metric represents the proportion of the matrix that contains a transaction [@lantz2023]. In other words, it gives us a sense of proportion of non-zero cells within the data. For this dataset, .7% of matrix's cells contain a value. Although this is a small amount, it's really not when you consider we're exploring transactions for an online merchandise store. If we we're exploring rules for say a grocery store, product purchases would probably be more patterned and some common items would be purchased more frequently (e.g., milk).
+
+With these values in mind, we can also calculate the total number of items purchased during the period and the average number of items within a transaction. Here's the code to perform these calculations using the summary information.
+
+```{r}
+#| label: summ-items-purchased
+# Over 1.3M different positions within the matrix
+mat_pos <- 3562 * 371 
+
+# Total number of items purchased during the period (ignoring duplicates)
+items_purchased <- mat_pos * .007850158
+
+# Average number of items in each transaction
+items_purchased / 3562
+```
+
+The next section of the output details the most frequent items purchased. If you're comparing these numbers to what's above, you may notice the most frequent item values don't match. The sparse matrix does not store information about how many items were purchased during each transaction. Rather, it stores binary values. 1 = at least one of the items was purchased during the transaction and 0 = no items of this type were purchased during the transaction. Thus, it's measuring the presence of an item in a transaction rather than the frequency of items. Nevertheless, the item rankings closely match what we found above.
+
+The output then provides a distribution of transaction lengths. The majority of transactions (1,266) only contained one item. We can also see there was one transaction that contained 29 different items. Following the distribution output, some additional summary statistics for the transactions are provided. Here we can see transactions, on average, had a total of 2.912 items.
+
+The final two sections of the output really don't reveal any additional information about the transactions. Rather, it provides some example item labels and transaction ids to verify data was imported correctly.
+
+::: {.callout-note}
+Although I mention these last two sections are not useful, they were essential for me identifying that the `transactions()` function had a `format` argument. When first attempting to transform this data, I noticed some unexpected values that lead me to learn about this argument. Lesson learned--check your data.
+:::
+
+# Inspect transactions further
+
+Beyond summary information, the `arules` package provides functions to further explore transactions. For instance, say we wanted to explore the first 10 items in our transactions. To do this, we convert the matrix into a long format `data.frame`. This `data.frame` will contain two columns: `TID` and `item`. `arules`' `toLongFormat()` function does this transformation for us. Here we need to set the function's `decode` argument to `TRUE`, so as to return the item's actual name in the printed output. 
+
+When we run the following code, printed to the console will be the first ten columns of our converted matrix as a two column data frame. One column contains the ID, and the second contains the item name.
+
+```{r}
+#| label: summ-view-items
+head(toLongFormat(ga_transactions, decode = TRUE), n = 10)
+```
+
+If we're interested in exploring complete sets of transactions, `arules`' `inspect` generic function is useful. Say we want to inspect the item sets for the first five transactions. We can do this by using the following code.
+
+```{r}
+#| label: summ-view-head-transactions 
+inspect(ga_transactions[1:5])
+```
+
+The `itemFrequency()` generic function is also useful to make quick calculations on individual items. Say we want to calculate the proportion of times our most popular items, the Super G Unisex Jogger and the Google Camp Mug Gray, were a part of a transaction. We can do this with the following code:
+
+```{r}
+#| label: summ-item-frequency 
+itemFrequency(
+  ga_transactions[, c("Super G Unisex Joggers", "Google Camp Mug Gray")]
+)
+```
+
+We can also get the count values by passing `absolute` to `itemFrequency()`'s `type` argument. This is exactly the same as we saw in the summary output of the `ga_transaction` object. However, this can be useful to find the frequency of items that are not the top items purchased.
+
+```{r}
+#| label: summ-item-freq-absolute 
+itemFrequency(ga_transactions[, c("Super G Unisex Joggers", "Google Camp Mug Gray")], type = "absolute")
+```
+
+Perhaps we would also like to visualize these results. `arules` `itemFrequencyPlot()` function allows us to do this. Take for example the following code, which outputs a plot of the top 20 items with the greatest support.
+
+```{r}
+#| label: vis-item-frequency 
+itemFrequencyPlot(ga_transactions, topN = 20)
+```
+
+In addition to these plots, we can also output some visualizations of the sparse matrix. Since the matrix contains over 1.3 million spaces, we're limited in the output we can generate. To output a visualization of the sparse matrix, we can use `arules`' `image()` generic function. The first following code chunk outputs a visualization of the first 100 transactions, while the second is a random sample of 100 transactions.
+
+```{r}
+#| label: vis-sparse-matrix 
+image(ga_transactions[1:100])
+```
+
+```{r}
+#| label: vis-sample-sparse-matrix} 
+image(sample(ga_transactions, 100))
+```
+
+Such visualizations of the matrix may not lead to immediate inferences to be derived from our data. However, they are useful for two reasons. For one, they're useful for identifying data issues. For instance, if we see a line of boxes filled in with a grey pixel for every transaction, this may be an indication that an item may have been mislabelled in our transactions. Second, this visualization might provide some evidence of unique patterns worth further exploration, perhaps seasonal items. Again, on its face, this visualization may not lead to clear, insightful conclusions from our data to be immediately apparent, but it might point us in a direction for further exploration.
+
+# Train the model
+
+## Brief overview of association rules
+
+Although others have gone more in-depth on this topic [@lantz2023], it's worth taking a moment to discuss what an association rule is before we use a model to create them. Let's say we have the following five transactions:
+
+```txt
+{t-shirt, sweater, hat}
+{t-shirt, hat}
+{socks, beanie}
+{t-shirt, sweater, hat, socks, beanie, pen}
+{socks, pen}
+```
+
+Each line represents an individual transaction. What we aim to do is use an algorithm to identify rules that give us a sense if someone buys one item, what other items will they also likely buy. For example, does buying a t-shirt lead someone to also buy a hat? If so, given our data, can we quantify how confident we are in this rule? Not everyone buying a t-shirt will buy a hat.
+
+When we create rules, they'll be made up of a left-hand (i.e., an antecedent) and right-hand side (i.e., a consequent). They'll look something like this:
+
+```txt
+{t-shirt} => {hat}
+
+# or
+
+{t-shirt, hat} => {sweater}
+```
+
+Rule interpretation is pretty straightforward. In simple terms, the first rule states that when a customer purchases a t-shirt, they'll also likely purchase a hat. For the second, if a customer purchases a t-shirt and a hat, then they'll also likely purchase a sweater. It's important to recognize that the left-hand side can be one or many items. Now that we understand the general makeup of a rule, let's explore some metrics to quantify each.
+
+## Market basket analysis metrics
+
+Before overviewing the model specification steps, we need to understand the key metrics calculated with a market basket analysis. Specifically, we need a little background on the following:
+
+* Support
+* Confidence
+* Lift
+
+In this section, I'll spend a little time defining and describing each. However, others do a more through treatment of each metric [see @lantz2023 chap. 8; @kadlaskar2021; @li2017], and I suggest checking out each for more detailed information.
+
+### Support
+
+Support is calculated using the following formula:
+
+$$
+support(x) = \frac{count(x)}{N}
+$$
+
+`count(x)` is the number of transactions containing a specific set of items. `N` is the number of transactions within our data.
+
+Simply put, support is interpreted as how frequently an item occurs within the data.
+
+### Confidence
+
+Alongside support, confidence is another metric provided by the analysis. It's built upon support and calculated using the following formula:
+
+$$
+confidence(X\rightarrow Y) = \frac{support(X, Y)}{support(X)}
+$$
+
+Confidence is a proportion of transactions containing item X (or itemset) results in the presence of item Y (or itemset).
+
+Both confidence and support are important; both are parameters we'll set when specifying our model. These two parameters are the dials we adjust to narrow or expand our rule set generated from the model.
+
+### Lift
+
+Lift's importance will become more evident once we specify our model and look at some rule sets. But let's discuss its definition. It's calculated using the following formula:
+
+$$
+lift(X \rightarrow Y) = \frac{confidence(X \rightarrow Y)}{support(Y)}
+$$
+
+Put into simple terms, lift gives us a number of how likely one item or itemset is to be purchased to its typical rate of purchase. In even simpler terms, the higher the lift, the stronger evidence that there is a true connection between items or item sets.
+
+## Use the `apriori()` function
+
+Now let's do some modeling. Here we'll use `arules`' `apriori()` function to specify our model. This step requires a little trial and error, as there's no exact method for picking `support` and `confidence` values. As such, let's just start with `apriori`'s defaults for the `support`, `confidence`, and `minlen` parameters. The code looks like the following:
+
+```{r}
+#| label: mdl-train-apriori-default
+# Start with the default support, confidence, minlen
+#   support: 0.1
+#   confidence: 0.8
+#   minlen: 2
+mdl_ga_rules <- apriori(
+  ga_transactions, 
+  parameter = list(support = 0.1, confidence = 0.8, minlen = 2)
+)
+
+mdl_ga_rules
+```
+
+0 rules were created. This was due to the default `support` and `confidence` parameters being too restrictive. We will need to modify these values so the algorithm is able to identify rules from the data. However, we also need to be aware that loosening our rules could increase the size of our rule set, and this might result in a rule set unreasonably large to explore. This is where the trial and error comes into play.
+
+So, then, are there any means for determining reasonable starting points? Yes, we just need to consider the business case. Let's start with support, a parameter measuring how frequently an item or item set occurs within the transactions. A good starting point is to think about how many times a typical item might appear within a transaction throughout the measured period [@lantz2023].
+
+Since this is an online merchandise store, my expectation for item and item set purchase is quite low. Thus, I'd expect a typical item to be purchased at least once a week, that is, a total of 8 times during the period. A reasonable starting point for support, then, would be:
+
+```{r}
+#| label: summ-determining-parameters
+# Determining a reasonable support parameter
+8 / 3562
+```
+
+When it comes to confidence, it is more about picking a starting point and adjusting from there. For our specific case, I'll start at .1. 
+
+`minlen` represents the minimum length the rule (including both the right- and left-hand sides) needs to be before it's considered for inclusion by the algorithm. It is the last parameter to be set. Our exploratory analysis identified the majority of items in a transaction were quite low, so I believe setting `minlen = 2` is sufficient given our data.
+
+Here's the updated code for our model with the adjusted parameters:
+
+```{r}
+#| label: mdl-train-apriori-reasonable 
+# Use parameters we think are reasonable 
+#   support: 0.002
+#   confidence: 0.1
+#   minlen: 2
+mdl_ga_rules <- apriori(
+  ga_transactions, 
+  parameter = list(support = 0.002, confidence = 0.1, minlen = 2)
+)
+
+mdl_ga_rules
+```
+
+With more reasonable parameters in place, the model identified 277 rules. Is 277 rules too much, too little? You'll have to decide. For this specific case, 277 rules seems reasonable.
+
+# Evaluate model performance
+
+We now need to assess model performance. To obtain information useful for evaluating model performance, we pass the `mdl_ga_rules` object to `summary()`. Printed to the console is summary information about our rule set.
+
+```{r}
+#| label: summ-model-rules 
+summary(mdl_ga_rules)
+```
+
+This output contains several sections. Each section provides detailed information about the rule set generated by the algorithm. The first portion of the summary is pretty straightforward. Here, again, we confirm the algorithm identified 277 rules. In addition, similar to the above summary of our transactions object, we get a distribution and summary information of the length of the rule sets. There's not much to note here, other than the algorithm identified rule sets of a length between 2 (226 rules) and 3 (51 rules), where the mean number of rule length is 2.18. 
+
+Let's start by focusing our attention on the `summary of quality measures` portion of the output. This section gives us a sense of how well the model performed with our rule sets. It contains summary information from the three metrics we defined above, along with some summaries of additional metrics.
+
+Let's move from the simplest to the more complex. First, we have `count`. `count` is simply the numerator for the `support` calculation. Looking at the beginning of this part of the output, we can see the `support` and `confidence` metrics. The important thing to note here is if any values are close to the parameter we set when specifying the model (.002 or .1). If values are close to the parameter values we set, this may be an indication we were too restrictive [@lantz2023]. Here, because we have a range of values, I'm not too concerned with the parameters values used.
+
+`coverage` is the next metric to inspect. According to @lantz2023, `coverage` has a useful real-world interpretation. In short, `coverage` represents the chance that a rule applies to any given transaction. When using the summary estimate here, we can estimate that at a minimum, the least applicable rule covers less than 1% percent of transactions, or 0.2% of transactions to be exact. The maximum suggests one rule covers almost 5% of transactions.
+
+The last metric to review from this output is `lift`. Lift was defined above, so I won't spend much time rehashing it here. Rather, let's interpret it and put it into accessible terms. 
+
+Lift is an indicator helpful for identifying rules with a true connection between items. That is, rules with a lift at or greater than one implies items appear more together than by chance [@lantz2023]. The minimum value of this section indicates that the weakest rule shows one such item set, when present, results in the purchase of another item at a two times more likely chance to be purchased. Considering the maximum value, one rule in our rule set shows items to be connected greater than 168 times by chance. 
+
+Although we can use these metrics to get a sense of how well a rule represents connections between item purchases, we also need to account for the number of transactions for each rule, as rules with limited transactions can bias the lift measurement. Nevertheless, it's a metric, as we'll show later, that's helpful for ranking rules for additional assessment.
+
+The final section of the output, `mining info`, is a copy of what we already specified when we created the model. It simply reports the number of transactions and what we set for our support and confidence parameters. In addition, it provides the full model call. There's not much to report from this section, other than it's good to confirm that what was submitted was what we expected.
+
+# Inspect the rules
+
+We can now begin exploring our rules for insights. `arules`' `inspect()` generic function is used for rule exploration. Perhaps we just want to view the top 20 rules by lift. To do this, we can `sort()` our output, use some vector subsetting, and wrap this code within `inspect()`.
+
+```{r}
+#| label: view-top-rules-by-lift 
+inspect(sort(mdl_ga_rules, by = "lift")[1:20])
+```
+
+If you're more comfortable working in a tidyverse style, you can obtain the same result by doing the following:
+
+```{r}
+#| label: view-top-rules-by-lift-tidy
+mdl_ga_rules |>
+  head(20, by = "lift") |>
+  as("data.frame") |>
+  tibble()
+```
+
+The code should be pretty self-explanatory. All we're doing is using `head()` to return the first 20 rules by the lift metric. Then, we convert that output to a `data.frame` using base R's `as()` function. The `tibble()` function from the tibble package transforms the output into a tibble for us.
+
+## Interpret rules
+
+Let's use our first rule as an example, where we'll seek to interpret it.
+
+```{r}
+#| label: view-first-rule-tidy 
+first_rule <- mdl_ga_rules |>
+  head(1, by = "lift") |>
+  as("data.frame") |>
+  tibble()
+
+first_rule$rules
+```
+
+Written out, the rule means: If someone buys the Google NYC Campus Mug and the Google Seattle Campus Mug, then they'll also likely purchase the Google Kirkland Campus Mug. Support is 0.00225, which indicates this rule is included in roughly .2% of transactions. And when these two mugs are purchased together, this rule, where the third mug is purchased, covers around 62% of these transactions. Moreover, the lift metric indicates the presence of a strong rule, where people who buy the first two mugs are more than 169 times more likely to purchase the third mug. 
+
+Why might this be? Perhaps it's customers who, by purchasing the first two mugs, are primed to just go ahead and buy the third to finish the set. This might be a great cross-selling opportunity. Maybe we present this rule to our developers and suggest a store feature that encourages customers--when they buy a certain set of items--to complete sets of items within their purchases. Maybe the marketing team could think up some type of pricing scheme along with this feature to further encourage the additional purchase to complete the set.
+
+Despite this rule, we also need to consider it alongside the `count` metric. If you recall, `count` represents the number of transactions this rule's item set is included. 8 transactions might be too low, and the `lift` metric may be biased here as a result. We may want to include additional transaction data to further explore this rule or simply be aware this limitation exists when making decisions.
+
+## Subset rules
+
+If you recall, earlier in our analysis the Google Camp Mug was identified as being a frequently purchased item. Say our marketing team wants to develop a campaign around this one product and would like to review all the rules associated with it. `arules`' `subset()` generic function in conjunction with some infix operators (e.g., `%in%`) and `inspect()` is useful to complete this task. Here is what the code looks like to return these rules:
+
+```{r}
+#| label: view-google-camp-mug
+inspect(subset(mdl_ga_rules, items %in% "Google Camp Mug Ivory"))
+```
+
+Say for example the marketing team finds these rules are not enough to build a campaign around, so they request all rules associated with any mug. The `%pin%` infix operator can be used for partial matching.
+
+```{r}
+#| label: view-all-mugs 
+inspect(subset(mdl_ga_rules, items %pin% "Mug"))
+```
+
+This can also be achieved in a more tidyverse style by doing the following:
+
+```{r}
+#| label: view-google-camp-mug-tidy 
+# Google Camp Mug Ivory tidy way
+mdl_ga_rules |>
+  as("data.frame") |>
+  tibble() |>
+  filter(str_detect(rules, "Google Camp Mug Ivory"))
+```
+
+```{r}
+#| label: view-all-mugs-tidy 
+# All mugs tidy way
+mdl_ga_rules |>
+  as("data.frame") |>
+  tibble() |>
+  filter(str_detect(rules, "Mug"))
+```
+
+# Visualize our model
+
+Slicing and dicing rules can be useful. However, say we want to explore all the rules visually. Within the `arules` family of packages there's an [`arulesViz`](https://mhahsler.github.io/arulesViz/) package [@hahsler2017], which provides a simple `plot()` generic to create static and interactive plots. Let's explore some of this functionality with the rule set created above. 
+
+We start with a simple scatter plot of our rules. `confidence` for each rule is plotted on the y-axis, `support` is on the x-axis, and the brightness of each point represents the rule's `lift`. The hover tool provides additional useful information about each rule represented in the plot.
+
+```{r}
+#| label: vis-scatter-rules 
+plot(mdl_ga_rules, engine = "html")
+```
+
+Now, we can also use the `plot()` generic function to create a network graph of the rule sets. To do this, we just set `method = "graph"`. You'll also notice I set the argument `limit = 300`. This is because rule sets can be quite large, which when plotted interactively can cause issues if too many rules are plotted. Thus, the generic defaults to the top 100 rule rule sets based on lift. Given we have a relatively small rule set (i.e., 277 rules), I bumped this up a bit.
+
+```{r}
+#| label: vis-network-rules 
+plot(mdl_ga_rules, method = "graph", engine = "html", limit = 300)
+```
+
+The interactive network is useful for exploring various rules, along with rules associated with specific items. You can either click on individual nodes within the graph to highlight connections, or you can use the drop-down to select individual components. Give it a try.
+
+# Identify clear, insightful rules
+
+Now that we have a set of rules to explore, our next task is to identify clear and interesting rules for whoever needs results from this analysis. According to @lantz2023, this task can be challenging. We want to avoid clear, but obvious rules. Such rules will likely already be known by the marketing team (e.g., {peanut butter, jelly} => {bread}). Also, interesting, but not clear rules may simply be an anomaly and not worth pursuing. 
+
+This stage of the process is more subjective, rather then objective. As such, we may need to collaborate with other professionals more knowledgeable of the business context. Working with other knowledgable individuals will help us further identify clear, interesting rules to share. Nonetheless, our model has gotten us from raw transaction data to a more focused set of rules worth additional exploration.
+
+# Sort and export
+
+Not all collaborators will have the time to review every rule. So, how do we get these rules into a format useful for other's to review?  It's pretty straightforward; we just sort and export the rules to a `.csv` file.
+
+To share these rules with other collaborators, I'm going to sort and slice the top 100 rules based on the `lift` metric, transform into a tibble, and write a `.csv` file for stakeholders to view the rules. A file in this format should be easily opened in programs familiar to your typical business user (e.g., Excel, Google Sheets).
+
+```{r}
+#| label: sort-top-hundred-rules-lift-tidy 
+rules_top <- mdl_ga_rules |>
+  head(100, by = "lift") |>
+  as("data.frame") |>
+  tibble()
+```
+
+```{r}
+#| label: write-top-hundred-rules-lift-tidy 
+write_csv(
+  rules_top, 
+  glue("{str_replace_all(Sys.Date(), '-', '_')}_data_top_rules.csv")
+)
+```
+
+# Wrap-up
+
+This wraps up our analysis of Google Merchandise Store transactions for the 2020 holiday season. In this post, I overviewed the steps involved when performing a market basket analysis using Google Analytics data. This post started with a brief discussion on how to extract Google Analytics data stored in BigQuery using the `bigrquery` package. I covered the general wrangling and exploratory analysis necessary to perform a market basket analysis. This involved transforming transaction data into a sparse data matrix and how to use the matrix to calculate simple summaries about various transactions and items. Using the `arules` package, I created association rules using the `apriori` algorithm, as implemented in the `apriori()` function. This post then covered some of the basic definitions of key metrics used for specifying and interpreting this type of model (e.g., support; confidence; and lift). A section was also devoted to the interpretation and visualization of the outputted rule sets. Finally, this post finished with a description on how to export rules, so as to easily share and collaborate with others.
+
+Taken in whole, market basket analysis is an interpretable, useful tool for analyzing e-commerce transaction data. Hopefully you can add it to your toolbox and find it useful in identifying impactful rules for more informed marketing efforts. 
+
+Until next time, keep messing with models.
