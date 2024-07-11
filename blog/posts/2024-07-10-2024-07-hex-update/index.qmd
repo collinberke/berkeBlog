@@ -239,7 +239,7 @@ There's a few things to keep in mind when reviewing these trends. Hits represent
 
 I used the [R programming language](https://cran.r-project.org/) to extract, wrangle, and visualize Google Trends data. Specifically, I used the [`gtrends`](https://github.com/PMassicotte/gtrendsR) R package to extract data. Data was wrangled and visualized with functions from [`tidyverse`](https://www.tidyverse.org/) R packages.  
 
-If you really, really want the in-depth details, you can view the code to do this [here]().
+If you really, really want the in-depth details, you can view the code to do this [here](https://github.com/collinberke/berkeBlog/blob/master/blog/posts/2024-07-10-2024-07-hex-update/index.qmd).
 :::
 
 # Wrap-up
