@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.5.54">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-01-01">
 <meta name="description" content="Learning how to use the recipes package, one day at a time">
 
-<title>Collin K. Berke, Ph.D.&nbsp;- 30 day tidymodels recipes challenge</title>
+<title>30 day tidymodels recipes challenge – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,7 +25,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +85,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -94,6 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -108,44 +115,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Collin K. Berke, Ph.D.</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../now.html" rel="" target="">
- <span class="menu-text">Now</span></a>
+    <a class="nav-link" href="../../../now.html"> 
+<span class="menu-text">Now</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../blog/index.html" rel="" target="">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../til/index.html" rel="" target="">
- <span class="menu-text">Today I Learned</span></a>
+    <a class="nav-link" href="../../../til/index.html"> 
+<span class="menu-text">Today I Learned</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -217,7 +224,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-left">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -237,12 +244,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="thumbnail-wide.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Photo by <a href="https://unsplash.com/photos/assorted-cookware-set-UiGsP8TvOJQ">Nicolas Gras</a></figcaption>
+<figcaption>Photo by <a href="https://unsplash.com/photos/assorted-cookware-set-UiGsP8TvOJQ">Nicolas Gras</a></figcaption>
 </figure>
 </div>
 <section id="background" class="level1">
@@ -1971,7 +1980,7 @@ id:        1</code></pre>
 <span id="cb203-6"><a href="#cb203-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb203-7"><a href="#cb203-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: All predictors are missing; cannot impute</code></pre>
+<pre><code>Warning: All predictors are missing; cannot impute.</code></pre>
 </div>
 </div>
 <p>I assumed this was because all the predictors used to create the model for imputation had missing values. So, I applied some imputation to these first before applying the <code>step_impute_bag()</code> and the warning went away. However, I’m unsure if this was the initial problem. I might submit an issue to the <a href="https://github.com/tidymodels/recipes"><code>recipes</code> GitHub repo</a> to which I’ll link later. Nevertheless, I got the example to work. Here’s the code:</p>
@@ -2653,7 +2662,11 @@ id:         1</code></pre>
 <span id="cb306-3"><a href="#cb306-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb306-4"><a href="#cb306-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Imputed Values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-10-show-impute-model-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-10-show-impute-model-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Again, this relationship is not a strong, linear one. Therefore, a linear imputation method of estimation may not be the best approach for this data. Nevertheless, it serves as an example of how to do it using the <code>recipes</code> package.</p>
@@ -2676,7 +2689,7 @@ $ rate    &lt;dbl&gt; 67.9, 65.1, 77.3, 78.7, 79.4, 80.4, 85.8, 86.6, 87.5, 89.1
 </div>
 <div class="sourceCode cell-code" id="cb309"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb309-1"><a href="#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(crickets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -2718,7 +2731,7 @@ $ rate    &lt;dbl&gt; 67.9, 65.1, 77.3, 78.7, 79.4, 80.4, 85.8, 86.6, 87.5, 89.1
 </tbody>
 </table>
 <p><strong>Variable type: factor</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 13%">
@@ -2749,7 +2762,7 @@ $ rate    &lt;dbl&gt; 67.9, 65.1, 77.3, 78.7, 79.4, 80.4, 85.8, 86.6, 87.5, 89.1
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 16%">
 <col style="width: 11%">
@@ -2966,7 +2979,11 @@ $ rate    &lt;dbl&gt; 67.9, 65.1, 77.3, 78.7, 79.4, 80.4, 85.8, 86.6, 87.5, 89.1
 <span id="cb331-2"><a href="#cb331-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"pre-imputation"</span>, <span class="at">xlab =</span> <span class="st">"imputed"</span></span>
 <span id="cb331-3"><a href="#cb331-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-11-rec-plot-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-11-rec-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><code>step_impute_lower()</code> is pretty straightforward in my opinion. Give it a try. That’s it for today. A short one. Tomorrow is our final <code>step_impute_*()</code> function, <code>step_impute_roll()</code>.</p>
@@ -3016,7 +3033,7 @@ $ revenue                 &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14,
 </div>
 <div class="sourceCode cell-code" id="cb336"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb336-1"><a href="#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -3062,7 +3079,7 @@ $ revenue                 &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14,
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 13%">
@@ -3169,7 +3186,7 @@ $ revenue                 &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14,
 </tbody>
 </table>
 <p><strong>Variable type: Date</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 17%">
 <col style="width: 12%">
@@ -3203,7 +3220,7 @@ $ revenue                 &lt;dbl&gt; 12, 2, 4, 2, 3, 3, 14, 48, 14, 44, 14, 14,
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 22%">
 <col style="width: 9%">
@@ -3588,7 +3605,7 @@ $ sex               &lt;fct&gt; male, female, female, NA, female, male, female, 
 </div>
 <div class="sourceCode cell-code" id="cb373"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb373-1"><a href="#cb373-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -3630,7 +3647,7 @@ $ sex               &lt;fct&gt; male, female, female, NA, female, male, female, 
 </tbody>
 </table>
 <p><strong>Variable type: factor</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 16%">
 <col style="width: 12%">
@@ -3677,7 +3694,7 @@ $ sex               &lt;fct&gt; male, female, female, NA, female, male, female, 
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 17%">
 <col style="width: 9%">
@@ -3928,7 +3945,7 @@ $ churn                         &lt;fct&gt; no, no, no, no, no, no, no, no, no, 
 </div>
 <div class="sourceCode cell-code" id="cb402"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb402-1"><a href="#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(mlc_churn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -3970,7 +3987,7 @@ $ churn                         &lt;fct&gt; no, no, no, no, no, no, no, no, no, 
 </tbody>
 </table>
 <p><strong>Variable type: factor</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 20%">
 <col style="width: 10%">
@@ -4033,7 +4050,7 @@ $ churn                         &lt;fct&gt; no, no, no, no, no, no, no, no, no, 
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 28%">
 <col style="width: 9%">
@@ -4583,7 +4600,7 @@ $ time               &lt;dbl&gt; 0.00000000, 0.00390625, 0.00781250, 0.01171875,
 </div>
 <div class="sourceCode cell-code" id="cb452"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb452-1"><a href="#cb452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data_eeg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -4625,7 +4642,7 @@ $ time               &lt;dbl&gt; 0.00000000, 0.00390625, 0.00781250, 0.01171875,
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 24%">
 <col style="width: 12%">
@@ -4692,7 +4709,7 @@ $ time               &lt;dbl&gt; 0.00000000, 0.00390625, 0.00781250, 0.01171875,
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 14%">
 <col style="width: 10%">
@@ -4882,37 +4899,61 @@ $ time               &lt;dbl&gt; 0.00000000, 0.00390625, 0.00781250, 0.01171875,
 <pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-15-vis-bake-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-15-vis-bake-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-15-vis-bake-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-15-vis-bake-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-15-vis-bake-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-15-vis-bake-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-15-vis-bake-4.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-15-vis-bake-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-15-vis-bake-5.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-15-vis-bake-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in plot.xy(xy, type, ...): plot type 'line' will be truncated to first character</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-15-vis-bake-6.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-15-vis-bake-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>There you have it, another <code>step_*()</code> function to try out. See you tomorrow.</p>
@@ -4956,7 +4997,7 @@ $ city                    &lt;chr&gt; "San Jose", "San Jose", "San Jose", "San J
 </div>
 <div class="sourceCode cell-code" id="cb470"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb470-1"><a href="#cb470-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data_ga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -4998,7 +5039,7 @@ $ city                    &lt;chr&gt; "San Jose", "San Jose", "San Jose", "San J
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 13%">
@@ -5105,7 +5146,7 @@ $ city                    &lt;chr&gt; "San Jose", "San Jose", "San Jose", "San J
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 8%">
@@ -6154,7 +6195,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <span id="cb636-5"><a href="#cb636-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb636-6"><a href="#cb636-6" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(ga_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -6196,7 +6237,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 13%">
@@ -6303,7 +6344,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 8%">
@@ -6419,7 +6460,11 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb637"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb637-1"><a href="#cb637-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-19-vis-item-rev-hist-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-19-vis-item-rev-hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Indeed, this variable is skewed to the right. A log transformation would be appropriate here. Let’s do this by using <code>step_log()</code>.</p>
@@ -6473,7 +6518,11 @@ date_ref:   1</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb652"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb652-1"><a href="#cb652-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-19-vis-item-rev-bake-hist-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-19-vis-item-rev-bake-hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Not bad. The transformed <code>item_revenue_in_usd</code> now exhibits a more normal distribution.</p>
@@ -6527,7 +6576,11 @@ date_ref:   1</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb667"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb667-1"><a href="#cb667-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-19-change-base-bake-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-19-change-base-bake-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The second useful argument is the <code>offset</code> argument. This argument accepts a value to offset the data prior to logging, which helps us avoid <code>log(0)</code>. Here’s some example code:</p>
@@ -6580,7 +6633,11 @@ date_ref:   1</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb682"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb682-1"><a href="#cb682-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-19-offset-bake-hist-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-19-offset-bake-hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The final useful argument is <code>signed</code>, which accepts a boolean. Setting this argument to <code>TRUE</code> will make <code>step_log()</code> calculate the signed log. This is useful in cases where you have negative values, since a standard log transformation can’t be used to transform negative values. I found this <a href="https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/">article</a> useful for getting an intuitive sense of what the signed log is and how it can useful for modeling. Here’s the code to serve as an example, even though we don’t have any negative values in our data:</p>
@@ -6633,7 +6690,11 @@ date_ref:   1</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb697"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb697-1"><a href="#cb697-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bake_ga<span class="sc">$</span>item_revenue_in_usd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-19-signed-log-bake-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-19-signed-log-bake-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>That’s it for today. <code>step_log()</code> is a great first step in learning all the transformations <code>recipes</code> can do. I’m looking forward to tomorrow.</p>
@@ -6669,7 +6730,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <span id="cb700-5"><a href="#cb700-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb700-6"><a href="#cb700-6" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(ga_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -6711,7 +6772,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 13%">
@@ -6818,7 +6879,7 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 8%">
@@ -6934,7 +6995,11 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb701"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb701-1"><a href="#cb701-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>quantity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-20-vis-quantity-distribution-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-20-vis-quantity-distribution-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Indeed, this data seems to follow a Poisson Distribution. Let’s see if we can transform it to be more normal (Gaussian) with a square root transformation.</p>
@@ -7006,14 +7071,22 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb717"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb717-1"><a href="#cb717-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(baked_ga<span class="sc">$</span>quantity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-20-vis-baked-hist-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-20-vis-baked-hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can further explore the effect of this transformation by plotting the un-transformed variable on a scatter plot with the baked variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb718"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb718-1"><a href="#cb718-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ga_tr<span class="sc">$</span>quantity, baked_ga<span class="sc">$</span>quantity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-20-vis-baked-scatter-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-20-vis-baked-scatter-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Eh, looking at the histogram it seems this transformation didn’t really help very much. My assumption is this is due to many items only being purchased once. Thus, no transformation would likely be helpful in this case. Nonetheless, <code>step_sqrt()</code> is a pretty simple transformation function. You might find it useful when working with your data.</p>
@@ -7064,7 +7137,11 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb722"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb722-1"><a href="#cb722-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>revenue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-21-vis-hist-revenue-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-21-vis-hist-revenue-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Indeed, this varible exhibits a slight right skew. Let’s use the <code>step_BoxCox()</code> function here to perform the transformation.</p>
@@ -7135,7 +7212,11 @@ predictor: 2</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb738"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb738-1"><a href="#cb738-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(baked_ga<span class="sc">$</span>revenue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-21-vis-hist-transform-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-21-vis-hist-transform-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>If for some reason you wanted to inspect the lambda value used by the transformation, you can inspect it by tidying the recipe. The outputted table shows lambda in the <code>value</code> column.</p>
@@ -7184,7 +7265,11 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb744"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb744-1"><a href="#cb744-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_tr<span class="sc">$</span>items_purchased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-22-vis-items-purchased-hist-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-22-vis-items-purchased-hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>To apply an inverse transformation to our variable, we do the following in our recipe.</p>
@@ -7259,11 +7344,19 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb760"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb760-1"><a href="#cb760-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ga_baked<span class="sc">$</span>items_purchased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-22-vis-effect-trans-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-22-vis-effect-trans-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb761"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb761-1"><a href="#cb761-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ga_te<span class="sc">$</span>items_purchased, ga_baked<span class="sc">$</span>items_purchased)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-22-vis-effect-trans-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-22-vis-effect-trans-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The inverse did a pretty good job of making this distribution more normal.</p>
@@ -7737,7 +7830,11 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <span id="cb816-7"><a href="#cb816-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
 <span id="cb816-8"><a href="#cb816-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-26-vis-shipping-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-26-vis-shipping-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>You’ll notice the presence of a severe imbalance in the <code>shipping_tier</code> variable, as most transactions selected FedEx ground as the shipping tier (most likely the cheapest and default shipping tier). We can use <code>step_upsample()</code> and <code>step_downsample()</code> to create synthetic samples to address this imbalance with our recipe.</p>
@@ -7832,7 +7929,11 @@ Note
 <span id="cb833-7"><a href="#cb833-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
 <span id="cb833-8"><a href="#cb833-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-26-baked-upsample-over-vis-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-26-baked-upsample-over-vis-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Say we only want the minority levels to have about half the amount of values of the majority class. We can do this by passing <code>.5</code> to the <code>over_ratio</code> argument.</p>
@@ -7851,7 +7952,11 @@ Note
 <span id="cb834-12"><a href="#cb834-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
 <span id="cb834-13"><a href="#cb834-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-26-recipe-half-upsample-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-26-recipe-half-upsample-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Under-sampling is pretty much the same, but we use <code>step_downsample()</code> and the <code>under_ratio</code> argument. Here’s some example code to get you started.</p>
@@ -7870,7 +7975,11 @@ Note
 <span id="cb835-12"><a href="#cb835-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Shipping Tier"</span>) <span class="sc">+</span></span>
 <span id="cb835-13"><a href="#cb835-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/day-26-recipe-downsample-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/day-26-recipe-downsample-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><code>themis</code> makes it pretty easy to utilize over- and under-sampling methods. Indeed, this was just a highlight of some of the package’s basics. <code>themis</code> also has implemented some more advanced methods to address imbalanced data (e.g., <a href="https://arxiv.org/abs/1106.1813">SMOTE</a>). If you work with imbalanced data, I suggest checking out the <code>themis</code> package.</p>
@@ -8527,7 +8636,7 @@ Note
 <div class="cell-output cell-output-error">
 <pre><code>Error in `check_class()`:
 Caused by error:
-! Seniority should have the class(es) numeric but has the class(es) integer.</code></pre>
+! `Seniority` should have the class &lt;numeric&gt; but has the class &lt;integer&gt;.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb924"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb924-1"><a href="#cb924-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -8559,8 +8668,8 @@ Caused by error:
 <span id="cb926-7"><a href="#cb926-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> credit_te[, <span class="sc">-</span><span class="dv">8</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `bake()`:
-! The following required columns are missing from `new_data`: "Job".
-ℹ These columns have one of the following roles, which are required at `bake()` time: "predictor".</code></pre>
+✖ The following required columns are missing from `new_data`: `Job`.
+ℹ These columns have one of the following roles, which are required at `bake()` time: `predictor`.</code></pre>
 </div>
 </div>
 <p>You’ll notice an error stops our <code>bake</code>. This is because the variable used to make our dummy variables, <code>Job</code>, was omitted from the new data. Indeed, this is a very useful check, especially to verify if variables needed in our new data are available when the recipe is baked.</p>
@@ -8582,7 +8691,8 @@ Caused by error:
 <div class="cell-output cell-output-error">
 <pre><code>Error in `check_missing()`:
 Caused by error in `bake()`:
-! The following columns contain missing values: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `sex`.</code></pre>
+! The following columns contains missing values: bill_length_mm, bill_depth_mm,
+  flipper_length_mm, body_mass_g, and sex.</code></pre>
 </div>
 </div>
 <p>You’ll notice the above code errors because all the columns listed in the error contain a missing value(s).</p>
@@ -8609,7 +8719,8 @@ Caused by error in `bake()`:
 <span id="cb934-2"><a href="#cb934-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> penguins_te)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `bake()`:
-! The following columns contain missing values: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `sex`.</code></pre>
+! The following columns contains missing values: bill_length_mm, bill_depth_mm,
+  flipper_length_mm, body_mass_g, and sex.</code></pre>
 </div>
 </div>
 <p>A pretty useful <code>check_*()</code> function, especially if you’re concerned data might contain missing values.</p>
@@ -8633,7 +8744,7 @@ Caused by error in `bake()`:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb937"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb937-1"><a href="#cb937-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(penguins_tr, body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
 <tbody>
 <tr class="odd">
@@ -8671,7 +8782,7 @@ Caused by error in `bake()`:
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 16%">
 <col style="width: 11%">
@@ -8850,7 +8961,7 @@ Note
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
   author = {Berke, Collin K},
   title = {30 Day Tidymodels `Recipes` Challenge},
   date = {2024-01-01},
@@ -8901,6 +9012,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -8969,13 +9107,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'alternate';
+  const darkModeDefault = true;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -9010,18 +9150,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -9053,11 +9182,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -9067,8 +9235,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -9080,7 +9257,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -9124,6 +9424,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -9149,6 +9450,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -9209,6 +9536,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

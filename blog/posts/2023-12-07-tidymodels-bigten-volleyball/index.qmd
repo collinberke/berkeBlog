@@ -1,5 +1,5 @@
 ---
-title: "Messing around with tidymodels: Learning how to fit a binary classification model using NCAA Big Ten women's volleyball data"
+title: "Messing with models: Learning how to fit a binary classification model using NCAA Big Ten women's volleyball data"
 author: "Collin K. Berke, Ph.D."
 date: "2023-12-07"
 description: "Using tidymodels to predict wins and losses for volleyball matches"

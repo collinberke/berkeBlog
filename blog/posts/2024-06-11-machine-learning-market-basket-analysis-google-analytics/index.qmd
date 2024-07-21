@@ -19,7 +19,7 @@ categories:
 
 # Background
 
-According to [estimates](https://www.forbes.com/advisor/business/ecommerce-statistics/) cited by Forbes, the 2024 global e-commerce market is expected to be worth over $6.3 trillion [@snyderAditham2024]. Behind this figure is an unfathomable amount of transaction data. If you work in marketing, you more than likely have encountered this type of data, where customer purchases are tracked and each item is logged. How, then, can this data be used to create actionable insights about customer's purchasing behavior? Market basket analysis is one such tool.
+According to [estimates](https://www.forbes.com/advisor/business/ecommerce-statistics/) cited by Forbes, the 2024 global e-commerce market is expected to be worth over \$6.3 trillion [@snyderAditham2024]. Behind this figure is an unfathomable amount of transaction data. If you work in marketing, you more than likely have encountered this type of data, where customer purchases are tracked and each item is logged. How, then, can this data be used to create actionable insights about customer's purchasing behavior? Market basket analysis is one such tool.
 
 Market basket analysis is used to identify actionable rules about customers' purchase behavior. As an unsupervised machine learning method, market basket analysis utilizes an algorithm to create association rules from a set of unlabeled data [@lantz2023]. If you're working with transaction data, this type of analysis is essential to know. It's an interpretable, useful machine learning technique.
 
