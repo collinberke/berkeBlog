@@ -8,7 +8,6 @@ listing:
 format:
   html:
     page-layout: article
-    css: styles.css
 citation: false
 license: ""
 ---
