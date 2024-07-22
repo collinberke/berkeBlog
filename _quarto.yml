@@ -16,11 +16,8 @@ website:
 format:
   html:
     theme: 
-      dark: superhero
+      dark: [superhero, theme-dark.scss]
       light: flatly 
     css: styles.css
     toc: false 
     page-layout: full
-
-
-
