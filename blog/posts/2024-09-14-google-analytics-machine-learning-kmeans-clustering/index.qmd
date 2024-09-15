@@ -16,7 +16,7 @@ categories:
 
 ![Photo by [Daniel Fazio](https://unsplash.com/photos/gray-wire-lot-m9LlUwkPvT8)](thumbnail-wide.jpg)
 
-Marketing campaigns target specific audiences. Some form of a segmentation process is performed to identify these audiences. These segments can be identified using several approaches. This post describes one such approach: the use of data and machine learning to specify clustering models present within [Google Analytics](https://developers.google.com/analytics) data for an e-commerce store.
+Marketing campaigns target specific audiences. Some form of customer segmentation is performed to identify these audiences. These segments can be identified using several approaches. This post describes one such approach: the use of data and machine learning to specify clustering models present within [Google Analytics](https://developers.google.com/analytics) data for an e-commerce store.
 
 The goal is simple: create customer segments a marketing team could use to craft and target specific marketing campaigns. To achieve this goal, this post overviews the use of a straightforward, useful machine learning algorithm called [k-means clustering](https://en.wikipedia.org/wiki/K-means_clustering). Packages and functions from [R](https://www.r-project.org/), a statistical programming language, are used for the segmentation process.
 
