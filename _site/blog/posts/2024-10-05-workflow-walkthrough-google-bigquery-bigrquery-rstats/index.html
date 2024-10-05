@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2024-10-05">
+<meta name="description" content="A tutorial on how to use the bigrquery package">
+<title>Workflow walkthrough: Interacting with Google BigQuery in R – Collin K. Berke, Ph.D.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link rel="stylesheet" href="../../../styles.css">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../til/index.html"> 
+<span class="menu-text">Today I Learned</span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#what-will-you-learn-from-this-post" id="toc-what-will-you-learn-from-this-post" class="nav-link" data-scroll-target="#what-will-you-learn-from-this-post">What will you learn from this post?</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#authentication-briefly" id="toc-authentication-briefly" class="nav-link" data-scroll-target="#authentication-briefly">Authentication, briefly</a></li>
+  <li><a href="#list-available-projects" id="toc-list-available-projects" class="nav-link" data-scroll-target="#list-available-projects">List available projects</a></li>
+  <li><a href="#list-available-datasets-within-a-project" id="toc-list-available-datasets-within-a-project" class="nav-link" data-scroll-target="#list-available-datasets-within-a-project">List available datasets within a project</a></li>
+  <li><a href="#create-a-dataset-object-with-bq_dataset" id="toc-create-a-dataset-object-with-bq_dataset" class="nav-link" data-scroll-target="#create-a-dataset-object-with-bq_dataset">Create a dataset object with <code>bq_dataset()</code></a></li>
+  <li><a href="#looking-around-tables" id="toc-looking-around-tables" class="nav-link" data-scroll-target="#looking-around-tables">Looking around: tables</a></li>
+  <li>
+<a href="#querying-bigquery-and-returning-data" id="toc-querying-bigquery-and-returning-data" class="nav-link" data-scroll-target="#querying-bigquery-and-returning-data">Querying BigQuery and returning data</a>
+  <ul class="collapse">
+<li><a href="#composing-the-query" id="toc-composing-the-query" class="nav-link" data-scroll-target="#composing-the-query">Composing the query</a></li>
+  <li><a href="#submitting-the-query" id="toc-submitting-the-query" class="nav-link" data-scroll-target="#submitting-the-query">Submitting the query</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#creating-bigquery-datasets" id="toc-creating-bigquery-datasets" class="nav-link" data-scroll-target="#creating-bigquery-datasets">Creating BigQuery datasets</a>
+  <ul class="collapse">
+<li><a href="#greater-control-over-table-creation" id="toc-greater-control-over-table-creation" class="nav-link" data-scroll-target="#greater-control-over-table-creation">Greater control over table creation</a></li>
+  <li><a href="#create-and-write-disposition" id="toc-create-and-write-disposition" class="nav-link" data-scroll-target="#create-and-write-disposition">Create and write disposition</a></li>
+  </ul>
+</li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap-up</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Workflow walkthrough: Interacting with Google BigQuery in R</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">workflow</div>
+    <div class="quarto-category">tutorial</div>
+    <div class="quarto-category">productivity</div>
+    <div class="quarto-category">bigquery</div>
+    <div class="quarto-category">sql</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A tutorial on how to use the <code>bigrquery</code> package
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 5, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="thumbnail-wide.jpg" class="img-fluid figure-img"></p>
+<figcaption>Photo by <a href="https://unsplash.com/photos/gray-bridge-over-water-photo-AvN9NLUblUg">Ricardo Gomez Angel</a></figcaption></figure>
+</div>
+<section id="background" class="level1"><h1>Background</h1>
+<p>The purpose of this post is to document my workflow using the <a href="https://bigrquery.r-dbi.org/"><code>bigrquery</code></a> R package. Although this package is essential to my analysis workflow, I mostly use it for data extraction tasks. Once data is extracted, I tend to put <code>bigrquery</code> to the side, and I fall out of practice until needing it for the next project. I’ve also begun showing others how to use <code>bigrquery</code> in their own projects. As a result, I find myself repeating the same advice from time-to-time. According to David Robinson:</p>
+<blockquote class="blockquote">
+<p>When you’ve written the same code 3 times, write a function</p>
+<p>When you’ve given the same in-person advice 3 times, write a blog post</p>
+<p>— <a href="http://varianceexplained.org/r/start-blog/">David Robinson</a></p>
+</blockquote>
+<p>I’m certain I’ve searched for and given the same advice more than three times at this point (either to myself or to others). It’s time, then, to write a blog post.</p>
+</section><section id="what-will-you-learn-from-this-post" class="level1"><h1>What will you learn from this post?</h1>
+<p>In this post, we will walk through a general workflow using the <code>bigrquery</code> package. Key topics include authenticating into the BigQuery service, exploring datasets, querying data, and writing data back to BigQuery.</p>
+</section><section id="setup" class="level1"><h1>Setup</h1>
+<p>Setup is straightforward. We just need <code>bigrquery</code> to be installed: <code>install.packages("bigrquery")</code>. Then, we load it into our session with <code><a href="https://bigrquery.r-dbi.org">library(bigrquery)</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bigrquery.r-dbi.org">bigrquery</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="authentication-briefly" class="level1"><h1>Authentication, briefly</h1>
+<p>Initially, we’ll need to authenticate with the BigQuery service. If you want to get started quickly, just run a <code>bigrquery</code> function (e.g., <code><a href="https://bigrquery.r-dbi.org/reference/bq_projects.html">bq_projects()</a></code>) in your console. This initiates an authentication flow via your system’s default web browser. You’ll simply be prompted to login like you would any other Google Service (e.g., Gmail). As such, you’ll need both a Google account and the correct permissions to interact with BigQuery in your Google Cloud project.</p>
+<p>Although the <code>bigrquery</code> package makes authentication a straightforward, painless process, it can be a little tricky if you intend to go beyond interactive authentication (i.e., service accounts). This discussion is outside the scope of this post, and frankly, the nuances of what and when to use it is context specific. Check out these docs <a href="https://gargle.r-lib.org/articles/non-interactive-auth.html">here</a> for more information.</p>
+<p>I find authenticating using a service account key to be quite useful, despite these nuances. Service account keys are <code>json</code> files: a text file that contains a username, password, and additional information used to authenticate non-interactively. These files can be stored anywhere on your system and pointed to in a <code>.Renviron</code> file and referred to using <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv()</a></code>. As an added benefit, Google Cloud allows for fine-grain control of resources a service account can access. More info about setting up service account keys for authentication can be reviewed <a href="https://gargle.r-lib.org/articles/non-interactive-auth.html">here</a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Protect your service account keys like you would any other password.</strong> Anyone who has this file will be able to access resources on the behalf of that service account. As such, never make these keys public, avoid submitting them to version control, and follow the principle of least privilege whenever possible. Keys with unnecessary privileges are especially dangerous.</p>
+<p>As always, here’s my obligatory stance on subjects like this: I’m not a security expert. Any suggestions above should be verified with a security professional before implementation.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have a Google Cloud admin or someone more knowledgeable of cloud services on your team, have them walk you through this. Many of my initial false starts would have been mitigated if I let someone more knowledgeable show me how to set this up properly.</p>
+<p>Oh, and one more thing. Although I use cloud resources in my role and feel comfortable using them, I’m no expert when it comes to their setup and configuration. So double check what I suggested above is in line with where you work or your project’s scope.</p>
+</div>
+</div>
+</section><section id="list-available-projects" class="level1"><h1>List available projects</h1>
+<p>With authentication setup, we can explore data within BigQuery. If you’re like me, you work with several Google Cloud Projects. At times, it’s challenging to remember all the project names. <code>bigrquery</code>’s <code><a href="https://bigrquery.r-dbi.org/reference/bq_projects.html">bq_projects()</a></code> function lists all the projects. Simply run the following in your console to list all available GCP projects:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_projects.html">bq_projects</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># [1] "&lt;project-name-one&gt;" "&lt;project-name-two&gt;" ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Throughout this post you’ll notice I substitute comments for some of the output. However, the output in these comments should closely resemble the output you see.</p>
+</div>
+</div>
+<p>If for some reason you’re working with over 100 projects, <code><a href="https://bigrquery.r-dbi.org/reference/bq_projects.html">bq_projects()</a></code> has a <code>page_size</code> argument. This argument can be used to expand the list that gets printed. <code>bq_projects</code> also pushes a warning in situations where the project list exceeds what is printed.</p>
+</section><section id="list-available-datasets-within-a-project" class="level1"><h1>List available datasets within a project</h1>
+<p>With available projects known, the datasets in each project can be listed with <code><a href="https://bigrquery.r-dbi.org/reference/api-project.html">bq_project_datasets()</a></code>. All we need to do is specify the <code>project</code> we want to view.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For example purposes, I’m going to list the datasets available within the <code>bigquery-public-data</code> project. There are hundreds of publicly available datasets, so I’m only going to return the first 10. Then, I only print three in the text output.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-project.html">bq_project_datasets</a></span><span class="op">(</span></span>
+<span>  <span class="st">"bigquery-public-data"</span>, </span>
+<span>  page_size <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>  warn <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># [[1]]</span></span>
+<span><span class="co"># &lt;bq_dataset&gt; bigquery-public-data.america_health_rankings</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># [[2]]</span></span>
+<span><span class="co"># &lt;bq_dataset&gt; bigquery-public-data.austin_311</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># [[3]]</span></span>
+<span><span class="co"># &lt;bq_dataset&gt; bigquery-public-data.austin_bikeshare</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="create-a-dataset-object-with-bq_dataset" class="level1"><h1>Create a dataset object with <code>bq_dataset()</code>
+</h1>
+<p>Great, we now know what datasets can be queried. Before querying the data, I usually do some more setup. These additional steps are meant to help future me later on in my analysis.</p>
+<p>After loading in the libraries, I’ll create an object(s) that references the dataset(s) to be queried. To do this, <code>bigrquery</code>’s <code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset()</a></code> function is used. According to the docs, <code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset()</a></code> “Creates references to BigQuery datasets, jobs, and tables”. The code looks something like this, usually placed within our setup code chunk:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bigrquery.r-dbi.org">bigrquery</a></span><span class="op">)</span></span>
+<span><span class="va">bq_dataset_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset</a></span><span class="op">(</span><span class="st">"&lt;your-project-name&gt;"</span>, <span class="st">"&lt;your-dataset-name&gt;"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, later in the file I only need to refer to the <code>bq_dataset_example</code> when I want to perform some operation on that table.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you tend to work with the same dataset or table, you might explore setting this all up in your <code>.Renviron</code> or <code>.Rprofile</code> file. If you’re not familiar with how to do this, more information can be found <a href="https://cran.r-project.org/web/packages/startup/vignettes/startup-intro.html">here</a>.</p>
+</div>
+</div>
+<p>For the following examples, the publicly available <a href="https://www.census.gov/programs-surveys/acs">US Census Bureau’s American Community Survey (ACS)</a> data will be used. Here’s what our code looks like to setup the <code>bq_dataset</code> object for this data:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bq_dataset_acs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset</a></span><span class="op">(</span></span>
+<span>  <span class="st">"bigquery-public-data"</span>, </span>
+<span>  <span class="st">"census_bureau_acs"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="looking-around-tables" class="level1"><h1>Looking around: tables</h1>
+<p>With the initial setup complete, let’s look around some more. Say we want to get a sense of the available tables within a BigQuery dataset: use the <code>bg_dataset_tables</code> function to return this information.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_tables</a></span><span class="op">(</span><span class="va">bq_dataset_acs</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># [[1]]</span></span>
+<span><span class="co"># &lt;bq_table&gt; bigquery-public-data.census_bureau_acs.blockgroup_2010_5yr</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># [[2]]</span></span>
+<span><span class="co"># &lt;bq_table&gt; bigquery-public-data.census_bureau_acs.blockgroup_2011_5yr</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># [[3]]</span></span>
+<span><span class="co"># &lt;bq_table&gt; bigquery-public-data.census_bureau_acs.blockgroup_2012_5yr</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You’ll notice this dataset contains over 278 separate tables. Each table contains data from the ACS survey, a supplemental survey that is performed every five years by the US Census Bureau. For the purposes of this post, I’m interested in obtaining information about the state I live in: Nebraska. Specifically, I want to obtain information about the total population of each county in the state. This information is available in the <code>bigquery-public-data.census_bureau_acs.county_2020_5yr</code> table.</p>
+<p>Let’s explore the fields within this table. Both the <code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_table()</a></code> and <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields()</a></code> function are used here:</p>
+<ol type="1">
+<li><p><code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_table()</a></code> creates a <code>bq_table</code> object, which is an object containing metadata about the table we want to reference.</p></li>
+<li><p><code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields()</a></code> uses this metadata from this object to return the fields (i.e., columns) within the table.</p></li>
+</ol>
+<p>The following code is used to return all the fields available in the <code>county_2020_5yr</code> table. The name of the field is first, followed by its type (e.g., &lt;FLOAT&gt;).</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">bq_dataset_acs</span>,</span>
+<span>  <span class="st">"county_2020_5yr"</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># &lt;bq_fields&gt;</span></span>
+<span><span class="co">#   geo_id &lt;STRING&gt;</span></span>
+<span><span class="co">#   aggregate_travel_time_to_work &lt;FLOAT&gt;</span></span>
+<span><span class="co">#   amerindian_including_hispanic &lt;FLOAT&gt;</span></span>
+<span><span class="co">#   amerindian_pop &lt;FLOAT&gt;</span></span>
+<span><span class="co">#   armed_forces &lt;FLOAT&gt;</span></span>
+<span><span class="co">#   ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="querying-bigquery-and-returning-data" class="level1"><h1>Querying BigQuery and returning data</h1>
+<p>Querying data is the next step. After some research, I identified the <code>geo_id</code> field in the table contains information not only for the county but also the state the data represents. Nebraska is the focus here, which starts with the number 31. This information can be used to filter for all counties in Nebraska.</p>
+<p>Here’s a brief list to get a general understanding of the query process:</p>
+<ol type="1">
+<li><p>Compose the query string and assign a variable name.</p></li>
+<li><p>Use either the <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_dataset_query()</a></code> or <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_project_query()</a></code> to create a temporary table within BigQuery (more on this later).</p></li>
+<li><p>Explore the temporary table with <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields()</a></code>.</p></li>
+<li><p>Download the table into the R session using <code><a href="https://bigrquery.r-dbi.org/reference/bq_table_download.html">bq_table_download()</a></code></p></li>
+</ol>
+<section id="composing-the-query" class="level2"><h2 class="anchored" data-anchor-id="composing-the-query">Composing the query</h2>
+<p>The first step is to compose a query. The query is a character string, which is assigned a variable name.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_neb_county_pop</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">  with census_total_pop as (</span></span>
+<span><span class="st">    select </span></span>
+<span><span class="st">      geo_id,</span></span>
+<span><span class="st">      total_pop</span></span>
+<span><span class="st">    from `bigquery-public-data.census_bureau_acs.county_2020_5yr`</span></span>
+<span><span class="st">    where regexp_contains(geo_id, r'^31')</span></span>
+<span><span class="st">  ), </span></span>
+<span><span class="st">  fips_codes as (</span></span>
+<span><span class="st">    select </span></span>
+<span><span class="st">      county_fips_code,</span></span>
+<span><span class="st">      area_name</span></span>
+<span><span class="st">    from `bigquery-public-data.census_utility.fips_codes_all`</span></span>
+<span><span class="st">  )</span></span>
+<span><span class="st">  </span></span>
+<span><span class="st">  select </span></span>
+<span><span class="st">    geo_id,</span></span>
+<span><span class="st">    area_name,</span></span>
+<span><span class="st">    total_pop</span></span>
+<span><span class="st">  from census_total_pop left outer join fips_codes on census_total_pop.geo_id = fips_codes.county_fips_code</span></span>
+<span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using a left join, this query transposes the county names column from another dataset. The result of the join is the total population of each county according to the 2020 ACS survey. <code>query_neb_county_pop</code> is now available for the next few steps in the query process.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The query utilizes BigQuery’s convenient <a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#with_clause"><code>with</code> clause</a> to create temporary tables, which are then joined using a left join. Indeed, I can hear the SQL experts pointing out more clever ways to compose this query: it’s just a simple join. However, readability was the goal here.</p>
+</div>
+</div>
+</section><section id="submitting-the-query" class="level2"><h2 class="anchored" data-anchor-id="submitting-the-query">Submitting the query</h2>
+<p>When I first started using the <code>bigrquery</code> package, I struggled to understand what query function to use. I was also slightly confused why the package had a separate query and download table function (more on this in a bit). First, the type of data being queried (e.g., public vs.&nbsp;project data) dictates what query function to use. Second, the argument structure is slightly different between the two query functions. The nuance of these differences is subtle, so I suggest reading the package’s docs (<code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">?bq_query</a></code>) to know what function to use and when.</p>
+<p>If project data is queried, the <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_project_query()</a></code> function is used. In cases where you’re not querying project data (e.g., public data), you’ll use <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_dataset_query()</a></code>. The <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_dataset_query()</a></code> is used in this post because public data is being queried. This function has parameters to associate the query with a Google Cloud billing account. In regard to the function’s other arguments, you’ll only need to pass a <code>bq_dataset</code> object (in our case a <code>bq_dataset_acs</code>) and a query string.</p>
+<p>Getting data into the R session involves two steps. First, you’ll submit the query to BigQuery using one of the functions highlighted above. BigQuery creates a temporary table in this initial step. Second, this temporary table is downloaded to the R session using the <code><a href="https://bigrquery.r-dbi.org/reference/bq_table_download.html">bq_table_download()</a></code> function.</p>
+<p>This intermediate, temporary table provides a couple conveniences:</p>
+<ol type="1">
+<li><p>You can use the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields()</a></code> function to check the temporary table’s fields before downloading it into your R session.</p></li>
+<li><p>The table is essentially cached. As such, submitting the same exact query will return the data faster, and data processing costs will be reduced.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tbl_temp_acs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_dataset_query</a></span><span class="op">(</span></span>
+<span>  <span class="va">bq_dataset_acs</span>,</span>
+<span>  query <span class="op">=</span> <span class="va">query_neb_county_pop</span>,</span>
+<span>  billing <span class="op">=</span> <span class="st">'&lt;project-name&gt;'</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields</a></span><span class="op">(</span><span class="va">tbl_temp_acs</span><span class="op">)</span></span>
+<span><span class="co"># &lt;bq_fields&gt;</span></span>
+<span><span class="co">#   geo_id &lt;STRING&gt;</span></span>
+<span><span class="co">#   area_name &lt;STRING&gt;</span></span>
+<span><span class="co">#   total_pop &lt;FLOAT&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_nebpm_county</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_table_download.html">bq_table_download</a></span><span class="op">(</span><span class="va">tbl_temp_acs</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_nebpm_county</span></span>
+<span><span class="co"># # A tibble: 93 × 3</span></span>
+<span><span class="co">#    geo_id area_name        total_pop</span></span>
+<span><span class="co">#    &lt;chr&gt;  &lt;chr&gt;                &lt;dbl&gt;</span></span>
+<span><span class="co">#  1 31005  Arthur County          439</span></span>
+<span><span class="co">#  2 31085  Hayes County           889</span></span>
+<span><span class="co">#  3 31087  Hitchcock County      2788</span></span>
+<span><span class="co">#  4 31103  Keya Paha County       875</span></span>
+<span><span class="co">#  5 31113  Logan County           896</span></span>
+<span><span class="co">#  6 31115  Loup County            690</span></span>
+<span><span class="co">#  7 31117  McPherson County       420</span></span>
+<span><span class="co">#  8 31125  Nance County          3525</span></span>
+<span><span class="co">#  9 31133  Pawnee County         2640</span></span>
+<span><span class="co"># 10 31143  Polk County           5208</span></span>
+<span><span class="co"># # ℹ 83 more rows</span></span>
+<span><span class="co"># # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now the data is available in the R session. You can work with it like any other type imported via these methods.</p>
+</section></section><section id="creating-bigquery-datasets" class="level1"><h1>Creating BigQuery datasets</h1>
+<p>Say we’ve completed our analysis and want to write data back to BigQuery. Several <code>bigrquery</code> functions are used to complete this task: <code><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_create()</a></code>, <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create()</a></code>, and <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field()</a></code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Data of any size can be written to BigQuery: big or small. However, keep in mind that BigQuery is an analytics data warehouse intended to process big data (i.e., data up to the petabyte scale). Writing small data to the service can be done, but consider if you really should. A more reasonable way to store and share the data may be available. For the sake of this tutorial, though, I’m going to write this small dataset back to BigQuery.</p>
+</div>
+</div>
+<p>The initial step to write data back to BigQuery requires the creation of a <code>bq_dataset</code> object. As before, the <code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset()</a></code> function is used to do this. Keep in mind, this function does not create a dataset in BigQuery. We can confirm this by running the <code><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_exists()</a></code> function. <code>FALSE</code> is returned.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bq_example_census</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset</a></span><span class="op">(</span><span class="st">"&lt;project_name&gt;"</span>, <span class="st">"examples_census"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_exists</a></span><span class="op">(</span><span class="va">bq_example_census</span><span class="op">)</span></span>
+<span><span class="co">#[1] FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_create()</a></code> function is then used to create the dataset in BigQuery. You can confirm this to be the case by again running <code><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_exists()</a></code>. The value <code>TRUE</code> should be returned.</p>
+<p>Additional information about the dataset can be obtained using the <code><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_meta()</a></code> function, which returns a payload of metadata about our dataset back to the R session. Alternatively, this same information can be obtained by navigating to the BigQuery Google Cloud interface for your project.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_create</a></span><span class="op">(</span><span class="va">bq_example_census</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_exists</a></span><span class="op">(</span><span class="va">bq_example_census</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_meta</a></span><span class="op">(</span><span class="va">bq_example_census</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># $kind</span></span>
+<span><span class="co"># [1] "bigquery#dataset"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $etag</span></span>
+<span><span class="co"># [1] "uXJtbL7r9fHqUGxmT7DTEQ=="</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $id</span></span>
+<span><span class="co"># [1] "&lt;project-name&gt;:examples_census"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $selfLink</span></span>
+<span><span class="co"># [1] "https://bigquery.googleapis.com/bigquery/v2</span></span>
+<span><span class="co"># /projects/&lt;project-name&gt;/datasets/exa</span></span>
+<span><span class="co"># mples_census"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $datasetReference</span></span>
+<span><span class="co"># $datasetReference$datasetId</span></span>
+<span><span class="co"># [1] "examples_census"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $datasetReference$projectId</span></span>
+<span><span class="co"># [1] "&lt;project-name&gt;"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access</span></span>
+<span><span class="co"># $access[[1]]</span></span>
+<span><span class="co"># $access[[1]]$role</span></span>
+<span><span class="co"># [1] "WRITER"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[1]]$specialGroup</span></span>
+<span><span class="co"># [1] "projectWriters"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[2]]</span></span>
+<span><span class="co"># $access[[2]]$role</span></span>
+<span><span class="co"># [1] "OWNER"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[2]]$specialGroup</span></span>
+<span><span class="co"># [1] "projectOwners"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[3]]</span></span>
+<span><span class="co"># $access[[3]]$role</span></span>
+<span><span class="co"># [1] "OWNER"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[3]]$userByEmail</span></span>
+<span><span class="co"># [1] "&lt;user-email&gt;"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[4]]</span></span>
+<span><span class="co"># $access[[4]]$role</span></span>
+<span><span class="co"># [1] "READER"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $access[[4]]$specialGroup</span></span>
+<span><span class="co"># [1] "projectReaders"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $creationTime</span></span>
+<span><span class="co"># [1] "1726847703443"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $lastModifiedTime</span></span>
+<span><span class="co"># [1] "1726847703443"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $location</span></span>
+<span><span class="co"># [1] "US"</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># $type</span></span>
+<span><span class="co"># [1] "DEFAULT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With the dataset available in BigQuery, tables can now be created. First, we create a <code>bq_table</code> object in our R session using the <code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_table()</a></code> function. This function takes two arguments: the <code>bq_dataset</code> object we created earlier and a character string representing the table to be created (<code>data_neb_county_pop</code>). Similar to creating a dataset, we can verify that no table exists yet by running the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_exists()</a></code> function.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bq_neb_county_table</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_table</a></span><span class="op">(</span><span class="va">bq_example_census</span>, <span class="st">"data_neb_county_pop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_exists</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span></span>
+<span><span class="co">#[1] FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To create the table, the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create()</a></code> function is used. This function has several arguments:</p>
+<ul>
+<li><p><code>fields</code> accepts an object containing table field information. This can be a tibble, where BigQuery infers the field’s data type from the values in the tibble’s columns. Or, it can be a <code>bq_fields</code> object (more on this here shortly).</p></li>
+<li><p>A <code>friendly_name</code>, which is a more human-readable description of what the data represents.</p></li>
+<li><p>A string <code>description</code>. This can be a longer description of what the data represents.</p></li>
+<li><p>Any <code>labels</code> we use to organize our BigQuery assets in our Google Cloud project (e.g., an ‘example’ dataset).</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create</a></span><span class="op">(</span></span>
+<span>  <span class="va">bq_neb_county_table</span>,</span>
+<span>  fields <span class="op">=</span> <span class="va">data_nebpm_county</span>,</span>
+<span>  friendly_name <span class="op">=</span> <span class="st">"American Community Survey (ACS) 2020 Nebraska County Population"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"Source: The U.S. Census Bureau"</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>category <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_exists</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span></span>
+<span><span class="co">#[1] TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Some of these arguments are optional. They can be omitted if you’re trying to create a quick dataset on the fly. However, it’s usually best to include metadata when writing a table. Your future self or others later added to the project will be thankful for this additional information.</p>
+<p>Our next step: import data into our table. <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create()</a></code> creates the table for us; it does not populate data into the table, though. The <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload()</a></code> function is used to upload data into the table. To import data, we simply pass our table object (<code>bq_neb_county_table</code>) along with our dataset (<code>data_nebpm_county</code>) into the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload()</a></code> function. The code to complete this step looks something like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span>, <span class="va">data_nebpm_county</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once the data is uploaded, we can use several of <code>bigrquery</code>’s functions to return information about our table. For instance:</p>
+<ul>
+<li><p><code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields()</a></code> can be used to return the fields in the table.</p></li>
+<li><p>The size of the table (in bytes) can be returned using the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_size()</a></code> function.</p></li>
+<li><p>The <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_meta()</a></code> function is useful for returning metadata associated with our table.</p></li>
+</ul>
+<p>Here are a few examples using these functions:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_fields</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span></span>
+<span><span class="co"># &lt;bq_fields&gt;</span></span>
+<span><span class="co">#   geo_id &lt;INTEGER: required&gt;</span></span>
+<span><span class="co">#   area_name &lt;STRING: required&gt;</span></span>
+<span><span class="co">#   total_pop &lt;INTEGER: required&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_size</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span></span>
+<span><span class="co"># 0 B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># output excluded due to its size</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_meta</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_exists</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span></span>
+<span><span class="co"># [1] TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="greater-control-over-table-creation" class="level3"><h3 class="anchored" data-anchor-id="greater-control-over-table-creation">Greater control over table creation</h3>
+<p>Leveraging BigQuery’s functionality to automatically identify field names and types is useful. However, greater control on how the table is created might be required. The <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">as_bq_fields()</a></code> and <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field()</a></code> functions afford greater control. The following is example code utilizing these two functions to create a data schema for our table:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fields_neb_county</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">as_bq_fields</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field</a></span><span class="op">(</span></span>
+<span>      <span class="st">"geo_id"</span>, </span>
+<span>      type <span class="op">=</span> <span class="st">"INTEGER"</span>, </span>
+<span>      mode <span class="op">=</span> <span class="st">"REQUIRED"</span>, </span>
+<span>      description <span class="op">=</span> <span class="st">"Geo ID"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field</a></span><span class="op">(</span></span>
+<span>      <span class="st">"area_name"</span>,</span>
+<span>      type <span class="op">=</span> <span class="st">"STRING"</span>,</span>
+<span>      mode <span class="op">=</span> <span class="st">"REQUIRED"</span>,</span>
+<span>      description <span class="op">=</span> <span class="st">"County label"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field</a></span><span class="op">(</span></span>
+<span>      <span class="st">"total_pop"</span>,</span>
+<span>      type <span class="op">=</span> <span class="st">"INTEGER"</span>,</span>
+<span>      mode <span class="op">=</span> <span class="st">"REQUIRED"</span>,</span>
+<span>      description <span class="op">=</span> <span class="st">"Total county population"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our <code>fields_neb_county</code> objects has several elements. First, to package all this information into one object, we need to pass a list of <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field()</a></code>s to the <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">as_bq_fields()</a></code> function. But before that, we need to pass field specifications to each of the <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">bq_field()</a></code> functions. This includes passing along:</p>
+<ul>
+<li><p>A string representing the column <code>name</code> (e.g., <code>total_pop</code>).</p></li>
+<li><p>A data type, most likely a <code>STRING</code>, <code>INTEGER</code>, <code>DATE</code>, <code>DATETIME</code>, or a <code>BOOLEAN</code>, though other types are available (see the docs <code><a href="https://bigrquery.r-dbi.org/reference/bq_field.html">?bq_field</a></code>).</p></li>
+<li><p>A mode: either <code>NULLABLE</code>; <code>REQUIRED</code>; or <code>REPEATED</code>.</p></li>
+<li><p>A description, which is a string describing what the values in the field represent.</p></li>
+</ul>
+<p>Not all this info is required, but if you’re going to the length of wanting this much control over table creation, then it’s best to include it.</p>
+<p>Now that we have this <code>bq_table</code> object, we pass the <code>fields</code> argument of the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create()</a></code> function to create our table.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create</a></span><span class="op">(</span></span>
+<span>  <span class="va">bq_neb_county_table</span>,</span>
+<span>  fields <span class="op">=</span> <span class="va">fields_neb_county</span>,</span>
+<span>  friendly_name <span class="op">=</span> <span class="st">"American Community Survey (ACS) 2020 Nebraska County Population"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"The data comes from the U.S. Census Bureau"</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>category <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_exists</a></span><span class="op">(</span><span class="va">bq_neb_county_table</span><span class="op">)</span></span>
+<span><span class="co"># [1] TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As before, this just creates the table. It does not upload data to the table. The <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload()</a></code> function will be used to import data into the table.</p>
+</section><section id="create-and-write-disposition" class="level2"><h2 class="anchored" data-anchor-id="create-and-write-disposition">Create and write disposition</h2>
+<p><code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload()</a></code> has some additional arguments, which I’ve found are not clearly documented in the package’s documentation. These include the ability to pass a <code>create_disposition</code> and a <code>write_disposition</code> argument.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Be mindful of how you use these arguments, as the values you pass can overwrite data. Read more about the options by reviewing the linked docs below.</p>
+</div>
+</div>
+<p>More about what these options do in BigQuery can be reviewed <a href="https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#:~:text=in%20the%20query.-,createDisposition,-string">here</a>. Here’s what the code would look like using the arguments listed above:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload</a></span><span class="op">(</span></span>
+<span>  <span class="va">bq_neb_county_table</span>,</span>
+<span>  values <span class="op">=</span> <span class="va">fields_neb_county</span>,</span>
+<span>  create_disposition <span class="op">=</span> <span class="st">"CREATE_NEVER"</span>,</span>
+<span>  write_disposition <span class="op">=</span> <span class="st">"WRITE_TRUNCATE"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>create_disposition</code> argument specifies how the table will be created, based on whether the table exists or not. A value of <code>CREATE_NEVER</code> requires the table to already exist, otherwise an error is pushed. <code>CREATE_IF_NEEDED</code> creates the table if it does not already exist. However, it’s best to use the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create()</a></code> function rather than relying on the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload()</a></code> function to create the table for us. Nevertheless, it’s an option that’s available.</p>
+<p>The <code>write_disposition</code> specifies what happens to values when they’re written to tables. There are three options: <code>WRITE_TRUNCATE</code>, <code>WRITE_APPEND</code>, and <code>WRITE_EMPTY</code>. Here’s what each of these options do:</p>
+<ul>
+<li><p><code>WRITE_TRUNCATE</code>: If the table exists, overwrite the data using the schema of the newly inputted data (i.e., a destructive action).</p></li>
+<li><p><code>WRITE_APPEND</code>: If the table exists, append the data to the table (i.e., add it to the bottom of the table).</p></li>
+<li><p><code>WRITE_EMPTY</code>: If the table exists and it already contains data, push an error.</p></li>
+</ul>
+<p>When it comes to uploading data, you’ll most likely want to consider the <code>write_disposition</code> you use.</p>
+<p>One last note about uploading data to your tables: BigQuery optimizes for speed. This optimization some times results in the data to be imported not in the order it is initially imported. Rather, the resulting data import may be shuffled in a way to speed up the process. Thus, you’ll likely need to arrange your data if you need to extract it again.</p>
+</section></section><section id="wrap-up" class="level1"><h1>Wrap-up</h1>
+<p>This post provided an overview of several workflows using the <code>bigrquery</code> package to interact with <a href="https://cloud.google.com/bigquery">Google BigQuery</a>. It began by briefly covering options for authenticating into the BigQuery service. This included highlighting an option to have the package manage the authentication and a brief overview of the use of service accounts.</p>
+<p>The next section was simple: exploring and returning information about the data stored in BigQuery. This involved tasks like listing projects, datasets, and tables. To do this, the post covered functions like <code><a href="https://bigrquery.r-dbi.org/reference/bq_projects.html">bq_projects()</a></code>, <code><a href="https://bigrquery.r-dbi.org/reference/api-project.html">bq_project_datasets()</a></code>, and <code><a href="https://bigrquery.r-dbi.org/reference/api-dataset.html">bq_dataset_tables()</a></code>. We also discussed the use of the <code><a href="https://bigrquery.r-dbi.org/reference/bq_refs.html">bq_dataset()</a></code> function to create a <code>bq_dataset</code> object in our R session.</p>
+<p>The focus was then turned to querying and returning data for use within a R session. During this part of the post, BigQuery’s SQL syntax was briefly overviewed. Then, the use of the <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_dataset_query()</a></code>, <code><a href="https://bigrquery.r-dbi.org/reference/bq_query.html">bq_project_query()</a></code>, and <code><a href="https://bigrquery.r-dbi.org/reference/bq_table_download.html">bq_table_download()</a></code> functions were covered. As a refresher of a key point, remember, <code>bigrquery</code> first creates a temporary table before you download the dataset into your R session.</p>
+<p>The post’s final section highlighted how to write data back to BigQuery. This section focused on the use of the <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_create()</a></code> and <code><a href="https://bigrquery.r-dbi.org/reference/api-table.html">bq_table_upload()</a></code> functions. This section then covered how to get information about our table. This section wrapped up with a description of the <code>create_disposition</code> and <code>write_disposition</code> options available when writing data back to BigQuery.</p>
+<p>This completes the workflow walkthrough on the use of the <code>bigrquery</code> package to interact with Google BigQuery. Thanks for taking the time to read this post. I hope you walk away with a few good takeaways. If you know of some other, better ways to work with BigQuery in R or use the <code>bigrquery</code> R package in your own work, let’s connect.</p>
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
+  author = {Berke, Collin K},
+  title = {Workflow Walkthrough: {Interacting} with {Google} {BigQuery}
+    in {R}},
+  date = {2024-10-05},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2024" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2024. <span>“Workflow Walkthrough: Interacting with
+Google BigQuery in R.”</span> October 5, 2024.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = true;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
