@@ -1,0 +1,600 @@
+---
+title: "Workflow walkthrough: Interacting with Google BigQuery in R"
+date: "2024-10-05"
+author: "Collin K. Berke, Ph.D."
+draft: false 
+image: thumbnail.jpg
+description: "A tutorial on how to use the `bigrquery` package"
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - workflow 
+  - tutorial
+  - productivity 
+  - bigquery 
+  - sql
+---
+
+![Photo by [Ricardo Gomez Angel](https://unsplash.com/photos/gray-bridge-over-water-photo-AvN9NLUblUg)](thumbnail-wide.jpg){fig-align="center"}
+
+# Background
+
+The purpose of this post is to document my workflow using the [`bigrquery`](https://bigrquery.r-dbi.org/) R package. Although this package is essential to my analysis workflow, I mostly use it for data extraction tasks. Once data is extracted, I tend to put `bigrquery` to the side, and I fall out of practice until needing it for the next project. I've also begun showing others how to use `bigrquery` in their own projects. As a result, I find myself repeating the same advice from time-to-time. According to David Robinson:
+
+> When you've written the same code 3 times, write a function
+>
+> When you've given the same in-person advice 3 times, write a blog post
+>
+> --- [David Robinson](http://varianceexplained.org/r/start-blog/)
+
+I'm certain I've searched for and given the same advice more than three times at this point (either to myself or to others). It's time, then, to write a blog post. 
+
+# What will you learn from this post?
+
+In this post, we will walk through a general workflow using the `bigrquery` package. Key topics include authenticating into the BigQuery service, exploring datasets, querying data, and writing data back to BigQuery.
+
+# Setup
+
+Setup is straightforward. We just need `bigrquery` to be installed: `install.packages("bigrquery")`. Then, we load it into our session with `library(bigrquery)`.
+
+```{r}
+#| label: setup
+#| eval: FALSE
+library(tidyverse)
+library(bigrquery)
+```
+
+# Authentication, briefly
+
+Initially, we'll need to authenticate with the BigQuery service. If you want to get started quickly, just run a `bigrquery` function (e.g., `bq_projects()`) in your console. This initiates an authentication flow via your system's default web browser. You'll simply be prompted to login like you would any other Google Service (e.g., Gmail). As such, you'll need both a Google account and the correct permissions to interact with BigQuery in your Google Cloud project. 
+
+Although the `bigrquery` package makes authentication a straightforward, painless process, it can be a little tricky if you intend to go beyond interactive authentication (i.e., service accounts). This discussion is outside the scope of this post, and frankly, the nuances of what and when to use it is context specific. Check out these docs [here](https://gargle.r-lib.org/articles/non-interactive-auth.html) for more information.
+
+I find authenticating using a service account key to be quite useful, despite these nuances. Service account keys are `json` files: a text file that contains a username, password, and additional information used to authenticate non-interactively. These files can be stored anywhere on your system and pointed to in a `.Renviron` file and referred to using `Sys.getenv()`. As an added benefit, Google Cloud allows for fine-grain control of resources a service account can access. More info about setting up service account keys for authentication can be reviewed [here](https://gargle.r-lib.org/articles/non-interactive-auth.html). 
+
+::: {.callout-warning}
+**Protect your service account keys like you would any other password.** Anyone who has this file will be able to access resources on the behalf of that service account. As such, never make these keys public, avoid submitting them to version control, and follow the principle of least privilege whenever possible. Keys with unnecessary privileges are especially dangerous.
+
+As always, here's my obligatory stance on subjects like this: I'm not a security expert. Any suggestions above should be verified with a security professional before implementation.
+:::
+
+::: {.callout-note}
+If you have a Google Cloud admin or someone more knowledgeable of cloud services on your team, have them walk you through this. Many of my initial false starts would have been mitigated if I let someone more knowledgeable show me how to set this up properly. 
+
+Oh, and one more thing. Although I use cloud resources in my role and feel comfortable using them, I'm no expert when it comes to their setup and configuration. So double check what I suggested above is in line with where you work or your project's scope.
+:::
+
+# List available projects
+
+With authentication setup, we can explore data within BigQuery. If you're like me, you work with several Google Cloud Projects. At times, it's challenging to remember all the  project names. `bigrquery`'s `bq_projects()` function lists all the projects. Simply run the following in your console to list all available GCP projects:
+
+```{r}
+#| label: get-project-names
+#| eval: FALSE
+bq_projects()
+# [1] "<project-name-one>" "<project-name-two>" ...
+```
+
+::: {.callout-note}
+Throughout this post you'll notice I substitute comments for some of the output. However, the output in these comments should closely resemble the output you see.
+:::
+
+If for some reason you're working with over 100 projects, `bq_projects()` has a `page_size` argument. This argument can be used to expand the list that gets printed. `bq_projects` also pushes a warning in situations where the project list exceeds what is printed.
+
+# List available datasets within a project
+
+With available projects known, the datasets in each project can be listed with `bq_project_datasets()`. All we need to do is specify the `project` we want to view.
+
+::: {.callout-note}
+For example purposes, I'm going to list the datasets available within the `bigquery-public-data` project. There are hundreds of publicly available datasets, so I'm only going to return the first 10. Then, I only print three in the text output.
+:::
+
+```{r}
+#| label: get-datasets-in-project
+#| eval: FALSE
+bq_project_datasets(
+  "bigquery-public-data", 
+  page_size = 10, 
+  warn = FALSE
+)
+# [[1]]
+# <bq_dataset> bigquery-public-data.america_health_rankings
+# 
+# [[2]]
+# <bq_dataset> bigquery-public-data.austin_311
+# 
+# [[3]]
+# <bq_dataset> bigquery-public-data.austin_bikeshare
+#
+# ...
+```
+
+# Create a dataset object with `bq_dataset()`
+
+Great, we now know what datasets can be queried. Before querying the data, I usually do some more setup. These additional steps are meant to help future me later on in my analysis. 
+
+After loading in the libraries, I'll create an object(s) that references the dataset(s) to be queried. To do this, `bigrquery`'s `bq_dataset()` function is used. According to the docs, `bq_dataset()` "Creates references to BigQuery datasets, jobs, and tables". The code looks something like this, usually placed within our setup code chunk:
+
+```{r}
+#| label: example-setup
+#| eval: FALSE
+library(tidyverse)
+library(bigrquery)
+bq_dataset_example <- bq_dataset("<your-project-name>", "<your-dataset-name>")
+```
+
+Now, later in the file I only need to refer to the `bq_dataset_example` when I want to perform some operation on that table.
+
+::: {.callout-note}
+If you tend to work with the same dataset or table, you might explore setting this all up in your `.Renviron` or `.Rprofile` file. If you're not familiar with how to do this, more information can be found [here](https://cran.r-project.org/web/packages/startup/vignettes/startup-intro.html).
+:::
+
+For the following examples, the publicly available [US Census Bureau's American Community Survey (ACS)](https://www.census.gov/programs-surveys/acs) data will be used. Here's what our code looks like to setup the `bq_dataset` object for this data:
+
+```{r}
+#| label: dataset-bq-acs
+#| eval: FALSE
+bq_dataset_acs <- bq_dataset(
+  "bigquery-public-data", 
+  "census_bureau_acs"
+)
+```
+
+# Looking around: tables
+
+With the initial setup complete, let's look around some more. Say we want to get a sense of the available tables within a BigQuery dataset: use the `bg_dataset_tables` function to return this information.
+
+```{r}
+#| label: list-acs-tables
+#| eval: FALSE
+bq_dataset_tables(bq_dataset_acs)
+
+# [[1]]
+# <bq_table> bigquery-public-data.census_bureau_acs.blockgroup_2010_5yr
+# 
+# [[2]]
+# <bq_table> bigquery-public-data.census_bureau_acs.blockgroup_2011_5yr
+# 
+# [[3]]
+# <bq_table> bigquery-public-data.census_bureau_acs.blockgroup_2012_5yr
+#
+# ...
+```
+
+You'll notice this dataset contains over 278 separate tables. Each table contains data from the ACS survey, a supplemental survey that is performed every five years by the US Census Bureau. For the purposes of this post, I'm interested in obtaining information about the state I live in: Nebraska. Specifically, I want to obtain information about the total population of each county in the state. This information is available in the `bigquery-public-data.census_bureau_acs.county_2020_5yr` table.
+
+Let's explore the fields within this table. Both the `bq_table()` and `bq_table_fields()` function are used here:
+
+1. `bq_table()` creates a `bq_table` object, which is an object containing metadata about the table we want to reference.
+
+2. `bq_table_fields()` uses this metadata from this object to return the fields (i.e., columns) within the table.
+
+The following code is used to return all the fields available in the `county_2020_5yr` table. The name of the field is first, followed by its type (e.g., \<FLOAT\>).
+
+```{r}
+#| label: list-acs-table-fields
+#| eval: FALSE
+bq_table(
+  bq_dataset_acs,
+  "county_2020_5yr"
+) |>
+bq_table_fields()
+
+# <bq_fields>
+#   geo_id <STRING>
+#   aggregate_travel_time_to_work <FLOAT>
+#   amerindian_including_hispanic <FLOAT>
+#   amerindian_pop <FLOAT>
+#   armed_forces <FLOAT>
+#   ...
+```
+
+# Querying BigQuery and returning data
+
+Querying data is the next step. After some research, I identified the `geo_id` field in the table contains information not only for the county but also the state the data represents. Nebraska is the focus here, which starts with the number 31. This information can  be used to filter for all counties in Nebraska.
+
+Here's a brief list to get a general understanding of the query process:
+
+1. Compose the query string and assign a variable name.
+
+2. Use either the `bq_dataset_query()` or `bq_project_query()` to create a temporary table within BigQuery (more on this later).
+
+3. Explore the temporary table with `bq_table_fields()`.
+
+4. Download the table into the R session using `bq_table_download()`
+
+## Composing the query
+
+The first step is to compose a query. The query is a character string, which is assigned a variable name.
+
+```{r}
+#| label: query-string-neb-county-total-pop
+#| eval: FALSE
+query_neb_county_pop <- "
+  with census_total_pop as (
+    select 
+      geo_id,
+      total_pop
+    from `bigquery-public-data.census_bureau_acs.county_2020_5yr`
+    where regexp_contains(geo_id, r'^31')
+  ), 
+  fips_codes as (
+    select 
+      county_fips_code,
+      area_name
+    from `bigquery-public-data.census_utility.fips_codes_all`
+  )
+  
+  select 
+    geo_id,
+    area_name,
+    total_pop
+  from census_total_pop left outer join fips_codes on census_total_pop.geo_id = fips_codes.county_fips_code
+"
+```
+
+Using a left join, this query transposes the county names column from another dataset. The result of the join is the total population of each county according to the 2020 ACS survey. `query_neb_county_pop` is now available for the next few steps in the query process.
+
+::: {.callout-note}
+The query utilizes BigQuery's convenient [`with` clause](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#with_clause) to create temporary tables, which are then joined using a left join. Indeed, I can hear the SQL experts pointing out more clever ways to compose this query: it's just a simple join. However, readability was the goal here. 
+:::
+
+## Submitting the query
+
+When I first started using the `bigrquery` package, I struggled to understand what query function to use. I was also slightly confused why the package had a separate query and download table function (more on this in a bit). First, the type of data being queried (e.g., public vs. project data) dictates what query function to use. Second, the argument structure is slightly different between the two query functions. The nuance of these differences is subtle, so I suggest reading the package's docs (`?bq_query`) to know what function to use and when. 
+
+If project data is queried, the `bq_project_query()` function is used. In cases where you're not querying project data (e.g., public data), you'll use `bq_dataset_query()`. The `bq_dataset_query()` is used in this post because public data is being queried. This function has parameters to associate the query with a Google Cloud billing account. In regard to the function's other arguments, you'll only need to pass a `bq_dataset` object (in our case a `bq_dataset_acs`) and a query string.
+
+Getting data into the R session involves two steps. First, you'll submit the query to BigQuery using one of the functions highlighted above. BigQuery creates a temporary table in this initial step. Second, this temporary table is downloaded to the R session using the `bq_table_download()` function.
+
+This intermediate, temporary table provides a couple conveniences: 
+
+1. You can use the `bq_table_fields()` function to check the temporary table's fields before downloading it into your R session. 
+
+2. The table is essentially cached. As such, submitting the same exact query will return the data faster, and data processing costs will be reduced.
+
+```{r}
+#| label: query-temporary-table
+#| eval: FALSE
+tbl_temp_acs <- bq_dataset_query(
+  bq_dataset_acs,
+  query = query_neb_county_pop,
+  billing = '<project-name>'
+)
+```
+
+```{r}
+#| label: view-temporary-table-fields
+#| eval: FALSE
+bq_table_fields(tbl_temp_acs)
+# <bq_fields>
+#   geo_id <STRING>
+#   area_name <STRING>
+#   total_pop <FLOAT>
+```
+
+```{r}
+#| label: download-table-into-session
+#| eval: FALSE
+data_nebpm_county <- bq_table_download(tbl_temp_acs)
+
+data_nebpm_county
+# # A tibble: 93 × 3
+#    geo_id area_name        total_pop
+#    <chr>  <chr>                <dbl>
+#  1 31005  Arthur County          439
+#  2 31085  Hayes County           889
+#  3 31087  Hitchcock County      2788
+#  4 31103  Keya Paha County       875
+#  5 31113  Logan County           896
+#  6 31115  Loup County            690
+#  7 31117  McPherson County       420
+#  8 31125  Nance County          3525
+#  9 31133  Pawnee County         2640
+# 10 31143  Polk County           5208
+# # ℹ 83 more rows
+# # ℹ Use `print(n = ...)` to see more rows
+```
+
+Now the data is available in the R session. You can work with it like any other type imported via these methods.
+
+# Creating BigQuery datasets
+
+Say we've completed our analysis and want to write data back to BigQuery. Several `bigrquery` functions are used to complete this task: `bq_dataset_create()`, `bq_table_create()`, and `bq_field()`.
+
+::: {.callout-note}
+Data of any size can be written to BigQuery: big or small. However, keep in mind that BigQuery is an analytics data warehouse intended to process big data (i.e., data up to the petabyte scale). Writing small data to the service can be done, but consider if you really should. A more reasonable way to store and share the data may be available. For the sake of this tutorial, though, I'm going to write this small dataset back to BigQuery.
+:::
+
+The initial step to write data back to BigQuery requires the creation of a `bq_dataset` object. As before, the `bq_dataset()` function is used to do this. Keep in mind, this function does not create a dataset in BigQuery. We can confirm this by running the `bq_dataset_exists()` function. `FALSE` is returned.
+
+```{r}
+#| label: bq-check-dataset-exists
+#| eval: FALSE
+bq_example_census <- 
+  bq_dataset("<project_name>", "examples_census")
+
+bq_dataset_exists(bq_example_census)
+#[1] FALSE
+```
+
+The `bq_dataset_create()` function is then used to create the dataset in BigQuery. You can confirm this to be the case by again running `bq_dataset_exists()`. The value `TRUE` should be returned. 
+
+Additional information about the dataset can be obtained using the `bq_dataset_meta()` function, which returns a payload of metadata about our dataset back to the R session. Alternatively, this same information can be obtained by navigating to the BigQuery Google Cloud interface for your project.
+
+```{r}
+#| label: bq-create-acs-dataset
+#| eval: FALSE
+bq_dataset_create(bq_example_census)
+
+bq_dataset_exists(bq_example_census)
+
+bq_dataset_meta(bq_example_census)
+
+# $kind
+# [1] "bigquery#dataset"
+# 
+# $etag
+# [1] "uXJtbL7r9fHqUGxmT7DTEQ=="
+# 
+# $id
+# [1] "<project-name>:examples_census"
+# 
+# $selfLink
+# [1] "https://bigquery.googleapis.com/bigquery/v2
+# /projects/<project-name>/datasets/exa
+# mples_census"
+# 
+# $datasetReference
+# $datasetReference$datasetId
+# [1] "examples_census"
+# 
+# $datasetReference$projectId
+# [1] "<project-name>"
+# 
+# 
+# $access
+# $access[[1]]
+# $access[[1]]$role
+# [1] "WRITER"
+# 
+# $access[[1]]$specialGroup
+# [1] "projectWriters"
+# 
+# 
+# $access[[2]]
+# $access[[2]]$role
+# [1] "OWNER"
+# 
+# $access[[2]]$specialGroup
+# [1] "projectOwners"
+# 
+# 
+# $access[[3]]
+# $access[[3]]$role
+# [1] "OWNER"
+# 
+# $access[[3]]$userByEmail
+# [1] "<user-email>"
+# 
+# 
+# $access[[4]]
+# $access[[4]]$role
+# [1] "READER"
+# 
+# $access[[4]]$specialGroup
+# [1] "projectReaders"
+# 
+# 
+# 
+# $creationTime
+# [1] "1726847703443"
+# 
+# $lastModifiedTime
+# [1] "1726847703443"
+# 
+# $location
+# [1] "US"
+# 
+# $type
+# [1] "DEFAULT"
+```
+
+With the dataset available in BigQuery, tables can now be created. First, we create a `bq_table` object in our R session using the `bq_table()` function. This function takes two arguments: the `bq_dataset` object we created earlier and a character string representing the table to be created (`data_neb_county_pop`). Similar to creating a dataset, we can verify that no table exists yet by running the `bq_table_exists()` function.
+
+```{r}
+#| label: bq-create-acs-dataset-table
+#| eval: FALSE
+bq_neb_county_table <- 
+  bq_table(bq_example_census, "data_neb_county_pop")
+
+bq_table_exists(bq_neb_county_table)
+#[1] FALSE
+```
+
+To create the table, the `bq_table_create()` function is used. This function has several arguments:
+
+* `fields` accepts an object containing table field information. This can be a tibble, where BigQuery infers the field's data type from the values in the tibble's columns. Or, it can be a `bq_fields` object (more on this here shortly).
+
+* A `friendly_name`, which is a more human-readable description of what the data represents.
+
+* A string `description`. This can be a longer description of what the data represents.
+
+* Any `labels` we use to organize our BigQuery assets in our Google Cloud project (e.g., an 'example' dataset).
+
+```{r}
+#| label: bq-create-table
+#| eval: FALSE
+bq_table_create(
+  bq_neb_county_table,
+  fields = data_nebpm_county,
+  friendly_name = "American Community Survey (ACS) 2020 Nebraska County Population",
+  description = "Source: The U.S. Census Bureau",
+  labels = list(category = "example")
+)
+
+bq_table_exists(bq_neb_county_table)
+#[1] TRUE
+```
+
+Some of these arguments are optional. They can be omitted if you're trying to create a quick dataset on the fly. However, it's usually best to include metadata when writing a table. Your future self or others later added to the project will be thankful for this additional information. 
+
+Our next step: import data into our table. `bq_table_create()` creates the table for us; it does not populate data into the table, though. The `bq_table_upload()` function is used to upload data into the table. To import data, we simply pass our table object (`bq_neb_county_table`) along with our dataset (`data_nebpm_county`) into the `bq_table_upload()` function. The code to complete this step looks something like this:
+
+```{r}
+#| label: bq-upload-acs-dataset
+#| eval: FALSE
+bq_table_upload(bq_neb_county_table, data_nebpm_county)
+```
+
+Once the data is uploaded, we can use several of `bigrquery`'s functions to return information about our table. For instance: 
+
+* `bq_table_fields()` can be used to return the fields in the table.
+
+* The size of the table (in bytes) can be returned using the `bq_table_size()` function.
+
+* The `bq_table_meta()` function is useful for returning metadata associated with our table.
+
+Here are a few examples using these functions:
+
+```{r}
+#| label: bq-get-table-fields
+#| eval: FALSE
+bq_table_fields(bq_neb_county_table)
+# <bq_fields>
+#   geo_id <INTEGER: required>
+#   area_name <STRING: required>
+#   total_pop <INTEGER: required>
+```
+
+```{r}
+#| label: bq-get-table-size
+#| eval: FALSE
+bq_table_size(bq_neb_county_table)
+# 0 B
+```
+
+```{r}
+#| label: bq-get-table-meta
+#| eval: FALSE
+# output excluded due to its size
+str(bq_table_meta(bq_neb_county_table))
+```
+
+```{r}
+#| label: bq-check-table-exists
+#| eval: FALSE
+bq_table_exists(bq_neb_county_table)
+# [1] TRUE
+```
+
+### Greater control over table creation
+
+Leveraging BigQuery's functionality to automatically identify field names and types is useful. However, greater control on how the table is created might be required. The `as_bq_fields()` and `bq_field()` functions afford greater control. The following is example code utilizing these two functions to create a data schema for our table:
+
+```{r}
+#| label: bq-specify-table-fields
+#| eval: FALSE
+fields_neb_county <- as_bq_fields(
+  list(
+    bq_field(
+      "geo_id", 
+      type = "INTEGER", 
+      mode = "REQUIRED", 
+      description = "Geo ID"
+    ),
+    bq_field(
+      "area_name",
+      type = "STRING",
+      mode = "REQUIRED",
+      description = "County label"
+    ),
+    bq_field(
+      "total_pop",
+      type = "INTEGER",
+      mode = "REQUIRED",
+      description = "Total county population"
+    )
+  )
+)
+```
+
+Our `fields_neb_county` objects has several elements. First, to package all this information into one object, we need to pass a list of `bq_field()`s to the `as_bq_fields()` function. But before that, we need to pass field specifications to each of the `bq_field()` functions. This includes passing along:
+
+* A string representing the column `name` (e.g., `total_pop`).
+
+* A data type, most likely a `STRING`, `INTEGER`, `DATE`, `DATETIME`, or a `BOOLEAN`, though other types are available (see the docs `?bq_field`).
+
+* A mode: either `NULLABLE`; `REQUIRED`; or `REPEATED`.
+
+* A description, which is a string describing what the values in the field represent.
+
+Not all this info is required, but if you're going to the length of wanting this much control over table creation, then it's best to include it.
+
+Now that we have this `bq_table` object, we pass the `fields` argument of the `bq_table_create()` function to create our table.
+
+```{r}
+#| label: bq-create-table-using-field
+#| eval: FALSE
+bq_table_create(
+  bq_neb_county_table,
+  fields = fields_neb_county,
+  friendly_name = "American Community Survey (ACS) 2020 Nebraska County Population",
+  description = "The data comes from the U.S. Census Bureau",
+  labels = list(category = "example")
+)
+
+bq_table_exists(bq_neb_county_table)
+# [1] TRUE
+```
+
+As before, this just creates the table. It does not upload data to the table. The `bq_table_upload()` function will be used to import data into the table.
+
+## Create and write disposition
+
+`bq_table_upload()` has some additional arguments, which I've found are not clearly documented in the package's documentation. These include the ability to pass a `create_disposition` and a `write_disposition` argument. 
+
+::: {.callout-warning}
+Be mindful of how you use these arguments, as the values you pass can overwrite data. Read more about the options by reviewing the linked docs below.
+:::
+
+More about what these options do in BigQuery can be reviewed [here](https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#:~:text=in%20the%20query.-,createDisposition,-string). Here's what the code would look like using the arguments listed above:
+
+```{r}
+#| label: bq-create-table-using-disposition
+#| eval: FALSE
+bq_table_upload(
+  bq_neb_county_table,
+  values = fields_neb_county,
+  create_disposition = "CREATE_NEVER",
+  write_disposition = "WRITE_TRUNCATE"
+)
+```
+
+The `create_disposition` argument specifies how the table will be created, based on whether the table exists or not. A value of `CREATE_NEVER` requires the table to already exist, otherwise an error is pushed. `CREATE_IF_NEEDED` creates the table if it does not already exist. However, it's best to use the `bq_table_create()` function rather than relying on the `bq_table_upload()` function to create the table for us. Nevertheless, it's an option that's available.
+
+The `write_disposition` specifies what happens to values when they're written to tables. There are three options: `WRITE_TRUNCATE`, `WRITE_APPEND`, and `WRITE_EMPTY`. Here's what each of these options do:
+
+* `WRITE_TRUNCATE`: If the table exists, overwrite the data using the schema of the newly inputted data (i.e., a destructive action).
+
+* `WRITE_APPEND`: If the table exists, append the data to the table (i.e., add it to the bottom of the table). 
+
+* `WRITE_EMPTY`: If the table exists and it already contains data, push an error.
+
+When it comes to uploading data, you'll most likely want to consider the `write_disposition` you use.
+
+One last note about uploading data to your tables: BigQuery optimizes for speed. This optimization some times results in the data to be imported not in the order it is initially imported. Rather, the resulting data import may be shuffled in a way to speed up the process. Thus, you'll likely need to arrange your data if you need to extract it again.
+
+# Wrap-up
+
+This post provided an overview of several workflows using the `bigrquery` package to interact with [Google BigQuery](https://cloud.google.com/bigquery). It began by briefly covering options for authenticating into the BigQuery service. This included highlighting an option to have the package manage the authentication and a brief overview of the use of service accounts.
+
+The next section was simple: exploring and returning information about the data stored in BigQuery. This involved tasks like listing projects, datasets, and tables. To do this, the post covered functions like `bq_projects()`, `bq_project_datasets()`, and `bq_dataset_tables()`. We also discussed the use of the `bq_dataset()` function to create a `bq_dataset` object in our R session.
+
+The focus was then turned to querying and returning data for use within a R session. During this part of the post, BigQuery's SQL syntax was briefly overviewed. Then, the use of the `bq_dataset_query()`, `bq_project_query()`, and `bq_table_download()` functions were covered. As a refresher of a key point, remember, `bigrquery` first creates a temporary table before you download the dataset into your R session.
+
+The post's final section highlighted how to write data back to BigQuery. This section focused on the use of the `bq_table_create()` and `bq_table_upload()` functions. This section then covered how to get information about our table. This section wrapped up with a description of the `create_disposition` and `write_disposition` options available when writing data back to BigQuery.
+
+This completes the workflow walkthrough on the use of the `bigrquery` package to interact with Google BigQuery. Thanks for taking the time to read this post. I hope you walk away with a few good takeaways. If you know of some other, better ways to work with BigQuery in R or use the `bigrquery` R package in your own work, let's connect. 
