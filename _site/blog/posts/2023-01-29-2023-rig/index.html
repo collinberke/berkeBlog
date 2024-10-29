@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2023-01-29">
+<meta name="description" content="Overviewing and reflecting on my current data science setup.">
+
+<title>2023 data science rig: Set up and configuration – Collin K. Berke, Ph.D.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../til/index.html"> 
+<span class="menu-text">Today I Learned</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#hardware" id="toc-hardware" class="nav-link" data-scroll-target="#hardware">Hardware</a></li>
+  <li><a href="#operating-system" id="toc-operating-system" class="nav-link" data-scroll-target="#operating-system">Operating system</a>
+  <ul class="collapse">
+  <li><a href="#a-few-extra-configs-to-the-operating-system" id="toc-a-few-extra-configs-to-the-operating-system" class="nav-link" data-scroll-target="#a-few-extra-configs-to-the-operating-system">A few extra configs to the operating system</a></li>
+  <li><a href="#homebrew" id="toc-homebrew" class="nav-link" data-scroll-target="#homebrew">Homebrew</a></li>
+  </ul></li>
+  <li><a href="#terminal" id="toc-terminal" class="nav-link" data-scroll-target="#terminal">Terminal</a>
+  <ul class="collapse">
+  <li><a href="#oh-my-zsh" id="toc-oh-my-zsh" class="nav-link" data-scroll-target="#oh-my-zsh">Oh My Zsh</a>
+  <ul class="collapse">
+  <li><a href="#customized-zsh-prompt" id="toc-customized-zsh-prompt" class="nav-link" data-scroll-target="#customized-zsh-prompt">Customized Zsh prompt</a></li>
+  <li><a href="#terminal-aliases" id="toc-terminal-aliases" class="nav-link" data-scroll-target="#terminal-aliases">Terminal aliases</a></li>
+  </ul></li>
+  <li><a href="#additional-terminal-utilities" id="toc-additional-terminal-utilities" class="nav-link" data-scroll-target="#additional-terminal-utilities">Additional terminal utilities</a>
+  <ul class="collapse">
+  <li><a href="#jump" id="toc-jump" class="nav-link" data-scroll-target="#jump">Jump</a></li>
+  <li><a href="#tmux" id="toc-tmux" class="nav-link" data-scroll-target="#tmux">tmux</a></li>
+  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git">git</a></li>
+  <li><a href="#githubs-cli-tool" id="toc-githubs-cli-tool" class="nav-link" data-scroll-target="#githubs-cli-tool">GitHub’s CLI tool</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#r-setup" id="toc-r-setup" class="nav-link" data-scroll-target="#r-setup">R setup</a>
+  <ul class="collapse">
+  <li><a href="#install-rig" id="toc-install-rig" class="nav-link" data-scroll-target="#install-rig">Install rig</a></li>
+  <li><a href="#install-the-most-recent-version-of-r" id="toc-install-the-most-recent-version-of-r" class="nav-link" data-scroll-target="#install-the-most-recent-version-of-r">Install the most recent version of R</a></li>
+  <li><a href="#download-rstudio" id="toc-download-rstudio" class="nav-link" data-scroll-target="#download-rstudio">Download RStudio</a></li>
+  <li><a href="#install-r-packages" id="toc-install-r-packages" class="nav-link" data-scroll-target="#install-r-packages">Install R packages</a>
+  <ul class="collapse">
+  <li><a href="#devtools" id="toc-devtools" class="nav-link" data-scroll-target="#devtools"><code>devtools</code></a></li>
+  <li><a href="#usethis" id="toc-usethis" class="nav-link" data-scroll-target="#usethis"><code>usethis</code></a></li>
+  <li><a href="#roxygen2" id="toc-roxygen2" class="nav-link" data-scroll-target="#roxygen2"><code>roxygen2</code></a></li>
+  <li><a href="#tidyverse" id="toc-tidyverse" class="nav-link" data-scroll-target="#tidyverse"><code>tidyverse</code></a></li>
+  <li><a href="#lubridate" id="toc-lubridate" class="nav-link" data-scroll-target="#lubridate"><code>lubridate</code></a></li>
+  <li><a href="#testthat" id="toc-testthat" class="nav-link" data-scroll-target="#testthat"><code>testthat</code></a></li>
+  <li><a href="#googleanalyticsr" id="toc-googleanalyticsr" class="nav-link" data-scroll-target="#googleanalyticsr"><code>googleAnalyticsR</code></a></li>
+  <li><a href="#bigrquery" id="toc-bigrquery" class="nav-link" data-scroll-target="#bigrquery"><code>bigrquery</code></a></li>
+  </ul></li>
+  <li><a href="#google-cloud-command-line-interface-cli" id="toc-google-cloud-command-line-interface-cli" class="nav-link" data-scroll-target="#google-cloud-command-line-interface-cli">Google Cloud Command Line Interface (CLI)</a>
+  <ul class="collapse">
+  <li><a href="#installing-the-google-cloud-sdk" id="toc-installing-the-google-cloud-sdk" class="nav-link" data-scroll-target="#installing-the-google-cloud-sdk">Installing the Google Cloud SDK</a></li>
+  <li><a href="#authorizing-the-google-cloud-cli" id="toc-authorizing-the-google-cloud-cli" class="nav-link" data-scroll-target="#authorizing-the-google-cloud-cli">Authorizing the Google Cloud CLI</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#setting-up-my-integrated-development-environment" id="toc-setting-up-my-integrated-development-environment" class="nav-link" data-scroll-target="#setting-up-my-integrated-development-environment">Setting up my integrated development environment</a>
+  <ul class="collapse">
+  <li><a href="#neovim" id="toc-neovim" class="nav-link" data-scroll-target="#neovim">Neovim</a>
+  <ul class="collapse">
+  <li><a href="#installing-neovim" id="toc-installing-neovim" class="nav-link" data-scroll-target="#installing-neovim">Installing Neovim</a></li>
+  <li><a href="#configuring-neovim" id="toc-configuring-neovim" class="nav-link" data-scroll-target="#configuring-neovim">Configuring Neovim</a></li>
+  <li><a href="#neovim-package-manager" id="toc-neovim-package-manager" class="nav-link" data-scroll-target="#neovim-package-manager">Neovim package manager</a></li>
+  <li><a href="#neovim-plugins" id="toc-neovim-plugins" class="nav-link" data-scroll-target="#neovim-plugins">Neovim plugins</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#closing-thoughts" id="toc-closing-thoughts" class="nav-link" data-scroll-target="#closing-thoughts">Closing thoughts</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">2023 data science rig: Set up and configuration</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">tutorial</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Overviewing and reflecting on my current data science setup.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 29, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="thumbnail-wide.png" class="img-fluid figure-img"></p>
+<figcaption>Photo by <a href="https://unsplash.com/photos/t5YUoHW6zRo">Barn Images</a></figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>What the new year brings to you will depend a great deal on what you bring to the new year.</p>
+<p>– Vern McLellan</p>
+</blockquote>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>Recently, I read a <a href="https://ivelasq.rbind.io/blog/macos-rig/index.html">blog post</a> written by Isabella and Gustavo E. Veláquez. In the post, the authors discussed the setup of their 2023 data science rig. While reading, I became inspired to write this post reflecting on and documenting the data science rig I’m bringing into 2023.</p>
+<p>With a new year comes an opportunity to reflect. My intentions for writing this post are to create a documented snapshot of my current setup, learn more about the tools I use, and reflect on the setup used in my day-to-day workflow. Moreover, this post serves as setup documentation in case I need to switch machines or setup a new working environment.</p>
+<p>In this post, I will highlight the use, setup, and configuration of the following components of my data science rig:</p>
+<ol type="1">
+<li>Hardware</li>
+<li>Operating system</li>
+<li>Terminal</li>
+<li>R setup</li>
+<li>Neovim as an integrated development environment</li>
+</ol>
+<p>Although an attempt will be made to provide a comprehensive overview of all the tools I use, this post focuses on the ones I use most often. In reality, I won’t be able to detail every tool used within my workflow. On top of that, this post would become too lengthy if every aspect of my configuration was discussed. So whenever possible, I provide links to additional documentation or files that might be helpful. I also make files pertaining to my setup available in this repo <a href="https://github.com/collinberke/dotfiles">here</a>. Check them out if you want an abbreviated version of this post.</p>
+</section>
+<section id="hardware" class="level1">
+<h1>Hardware</h1>
+<p>My daily driver machine is a 2019 16-inch MacBook Pro. It has a 2.6GHz 6-Core Intel Core i7 processor and 16GB of ram. I had no specific use case in mind when I purchased this machine. However, I knew at the time my workflow wouldn’t require a robust amount of resources. As such, I really didn’t foresee the need for any major hardware upgrades. In cases where I need more robust computing resources, I opt for cloud resources instead. Thus, my machine is a pretty vanilla, off-the-shelf setup.</p>
+<p>As for keyboard, I’m working with the <a href="https://www.keychron.com/products/keychron-k2-wireless-mechanical-keyboard">Keychron K2 wireless mechanical keyboard</a>. I’m a fan of the compact design. The keystorke is quite satisfying, especially for long, marathon work sessions. The backlit LEDs are also a nice aesthetic touch. Occasionally, I’ll work with my <a href="https://www.duckychannel.com.tw/en/Ducky-One2-Horizon">Ducky One 2 Horizon</a>. The keystroke on this keyboard is not as comfortable as the Keychron K2, but it’s good to switch it up from time to time.</p>
+<p>Headphones and earbuds are pretty standard. Daily I’ll use my Apple Airpods Pro. I’m a huge fan of the noise cancellation and the streamlined integration with my other Apple devices. My other option is my over-the-ear V-moda Crossfade LPS headphones. I’ve had these for years (2011 I think), and I still use them occasionally.</p>
+</section>
+<section id="operating-system" class="level1">
+<h1>Operating system</h1>
+<p>Since I’m working with a Mac, it should be no surprise that I’m using the macOS operating system. Currently, I’m running the most recent major release, macOS Ventura (13.1 to be specific). In fact, while drafting this post, I was reminded to update my operating system.</p>
+<section id="a-few-extra-configs-to-the-operating-system" class="level2">
+<h2 class="anchored" data-anchor-id="a-few-extra-configs-to-the-operating-system">A few extra configs to the operating system</h2>
+<p>I also like to customize the appearance, system keymappings, and terminal aliases (more on this in the section on setting up Zsh) of my operating system. For one, I’m a fan of dark mode, so I set the system settings accordingly. I’m also a minimalist when it comes to the menu dock. I prefer to only include shortcuts that are necessary to my workflow. I also like to change the settings to automatically hide the dock when it’s not being used. I do this to maximize my workspace area. Here is a <a href="https://github.com/collinberke/dotfiles/tree/main/macOS">link</a> to some docs if you’re interested in modifying your macOS system settings.</p>
+<p>The <code>caps lock</code> key is useless in my workflow. Instead, I remap the <code>ctrl</code> key to the <code>caps lock</code> key. This is mostly done out of convenience, as I’ll use my machine as a true laptop from time to time. This is also essential because my IDE, Neovim, requires extensive use of the <code>ctrl</code> keys (more on the use of Neovim later). Since the MacBook Pro does not include a right-hand side <code>ctrl</code> key, and the left-hand side <code>ctrl</code> key is not in a comfortable position, this remap affords me some additional comfort when I use my machine as a laptop.</p>
+</section>
+<section id="homebrew" class="level2">
+<h2 class="anchored" data-anchor-id="homebrew">Homebrew</h2>
+<p><a href="https://brew.sh/">Homebrew</a> coins itself as the missing package manager for macOS (or Linux). It makes downloading open-source software much easier. Downloading and installing Homebrew is straight forward. Run the following command in a terminal to download Homebrew:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you need more specific instructions on downloading and installing Homebrew, check out the docs I linked above. With the Homebrew package manager installed, it’s a cinch to download other tools.</p>
+</section>
+</section>
+<section id="terminal" class="level1">
+<h1>Terminal</h1>
+<p><a href="https://iterm2.com/">iTerm2</a> is the next tool to install. iTerm2 is a terminal emulator, and it is an alternative to Apple’s Terminal app. It is a modern, updated terminal with additional features that enhance the terminal experience beyond the Mac terminal. You can get a rundown of some of these features <a href="https://iterm2.com/features.html">here</a>.</p>
+<p>Using Homebrew, iTerm2 can be downloaded by running the following in a Mac terminal window.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> iterm2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once installed, all further terminal use is through iTerm2.</p>
+<section id="oh-my-zsh" class="level2">
+<h2 class="anchored" data-anchor-id="oh-my-zsh">Oh My Zsh</h2>
+<p>Now it’s time to unleash the terminal by downloading <a href="https://ohmyz.sh/">Oh My Zsh</a>. Download Oh My Zsh by running the following in your terminal:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Oh My Zsh’s docs contain the best description of what it does:</p>
+<blockquote class="blockquote">
+<p>Oh My Zsh will not make you a 10x developer…but you may feel like one.</p>
+<p>– Zsh docs</p>
+</blockquote>
+<p>For reals though, Oh My Zsh is a convenient, intuitive means to configure your terminal. For one, it allows plugin installation. Plugins enhance the terminal experience and extend its utility. The following is a list of Zsh plugins I find useful:</p>
+<ul>
+<li><a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git"><code>git</code></a></li>
+<li><a href="https://github.com/zsh-users/zsh-syntax-highlighting"><code>zsh-syntax-highlighting</code></a> for terminal syntax highlighting.</li>
+<li><a href="https://github.com/zsh-users/zsh-autosuggestions"><code>zsh-autosuggestions</code></a> for command suggestions based on previous history.</li>
+</ul>
+<section id="customized-zsh-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="customized-zsh-prompt">Customized Zsh prompt</h3>
+<p>Another great feature of Zsh is the ability to customize the command line prompt. Many options are available. For me, I like the prompt to contain four pieces of information:</p>
+<ol type="1">
+<li>The time (24-hours with seconds);</li>
+<li>The file path of the current working directory;</li>
+<li><code>git</code> branch information;</li>
+<li>An indicator if any uncommitted changes exist in the directory.</li>
+</ol>
+<p>Here is what my prompt looks like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="zsh_prompt.png" class="img-fluid figure-img"></p>
+<figcaption>Customized Zsh prompt</figcaption>
+</figure>
+</div>
+<p>To achieve this custom setup, I place the following into my <a href="https://github.com/collinberke/dotfiles/blob/main/terminal/.zshrc"><code>.zshrc</code> file</a>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prompt formatting</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autoload</span> <span class="at">-Uz</span> add-zsh-hook vcs_info</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">setopt</span> prompt_subst</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">add-zsh-hook</span> precmd vcs_info</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">PROMPT</span><span class="op">=</span><span class="st">'%F{blue}%*%f %F{green}%~%f %F{white}${vcs_info_msg_0_}%f$ '</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:*'</span> check-for-changes true</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:*'</span> unstagedstr <span class="st">' *'</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:*'</span> stagedstr <span class="st">' +'</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:git:*'</span> formats       <span class="st">'(%b%u%c)'</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:git:*'</span> actionformats <span class="st">'(%b|%a%u%c)'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Indeed, this might not be the custom prompt for everyone. So, the following are links to blog posts that do an excellent job describing how to customize the different prompt elements:</p>
+<ul>
+<li><a href="https://dev.to/cassidoo/customizing-my-zsh-prompt-3417">Customizing my Zsh Prompt</a> by Cassidy Williams</li>
+<li><a href="https://arjanvandergaag.nl/blog/customize-zsh-prompt-with-vcs-info.html">Customize your ZSH prompt with vcs_info</a> by Arjan van der Gaag</li>
+</ul>
+</section>
+<section id="terminal-aliases" class="level3">
+<h3 class="anchored" data-anchor-id="terminal-aliases">Terminal aliases</h3>
+<p>This year, I focused on transitioning to a more terminal based workflow. As part of this transition, I began utilizing terminal aliases. Aliases can be used to automate common tasks, like opening specific programs, web pages, or project files from the terminal.</p>
+<p>With Zsh, creating aliases is pretty straightforward. To do this, you’ll need to place a file into the <code>~/oh-my-zsh/custom</code> directory. This file can be named anything, but it needs to end in the <code>.zsh</code> extension. In this file you can include aliases like the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aliases to improve productivity</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> email=<span class="st">"open https://path-to-email.com/mail/inbox"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> calendar=<span class="st">"open https://path-to-calendar.com/"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> projects=<span class="st">"open https://path-to-github-projects.com/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now if you run <code>email</code> in your terminal prompt, a browser window with your email inbox will open. The above is just an example to get you started. I have additional aliases beyond the ones in the example. To get an idea of all the aliases I use, check out the dotfile <a href="https://github.com/collinberke/dotfiles/blob/main/terminal/aliases.zsh">here</a>. You can customize any of these to your specific needs.</p>
+<p>The rest of my Zsh configuration is pretty standard. Here is a <a href="https://github.com/collinberke/dotfiles/tree/main/terminal">link</a> to a repo containing additional files to configure Zsh. Check it out if you’re interested in seeing how I specifically do something.</p>
+</section>
+</section>
+<section id="additional-terminal-utilities" class="level2">
+<h2 class="anchored" data-anchor-id="additional-terminal-utilities">Additional terminal utilities</h2>
+<section id="jump" class="level3">
+<h3 class="anchored" data-anchor-id="jump">Jump</h3>
+<p>Navigating the file system from the terminal can be tiring. <a href="https://github.com/gsamokovarov/jump"><code>Jump</code></a> is a terminal utility that solves this problem. Simply put, this utility learns your navigational habits and allows you to easily jump back and forth between directories with very little typing.</p>
+<p>Install jump using Homebrew. Run the following code in your terminal to install Jump:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install jump</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tmux" class="level3">
+<h3 class="anchored" data-anchor-id="tmux">tmux</h3>
+<p><a href="https://github.com/tmux/tmux/wiki">tmux</a> is a terminal multiplexer. It lets you create multiple windows and terminals in a single session. I find it useful in situations where you want multiple files, projects, or terminal windows to be open while you’re working.</p>
+<p>Install tmux using Homebrew:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install tmux</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Although tmux is useful out of the box, some configuration steps are needed to make it more useful. My configuration mostly changes tmux’s keymaps, which makes them easier to remember and use (i.e., some of the defaults require some keyboard gymnastics).</p>
+<p>Much of my tmux configuration is a derivative of the one discussed in the <a href="https://www.youtube.com/playlist?list=PLT98CRl2KxKGiyV1u6wHDV8VwcQdzfuKe">Getting Started with: tmux</a> YouTube series from <a href="https://www.youtube.com/LearnLinuxTV">Learn Linux TV</a>. If you want some more specific detail, you can check out my <code>.tmux.conf</code> configuration file <a href="https://github.com/collinberke/dotfiles/blob/main/terminal/.tmux.conf">here</a>.</p>
+</section>
+<section id="git" class="level3">
+<h3 class="anchored" data-anchor-id="git">git</h3>
+<p>I use <a href="https://git-scm.com/"><code>git</code></a> for version control. Homebrew can be used to install <code>git</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Some additional configuration is needed for the local setup of git. Run the following code in the terminal. Make sure to replace what is in quotations with your information.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"&lt;full-name&gt;"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"&lt;email&gt;"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> core.editor <span class="st">"nvim"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>user.name</code> and <code>user.email</code> variables are required. You can exclude the <code>core.editor</code> configuration if you want to use the default editor. However, I like to use Neovim (more on Neovim in a later section) as my text editor, so I make it my default when working with <code>git</code>.</p>
+<p>Along with <code>git</code>, I use <a href="https://github.com/">GitHub</a> for remote repositories. Some additional steps are needed to authenticate with this service. The GitHub CLI tool simplifies these steps.</p>
+</section>
+<section id="githubs-cli-tool" class="level3">
+<h3 class="anchored" data-anchor-id="githubs-cli-tool">GitHub’s CLI tool</h3>
+<p>Bring GitHub to your command line with the <a href="https://cli.github.com/">GitHub CLI</a>. This tool provides commands to do many of the same things you do on GitHub, but with terminal commands. Need to create an issue in a repo, run the following in your terminal:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> create issue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Want to see all the pull requests in a repo needing review, run the following in your terminal:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> pr list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can also use these commands within aliases to streamline your workflows. I particularly like my custom aliases to list and create issues and PRs.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom alias to list GitHub issues</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.il</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom alias to create an issue</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">.ic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Homebrew, again, is used for the installation.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="authenticate-using-the-github-cli" class="level4">
+<h4 class="anchored" data-anchor-id="authenticate-using-the-github-cli">Authenticate using the GitHub CLI</h4>
+<p>Once installed, run the <code>gh auth login</code> command to walk you through the authentication flow. During the flow, you’ll have to make a few decisions. Your first decision will be the protocol you want to use for <code>git</code> operations. I select <code>HTTPS</code>. Second, you’ll need to decide how you want to authenticate the GitHub CLI. I select the web browser setting out of convenience. If you’re interested in other forms of authentication, I suggest checking out GitHub’s <a href="https://cli.github.com/manual/gh_auth_login">docs</a>.</p>
+<p>One minor, additional configuration step is to set Neovim as the default editor for use with the GitHub CLI. If you want to use the default editor, then skip this step. To modify the default editor, run the following command in the terminal:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> config set editor nvim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+</section>
+<section id="r-setup" class="level1">
+<h1>R setup</h1>
+<p>The next step is to download R. In the past, I would go to <a href="https://cran.r-project.org/">CRAN</a> and manually download the latest version. Now, there’s a better way, <a href="https://github.com/r-lib/rig"><code>rig</code></a>, the R Installation Manager.</p>
+<section id="install-rig" class="level2">
+<h2 class="anchored" data-anchor-id="install-rig">Install rig</h2>
+<p>Homebrew handles the installation of <code>rig</code>. Run the following in your terminal:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> tap r-lib/rig</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="install-the-most-recent-version-of-r" class="level2">
+<h2 class="anchored" data-anchor-id="install-the-most-recent-version-of-r">Install the most recent version of R</h2>
+<p>Once <code>rig</code> is installed, download the most recent version of R by running the following in the terminal:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rig</span> add</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once the most recent version is downloaded, you can verify the installation was successful by printing out a list of all the R versions installed on your machine. If this is a fresh start on a new machine or it’s your first time downloading R, you should only see one version listed.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rig</span> list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="download-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="download-rstudio">Download RStudio</h2>
+<p>Although I have made the switch to using a different IDE (more on this in the next section), I still teach classes and present to groups who mainly use RStudio. So to keep everything up to date and in synch, I download the current version of RStudio using Homebrew:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rstudio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>rig</code> also makes it easy to open up a new session of RStudio from the terminal. To do this, run the following in the terminal:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rig</span> rstudio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="install-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="install-r-packages">Install R packages</h2>
+<p>This section overviews the installation of R packages I use most often. Indeed, it would be excessive to download and overview all the packages in my workflow. In addition, the following sections contain a brief description of what each package does and how it is used when I work with R.</p>
+<p>The following code downloads packages I rely on most. If you use R, many of these packages will be familiar.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  devtools,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  usethis,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  roxygen2,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  tidyverse,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  lubridate,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  testthat,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  googleAnalyticsR,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  bigrquery</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you’re unfamiliar with loading packages in R, you’ll need to run this code an R console. This can be done either in RStudio or via an iTerm2 system terminal. From the system terminal, type the letter <code>R</code> and hit <code>Enter</code>. Doing this should change your terminal prompt, as you are now running in a R session. You’ll then run the code from above. Information will be printed to the terminal during the installation of the packages.</p>
+<p>Once all these packages have been installed, run the <code>quit()</code> function to return back to the system’s original prompt. When quitting this R session, you may be prompted to save the workspace. Enter no, as there is no need to save this session’s information. The next few sections provide a brief description of how each of the installed packages are used within my workflow.</p>
+<section id="devtools" class="level3">
+<h3 class="anchored" data-anchor-id="devtools"><code>devtools</code></h3>
+<blockquote class="blockquote">
+<p>The aim of devtools is to make your life as a package developer easier by providing R functions that simplify many common tasks.</p>
+<p>– <code>devtools</code> package docs</p>
+</blockquote>
+<p>Simply put, I rely on <a href="https://devtools.r-lib.org/"><code>devtools</code></a> for package development. This package provides many convenience functions to manage the mundane tasks involved in package development.</p>
+</section>
+<section id="usethis" class="level3">
+<h3 class="anchored" data-anchor-id="usethis"><code>usethis</code></h3>
+<p><a href="https://usethis.r-lib.org/"><code>usethis</code></a> is a workflow package. It automates many tasks involved when setting up a project. It also contains convenience functions to help with other R project workflow tasks. I’m still exploring all the package’s functions, but using the one’s I’ve learned have made me more productive.</p>
+</section>
+<section id="roxygen2" class="level3">
+<h3 class="anchored" data-anchor-id="roxygen2"><code>roxygen2</code></h3>
+<p>Packages need documentation. The <a href="https://roxygen2.r-lib.org/"><code>roxygen2</code></a> package helps with the documentation setup and development process. If you’re familair with comments in R, you’ll find writing package documentation with <code>roxygen2</code> intuitive.</p>
+</section>
+<section id="tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="tidyverse"><code>tidyverse</code></h3>
+<p><a href="https://www.tidyverse.org/"><code>tidyverse</code></a> is mainly used for common data wrangling and analysis tasks. Although I use base functions from time-to-time, I learned R by using <code>tidyverse</code> packages; they’re ingrained throughout my workflow.</p>
+<p>Indeed, the tidyverse is not just a single package, but a collection of packages. Some of the <code>tidyverse</code> packages I rely on most often include:</p>
+<ul>
+<li><a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a> for data visualization</li>
+<li><a href="https://dplyr.tidyverse.org/"><code>dplyr</code></a> for manipulating data</li>
+<li><a href="https://tidyr.tidyverse.org/"><code>tidyr</code></a> for common data tidying tasks</li>
+<li><a href="https://purrr.tidyverse.org/"><code>purrr</code></a> for functional programming</li>
+<li><a href="https://www.tidyverse.org/packages/"><code>stringr</code></a> for working with string data</li>
+</ul>
+</section>
+<section id="lubridate" class="level3">
+<h3 class="anchored" data-anchor-id="lubridate"><code>lubridate</code></h3>
+<p><a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a> is magic when it comes to working with date-time data. I use this package mostly to handle data with a time dimension, which usually occurs in cases where I’m working with and analyzing time series data. If you work with date time data, look into using <code>lubridate</code>.</p>
+</section>
+<section id="testthat" class="level3">
+<h3 class="anchored" data-anchor-id="testthat"><code>testthat</code></h3>
+<p>The <a href="https://testthat.r-lib.org/"><code>testhat</code></a> package is used for writing tests (e.g., unit tests) for code, especially when developing a package. <a href="https://r-pkgs.org/testing-basics.html">To write more robust code, it’s best practice to write tests</a>. <code>testthat</code> provides a framework and several convenience functions to make composing tests more enjoyable.</p>
+</section>
+<section id="googleanalyticsr" class="level3">
+<h3 class="anchored" data-anchor-id="googleanalyticsr"><code>googleAnalyticsR</code></h3>
+<p>Part of my work involves the analysis of web analytics data. Much of this data is collected with and made available via <a href="https://analytics.withgoogle.com/">Google Analytics</a>. <a href="https://code.markedmondson.me/googleAnalyticsR/"><code>googleAnalyticsR</code></a> is a package that allows you to authenticate and export web analytics data using the <a href="https://developers.google.com/analytics/devguides/reporting/core/v4">Google Analytics Reporting API</a>.</p>
+</section>
+<section id="bigrquery" class="level3">
+<h3 class="anchored" data-anchor-id="bigrquery"><code>bigrquery</code></h3>
+<p><a href="https://cloud.google.com/bigquery">Google BigQuery</a> is a data warehouse and analytics solution. To access data via its API, I rely on the <a href="https://bigrquery.r-dbi.org/"><code>bigrquery</code></a> package. This package provides multiple convenience functions to extract, transform, and load data from and into BigQuery. <code>bigrquery</code> also provides several functions to perform some BigQuery administrative tasks.</p>
+<p>The packages highlighted above are ones I rely on most often in my day-to-day workflow. Indeed, others are used less frequently, especially when performing specific analysis tasks. However, the use of some packages is project dependent and describing all the packages I use would be outside the scope of this post.</p>
+</section>
+</section>
+<section id="google-cloud-command-line-interface-cli" class="level2">
+<h2 class="anchored" data-anchor-id="google-cloud-command-line-interface-cli">Google Cloud Command Line Interface (CLI)</h2>
+<p>I mainly use the <a href="https://cloud.google.com/">Google Cloud Platform (GCP)</a> for cloud based project development. Although I’ll use GCP’s web portal occasionally, the command line interface provides some useful utilities to work from the terminal. The Google Cloud CLI is made available by installing the <a href="https://cloud.google.com/sdk">Google Cloud Software Development Kit (SDK)</a>.</p>
+<p><a href="https://cloud.google.com/bigquery">Google BigQuery</a>, a data warehouse solution, is a GCP service I use quite often. The Google Cloud CLI has the <a href="https://cloud.google.com/bigquery/docs/bq-command-line-tool"><code>bq</code></a> command, which is an interface with BigQuery. I also manage some compute instances in the cloud, so I use the <a href="https://cloud.google.com/sdk/gcloud/reference/compute/instances"><code>gcloud compute instances</code></a> command as well.</p>
+<section id="installing-the-google-cloud-sdk" class="level3">
+<h3 class="anchored" data-anchor-id="installing-the-google-cloud-sdk">Installing the Google Cloud SDK</h3>
+<p>Install the GCP SDK with Homebrew. To download, run the following code in your terminal:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> google-cloud-sdk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="authorizing-the-google-cloud-cli" class="level3">
+<h3 class="anchored" data-anchor-id="authorizing-the-google-cloud-cli">Authorizing the Google Cloud CLI</h3>
+<p>You can review Google Cloud CLI’s authentication steps <a href="https://cloud.google.com/sdk/docs/authorizing">here</a>. I provided the link to these docs because depending on your current setup and needs, you may need to use different steps to authenticate. Most likely, though, if you’re intending to authenticate with a user account, you can run the following command in your terminal to walk through the authentication steps:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> init</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Again, it’s best to review the docs linked above, so you’re aware of the steps needed to authenticate with your specific setup.</p>
+</section>
+</section>
+</section>
+<section id="setting-up-my-integrated-development-environment" class="level1">
+<h1>Setting up my integrated development environment</h1>
+<p>This past year, the biggest change to my workflow was the switch to <a href="https://neovim.io/">Neovim</a> for my IDE. For several years, the majority of my development work was done using <a href="https://posit.co/downloads/">Posit’s IDE, RStudio</a>. I can’t express how much I love RStudio. It was the editor I first learned to code in. However, this year I felt my ability to improve my productivity in RStudio plateaued. I also began wanting more freedom to configure my development environment specifically to my workflow. So, I began to explore alternatives.</p>
+<p>I went back to <a href="https://code.visualstudio.com/">VS code</a> for a time, as it is a popular editor for many. Some of VS Code’s features I really liked, and the ability to work with many different programming languages in the same environment was appealing. In fact, for a time, I considered committing my entire workflow over to VS Code. Then, I was introduced to <a href="https://www.vim.org/">Vim</a>.</p>
+<p><a href="https://www.vim.org/">Vim</a> is a highly configurable text editor. My first interaction with Vim–like most people–was when I was learning to use git several years ago. In fact, I had the all to <a href="https://thenewstack.io/how-do-you-exit-vim-a-newbie-question-turned-tech-meme/">common experience</a> of not being able to exit Vim (<code>:wq</code>). Although I wrote all my commit messages in Vim, It never really piqued my interest.</p>
+<p>However, I was formally introduced to Vim while watching other’s program online. Watching proficient Vim users was mind-blowing. I mean, just watch this <a href="https://www.youtube.com/watch?v=X6AR2RMB5tE&amp;list=PLm323Lc7iSW_wuxqmKx_xxNtJC_hJbQ7R&amp;index=1">series</a> from ThePrimeagen. It just seemed like a superpower. It was just so blazingly fast. Once I saw it used proficiently, I knew I wanted to learn it.</p>
+<p>At first, the setup was rough, and the learning curve was very steep. I even switched back to RStudio for a bit, where I attempted to learn Vim by turning on RStudio’s <a href="https://stackoverflow.com/questions/47208252/how-to-enable-vim-mode-in-rstudio">Vim mode</a>. It just wasn’t the same. One of the big selling points for using Vim is it’s designed to keep your hands on the keyboard as much as possible when editing text. However, my workflow in RStudio required me to jump back-and-forth between different windows (e.g., jump to the terminal; jump to the file explorer; and jump to the console), which I usually used the mouse to do. I knew RStudio had keyboard shortcuts, but they felt clunky and took too much cognitive effort to remember. Frustration set in, so I went all in on learning how to use Vim.</p>
+<p>Setting up and learning how to use Vim can be a whole series of blog posts in and of itself. So, my intention in the following section is to highlight some of the Neovim setup. As much as possible, in places where I gloss over details, I’ll link to some resources that provide more depth on the specific subject. I will also point out some tools I find useful while working in Neovim. I also have to be up-front that I’m still learning how to properly configure Neovim. As such, make sure to read the linked docs and review other setups to ensure you are setting up Neovim correctly for your specific needs. My setup is constantly evolving (i.e., breaking) as I continue to learn.</p>
+<section id="neovim" class="level2">
+<h2 class="anchored" data-anchor-id="neovim">Neovim</h2>
+<p>To be honest, there was no real reason why I chose Neovim. I just saw others using <a href="https://www.youtube.com/watch?v=QMVIJhC9Veg">and suggesting to give it a try</a>. I did briefly read some of the arguments for why Neovim is a good choice, though. From my shallow reading of the topic, most of the arguments I came across pertained to Neovim’s use of the <a href="https://www.lua.org/">lua</a> programming language, a better plugin management experience, and some additional points that made it appealing. In fact, Neovim is considered to be an extension of Vim, rather than its own stand-alone text editor. It aims to be extensible, usable, and retain the good parts of Vim. Now, I haven’t developed a sufficient understanding of these arguments to fully articulate the benefits of using one Vim like editor from another. I just know I’m enjoying it thus far. I suggest giving it a try.</p>
+<section id="installing-neovim" class="level3">
+<h3 class="anchored" data-anchor-id="installing-neovim">Installing Neovim</h3>
+<p>Homebrew is used to download Neovim.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install neovim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="configuring-neovim" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-neovim">Configuring Neovim</h3>
+<p>As mentioned in the intro to this section, Neovim’s setup and configuration can be its own series of posts; there are so many options and plugins available. The focus of the following sections is to draw attention to some of the tools I find useful when working in Neovim. Keep in mind, the configuration of Neovim is a bit of a learning curve. It can be frustrating when you first start, but very rewarding at times. You can review my configuration files <a href="https://github.com/collinberke/dotfiles/tree/main/nvim">here</a>.</p>
+<p>My Neovim setup is based on <a href="https://www.youtube.com/chrisatmachine">chris@machine’s</a> <a href="https://www.youtube.com/playlist?list=PLhoH5vyxr6Qq41NFL4GvhFp-WLd5xzIzZ">Neovim from Scratch</a> YouTube tutorial series. This series does an excellent job overviewing a complete Neovim setup using the Lua programming language. While my setup is mostly based on the one described in this series, I have added some custom configuration for my specific workflow.</p>
+</section>
+<section id="neovim-package-manager" class="level3">
+<h3 class="anchored" data-anchor-id="neovim-package-manager">Neovim package manager</h3>
+<p>I use <a href="https://github.com/wbthomason/packer.nvim">packer</a> for plugin management. Packer simplifies plugin installation. For example, here is the Lua code to install some plugins I highlight in the following sections:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="va">packer</span><span class="op">.</span>startup<span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">use</span><span class="op">)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"wbthomason/packer.nvim"</span>   <span class="co">-- Have packer manage itself</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"jalvesaq/Nvim-R"</span>          <span class="co">-- Tools to work with R in nvim</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Colorschemes</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"lunarvim/colorschemes"</span>     <span class="co">-- A selection of various colorschemes</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"tomasiser/vim-code-dark"</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"EdenEast/nightfox.nvim"</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"folke/tokyonight.nvim"</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- LSP </span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"neovim/nvim-lspconfig"</span>         <span class="co">-- enable LSP</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"williamboman/mason.nvim"</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"williamboman/mason-lspconfig.nvim"</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Telescope</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"nvim-telescope/telescope.nvim"</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Treesitter</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  use <span class="op">{</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nvim-treesitter/nvim-treesitter"</span><span class="op">,</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">run</span> <span class="op">=</span> <span class="st">":TSUpdate"</span><span class="op">,</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> </span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Git </span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"lewis6991/gitsigns.nvim"</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"tpope/vim-fugitive"</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="cn">PACKER_BOOTSTRAP</span> <span class="cf">then</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">require</span><span class="op">(</span><span class="st">"packer"</span><span class="op">).</span>sync<span class="op">()</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This code might not make much sense, as I only included a snippet of the code needed to install plugins I use most often. It’s mainly intended to show with a few lines of code, packer can manage all the plugin installation steps. This example code deviates slightly from the <a href="https://github.com/wbthomason/packer.nvim">original packer docs</a> on how to install plugins. Check out the previously linked docs if you would like an alternative setup while using Packer.</p>
+<p>Here is a <a href="https://github.com/collinberke/dotfiles/blob/main/nvim/lua/user/plugins.lua">link</a> to a file with all the plugins I use in my setup. Admittedly, some plugins are carry overs from chris@machine’s YouTube series, and I will fully admit I’m still learning the reason why some of these plugins are present within my configuration. Thus, my setup is not as lean as I would like it to be. But hey, I’m still learning.</p>
+</section>
+<section id="neovim-plugins" class="level3">
+<h3 class="anchored" data-anchor-id="neovim-plugins">Neovim plugins</h3>
+<section id="nvim-r" class="level4">
+<h4 class="anchored" data-anchor-id="nvim-r">Nvim-R</h4>
+<p>Since I mostly work with R, I use <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> to write code and interact with the R console directly in Neovim. Nvim-R provides utilities to have the Vim experience, while also affording interactive analysis right at your fingertips. Here is what a session using Nvim-R looks like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="nvim-r-example.png" class="img-fluid figure-img"></p>
+<figcaption>Nvim-r running in Neovim</figcaption>
+</figure>
+</div>
+<p>The power of Nvim-R comes from its predefined keybindings <a href="https://github.com/jalvesaq/Nvim-R/blob/28dc7c3d6177ad4508318399c7788fd6ebcef9e9/doc/Nvim-R.txt#L293">keybindings</a>, which allow you to quickly and easily do interactive analysis tasks using just a few keystrokes. I’ve found it’s the best option to work with R in Neovim. A whole blog post could be written about the use of Nvim-R, and I only hit the highlights here. I highly suggest checking it out if you’re looking to write R code with Neovim.</p>
+</section>
+<section id="vim-devtools-plugin" class="level4">
+<h4 class="anchored" data-anchor-id="vim-devtools-plugin">vim-devtools-plugin</h4>
+<p>As mentioned above, I use <code>devtools</code> for package development. To leverage its functionality in Neovim, I use the <a href="https://github.com/mllg/vim-devtools-plugin"><code>vim-devtools-plugin</code></a>. This plugin provides several convenient commands to run different <code>devtools</code> functions. This is especially useful as you can configure keymaps to these commands for added convenience and speed.</p>
+</section>
+<section id="telescope" class="level4">
+<h4 class="anchored" data-anchor-id="telescope">Telescope</h4>
+<p>Find, filter, preview, and pick. <a href="https://github.com/nvim-telescope/telescope.nvim">Telescope</a> is great at these actions. Specifically, Telescope is a fuzzy file finder. However, it provides additional features that go beyond just working with a project’s files. I’m attempting to use it more and more in my workflow, as I mostly use it to find and navigate to specific files. However, I’ve begun to explore more of its functionality and integration with <code>git</code>.</p>
+</section>
+<section id="vim-fugitive" class="level4">
+<h4 class="anchored" data-anchor-id="vim-fugitive">vim-fugitive</h4>
+<p>Do yourself a favor, use <a href="https://github.com/tpope/vim-fugitive">vim-fugitive</a>. Fugitive is a plugin that helps you work with Git while working in Neovim. In the past, my git and GitHub workflow was mainly done from the command line. However, jumping in and out of Neovim back to run this workflow became old quickly. To solve this, Fugitive provides the <code>:Git</code> or <code>:G</code> command to call <code>git</code> commands directly from the editor. Also, since I use Neovim as my editor for commit messages, I’m able to directly compose them without having to leave my current Neovim session.</p>
+</section>
+<section id="lsp" class="level4">
+<h4 class="anchored" data-anchor-id="lsp">LSP</h4>
+<p>Neovim supports the Language Server Protocol (LSP). LSP provides many different features. This includes go-to-definition (a great feature that speeds up editing), find references, hover, completion, and many other types of functionality. Most IDEs have LSP set up out-of-the-box. This is done so you can get started quickly working with any language without too much configuration.</p>
+<p>Neovim does provide an LSP client, but you’ll have to set up the individual servers for each language you would like to work with. This sounds harder then it is, but it does take a few steps to complete. A good rundown can be found in this video <a href="https://www.youtube.com/watch?v=6F3ONwrCxMg&amp;list=PLhoH5vyxr6Qq41NFL4GvhFp-WLd5xzIzZ&amp;index=8">here</a>, which is from the Neovim series I linked above. I recently made the switch over to the <a href="https://github.com/williamboman/mason.nvim">Mason plugin</a>, which makes LSP server management so much simpler. I would suggest checking it out if you’re intending to work with other languages in Neovim.</p>
+<p>I’m still learning about LSP and how to set it up. I highly suggest reading up on the docs and reviewing other’s setups rather than relying solely on mine. Mine is still a work in progress.</p>
+</section>
+<section id="nvim-treesitter" class="level4">
+<h4 class="anchored" data-anchor-id="nvim-treesitter">nvim-treesitter</h4>
+<p>Setting up syntax highlighting is another important step when setting up Neovim. I use <a href="https://github.com/nvim-treesitter/nvim-treesitter">nvim-treesitter</a> to improve the syntax highlighting within Neovim. This is another advanced topic I’m still learning about, so I just use a basic setup. You can read more about it in the plugin docs linked earlier.</p>
+</section>
+<section id="custom-neovim-keymaps" class="level4">
+<h4 class="anchored" data-anchor-id="custom-neovim-keymaps">Custom Neovim keymaps</h4>
+<p>Since Neovim is all about customization of your development environment, one thing to modify is Neovim’s keymaps. To configure, you just have to define the configuration in your Neovim config files. For example, the following is some code I use to customize my keymap setup.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- BigQuery keymappings </span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;C-b&gt;"</span><span class="op">,</span> <span class="st">":w | :! bq query &lt; % --format pretty &lt;CR&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- R coding keymappings</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"</span><span class="sc">\\</span><span class="st">M"</span><span class="op">,</span> <span class="st">"|&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"i"</span><span class="op">,</span> <span class="st">"</span><span class="sc">\\</span><span class="st">M"</span><span class="op">,</span> <span class="st">"|&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;ts"</span><span class="op">,</span> <span class="st">":RStop&lt;cr&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"tt"</span><span class="op">,</span> <span class="st">"&lt;Esc&gt;&lt;C-w&gt;&lt;C-w&gt;i"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- R devtools keymappings</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;I"</span><span class="op">,</span> <span class="st">":RInstallPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;L"</span><span class="op">,</span> <span class="st">":RLoadPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;B"</span><span class="op">,</span> <span class="st">":RBuildPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;E"</span><span class="op">,</span> <span class="st">":RCheckPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;T"</span><span class="op">,</span> <span class="st">":RTestPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;leader&gt;D"</span><span class="op">,</span> <span class="st">":RDocumentPackage&lt;Esc&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I have additional custom keymappings in my setup, but including the entire file would be too much for this post. Nevertheless, you can access my <a href="https://github.com/collinberke/dotfiles/blob/main/nvim/lua/user/keymaps.lua">keymapping configuration files</a> to get a sense of other keymaps I have within my setup.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="closing-thoughts" class="level1">
+<h1>Closing thoughts</h1>
+<p>In this post, I overviewed the data science rig I will be bringing into 2023. Specifically, I spent time discussing the hardware, operating system, terminal, R setup, and Neovim configuration I use for my workflow. It is my hope that this post provides a snapshot of my current setup, so I can quickly configure my rig on another machine in the future. Additionally, I hope others find value in this post by seeing the tools I use and the configuration implemented for each. All the configuration and dot files for my setup can be found in the public repo <a href="https://github.com/collinberke/dotfiles">here</a>.</p>
+<p>In total, this post served as a reflection of my current setup, and it was an opportunity to evaluate the state of my current data science rig I’m brining into 2023. Writing this post also peaked my curiosity about other’s rigs. I would love to hear more about the setups other’s are bringing into 2023. If you’re willing to share, reach out.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2023,
+  author = {Berke, Collin K},
+  title = {2023 Data Science Rig: {Set} up and Configuration},
+  date = {2023-01-29},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2023. <span>“2023 Data Science Rig: Set up and
+Configuration.”</span> January 29, 2023.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = true;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
