@@ -34,7 +34,7 @@ My team's aim:
 * My team also works on some pretty RAD projects:
   - Internal R packages for audience and marketing research.
   - Automating our work with the Google Cloud Platform.
-  - Developing Shiny apps for business intellegence.
+  - Developing Shiny apps for business intelligence.
   - Utilizing Quarto for reporting.
 
 ## Teaching R

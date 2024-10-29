@@ -1,0 +1,15 @@
+---
+title: "Talks"
+listing:
+    type: default
+    contents: "talks/**/index.qmd"
+    sort: "date desc"
+    categories: true
+format:
+  html:
+    page-layout: article
+citation: false
+license: ""
+---
+
+Here you'll find the materials for talks I've given.
