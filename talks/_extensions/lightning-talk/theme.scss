@@ -1,0 +1,32 @@
+
+/*-- scss:defaults --*/
+$presentation-title-slide-text-align: left;
+
+/*-- scss:rules --*/
+
+.theme-title1 {
+  &:is(.slide-background) {
+    background-color: #FFFFFF;
+  }
+
+  h2 {
+    text-align: left;
+    font-size: 3em;
+  }
+  h3 {
+    text-align: left;
+    font-size: 1.25em;
+  }
+  h4 {
+    text-align: left;
+    font-size: 1em;
+    font-weight: 500;
+  }
+}
+
+.theme-slide1 {
+  h2 {
+    text-align: center;
+  }
+}
+

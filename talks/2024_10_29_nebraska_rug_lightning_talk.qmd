@@ -1,0 +1,104 @@
+---
+format: lightning-talk-revealjs
+---
+
+## {.theme-title1 .center}
+
+#### Keeping public media RAD: Leveraging R for audience research and business intelligence ... along with other things
+##### Collin K. Berke, Ph.D.
+
+## 👋 Hi, I'm Collin {.theme-slide1}
+
+![](avatar-circle.png){.absolute left=430 top=75 width=215 height=215}
+
+<br>
+<br>
+<br>
+<br>
+
+* Media Research Analyst at Nebraska Public Media (member station of PBS & NPR).
+* Goal is to use data to answer questions on how to best reach and engage audiences.
+* Developing open source tools and utilizing cloud computing resources to achieve this goal.
+
+## Keeping public media RAD 😎
+My team's aim:
+
+* **R**eproducible
+* **A**utomated
+* **D**ocumented and effectively communicated
+
+## How does my group stay RAD?
+
+* Public media already has some rad content and services ...
+  - Check us out: [NebraskaPublicMedia.org](https://www.nebraskapublicmedia.org)
+* My team also works on some pretty RAD projects:
+  - Internal R packages for audience and marketing research.
+  - Automating our work with the Google Cloud Platform.
+  - Developing Shiny apps for business intellegence.
+  - Utilizing Quarto for reporting.
+
+## Teaching R
+
+* Partnering with the College of Journalism and Mass Communication (COJMC) and Matt Waite
+* Teach SPMC 350: Sports Data Visualization and Analysis
+* **Goal:** Convert R beginners to R users
+* Introduce R >> Wrangling >> Analysis >> Visualization >> Publish original work online
+
+## Data Science Learning Community
+
+* A welcoming place to get help and learn more about data science.
+* We're known for our book clubs.
+* I'm an active member and facilitator.
+* I'm also leading a cohort for R4DS (2e).
+* Check it out:
+
+::: {.fragment}
+![](dslc_edu_line_gray.png){.absolute left=350 height=150}
+:::
+
+:::{.notes}
+We just got done facilitating a Quarto website workshop
+:::
+
+## {.center}
+
+::: {.r-fit-text}
+Oh and one more thing ...
+:::
+
+## {.center}
+
+::: {.r-fit-text}
+Analysis at the speed of thought 🚀
+:::
+
+## I'm a huge modal editing nerd
+
+* Neovim (specifically LazyVim) or Emacs.
+* If you use any of these tools, let's geek out about them.
+
+::: {.fragment}
+![](neovim-logo.png){.absolute left=250 height=150 top=300}
+:::
+
+::: {.aside}
+Neovim logo by [Jason Long](https://x.com/jasonlong), [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+:::
+
+## Connect with me!
+
+* I want to meet everyone, but I'm interested in speaking with:
+  - R Users and R Developers leveraging R in business.
+  - People who teach R.
+  - Anyone trying to be RAD by using R.
+* If we don't get a chance to meet in person, let's connect online.
+
+##
+
+### Collin K. Berke, Ph.D.
+::: {.nonincremental}
+* 👨‍💻 **Follow me on GitHub:** @collinberke
+* 👔 **LinkedIn:** collinberke
+* 📧 **Email:** collin.berke@gmail.com
+* 🔗 **Blog:** www.collinberke.com
+:::
