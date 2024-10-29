@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.54">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -8205,9 +8205,12 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell">
 <div class="sourceCode cell-code" id="cb859"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb859-1"><a href="#cb859-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
 <span id="cb859-2"><a href="#cb859-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income) <span class="sc">|&gt;</span></span>
-<span id="cb859-3"><a href="#cb859-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb859-4"><a href="#cb859-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb859-5"><a href="#cb859-5" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb859-3"><a href="#cb859-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in object$object: partial match of 'object' to 'objects'
+Warning in object$object: partial match of 'object' to 'objects'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb861"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb861-1"><a href="#cb861-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code></code></pre>
 </div>
@@ -8244,23 +8247,23 @@ dbl (6): event_date, purchase_revenue_in_usd, transaction_id, price_in_usd, quan
 <div class="cell-output cell-output-stderr">
 <pre><code>• Interactions with: Expenses:Income | Trained</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb872"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb872-1"><a href="#cb872-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb874"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb874-1"><a href="#cb874-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 6
   number operation type     trained skip  id            
    &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;         
 1      1 step      interact TRUE    FALSE interact_xYaaz</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb874"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb874-1"><a href="#cb874-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb876"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb876-1"><a href="#cb876-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   terms           id            
   &lt;chr&gt;           &lt;chr&gt;         
 1 Expenses:Income interact_xYaaz</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb876"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb876-1"><a href="#cb876-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select just the interaction term, just to make it easier to see</span></span>
-<span id="cb876-2"><a href="#cb876-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb876-3"><a href="#cb876-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Expenses_x_Income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb878"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb878-1"><a href="#cb878-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select just the interaction term, just to make it easier to see</span></span>
+<span id="cb878-2"><a href="#cb878-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb878-3"><a href="#cb878-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Expenses_x_Income)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 1
    Expenses_x_Income
@@ -8294,12 +8297,15 @@ Note
 <p>You’ll notice <code>step_interact()</code> modifies the interaction variable’s name by using <code>_x_</code> as the separator. If for some reason you want to change this, you just pass a character string to <code>step_interact()</code>’s <code>sep</code> argument.</p>
 <p>This naming convention is useful, especially if you intend to specify higher order interaction variables within your model, like a 3-way interaction.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb878"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb878-1"><a href="#cb878-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb878-2"><a href="#cb878-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income<span class="sc">:</span>Assets) <span class="sc">|&gt;</span></span>
-<span id="cb878-3"><a href="#cb878-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb878-4"><a href="#cb878-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb878-5"><a href="#cb878-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb878-6"><a href="#cb878-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Expenses_x_Income_x_Assets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb880"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb880-1"><a href="#cb880-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb880-2"><a href="#cb880-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income<span class="sc">:</span>Assets) <span class="sc">|&gt;</span></span>
+<span id="cb880-3"><a href="#cb880-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in object$object: partial match of 'object' to 'objects'
+Warning in object$object: partial match of 'object' to 'objects'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb882"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb882-1"><a href="#cb882-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb882-2"><a href="#cb882-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Expenses_x_Income_x_Assets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 1
    Expenses_x_Income_x_Assets
@@ -8319,13 +8325,16 @@ Note
 </div>
 <p><code>step_interact()</code> also allows the use of traditional R model formula when specifying interaction variables. This is really convenient. Say we want to include all the two-way interactions along with our three way interaction, we could do something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb880"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb880-1"><a href="#cb880-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb880-2"><a href="#cb880-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(</span>
-<span id="cb880-3"><a href="#cb880-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income <span class="sc">+</span> Expenses<span class="sc">:</span>Assets <span class="sc">+</span> Income<span class="sc">:</span>Assets <span class="sc">+</span> Expenses<span class="sc">:</span>Income<span class="sc">:</span>Assets) <span class="sc">|&gt;</span></span>
-<span id="cb880-4"><a href="#cb880-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb880-5"><a href="#cb880-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb880-6"><a href="#cb880-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb880-7"><a href="#cb880-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Expenses"</span>), <span class="fu">starts_with</span>(<span class="st">"Income"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb884"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb884-1"><a href="#cb884-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb884-2"><a href="#cb884-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(</span>
+<span id="cb884-3"><a href="#cb884-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="sc">~</span>Expenses<span class="sc">:</span>Income <span class="sc">+</span> Expenses<span class="sc">:</span>Assets <span class="sc">+</span> Income<span class="sc">:</span>Assets <span class="sc">+</span> Expenses<span class="sc">:</span>Income<span class="sc">:</span>Assets) <span class="sc">|&gt;</span></span>
+<span id="cb884-4"><a href="#cb884-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in object$object: partial match of 'object' to 'objects'
+Warning in object$object: partial match of 'object' to 'objects'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb886"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb886-1"><a href="#cb886-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb886-2"><a href="#cb886-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Expenses"</span>), <span class="fu">starts_with</span>(<span class="st">"Income"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 6
    Expenses Expenses_x_Income Expenses_x_Assets Expenses_x_Income_x_Assets Income Income_x_Assets
@@ -8358,12 +8367,15 @@ Note
 </div>
 <p>However, a short-cut would be to do something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb882"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb882-1"><a href="#cb882-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb882-2"><a href="#cb882-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(</span>
-<span id="cb882-3"><a href="#cb882-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="sc">~</span>(Expenses <span class="sc">+</span> Income <span class="sc">+</span> Assets)<span class="sc">^</span><span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb882-4"><a href="#cb882-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb882-5"><a href="#cb882-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb882-6"><a href="#cb882-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb888"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb888-1"><a href="#cb888-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb888-2"><a href="#cb888-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(</span>
+<span id="cb888-3"><a href="#cb888-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="sc">~</span>(Expenses <span class="sc">+</span> Income <span class="sc">+</span> Assets)<span class="sc">^</span><span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb888-4"><a href="#cb888-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in object$object: partial match of 'object' to 'objects'
+Warning in object$object: partial match of 'object' to 'objects'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb890"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb890-1"><a href="#cb890-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code></code></pre>
 </div>
@@ -8400,8 +8412,8 @@ Note
 <div class="cell-output cell-output-stderr">
 <pre><code>• Interactions with: (Expenses + Income + Assets)^3 | Trained</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb895"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb895-1"><a href="#cb895-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb895-2"><a href="#cb895-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Expenses"</span>), <span class="fu">starts_with</span>(<span class="st">"Income"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb903"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb903-1"><a href="#cb903-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb903-2"><a href="#cb903-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Expenses"</span>), <span class="fu">starts_with</span>(<span class="st">"Income"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 6
    Expenses Expenses_x_Income Expenses_x_Assets Expenses_x_Income_x_Assets Income Income_x_Assets
@@ -8434,12 +8446,15 @@ Warning
 </div>
 <p>It’s also important to mention, again, categorical variables should be converted into numeric variables before being used within an interaction. Let’s say we want to specify an interaction between <code>Debt</code> and <code>Home</code> variables within our <code>credit_data</code> recipe. We would use <code>step_dummy()</code> first on <code>Home</code>, then specify all the interactions between the dummy variables and <code>Debt</code>. <code>step_interact()</code> makes this very easy with the use of <a href="https://dplyr.tidyverse.org/reference/select.html"><code>dplyr</code>-like selection functions</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb897"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb897-1"><a href="#cb897-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_data) <span class="sc">|&gt;</span></span>
-<span id="cb897-2"><a href="#cb897-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Home) <span class="sc">|&gt;</span></span>
-<span id="cb897-3"><a href="#cb897-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="sc">~</span><span class="fu">starts_with</span>(<span class="st">"Home"</span>)<span class="sc">:</span>Debt) <span class="sc">|&gt;</span></span>
-<span id="cb897-4"><a href="#cb897-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb897-5"><a href="#cb897-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb897-6"><a href="#cb897-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb905"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb905-1"><a href="#cb905-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_data) <span class="sc">|&gt;</span></span>
+<span id="cb905-2"><a href="#cb905-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Home) <span class="sc">|&gt;</span></span>
+<span id="cb905-3"><a href="#cb905-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>(<span class="sc">~</span><span class="fu">starts_with</span>(<span class="st">"Home"</span>)<span class="sc">:</span>Debt) <span class="sc">|&gt;</span></span>
+<span id="cb905-4"><a href="#cb905-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in object$object: partial match of 'object' to 'objects'
+Warning in object$object: partial match of 'object' to 'objects'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb907"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb907-1"><a href="#cb907-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code></code></pre>
 </div>
@@ -8480,7 +8495,7 @@ Warning
 <pre><code>• Interactions with: (Home_other + Home_owner + Home_parents + Home_priv + Home_rent):Debt |
   Trained</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb911"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb911-1"><a href="#cb911-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb921"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb921-1"><a href="#cb921-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   terms columns id         
@@ -8491,7 +8506,7 @@ Warning
 4 Home  priv    dummy_asve2
 5 Home  rent    dummy_asve2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb913"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb913-1"><a href="#cb913-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb923"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb923-1"><a href="#cb923-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(credit_rec, <span class="at">number =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   terms             id            
@@ -8502,7 +8517,7 @@ Warning
 4 Home_priv:Debt    interact_hgBQM
 5 Home_rent:Debt    interact_hgBQM</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb915"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb915-1"><a href="#cb915-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb925"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb925-1"><a href="#cb925-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4,039 × 23
    Status Seniority  Time   Age Marital Records Job       Expenses Income Assets  Debt Amount Price
@@ -8539,24 +8554,24 @@ Warning
 <p>Today, I’m going to highlight a couple of these <code>check_*</code> functions: <code>check_class()</code>, <code>check_cols()</code>, and <code>check_missing()</code>. Let’s start with <code>check_class()</code>.</p>
 <p>We’ll continue to use our <code>credit_data</code> for some of today’s examples. Towards the end, I’ll use the <code>penguins</code> data for the final example.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb917"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb917-1"><a href="#cb917-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"credit_data"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
-<span id="cb917-2"><a href="#cb917-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb917-3"><a href="#cb917-3" aria-hidden="true" tabindex="-1"></a>credit_data <span class="ot">&lt;-</span> credit_data <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
-<span id="cb917-4"><a href="#cb917-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb917-5"><a href="#cb917-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240204</span>)</span>
-<span id="cb917-6"><a href="#cb917-6" aria-hidden="true" tabindex="-1"></a>credit_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(credit_data, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
-<span id="cb917-7"><a href="#cb917-7" aria-hidden="true" tabindex="-1"></a>credit_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(credit_split)</span>
-<span id="cb917-8"><a href="#cb917-8" aria-hidden="true" tabindex="-1"></a>credit_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(credit_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb927"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb927-1"><a href="#cb927-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"credit_data"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb927-2"><a href="#cb927-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb927-3"><a href="#cb927-3" aria-hidden="true" tabindex="-1"></a>credit_data <span class="ot">&lt;-</span> credit_data <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
+<span id="cb927-4"><a href="#cb927-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb927-5"><a href="#cb927-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240204</span>)</span>
+<span id="cb927-6"><a href="#cb927-6" aria-hidden="true" tabindex="-1"></a>credit_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(credit_data, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb927-7"><a href="#cb927-7" aria-hidden="true" tabindex="-1"></a>credit_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(credit_split)</span>
+<span id="cb927-8"><a href="#cb927-8" aria-hidden="true" tabindex="-1"></a>credit_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(credit_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>check_class()</code> is useful for verifying variables are expected classes. Two methods are used to check variable classes. First, this check function uses values provided to the <code>class</code> argument. If <code>NULL</code>, the check will then learn the classes from the <code>prep</code>. A variable can have multiple classes, which will be used within the check.</p>
 <p>Here’s how to use the training set to learn variable classes for the check:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb918"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb918-1"><a href="#cb918-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb918-2"><a href="#cb918-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb918-3"><a href="#cb918-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
-<span id="cb918-4"><a href="#cb918-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
-<span id="cb918-5"><a href="#cb918-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb918-6"><a href="#cb918-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb928"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb928-1"><a href="#cb928-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb928-2"><a href="#cb928-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb928-3"><a href="#cb928-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb928-4"><a href="#cb928-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb928-5"><a href="#cb928-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb928-6"><a href="#cb928-6" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 14
    Status Seniority Home     Time   Age Marital   Records Job    Expenses Income Assets  Debt Amount
@@ -8578,18 +8593,18 @@ Warning
 <p>Indeed, nothing happens because our recipe resulted in variables to not change their class. If any unexpected changes did occur, then the <code>bake</code> would be broken with an error.</p>
 <p>We can manually specify our variable class expectations using the <code>class_nm</code> argument:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb920"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb920-1"><a href="#cb920-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb920-2"><a href="#cb920-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
-<span id="cb920-3"><a href="#cb920-3" aria-hidden="true" tabindex="-1"></a>    Status, Home, Marital, Records, Job, <span class="at">class_nm =</span> <span class="st">"factor"</span></span>
-<span id="cb920-4"><a href="#cb920-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb920-5"><a href="#cb920-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
-<span id="cb920-6"><a href="#cb920-6" aria-hidden="true" tabindex="-1"></a>    Seniority, Time, Age, Expenses, Income, </span>
-<span id="cb920-7"><a href="#cb920-7" aria-hidden="true" tabindex="-1"></a>    Assets, Debt, Amount, Price, <span class="at">class_nm =</span> <span class="st">"integer"</span></span>
-<span id="cb920-8"><a href="#cb920-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb920-9"><a href="#cb920-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">strings_as_factors =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb920-10"><a href="#cb920-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
-<span id="cb920-11"><a href="#cb920-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb920-12"><a href="#cb920-12" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb930"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb930-1"><a href="#cb930-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb930-2"><a href="#cb930-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb930-3"><a href="#cb930-3" aria-hidden="true" tabindex="-1"></a>    Status, Home, Marital, Records, Job, <span class="at">class_nm =</span> <span class="st">"factor"</span></span>
+<span id="cb930-4"><a href="#cb930-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb930-5"><a href="#cb930-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb930-6"><a href="#cb930-6" aria-hidden="true" tabindex="-1"></a>    Seniority, Time, Age, Expenses, Income, </span>
+<span id="cb930-7"><a href="#cb930-7" aria-hidden="true" tabindex="-1"></a>    Assets, Debt, Amount, Price, <span class="at">class_nm =</span> <span class="st">"integer"</span></span>
+<span id="cb930-8"><a href="#cb930-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb930-9"><a href="#cb930-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">strings_as_factors =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb930-10"><a href="#cb930-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb930-11"><a href="#cb930-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb930-12"><a href="#cb930-12" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 14
    Status Seniority Home     Time   Age Marital   Records Job    Expenses Income Assets  Debt Amount
@@ -8623,22 +8638,22 @@ Note
 </div>
 <p>Just to highlight what happens when the check fails, let’s set the second check to expect a <code>numeric</code> rather than an <code>integer</code> class for the variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb922"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb922-1"><a href="#cb922-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb922-2"><a href="#cb922-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
-<span id="cb922-3"><a href="#cb922-3" aria-hidden="true" tabindex="-1"></a>    Status, Home, Marital, Records, Job, <span class="at">class_nm =</span> <span class="st">"factor"</span></span>
-<span id="cb922-4"><a href="#cb922-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb922-5"><a href="#cb922-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
-<span id="cb922-6"><a href="#cb922-6" aria-hidden="true" tabindex="-1"></a>    Seniority, Time, Age, Expenses, Income, </span>
-<span id="cb922-7"><a href="#cb922-7" aria-hidden="true" tabindex="-1"></a>    Assets, Debt, Amount, Price, <span class="at">class_nm =</span> <span class="st">"numeric"</span></span>
-<span id="cb922-8"><a href="#cb922-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb922-9"><a href="#cb922-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">strings_as_factors =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb922-10"><a href="#cb922-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb932"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb932-1"><a href="#cb932-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb932-2"><a href="#cb932-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb932-3"><a href="#cb932-3" aria-hidden="true" tabindex="-1"></a>    Status, Home, Marital, Records, Job, <span class="at">class_nm =</span> <span class="st">"factor"</span></span>
+<span id="cb932-4"><a href="#cb932-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb932-5"><a href="#cb932-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_class</span>(</span>
+<span id="cb932-6"><a href="#cb932-6" aria-hidden="true" tabindex="-1"></a>    Seniority, Time, Age, Expenses, Income, </span>
+<span id="cb932-7"><a href="#cb932-7" aria-hidden="true" tabindex="-1"></a>    Assets, Debt, Amount, Price, <span class="at">class_nm =</span> <span class="st">"numeric"</span></span>
+<span id="cb932-8"><a href="#cb932-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb932-9"><a href="#cb932-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(<span class="at">strings_as_factors =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb932-10"><a href="#cb932-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `check_class()`:
 Caused by error:
 ! `Seniority` should have the class &lt;numeric&gt; but has the class &lt;integer&gt;.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb924"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb924-1"><a href="#cb924-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb934"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb934-1"><a href="#cb934-1" aria-hidden="true" tabindex="-1"></a>credit_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,231 × 14
    Status Seniority Home     Time   Age Marital   Records Job    Expenses Income Assets  Debt Amount
@@ -8659,13 +8674,13 @@ Caused by error:
 </div>
 <p>Another useful check is <code>check_cols()</code>. This function checks if all the columns from the training frame are also present within the new data. Here’s what this looks like:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb926"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb926-1"><a href="#cb926-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
-<span id="cb926-2"><a href="#cb926-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_cols</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb926-3"><a href="#cb926-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Job) <span class="sc">|&gt;</span></span>
-<span id="cb926-4"><a href="#cb926-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb926-5"><a href="#cb926-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb926-6"><a href="#cb926-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Omit Job variable in the new data to show the error</span></span>
-<span id="cb926-7"><a href="#cb926-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> credit_te[, <span class="sc">-</span><span class="dv">8</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb936"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb936-1"><a href="#cb936-1" aria-hidden="true" tabindex="-1"></a>credit_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> credit_tr) <span class="sc">|&gt;</span></span>
+<span id="cb936-2"><a href="#cb936-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_cols</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb936-3"><a href="#cb936-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(Job) <span class="sc">|&gt;</span></span>
+<span id="cb936-4"><a href="#cb936-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb936-5"><a href="#cb936-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb936-6"><a href="#cb936-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Omit Job variable in the new data to show the error</span></span>
+<span id="cb936-7"><a href="#cb936-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(credit_rec, <span class="at">new_data =</span> credit_te[, <span class="sc">-</span><span class="dv">8</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `bake()`:
 ✖ The following required columns are missing from `new_data`: `Job`.
@@ -8676,18 +8691,18 @@ Caused by error:
 <p>Okay, I’ll highlight one more useful <code>check_*</code> function for today, <code>check_missing()</code>. This function’s purpose is simple–check if variables contain any missing values. <code>check_missing()</code> can fail either on <code>prep</code> or <code>bake</code>. Both help catch if missing values are present in the training or new data.</p>
 <p>The <code>check_missing()</code> documentation (run <code>?check_missing</code> in your console), uses the <code>credit_data</code> data for its examples. So, let’s switch it up a bit here. Instead, I’ll use the <code>penguins</code> data for this final example. Here’s the code to get us up to the specification of the recipe.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb928"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb928-1"><a href="#cb928-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
-<span id="cb928-2"><a href="#cb928-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb928-3"><a href="#cb928-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240204</span>)</span>
-<span id="cb928-4"><a href="#cb928-4" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
-<span id="cb928-5"><a href="#cb928-5" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
-<span id="cb928-6"><a href="#cb928-6" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb938"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb938-1"><a href="#cb938-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb938-2"><a href="#cb938-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb938-3"><a href="#cb938-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240204</span>)</span>
+<span id="cb938-4"><a href="#cb938-4" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb938-5"><a href="#cb938-5" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb938-6"><a href="#cb938-6" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb929"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb929-1"><a href="#cb929-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
-<span id="cb929-2"><a href="#cb929-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_missing</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb929-3"><a href="#cb929-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
-<span id="cb929-4"><a href="#cb929-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb939"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb939-1"><a href="#cb939-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb939-2"><a href="#cb939-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_missing</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb939-3"><a href="#cb939-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb939-4"><a href="#cb939-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `check_missing()`:
 Caused by error in `bake()`:
@@ -8697,7 +8712,7 @@ Caused by error in `bake()`:
 </div>
 <p>You’ll notice the above code errors because all the columns listed in the error contain a missing value(s).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb931"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb931-1"><a href="#cb931-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(penguins_tr) <span class="sc">|&gt;</span> <span class="fu">colSums</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb941"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb941-1"><a href="#cb941-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(penguins_tr) <span class="sc">|&gt;</span> <span class="fu">colSums</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          species            island    bill_length_mm     bill_depth_mm flipper_length_mm 
                 0                 0                 1                 1                 1 
@@ -8708,15 +8723,15 @@ Caused by error in `bake()`:
 <p>If for some reason your training data doesn’t contain missing values, but your new data does, then the check will push an error during the <code>bake</code>.</p>
 <p>Here I’ll use <code>step_naomit()</code> to remove missing values from the training set to show how <code>check_missing()</code> throws an error during the <code>bake</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb933"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb933-1"><a href="#cb933-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No error</span></span>
-<span id="cb933-2"><a href="#cb933-2" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
-<span id="cb933-3"><a href="#cb933-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb933-4"><a href="#cb933-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_missing</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb933-5"><a href="#cb933-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb943"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb943-1"><a href="#cb943-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No error</span></span>
+<span id="cb943-2"><a href="#cb943-2" aria-hidden="true" tabindex="-1"></a>penguin_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb943-3"><a href="#cb943-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb943-4"><a href="#cb943-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_missing</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb943-5"><a href="#cb943-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb934"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb934-1"><a href="#cb934-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Error</span></span>
-<span id="cb934-2"><a href="#cb934-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> penguins_te)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb944"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb944-1"><a href="#cb944-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Error</span></span>
+<span id="cb944-2"><a href="#cb944-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguin_rec, <span class="at">new_data =</span> penguins_te)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `bake()`:
 ! The following columns contains missing values: bill_length_mm, bill_depth_mm,
@@ -8733,16 +8748,16 @@ Caused by error in `bake()`:
 <p><code>step_cut()</code> is my focus for our final day. This step function creates factor variables from numeric variables. If you’re familiar with <code>base::cut()</code>, you’ll have a pretty good idea of what <code>step_cut()</code> does within a recipe.</p>
 <p>Let’s use our <code>penguins</code> data for our final day of examples. Here’s the code to split the data into our training and testing sets.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb936"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb936-1"><a href="#cb936-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
-<span id="cb936-2"><a href="#cb936-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb936-3"><a href="#cb936-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240206</span>)</span>
-<span id="cb936-4"><a href="#cb936-4" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
-<span id="cb936-5"><a href="#cb936-5" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
-<span id="cb936-6"><a href="#cb936-6" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb946"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb946-1"><a href="#cb946-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins, <span class="at">package =</span> <span class="st">"modeldata"</span>)</span>
+<span id="cb946-2"><a href="#cb946-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb946-3"><a href="#cb946-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20240206</span>)</span>
+<span id="cb946-4"><a href="#cb946-4" aria-hidden="true" tabindex="-1"></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> .<span class="dv">8</span>)</span>
+<span id="cb946-5"><a href="#cb946-5" aria-hidden="true" tabindex="-1"></a>penguins_tr <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb946-6"><a href="#cb946-6" aria-hidden="true" tabindex="-1"></a>penguins_te <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I want to split our penguins into three categories: small, medium, and large. We’ll do this by cutting the <code>body_mass_g</code> column into three categories. Let’s first obtain some summary statistics to inform us on the cut values we should use.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb937"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb937-1"><a href="#cb937-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(penguins_tr, body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb947"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb947-1"><a href="#cb947-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(penguins_tr, body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -8844,12 +8859,12 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb938"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb938-1"><a href="#cb938-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
-<span id="cb938-2"><a href="#cb938-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(body_mass_g) <span class="sc">|&gt;</span></span>
-<span id="cb938-3"><a href="#cb938-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_cut</span>(body_mass_g, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3550</span>, <span class="dv">4750</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb938-4"><a href="#cb938-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span>
-<span id="cb938-5"><a href="#cb938-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb938-6"><a href="#cb938-6" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb948"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb948-1"><a href="#cb948-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb948-2"><a href="#cb948-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb948-3"><a href="#cb948-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_cut</span>(body_mass_g, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3550</span>, <span class="dv">4750</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb948-4"><a href="#cb948-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() </span>
+<span id="cb948-5"><a href="#cb948-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb948-6"><a href="#cb948-6" aria-hidden="true" tabindex="-1"></a>penguins_rec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code></code></pre>
 </div>
@@ -8889,7 +8904,7 @@ Note
 <div class="cell-output cell-output-stderr">
 <pre><code>• Cut numeric for: body_mass_g | Trained</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb952"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb952-1"><a href="#cb952-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguins_rec, penguins_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb962"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb962-1"><a href="#cb962-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguins_rec, penguins_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 275 × 7
    species   island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g         sex   
@@ -8909,14 +8924,14 @@ Note
 </div>
 <p>Say we wanted to keep the original variable along with the newly created factor variable. We need to first use <code>step_mutate()</code> to retain the original before cutting. Here’s the code to do this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb954"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb954-1"><a href="#cb954-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
-<span id="cb954-2"><a href="#cb954-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(body_mass_g) <span class="sc">|&gt;</span></span>
-<span id="cb954-3"><a href="#cb954-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">body_mass_g_orig =</span> body_mass_g) <span class="sc">|&gt;</span></span>
-<span id="cb954-4"><a href="#cb954-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_cut</span>(body_mass_g, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3550</span>, <span class="dv">4750</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb954-5"><a href="#cb954-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
-<span id="cb954-6"><a href="#cb954-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb954-7"><a href="#cb954-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguins_rec, penguins_tr) <span class="sc">|&gt;</span></span>
-<span id="cb954-8"><a href="#cb954-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"body"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb964"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb964-1"><a href="#cb964-1" aria-hidden="true" tabindex="-1"></a>penguins_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data =</span> penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb964-2"><a href="#cb964-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_naomit</span>(body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb964-3"><a href="#cb964-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(<span class="at">body_mass_g_orig =</span> body_mass_g) <span class="sc">|&gt;</span></span>
+<span id="cb964-4"><a href="#cb964-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_cut</span>(body_mass_g, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">3550</span>, <span class="dv">4750</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb964-5"><a href="#cb964-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>()</span>
+<span id="cb964-6"><a href="#cb964-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb964-7"><a href="#cb964-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bake</span>(penguins_rec, penguins_tr) <span class="sc">|&gt;</span></span>
+<span id="cb964-8"><a href="#cb964-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"body"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 275 × 2
    body_mass_g         body_mass_g_orig

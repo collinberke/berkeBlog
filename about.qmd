@@ -20,6 +20,18 @@ Check out the [Now](now.qmd) page to see what Collin is currently reading and wo
 
 ---
 
+## Lightning talk
+
+Get to know me in five minutes or less:
+
+```{=html}
+<iframe class="slide-deck" src="talks/2024_10_29_nebraska_rug_lightning_talk.html" height="420" width="747" style="border: 1px solid #2e3846;"></iframe>
+```
+
+[View slides fullscreen](talks/2024_10_29_nebraska_rug_lightning_talk.qmd)
+
+---
+
 ## Note about this site
 
 The views expressed on this site are my own, and they do not reflect the views of my employer, professional and/or community groups I hold membership. Any analyses hosted on this site were done for professional development or were for fun. I make every attempt to perform valid and accurate data analysis and reporting. Unless otherwise noted, none of the content on this site has been peer-reviewed, and thus any conclusions drawn or uses stemming from this work need to take these limitations into account. 
