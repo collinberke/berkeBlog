@@ -1,0 +1,80 @@
+---
+title: "Summarize logical vectors to calculate numeric summaries"
+date: "2024-12-08"
+author: "Collin K. Berke, Ph.D."
+draft: false
+image: thumbnail.jpg
+description: "Need proportion and count summaries from a logical vector? Use `mean()` and `sum()`"
+toc: true
+categories:
+  - til
+  - data wrangling
+  - logical vectors
+  - summary statistics
+---
+
+![Photo by [Ovidiu Creanga](https://unsplash.com/photos/close-up-photography-brown-wooden-furniture-vfpS6MPv8t0)](thumbnail-wide.jpg){fig-align="center"}
+
+# Background 
+
+Today I relearned you can easily calculate counts and proportions with a logical vector (e.g., `c(TRUE, FALSE, FALSE, TRUE)`) in [R](https://www.r-project.org/).
+
+```{r}
+#| label: setup
+#| message: FALSE
+#| warning: FALSE
+library(tidyverse)
+library(ids)
+```
+
+I've been re-reading the second edition of R for Data Science for a Data Science Learning Community bookclub ([check us out](https://www.dslc.io)). While reading [Chapter 12: Logical vectors](https://r4ds.hadley.nz/logicals#sec-numeric-summaries-of-logicals), I was reminded counts and proportions can be calculated from a logical vector.
+
+I wanted to share what I learned out loud, so others have another example. I also hope writing this post helps me remember it in the future.
+
+# Summaries from logical vectors
+
+The concept is simple:
+
+> `sum()` gives the number of TRUEs and `mean()` gives the proportion of TRUEs (because `mean()` is just `sum()` divided by `length()`)
+
+This works because `TRUE` = 1 and `FALSE` = 0 in the R programming language.
+
+Let's look at an example of this in action. We start by creating an example dataset, which builds on the example used in the book:
+
+```{r}
+#| label: data-user-example
+data_user_engagement <- data.frame(
+  date = sort(rep(seq(as_date("2024-12-02"), as_date("2024-12-08"), by = 1), times = 100)),
+  user_id = rep(random_id(bytes = 4, n = 100), times = 7),
+  time_engaged_sec = sample(c(1:100), 700, replace = TRUE)
+) |>
+tibble()
+```
+
+This dataset is loosely based on the domain I work in: digital analytics. It's modeled after event-based timeseries data for a week of web site visits. The dataset contains the following columns:
+
+* `date` - The date the event occurred.
+* `user_id` - A 4-byte user ID.
+* `time_engaged_sec` - Time spent engaged during the event (e.g., time spent on a webpage).
+
+Some questions we might ask about this dataset are: How many daily events were considered low-engagement events for users? What proportion of events each day were users engaged? Here's the code to answer these questions, leveraging the summarization of logical vectors:
+
+```{r}
+#| label: calc-high-low-engagement-events
+data_user_engagement |>
+  group_by(date) |>
+  summarise(
+    count_low_engagement = sum(time_engaged_sec <= 10, na.rm = TRUE),
+    proportion_engaged = mean(time_engaged_sec >= 30, na.rm = TRUE)
+  )
+```
+
+At first glance, you might ask where are the logical vectors? They're created in the `sum()` and `mean()` functions when we use the `<=` and `>=` operators. That is, the statement `time_engaged_sec <= 10` initially creates the logical vector in the background, and then the `sum()` or `mean()` is computed on that logical vector.
+
+Pretty neat, huh ?!
+
+# Wrap up
+
+There are many other uses for logical vectors, but this was the most useful one I recently relearned. Check out [Chapter 12: Logical vectors](https://r4ds.hadley.nz/logicals) from the [R4DS book](https://r4ds.hadley.nz/) to learn more.
+
+One more tool to add to the analysis tool box. Thanks for spending time learning with me.
