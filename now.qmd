@@ -4,53 +4,66 @@ subtitle: "Here you'll find what I'm currently up to."
 format:
   html:
     toc: false
-    date-modified: "2024-05-05"
+    date-modified: "2024-12-14"
 ---
 
-A now page, [why?](https://nownownow.com/about) 
+A now page, [why?](https://nownownow.com/about)
 
 ## Projects I'm working on
 
-#### Experimenting more with Tableau and `plotly`
+#### Transitioning to LazyVim
 
-> If the only tool you have is a hammer, it is tempting to treat everything as if it were a nail. 
->
-> \- Abraham Maslow
+As of my last update, I decided to burn down my Neovim setup and start over.
+I was in search of something more enjoyable and manageable to work with.
+I came across [LazyVim](https://www.lazyvim.org/) and started to really enjoy it.
+Out of the box it had sane defaults and configurations, so the setup was minimal and I've found it more enjoyable to work with.
+LazyVim Extras also make it easy to install and configure different plugins.
 
-Although I prefer to do the majority of my analysis and visualization work using code based tools like R, I'm attempting to broaden my experience by experimenting more with different BI tools. This includes [Tableau](https://www.tableau.com/). I've also been experimenting with creating interactive data visualizations with [`plotly`](https://plotly.com/r/). To develop these skills, I've been contributing to the [#tidytuesday](https://github.com/rfordatascience/tidytuesday) social data project. Check out my recent [blog posts](https://www.collinberke.com/blog/) to view my contributions. If you're interested in what I've created using Tableau, check out my [public profile](https://public.tableau.com/app/profile/collin.berke/vizzes).
+#### Blogging more
 
-#### Burning it all down and building it back up, my [Neovim](https://neovim.io/) setup
+I'm attempting to increase the publishing of my blog posts.
+I was following a cadance of roughly posting every month.
+I want to bump this up to two a month, with a stretch goal being every week.
+The hardest parts are being realistic with myself, identifying shorter post topics to write about, and being kinder to myself.
+Writing posts with a tighter turn-around means embracing progress over perfection.
 
-It was inevitable; I'm revamping my Neovim configuration. It started with a kickstarter, but now I'm looking to further customize. I'm also attempting to address some bugs that have creeped into my configuration. I've recently come to the conclusion that I need to burn everything down and start anew. Alas, I'm not weary. It's another great learning experience.
+#### Thinking about the use of data and organizational culture
 
-#### Attended [Posit::conf(2023)](https://posit.co/conference/) Chicago
-
-I was fortunate to attend this year's Posit conference in Chicago, a five day conference with workshops and speaker sessions. I'm still sorting through all that I learned. Here are some of the highlights:
-
-* Attending the Introduction to Tidymodels workshop
-* Attending the Package Development Masterclass workshop
-* All the keynote speakers, especially J.D. Long's *It's Abstractions All the Way Down* talk.
-* Networking and meeting some folks from the [R4DS Online Learning Community](https://rfordatasci.com/) (in person).
+More and more often I'm being tasked with stratigizing how to improve the role and impact data has within an organization.
+These are not easy questions to answer.
+I've been doing a lot of exploring and experimentation.
+If anyone has any suggestions, let's chat.
 
 If you're interested in what I've focused on in the past, [check out my past updates](https://collinberke.com/now-old.html)
 
 ## Books I'm reading
 
-#### [Practical Tableau](https://www.amazon.com/Practical-Tableau-Tutorials-Strategies-Master/dp/1491977310) by Ryan Sleeper
+## A list of books I've read (ever since I've started keeping track)
 
-Since I'm broadening my data visualization skills, I've picked up this book to develop my foundational understanding of Tableau. Reading this has also broadened my understanding of general data visualization concepts. In truth, I've gained a better understanding by seeing how other tools approach the creation of data visualizations.
+#### [Practical SQL, 2nd Edition: A Beginner's Guide to Storytelling with Data](https://www.amazon.com/Practical-SQL-2nd-Beginners-Storytelling/dp/1718501064) by Anthony DeBarros
+
+I'm currently working with another collegue to sharpen and practice our SQL skills.
+Although I'm up-to-date on most of the basics and am usually pretty good at completing straight-forward queries, it was a good time to focus and become even more proficient with the language.
+So, we picked up this book to learn more.
+
+#### [R for Data Science (2e)](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund
+
+Currently, I'm leading another [Data Science Learning Community](https://dslc.io/) bookclub meeting for this book.
+I haven't read the second edition yet, so I'm excited to see and learn what's new.
+
+#### [With the Old Breed: At Peleliu and Okinawa](https://www.amazon.com/Old-Breed-At-Peleliu-Okinawa/dp/0891419195) by E.B. Sledge
+
+This is a personal read I pick up from time to time.
+I finished watching the HBO miniseries Band of Brothers and The Pacific, which were based on first hand accounts in books like this.
+With the Old Breed is a first-hand account of one serviceman's experience on the frontline during operations in the Pacific Theater, specifically in Peleliu and Okinawa, during World War II.
+It's unfathomable to comprehend the experiences and hardships many endured.
+Reading it has made me more deeply appreciate the sacrafices men and women of the armed services make for the United States of America.
+
+### Professional development reads
 
 #### [Machine Learning with R - Fourth Edition](https://www.amazon.com/Machine-Learning-cleansing-modeling-tidyverse/dp/1801071322/) by Brett Lantz 
 
-This is a bit of a stretch read for me. I read this book when I have the time. I'm mostly using it to become more familiar with other machine learning models and techniques available in R. I'm also looking to write some more blog posts utilizing machine learning. Again, when I can find the time.
-
-#### [The Currents of Space (Galactic Empire 2)](https://www.amazon.com/Currents-Space-Galactic-Empire-Book-ebook/dp/B08GK12F2P) by Issac Asimov
-
-Continuing on with the second book in the Galactic Empire series. This book is another precursor to Asimov's Foundation series, which I'm aiming to read in the next couple of monhts. Just some more Sci-Fi when I have time to read for fun.
-
-## A list of books I've read (ever since I've started keeping track)
-
-### Professional development reads
+#### [Practical Tableau](https://www.amazon.com/Practical-Tableau-Tutorials-Strategies-Master/dp/1491977310) by Ryan Sleeper
 
 #### [HBR Guide to Making Every Meeting Matter](https://www.amazon.com/Guide-Making-Every-Meeting-Matter/dp/1633692175) from the Harvard Business Review
 
@@ -79,6 +92,8 @@ Continuing on with the second book in the Galactic Empire series. This book is a
 #### [Docker Deep Dive](https://www.amazon.com/Docker-Deep-Dive-Nigel-Poulton-ebook/dp/B01LXWQUFF) by Nigel Poulton
 
 ### Personal reads
+
+#### [The Currents of Space (Galactic Empire 2)](https://www.amazon.com/Currents-Space-Galactic-Empire-Book-ebook/dp/B08GK12F2P) by Issac Asimov
 
 #### [The Stars, Like Dust (Galactic Empire 1)](https://www.amazon.com/The-Stars-Like-Dust/dp/B08CFSK8GG/) by Issac Asimov
 
