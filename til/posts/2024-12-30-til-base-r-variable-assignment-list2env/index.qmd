@@ -1,0 +1,223 @@
+---
+title: "Use base R's `list2env()` function to assign list elements to variables in an environment"
+description: "Need an easy way to create variables from a set of list elements? Here's one example"
+date: "2024-12-30"
+author: "Collin K. Berke, Ph.D."
+draft: false
+image: thumbnail.jpg
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - base r
+  - data wrangling
+format:
+  html:
+    other-links:
+      - text: "list2env()'s documentation"
+        href: https://rdrr.io/github/robertzk/monadicbase/man/list2env.html
+---
+
+![Photo by [Ben Neale](https://unsplash.com/photos/green-white-and-gray-illustration-sQQf8Ao3dpk)](thumbnail-wide.jpg){fig-align="center"}
+
+# Motivation
+
+Today I learned base R's `list2env()` function can be used to assign a set of variables to the Global Environment.
+
+For a personal project, I was creating a simple CRUD application using [Shiny](https://shiny.posit.co/).
+The purpose of the application was pretty straightforward: to serve as a tool for entering data into a database.
+The app had the following requirements:
+
+* Provide inputs as fields for users to enter data that will be stored in a database.
+* Display entered data via the user interface for easy visual inspection before writing data to the database.
+* Include a 'Submit' button for the user to submit the data to the database.
+
+On the back end of this simple app, data was stored in the Global Environment as a tibble, so it could be easily displayed via the application's UI.
+The tibble only contained one row of data, where the values in the variable were to be written via a SQL `INSERT` statement upon the user hitting a 'Submit' button.
+
+While working on this part of the app, my initial approach confronted me with a [code smell](https://www.youtube.com/watch?v=7oyiPBjLAWY).
+
+```{r}
+#| label: setup
+#| message: FALSE
+library(tidyverse)
+library(glue)
+```
+
+# This approach stinks
+
+The additional nuances of the Shiny application are not important.
+Rather, let's focus on the actual problem I was confronted with: how do you create Global Environment variables from an existing object, specifically a `tibble` in my case?
+
+Here's some example data to work with:
+
+```{r}
+#| label: data-example-employee
+data_employee <- tibble(
+  first_name = "John",
+  last_name = "Smith",
+  start_date = "2024-03-04",
+  department = "accounting"
+)
+```
+
+At this point, there is one object in the Global Environment, `data_employee`.
+To prove this, let's submit `ls()` to the console, which will print all the objects in our current Global Environment.
+
+```{r}
+#| label: view-global-env-objects
+ls()
+```
+
+What if I also wanted the tibble's variables to be their own objects?
+That is, I wanted code resulting in four objects being made available in the Global Environment, each containing a value from a variable in the tibble: `first_name`, `last_name`, `start_date`, and `department`.
+
+My overall aim in doing this was to pass the values of these variables to a SQL `INSERT` statement using the `glue()` package:
+
+```{r}
+#| label: query-insert-data
+#| eval: FALSE
+query_insert <- glue("
+  INSERT INTO employees (
+      first_name,
+      last_name,
+      start_date,
+      department
+  )
+  VALUES (
+      {first_name},
+      {last_name},
+      {start_date},
+      {department}
+  )
+")
+```
+
+My initial solution was to do this:
+
+```{r}
+#| label: wrngl-this-stinks
+first_name <- data_employee[["first_name"]]
+last_name  <- data_employee[["last_name"]]
+start_date <- data_employee[["start_date"]]
+department <- data_employee[["department"]]
+```
+
+Indeed, we can confirm this works by once again submitting `ls()` to the console.
+
+```{r}
+#| label: view-global-env-objects-2
+ls()
+```
+
+Further confirmation results from inspecting the SQL `INSERT` statement string outputted from our use of the `glue()` function.
+
+```{r}
+#| label: query-insert-data-2
+query_insert <- glue("
+  INSERT INTO employees (
+      first_name,
+      last_name,
+      start_date,
+      department
+  )
+  VALUES (
+      {first_name},
+      {last_name},
+      {start_date},
+      {department}
+  )
+")
+
+query_insert
+```
+
+This approach, though it works and isn't too cumbersome for this specific example, it stinks and feels off.
+This especially became apparent when writing this out for the 10 fields of data I wanted to store within a database.
+I even physically cringed when I implemented it within the context of my application.
+There had to be a better way.
+
+Let's start fresh by clearing the Global Environment, but keep our `data_employee` tibble to try another approach:
+
+::: {.callout-note}
+I wouldn't do this in my actual code. But I'm doing it here to better highlight the example.
+:::
+
+```{r}
+#| label: clean-up-start-fresh
+rm(
+  first_name,
+  last_name,
+  start_date,
+  department,
+  query_insert
+)
+
+ls()
+```
+
+# Base R's `list2env()`
+
+`list2env()` was the solution I was looking for.
+Here's the description from the function's documentation:
+
+> From a *named* `list x`, create an `envrionment` containing all list components as objects, or "multi-assign" from `x` into a pre-existing environment.
+
+A little esoteric, so I found the following resources to be quite helpful:
+
+* [Iteratively create global environment objects from tibble (Stack Overflow post)](https://stackoverflow.com/questions/69470394/iteratively-create-global-environment-objects-from-tibble)
+
+* [Dynamic variable assignment in R](https://www.evan-soil.io/blog/dynamic-variable-assignment-in-r/)
+
+Environments are an advanced topic, though a little context is helpful.
+Environments are just like any other data structure in R, but they serve as fenced object containers that can hold objects (my shallow interpretation).
+The Global Environment is one such container that can hold objects for an R session, though additional named environments could be created.
+As such, `list2env()` provides functionality to write named objects stored from a list to any environment we specify.
+Review [Chapter 7: Environments](https://adv-r.hadley.nz/environments.html) from the [Advanced R](https://adv-r.hadley.nz/) book for additional detail.
+
+Using these concepts and `list2env()`, here's how I fixed my code smell:
+
+```{r}
+#| label: wrngl-tibble-to-objects
+list2env(data_employee, .GlobalEnv)
+```
+
+```{r}
+#| label: view-global-env-objects-3
+ls()
+```
+
+```{r}
+#| label: query-insert-data-3
+query_insert <- glue("
+  INSERT INTO employees (
+      first_name,
+      last_name,
+      start_date,
+      department
+  )
+  VALUES (
+      {first_name},
+      {last_name},
+      {start_date},
+      {department}
+  )
+")
+
+query_insert
+```
+
+🤯.
+
+What was once ~10 lines of messy, smelly code is now a one-liner.
+I was shook upon learning this.
+
+# Wrap up
+
+The takeaway from this TIL is a game changer: use `list2env()` if you need to convert existing list elements into objects in your Global Environment.
+I certainly was witness to its utility when trying to solve my own code smell.
+I hope you can find a use for it in your own work.
+
+Until next time, cheers! 🎉
