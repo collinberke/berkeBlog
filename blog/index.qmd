@@ -5,6 +5,7 @@ listing:
     contents: "posts/**/index.qmd"
     sort: "date desc"
     categories: true
+    page-size: 10
 format:
   html:
     page-layout: article
