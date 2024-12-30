@@ -26,6 +26,7 @@
   {
     "listing": "/til/index.html",
     "items": [
+      "/til/posts/2024-12-30-til-base-r-variable-assignment-list2env/index.html",
       "/til/posts/2024-12-27-til-tidyr-separate-character-string/index.html",
       "/til/posts/2024-12-08-til-data-wrangling-numeric-summaries-logical-vectors/index.html",
       "/til/posts/2024-02-10-til-r-dput-store-objects/index.html",
