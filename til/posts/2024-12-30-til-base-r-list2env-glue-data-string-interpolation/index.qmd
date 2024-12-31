@@ -1,6 +1,6 @@
 ---
-title: "Use base R's `list2env()` function to assign list elements to variables in an environment"
-description: "Need an easy way to create variables from a set of list elements? Here's one example"
+title: "Use `list2env()` or `glue::glue_data()` to use a set of elements from a tibble in a string"
+description: "Need an easy way to access a set of elements from a tibble for string interpolation? Here's two examples"
 date: "2024-12-30"
 author: "Collin K. Berke, Ph.D."
 draft: false
@@ -216,8 +216,52 @@ I was shook upon learning this.
 
 # Wrap up
 
-The takeaway from this TIL is a game changer: use `list2env()` if you need to convert existing list elements into objects in your Global Environment.
+The take away from this TIL is a game changer: use `list2env()` if you need to convert existing list elements into objects in your Global Environment.
 I certainly was witness to its utility when trying to solve my own code smell.
 I hope you can find a use for it in your own work.
 
 Until next time, cheers! 🎉
+
+# A follow up: `glue::glue_data()`
+
+```{r}
+#| label: clean-up-start-fresh-2
+#| include: FALSE
+rm(
+  first_name,
+  last_name,
+  start_date,
+  department,
+  query_insert
+)
+```
+
+Thanks to the power of community, [Tan Ho](https://tanho.ca/) shared an even less anti-pattern-ish / code-smell-ish solution to my problem in the [Data Science Learning Community's Slack channel](https://dslc.io/).
+He suggested using `glue::glue_data()`.
+
+Here's how it works:
+
+```{r}
+#| label: wrngl-even-less-smelly-approach
+glue_data(
+  data_employee,
+  "
+  INSERT INTO employees (
+      first_name,
+      last_name,
+      start_date,
+      department
+  )
+  VALUES (
+      {first_name},
+      {last_name},
+      {start_date},
+      {department}
+")
+```
+
+🤯🤯.
+
+This works as expected and comes with a couple added benefits.
+For one, the code's simpler.
+In addition, we're no longer creating variables that only get used once. The Global Environment is now much cleaner.
