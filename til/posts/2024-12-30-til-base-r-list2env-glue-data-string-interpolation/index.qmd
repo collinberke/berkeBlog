@@ -16,8 +16,10 @@ categories:
 format:
   html:
     other-links:
-      - text: "list2env()'s documentation"
+      - text: "base::list2env()'s documentation"
         href: https://rdrr.io/github/robertzk/monadicbase/man/list2env.html
+      - text: "glue::glue_data()'s documentation"
+        href: https://glue.tidyverse.org/reference/glue.html
 ---
 
 ![Photo by [Ben Neale](https://unsplash.com/photos/green-white-and-gray-illustration-sQQf8Ao3dpk)](thumbnail-wide.jpg){fig-align="center"}
