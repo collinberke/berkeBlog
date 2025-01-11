@@ -1,0 +1,138 @@
+---
+title: "What's Worth Your Time: Read, Watch, and Listen"
+description: "A curated list of data science, analysis, coding, tech-related, and miscellaneous work I've found to be useful and impactful"
+date: "2025-01-11"
+author: "Collin K. Berke, Ph.D."
+draft: false
+image: thumbnail.jpg
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - reflection
+  - data science
+  - data analysis
+  - resources
+---
+
+![Photo by [Cristina Gottardi](https://unsplash.com/photos/book-lot-Bj7Pt0ZMBOk)](thumbnail-wide.jpg){fig-align="center"}
+
+# Motivation
+
+We're a week into 2025, and I thought this would be a perfect time for some reflection.
+Inspired by [Tan Ho's](https://tanho.ca/) [post](https://tanho.ca/recs/), I felt compiling a non-exhaustive list of content I've enjoyed would be a valuable, useful exercise to kick off the new year.
+Rather than have these resources sit untouched in my bookmarks, I thought I'd share.
+
+Below you will find sections containing curated lists of posts, videos, and other content I've found relevant to shaping how I view and approach my work.
+Much of the content is data science, analysis, technology, career development, and media industry related.
+Some links are just stuff I've found interesting.
+
+Enjoy!
+
+# Data science, analysis, coding
+
+* [Jenny Bryan: Project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/), blog post (~15min read)
+  - This is one of those pieces that was a paradigm shift in my thinking: self-contained projects.
+    A simple idea with a major impact.
+    In the past, my workflow would be a hodgepodge mess of errant scripts and files.
+    The idea of using some simple conventions to allow my code to work on 'another computer' or in an 'another environment' was absent.
+    Employing some of the post's conventions increased my impact, as I was better positioned to share my work with others.
+* [Jenny Bryan: Object of type 'closure' is not subsettable](https://www.youtube.com/watch?v=vgYS-F8opgE), YouTube video (53 mins)
+  - If you work with the R programming language, this video is worth every minute.
+  Learning how to debug code helps you more quickly identify where something is going wrong, determine what is going wrong, and come to a useful solution.
+
+* [Emily Riederer: RMarkdown Driven Development (RmdDD)](https://www.emilyriederer.com/post/rmarkdown-driven-development/), blog post (~20 min read)
+  - RmdDD (now QmdDD for some) just works for analysis project development.
+  A straightforward idea: get your entire process into one file, then refactor from there.
+  This is how I generally approach most analysis projects now.
+
+* [Sharla Gelfand: Don't repeat yourself, talk to yourself! Reporting with R | RStudio(2020)](https://www.youtube.com/watch?v=JThd3YYQXGg), YouTube video (21 mins)
+  - The key takeaway: think of ways to incorporate structure into your projects that will be helpful the next time you have to complete something.
+  This talk motivated me to be more intentional about project structure and to think about how this structure relates to the impact of my work.
+  There's power in being nice to your future self and others.
+
+* [Emily Riederer: Building a team of internal R packages](https://www.emilyriederer.com/post/team-of-packages/), blog post (~35 mins)
+  - This post outlines a framework for the development of internal R packages.
+  It frames internal package development as value adds when they act like work colleagues, as they can be helpful to pass along institutional knowledge to others.
+  I aspire to align my internal package development with the suggestions in this post.
+
+* [David Robinson: TidyTuesday live screencasts](https://www.youtube.com/@safe4democracy/featured), YouTube videos (~45mins to ~1hr 15mins)
+  - Although David Robinson hasn't posted a screencast in some time, I still find great value in these, now older, videos.
+  Just watching someone and hearing their thought process as they work to visualize [TidyTuesday datasets](https://github.com/rfordatascience/tidytuesday) has been super valuable.
+  I've learned a lot from this great resource.
+
+* [Colin Gillespie: Getting the Most Out of Git - posit::conf(2024)](https://www.youtube.com/watch?v=RwLxCk6bDnY), YouTube video (21 mins)
+  - Despite this talk's focus being about Git, I think there's an even more general lesson shared here.
+  That is, use only what's needed for the type of project you're working on and don't fall into the trap of over burdening yourself and/or team with unneeded complexity.
+  Git and platforms like GitHub have lots of functionality.
+  Critical software is built using these tools, where their use is necessary.
+  But, does my personal project need a DevOps strategy with fully automated testing and app deployment to be successful?
+  Probably not.
+  Can my team get some value from running a few automated tests when they submit a pull request?
+  Maybe, as long as it doesn't overburden them to get their work done.
+  I struggle with finding the right balance here from time to time.
+  This talk is a freeing reminder to use only what's needed for the project.
+
+# Productivity and project development
+
+* [Jenny Bryan: How to Name Files Like a Normie](https://www.youtube.com/watch?v=ES1LTlnpLMk) NormConf YouTube video (5 mins) and [GitHub repo](https://github.com/jennybc/how-to-name-files) (10 mins)
+  - Take five minutes to change your life forever.
+  Regardless if you code or not, everyone who uses a computer needs to develop the skills for naming files.
+  Incorporating some simple naming conventions can be a big productivity boost.
+
+* [Hank Green: The Secret to My Productivity](https://www.youtube.com/watch?v=1LAhHDEtTD0), YouTube video (4 mins). Thanks for sharing, Tan.
+  - I came away with a simple takeaway from this video: get your projects to 80%, share it with the world, and move on to the next.
+  Too often we fall into the trap of attempting to get things perfect.
+  Although striving for perfection makes you feel productive, in reality it slows your ability to learn.
+
+# Management, leadership, and organizational culture
+
+* [Emilie Schario & Taylor A. Murphy, PhD: Run Your Data Team Like a Product Team](https://locallyoptimistic.com/post/run-your-data-team-like-a-product-team/), blog post (~20 mins)
+  - I like the framing this post uses to describe how to build and run a data organization.
+  It posits two things data teams need to do to meet their full potential: focus on building a Data Product and view others within your organization as your customers.
+  Indeed, I certainly don't contend this will work for every data team, but I found it a useful vision for the work my team does.
+
+* [JD Long: It's Abstractions All the Way Down... - posit::conf(2023)](https://www.youtube.com/watch?v=Pa1PNfoOp-I) YouTube recording (1hr 2mins)
+  - This talk provided a clear framework to better understand where my work fits within a larger organization / network.
+  Framing these ideas in terms of abstractions and providing thoughts on how to understand and work these abstractions has impacted how I approach and view the work within my organization.
+
+* [Harvard Business Review: HBR Guide to Making Every Meeting Matter](https://www.amazon.com/Guide-Making-Every-Meeting-Matter/dp/1633692175), book (~$22).
+  - Meetings are inevitable.
+  In fact, you may be tasked with leading a meeting some time in your career.
+  Some meetings move the needle, others could have been an email.
+  Prepare yourself with some useful techniques to make meetings more impactful, useful.
+
+# Media industry specific (the industry I work in)
+
+* [Decoder](https://www.theverge.com/decoder-podcast-with-nilay-patel) podcast, [The Verge](https://www.theverge.com/) (1hr episodes)
+  - If you're interested in media or tech, this podcast is for you.
+  [Nilay Patel](https://www.theverge.com/authors/nilay-patel), the host, does a phenomenal job interviewing various CEOs and thought leaders in these industries.
+  Listening to each episode has kept me up to date with the big trends and news happening in these spaces.
+
+# Potpourri
+
+This section is a miscellaneous collection of stuff I've enjoyed but really doesn't fit into the other categories.
+
+* [Marketplace](https://www.marketplace.org/) weekday radio show and podcast (~30 min episodes)
+  - I like to keep up with business and economic news.
+  Marketplace is an excellent, weekday collection of stories focused on these topics.
+
+* [Planet Money](https://www.npr.org/podcasts/510289/planet-money/), podcast (~30 min episodes) [National Public Radio (NPR)](https://www.npr.org/)
+  - Understanding the complexities of the economy can be challenging.
+    Planet Money helps put these topics into perspective.
+
+# Final thoughts
+
+The above list is certainly not comprehensive of all the work I've found useful and impactful.
+Some content that has shaped my work and views is not included here.
+It will expand over time.
+
+I hope you found at least one useful takeaway.
+If so, let's connect and chat about it:
+
+* [LinkedIn](https://www.linkedin.com/in/collinberke/)
+* [GitHub](https://github.com/collinberke)
+* [Bluesky](https://bsky.app/profile/collinberke.bsky.social)
+
+Here's to a wonderful start to 2025. Cheers 🎉!
