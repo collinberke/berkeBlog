@@ -1,5 +1,20 @@
 [
   {
+    "listing": "/til/index.html",
+    "items": [
+      "/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/index.html",
+      "/til/posts/2024-12-30-til-base-r-list2env-glue-data-string-interpolation/index.html",
+      "/til/posts/2024-12-27-til-tidyr-separate-character-string/index.html",
+      "/til/posts/2024-12-08-til-data-wrangling-numeric-summaries-logical-vectors/index.html",
+      "/til/posts/2024-02-10-til-r-dput-store-objects/index.html",
+      "/til/posts/2023-12-23-til-patchwork-ggplot2-combine-plots/index.html",
+      "/til/posts/2023-10-24-temp-directories/index.html",
+      "/til/posts/2023-10-22-correlations-with-corrr/index.html",
+      "/til/posts/2023-10-14-edit-old-commit/index.html",
+      "/til/posts/2023-03-14-vim-substitution/index.html"
+    ]
+  },
+  {
     "listing": "/blog/index.html",
     "items": [
       "/blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html",
@@ -22,20 +37,6 @@
       "/blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html",
       "/blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html",
       "/blog/posts/2021-04-02-intro-post/index.html"
-    ]
-  },
-  {
-    "listing": "/til/index.html",
-    "items": [
-      "/til/posts/2024-12-30-til-base-r-list2env-glue-data-string-interpolation/index.html",
-      "/til/posts/2024-12-27-til-tidyr-separate-character-string/index.html",
-      "/til/posts/2024-12-08-til-data-wrangling-numeric-summaries-logical-vectors/index.html",
-      "/til/posts/2024-02-10-til-r-dput-store-objects/index.html",
-      "/til/posts/2023-12-23-til-patchwork-ggplot2-combine-plots/index.html",
-      "/til/posts/2023-10-24-temp-directories/index.html",
-      "/til/posts/2023-10-22-correlations-with-corrr/index.html",
-      "/til/posts/2023-10-14-edit-old-commit/index.html",
-      "/til/posts/2023-03-14-vim-substitution/index.html"
     ]
   }
 ]

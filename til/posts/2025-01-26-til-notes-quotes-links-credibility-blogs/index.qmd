@@ -1,0 +1,46 @@
+---
+title: "Notes on link blogs and more frequent blog posting"
+description: "Some notes, quotes, and links about writing more and sharing your work"
+date: "2025-01-26"
+author: "Collin K. Berke, Ph.D."
+draft: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - quotes
+  - blogging
+---
+
+# Background
+
+I've really been focusing on developing a daily writing habit.
+As a result, I've been actively generating ideas on how to more frequently publish blog content.
+My biggest mental hurdle for turning posts around is a deeply embedded feeling that every piece of writing I produce needs to be polished prose, and everything included needs to be absent of error.
+
+# Links and thoughts on link blogging
+
+I recently came across this quote from an interview with [Simon Willison](https://simonwillison.net/about/) on the [Real Python podcast](https://realpython.com/podcasts/rpp/) with [Christopher Bailey](https://realpython.com/team/cbailey/) (the quote is mentioned around [10m08s](https://realpython.com/podcasts/rpp/236/#t=608)):
+
+> Credibility is accumulated over time, and it doesn't take much, like a link blog about a subject run that for six months and you will become one of the top 0.1% people on earth with credibility on that subject just from publishing a few notes and linking to a bunch of things about it.
+
+I found Willison's statement motivating, inspiring, and a little freeing.
+It made me reconsider portions of my own blog and what's their aim.
+This is my little corner the internet, and I set the expectations and rules of this site.
+
+Certainly, I believe there is room for more formal, well thought-out forms of writing, like you can read in the [blog](https://www.collinberke.com/blog/) section of my site.
+However, I also see the [Today I Learned (TIL)](https://www.collinberke.com/til/) section of my site being more like a link blog, a scratch-pad of sorts, and at times a research notebook on topics I'm learning about. Learning is a messy endeavour some times, so why does every piece of writing from it need to be tidy? It doesn't.
+
+# Mini-blogging and open-source ecosystems
+
+[Kelli Bodwin](https://www.kelly-bodwin.com/) addressed these same ideas during her [posit::conf(2024) talk](https://youtu.be/u0d5w0Yt8tE?si=MKU9IparhnSzX4Ro).
+The talk contained a call to action for attendees to produce more content, even if they weren't fully formed topics or ideas.
+Just sharing what you've currently learned or are working on strengthens open-source ecosystems and makes them more sustainable.
+[David Robinson's](http://varianceexplained.org/about/) Rstudio::conf(2019) keynote [The unreasonable effectiveness of public work](https://www.youtube.com/watch?v=th79W4rv67g) was also referenced, which I have queued up to watch later.
+Although I suggest listening to Bodwin's entire talk, you can hear more about these specific ideas around [13m20s](https://youtu.be/u0d5w0Yt8tE?si=MKU9IparhnSzX4Ro&t=799).
+
+Who knows where these thoughts may lead. I'm still learning, which is the most important.
