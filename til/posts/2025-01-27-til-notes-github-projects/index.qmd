@@ -1,0 +1,105 @@
+---
+title: "Notes on the use and management of GitHub projects"
+description: "Learning how to take project management to the next level"
+date: "2025-01-27"
+author: "Collin K. Berke, Ph.D."
+draft: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - productivity
+  - project management
+  - github
+---
+
+I recently spent some time focusing on my approach to project management, in hopes of developing skills to be a better team lead. One way I try to manage work is using GitHub Projects.
+
+Below are some links and notes about what I've recently learned about [GitHub projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects).
+
+[In the spirit of attempting to do more link- and micro-blogging](https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/), some of these notes may seem disjointed, incomplete, or incohorent. However, it's what I've learned thus far about managing projects in GitHub.
+
+# What are GitHub projects?
+
+> A project is an adaptable spreadsheet, task-board, and road map that integrates with your issues and pull requests on GitHub to help you plan and track your work effectively.
+
+More about projects can be found [here](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects). Instructions on how to create a GitHub project can be found [here](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/quickstart-for-projects).
+
+Either an organization project or user project can be created.
+
+Projects are useful for organizing issues from other repos. Check out the [docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue) to learn more about how to create issues.
+
+A project can have a [description and associated README](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/quickstart-for-projects). Here's some links to resources on how to write a useful README:
+
+* [How to Write a Good README File for Your GitHub Project (freeCodeCamp)](https://www.freecodecamp.org/news/how-to-write-a-good-readme-file/)
+* [How To Write a USEFUL README On Github](https://www.youtube.com/watch?v=E6NO0rgFub4)
+* [README template I use for most of my projects.](https://gist.github.com/ramantehlan/602ad8525699486e097092e4158c5bf1)
+
+Most of the above are repo focused, so it might be good to create a template specific for a project.
+
+## Adding issues to a project
+
+Use the '+ Add item' to add issues or pull requests to a project. You can then locate the issue via the UI prompts, or you can paste the issue or pull request URL (very helpful). The [bulk add issues and pull requests](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project/adding-items-to-your-project#bulk-adding-issues-and-pull-requests) and [Adding multiple issues or pull requests from a repository](https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project/adding-items-to-your-project#adding-multiple-issues-or-pull-requests-from-a-repository) features seem really useful.
+
+## Adding fields to help manage projects
+
+An iteration field seems useful for managing sprint intervals. More about how to setup an iteration field can be found [here](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/quickstart-for-projects#adding-an-iteration-field).
+
+# Useful features to explore further
+
+* Custom fields to add metadata for richer views of item attributes.
+* Project automation ([built-in automations](https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-built-in-automations), [using Actions to automate projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/automating-projects-using-actions))
+
+# GitHub Command Line Interface (CLI) tool
+
+Tip: get the `gh` command-line tool. More about how to get started can be found [here](https://cli.github.com/manual/).
+
+## Useful commands for managing issues and projects
+
+Create an issue with an interactive prompt.
+
+```bash
+gh issue create
+```
+
+Sometimes you fall into common patterns when creating issues, so command flags are often helpful.
+
+```bash
+gh issue create
+gh issue create -a "@me" -t "New project to work on" -l "project"
+gh issue create -a "@coworker" -t "Fix this" -l "bug"
+```
+
+More about how to manage issues in a repo via the command line can be found [here](https://cli.github.com/manual/gh_issue).
+
+You can list all your projects using the following commands:
+
+```bash
+# Your projects
+gh project list
+
+# Organizational owned projects
+gh project list --owner owner_of_project
+```
+
+View the project either in the command line or open it in a web browser.
+
+```bash
+# From command-line
+gh project view 5
+
+# Open in web browser
+gh project view 5 --web
+```
+
+You can edit the project README by running the following:
+
+```bash
+gh project edit 5 --readme "Here be some info about the project"
+```
+
+However, this command seems to only allow you to add a new README and not edit it.
