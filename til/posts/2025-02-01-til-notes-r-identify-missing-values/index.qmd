@@ -1,0 +1,170 @@
+---
+title: "Notes on identifying explicit and implicit missing values"
+description: "Highlights from the DSLC book club discussion of Chapter 18: Missing values from R4DS"
+date: "2025-02-01"
+author: "Collin K. Berke, Ph.D."
+draft: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - data wrangling
+---
+
+```{r}
+#| message: FALSE
+library(tidyverse)
+library(skimr)
+library(nycflights13)
+```
+
+Today I learned more about identifying explicit and missing values in R.
+During our weekly [Data Science Learning Community's (DSLC)](https://dslc.io/) [bookclub meeting for the R for Data Science (R4DS) book](https://youtu.be/hbDKS0V1MQE?si=QEGdZA1gPZCEnhEr), I was re-introduced to several methods to identify explicit and implicit missing values.
+Much of what is covered here comes from [Chapter 18: Missing values](https://r4ds.hadley.nz/missing-values) of the book.
+I wanted to share what I've learned, in hopes I can better remember this information in the future.
+
+# Identify and count missing values
+
+When faced with a dataset, the need to identify the presence of and estimate the extent of explicit missing values (i.e., `NA`s) may come up.
+I made note of four different approaches from our discussion, which all output the same information.
+
+## Base R's `sapply()`
+
+The first suggestion was to use base R's `sapply()` with an anonymous function.
+There's two variations: one that identifys the presence of any `NA`s across the columns.
+The second provides a count of `NA`s for each column.
+
+```{r}
+#| label: summ-identify-missing-sapply
+sapply(starwars, function(x) any(is.na(x)))
+```
+
+```{r}
+#| label: summ-count-missing-sapply
+sapply(starwars, function(x) sum(is.na(x)))
+```
+
+## `purrr::map_df` with `any()` and `is.na()`
+
+Similar to the base R approach is the use of `purrr::map_df()` with an anonymous function.
+I'm quite partial to this approach, as it's even more succinct, though it requires `purrr` as a dependency.
+However, if you're already importing the `tidyverse` into your session, then why not go ahead and use it?
+
+```{r}
+#| label: summ-identify-missing-purrr
+map_df(starwars, \(x) any(is.na(x)))
+```
+
+```{r}
+#| label: summ-count-missing-purrr
+map_df(starwars, \(x) sum(is.na(x)))
+```
+
+## `dplyr::summarise()`
+
+Another approach involved the use of `dplyr`'s `summarise()` along with `across()`, `everything()`, and an anonymous function.
+This approach was meant only to count the amount of missing values within each column.
+
+```{r}
+#| label: summ-count-missing-summarise
+starwars |>
+  summarise(across(everything(), \(x) sum(is.na(x))))
+```
+
+## `skimr::skim()`
+
+`skimr::skim()` was also discussed, though the output is more verbose than the other options.
+The output contains a sum of the number of missing values within each column.
+This is certainly the most succinct way to obtain this information, and it provides additional summary information about your data.
+However, it may be more information then you need to answer your question about the presence of missing values in your data.
+
+```{r}
+#| label: summ-count-missing-skimr
+skim(starwars)
+```
+
+# Identify implicit missing values with `dplyr::anti_join()`
+
+Implicit missing values were also an interesting topic of discussion.
+According to the R4DS book, implicit missing values are absent data without any observable reference to it being missing within the data.
+
+This was such an important topic that even an exercise was devoted to it.
+During the reading, we learned how to use `dplyr::anti_join()` to help identify implicit missing values.
+
+Here's the solution, graciously shared by [Stephan Koenig](https://stephankoenig.me/about) with the group (see around [01m38s](https://youtu.be/hbDKS0V1MQE?si=2w3OJ9o_6r40vI0v&t=98)):
+
+```{r}
+#| label: summ-count-missing-flights
+flights |>
+  select(tailnum, carrier) |>
+  anti_join(planes, by = join_by(tailnum)) |>
+  distinct(tailnum, carrier) |>
+  count(carrier, sort = TRUE)
+```
+
+I really liked this approach.
+It was useful to see the utility of `count()` to show which carriers had the most implicitly missing values within the flights data.
+However, it took me a beat to fully understand what was happening.
+I think this was due to the volume of data within the `flights` dataset used for the example.
+As such, I thought up a simpler dataset, semi-related to the domain I work in, to help clarify my understanding of what's happening here.
+
+Let's say we're a marketer, and we run marketing campaigns to sell products through an ecommerce store.
+As part of this store, we collect data about specific marketing campaigns and customers' purchases.
+Data include a `campaign` data set, which contains metadata for each campaign.
+For instance, data on the type of campaign being run.
+We also have an `events` tibble, which contains data about whether a customer purchased items while visiting our ecommerce store, and if so, how much revenue was generated from their purchase.
+
+```{r}
+#| label: data-campaigns
+campaign <- tibble(
+  campaign_id = c(1, 2),
+  campaign_type = c("email", "social media"),
+  campaign_name = c("Spring sale", "Winter clearance")
+)
+
+events <- tibble(
+  campaign_id = c(1, 2, 2, 1, 3, 3),
+  type = c("no purchase", "purchase", "purchase", "no purchase", "no purchase", "purchase"),
+  revenue = c(0, 11.25, 25.37, 0, 0, 7.45)
+)
+```
+
+The implicitly missing data is in the `campaign` dataset.
+Specifically, we're missing campaign information for `campaign_id = 3`.
+That is, there is no explicit reference for us to see that data is missing if we only looked at the `campaign` dataset.
+We would only know we have missing values by joining these two datasets together.
+
+Missing data could be made more explicit in our `campaign` dataset by performing a [left join](https://r4ds.hadley.nz/joins#mutating-joins).
+Then, the approaches discussed above and `count()` can be used to identify and sum up how many events are missing campaign information.
+We do something like this:
+
+```{r}
+#| label: summ-identify-missing
+# Identify the presence of missing
+events |>
+  left_join(campaign) |>
+  map_df(\(x) any(is.na(x)))
+```
+
+```{r}
+#| label: summ-count-missing
+# Count how many events are missing
+events |>
+  anti_join(campaign, by = join_by(campaign_id)) |>
+  count(campaign_id, sort = TRUE)
+```
+
+Indeed, this seems trivial given the size of the data.
+However, if the data had thousands or tens of thousands of purchase events and multiple campaigns running during a specific time period, this approach would be quite handy to help quickly identify which campaigns were missing data.
+
+# Wrap up
+
+Knowing how to identify missing values within data is important.
+There are different strategies for identifying explicit or implict missing values.
+In this post, I highlighted and made notes about the approaches discussed in the [R4DS book](https://r4ds.hadley.nz/missing-values) and our [DSLC book club meeting](https://youtu.be/hbDKS0V1MQE?si=Zq76wVUVcy6czpue).
+
+Happy data wrangling!
