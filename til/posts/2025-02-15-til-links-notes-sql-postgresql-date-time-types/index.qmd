@@ -1,0 +1,228 @@
+---
+title: "Notes on date and time data types in PostgreSQL"
+description: "A scratchpad of concepts and code examples I collected while learning about the dates and times data types"
+date: "2025-02-15"
+author: "Collin K. Berke, Ph.D."
+draft: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - sql
+  - postgresql
+---
+
+Today I spent some time learning more about date and time data types in [PostgreSQL](https://www.postgresql.org/).
+Much of this was learned reviewing PostgreSQL's documentation and some other reading (check out the list at the end of the post if you want to go deeper).
+This documentation deep dive will cover what I've learned recently about working with these data types, which includes:
+
+* Date and time data types available in PostgreSQL
+* Arithmetic with date and time data types
+* Useful date and time functions
+* Extracting specific elements from dates or times
+* Being aware of and managing the trickiness of time zones
+
+Below are notes, links, and some examples overviewing what I've learned recently.
+This post is a bit of a scratchpad, and it will only be lightly edited.
+Be aware, there will likely be grammatical or syntactical errors.
+This post also does not seek to be a comprehensive overview, but rather it aims to be a collection of topics I thought would be useful to refer back when working with date and time data types in PostgreSQL.
+I prioritized resource and documentation links to aid in deeper review of these topics.
+
+# Date and time data types
+
+Four data types are available to represent dates and times within a [PostgreSQL database](https://www.postgresql.org/):
+
+  * `timestamp` or `timestamp with timezone` is a data type representing a specific date and time.
+  * `date` is a  data type recording some exact date.
+  * `time` is a data type recording some point in time.
+  * `interval` is a value representing some unit of time.
+
+[PostgreSQL's documentation](https://www.postgresql.org/docs/current/datatype-datetime.html) further details date and time types.
+
+PostgreSQL has some special date and time input strings, which include the following:
+
+```sql
+SELECT
+    'epoch'::timestamp, -- 1970-01-01 00:00:00+00
+    'now'::timestamp, -- Current transaction start time
+    'today'::timestamp, -- Midnight today
+    'tomorrow'::timestamp, -- Midnight tomorrow
+    'yesterday'::timestamp; -- Midnight yesterday
+```
+
+If we need to return current date or time values, the following functions are useful within a simple `SELECT` statement:
+
+```sql
+SELECT
+    CURRENT_DATE,
+    CURRENT_TIME,
+    CURRENT_TIMESTAMP,
+    LOCALTIME,
+    LOCALTIMESTAMP;
+```
+
+We can further observe some specific examples of these types by running the following SQL statement:
+
+```sql
+SELECT
+    '2024-01-01'::date,
+    '01:32:02.732'::time without time zone,
+    '01:32:02.732 CST'::time with time zone,
+    '2 years 3 months 12 hours'::interval;
+```
+
+Intervals are also an interesting data type, which represent some unit of time as a number.
+For instance, you can write a SQL statement like the following:
+
+```sql
+SELECT
+    '1.8 weeks'::interval,
+    '15 seconds'::interval,
+    '2 years'::interval,
+    '2 decades'::interval,
+    '4 13:33:33'::interval,
+    '100-09'::interval,
+    'P0020-10-05T23:10:16'::interval;
+```
+
+# Arithmetic with date and time data types
+
+Arithmetic operations can also be performed on date and time data types.
+Here's a few examples:
+
+``` sql
+-- date + integer >> date
+-- Add one day
+SELECT current_date + 1 as tomorrow;
+
+-- date + interval >> date
+SELECT current_date + '1 year'::interval as a_year_from_today;
+
+-- date - date >> integer
+-- Number of days elapsed
+SELECT current_date - '2025-01-01'::date days_in_year;
+
+-- interval * double precision >> interval
+SELECT interval '1 hour' * 24 as hours_in_day;
+```
+
+[PostgreSQL's docs](https://www.postgresql.org/docs/current/functions-datetime.html) goes into more detail and provides additional examples of the use of these operations.
+
+# Useful date and time functions
+
+PostgreSQL provides several useful date and time functions.
+Some functions get a current date, date time, or time.
+Some are date and time constructors.
+Others assist in the completion of some type of operation.
+
+```sql
+SELECT
+    now(), -- Current date and time
+    timeofday(), -- Current date and time formatted
+    current_time(0) as hmstz, -- Current time of day
+    localtime(0), -- Current time of day, with less precision
+    localtimestamp(0), -- Current date and time
+    make_date(2025, 02, 09), -- Create a date from integer values
+    make_time(9, 50, 40.5), -- Create a time with integer values
+    to_timestamp(1739116840), -- Unix epoch to timestamp with time zone
+    statement_timestamp(), -- Timestamp at the start of the statement
+    age(
+        timestamp '2025-02-09',
+        timestamp '1985-11-12'
+    ) AS how_old, -- Symbolic representation of age
+    date_bin(
+        '7 minutes',
+        timestamp '2025-02-09 09:50:40', timestamp '2025-02-09 00:00:00'
+    ), -- Bin into specified intervals, given a specific origin
+    date_trunc(
+        'hour',
+        timestamp '2025-02-09 09:50:40'
+    ), -- Truncate to a specific date or time unit
+    date_part(
+        'day',
+        timestamp '2025-02-09 09:50:40'
+    ); -- Extract a specific unit from a timestamp
+```
+
+# Extracting specific elements from date or time values
+
+Say we just want one element from our date objects, we can use PostgreSQL's `date_part()` function.
+For example:
+
+```sql
+SELECT
+  date_part('year', '2024-01-01'::date) as year,
+  date_part('month', '2024-01-01'::date) as month,
+  date_part('day', '2024-01-01'::date) as day,
+  date_part('epoch', '2024-01-01'::date) as epoch; -- # of seconds elapsed since 1970-01-01
+```
+
+Additional elements can be extracted using `date_part`, especially if you have a timestamp with a timezone field.
+
+The `extract` function is also useful to extract subfields from date, date time, or time values.
+Below are several examples I thought would be useful.
+
+```sql
+SELECT
+    EXTRACT(
+        DAY FROM TIMESTAMP '2025-02-09 09:50:40'
+    ),
+    EXTRACT(
+        DOW FROM TIMESTAMP '2025-02-09 09:50:40'
+    ),
+    EXTRACT(
+        MONTH FROM TIMESTAMP '2025-02-09 09:50:40'
+    ),
+    EXTRACT(
+        QUARTER FROM TIMESTAMP '2025-02-09 09:50:40'
+    ),
+    EXTRACT(
+        EPOCH FROM TIMESTAMP '2025-02-09 09:50:40'
+    )
+;
+```
+
+# The trickiness of time zones
+
+It's critical to be aware of time zones when using date and time values, so it's always good to be aware of the current time zone setting used for the database system you're working with.
+There's two ways to check this setting while working with a PostgreSQL database:
+
+```sql
+SHOW timezone;
+-- or
+SELECT current_setting('timezone');
+```
+
+The `current_setting()` function can be handy for when you need to create a timestamp using the system's time zone (example [via](https://www.amazon.com/Practical-SQL-2nd-Beginners-Storytelling/dp/1718501064/))
+
+```sql
+SELECT make_timestamptz(2025, 2, 02, 10, 39, 22.5, current_setting('timezone'))
+```
+
+I also like that you can find all the time zones and narrow it down to a specific region by doing the following (example [via](https://www.amazon.com/Practical-SQL-2nd-Beginners-Storytelling/dp/1718501064/)):
+
+```sql
+SELECT * FROM pg_timezone_names
+WHERE name LIKE 'America%'
+ORDER BY name;
+```
+
+The table returned from the previous example also contains an `is_dst` field.
+This column denotes whether the timezone is exhibiting day lights savings time or not.
+This is useful because day lights savings time is a function of [geography and politics](https://www.worldtimeserver.com/learn/unusual-time-zones/).
+Not all regions of the world exhibit day lights savings time uniformly.
+Take for example [Lord Howe Island](https://en.wikipedia.org/wiki/Lord_Howe_Island).
+How this part of the world [observes day lights savings time](https://www.atlasobscura.com/places/lord-howe-islands-time) and its time zones is some interesting reading.
+
+# Additional resources
+
+Here's a collection of additional resources to go deeper:
+
+* [Date/Time Types from the PostgreSQL documentation](https://www.postgresql.org/docs/current/datatype-datetime.html)
+* [Data Type Formatting Functions from the PostgreSQL documentation](https://www.postgresql.org/docs/current/functions-formatting.html)
+* [Date/Time Functions and Operators from the PostgreSQL documentation](https://www.postgresql.org/docs/current/functions-datetime.html)
+* [Chapter 13: Working with dates and times from Practical SQL, 2nd Edition: A Beginner's Guide to Storytelling with Data](https://www.amazon.com/Practical-SQL-2nd-Beginners-Storytelling/dp/1718501064/)
