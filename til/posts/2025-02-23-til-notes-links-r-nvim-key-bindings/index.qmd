@@ -1,0 +1,184 @@
+---
+title: "Notes on customizing Neovim's key bindings"
+description: "Learning more about how to customize the R.nvim plugin while using LazyVim"
+date: "2025-02-23"
+author: "Collin K. Berke, Ph.D."
+draft: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - neovim
+  - lazyvim
+  - r.nvim
+---
+
+# Background
+
+The following post provides some notes on setting [custom key bindings](https://github.com/R-nvim/R.nvim/blob/ab7afd54bd0410100911a8557bd7f94764a8ff20/doc/R.nvim.txt#L2093) for [`R.nvim`](https://github.com/R-nvim/R.nvim), a plugin that adds [R](https://www.r-project.org/) support to Neovim.
+Specifically, this post focuses on how to set custom key bindings while using [LazyVim](https://www.lazyvim.org/).
+This involved some initial trial and error, along with some review of the docs and several resources.
+I've linked all the resources or point to relevant docs that helped me figure out how to do this.
+
+# Motivation
+
+While transitioning over to LazyVim, I inherited some of my old config files into this new setup.
+This resulted in some conflicts with the new setup.
+Some of my old config's key bindings overlapped with some of LazyVim's global key bindings.
+Specifically, I wanted to map `<localleader>L` to run `devtools::load_all()`, but it was already mapped to bring up the [change log for LazyVim](https://github.com/LazyVim/LazyVim/blob/3f034d0a7f58031123300309f2efd3bb0356ee21/lua/lazyvim/config/keymaps.lua#L185).
+So, I wanted to modify this to better fit my workflow.
+
+# Disabling global key bindings
+
+[LazyVim's website](https://www.lazyvim.org/configuration/keymaps#global-keymaps) is pretty clear that global key bindings are disabled with the `vim.keymap.del` function.
+Another good starting point was the docs, which are reviewable by running `help vim.keymap.del` via nvim's command line prompt (opened by pressing `:`).
+
+The `vim.keymap.del` function has three parameters:
+
+* `{modes}` - a string or an array of strings you want the key binding to be made available (e.g., n = normal mode; i = insert mode; v = visual mode).
+* `{lhs}` - a string of the key map you're looking to disable.
+* `{opts}` - a lua table with any additional options you want to pass along.
+
+In my case, disabling the current `<leader>L` key binding was pretty straightforward, so I added the following line to my `~/.config/lazyvim/lua/config/keymaps.lua` file.
+
+``` lua
+vim.keymap.del("n", "<leader>L")
+```
+
+This disabled the key binding from my current configuration.
+Now it was time to modify `R.nvim` in my config.
+
+# Customizing `R.nvim`'s key bindings
+
+Beyond disabling the global key binding, I wasn't too sure where to start when it came to setting up a custom key bindings for LazyVim.
+
+[Andrew Courter's (@ascourter)](https://www.youtube.com/@ascourter) [video](https://www.youtube.com/watch?v=jBzmpArdjlE) broadly overviewed the steps for setting up a key bindings for a plugin, and I found it to be a good starting point. The specific steps are detailed at [~4m53s](https://youtu.be/jBzmpArdjlE?si=CupAvQOH6pi3E_TP&t=293) of the video.
+
+Next, I consulted `R.nvim`'s docs to better understand how the plugin expected key bindings to be defined.
+I use [LazyVim Extras](https://www.lazyvim.org/extras) along with a plugin extension file (located at `~/.config/lazyvim/lua/plugins/extend-r-nvim.lua`) to manage setup and configuration of this plugin.
+This extension file follows the conventions detailed in the [`R.nvim-key-bindings`](https://github.com/R-nvim/R.nvim/blob/48c0cafdad3baddc350dea9d68f3bc3d1db3065a/doc/R.nvim.txt#L2193) section of the docs for the custom key bindings definitions.
+
+The custom key binding configuration is defined deeply within several nested levels of a lua table.
+Specifically, this custom key binding configuration is defined in the table like this, which is associated with the `config` key of the table.
+
+``` lua
+config = function()
+  local opts = {
+    hook = {
+      on_filetype = function()
+        -- Map local leader L to run `devtools::load_all()`
+          vim.api.nvim_buf_set_keymap(
+            0,
+            "n",
+            "<LocalLeader>L",
+            "<Cmd>lua require('r.send').cmd('devtools::load_all()')<CR>",
+            { desc = "R devtools::load_all()" }
+          )
+      end
+    }
+  }
+end
+```
+
+This configuration code uses the `vim.api.nvim_buf_set_keymap()` function to set a local key binding for the current buffer, which will likely be open to a file type used within the R programming environment (e.g.,  `.R`, `.Rmd`, or `.qmd` file).
+You can run `help nvim_buf_set_keymap` from neovim's command line to view more info about the function.
+Within the function, we pass values to several parameters:
+
+* `{buffer}` - specifies the buffer the key binding will be made available.
+* `{mode}` - specifies the modal mode the key binding will be made available (e.g., normal, visual, insert, etc.).
+* `{lhs}` - a parameter expecting a string representing the key binding definition.
+In our case `<LocalLeader>L`.
+* `{rhs}` - a parameter expecting a string representing the lua command to be run.
+In our case the `<Cmd>lua require('r.send').cmd('devtools::load_all()')<CR>` is run upon pressing the key binding, which will send the `devtools::load_all()` function to the R interpreter.
+It's important to call out the lua function `r.send.cmd()` is being used here to run our R code.
+Shortly, we'll see another lua function that can run functions that take objects in the environment as an input.
+* `{opts}` - a parameter that expects a lua table with additional options.
+Because the [`which.key`](https://github.com/folke/which-key.nvim) plugin is a default plugin for the LazyVim distribution, my config passes along a lua table containing a `desc` key value with a string describing what the keymap does.
+`which.key` will then include this description in the help popup window when hitting specific key bindings.
+
+# Other useful key bindings for `R.nvim`
+
+You'll likely want to add more key bindings then the one I've shared above.
+For instance, you'll likely want to add additional package development convenience functions provided by the `devtools` package to your configuration:
+
+``` lua
+vim.api.nvim_buf_set_keymap(
+  0,
+  "n",
+  "<LocalLeader>D",
+  "<Cmd>lua require('r.send').cmd('devtools::document()')<CR>",
+  { desc = "R devtools::test()" }
+)
+
+vim.api.nvim_buf_set_keymap(
+  0,
+  "n",
+  "<LocalLeader>T",
+  "<Cmd>lua require('r.send').cmd('devtools::test()')<CR>",
+  { desc = "R devtools::test()" }
+)
+
+vim.api.nvim_buf_set_keymap(
+  0,
+  "n",
+  "<LocalLeader>U",
+  "<Cmd>lua require('r.send').cmd('devtools::install()')<CR>",
+  { desc = "R devtools::install()" }
+)
+```
+
+If you do any [Shiny](https://shiny.posit.co/) development, it's convenient to have a key binding that quickly kicks off an app:
+
+``` lua
+vim.api.nvim_buf_set_keymap(
+  0,
+  "n",
+  "<LocalLeader>sa",
+  "<Cmd>lua require('r.send').cmd('shiny::runApp()')<CR>",
+  { desc = "R shiny::runApp()" }
+)
+```
+
+You'll also likely want a key binding that interrupts a busy R terminal:
+
+``` lua
+vim.keymap.set(
+  "n",
+  "<LocalLeader>ts",
+  "<Cmd>RStop<CR>",
+  { desc = "R stop terminal" }
+)
+```
+
+Above you'll notice we're using an alternative function to specify our key binding, `vim.keymap.set()`. 
+This is an alternative function for specifying key bindings.
+
+Finally, one of my favorites is to configure key bindings for common operations I perform all the time, like running `dplyr::glimpse()` on objects.
+The configuration code looks like this:
+
+``` lua
+vim.api.nvim_buf_set_keymap(
+  0,
+  "n",
+  "<LocalLeader>g",
+  "<Cmd>lua require('r.run').action('dplyr::glimpse')<CR>",
+  { desc = "R dplyr::glimpse()" }
+)
+```
+
+Take notice of what's happening here in the `{rhs}` parameter of the `vim.api.nvim_buf_set_keymap()` function.
+`require()` is calling `r.run.action()`, a lua function that will run an R function on the object currently under the cursor.
+This is very convenient, as you can put your cursor over any object and pass that object to the R function.
+
+Certainly, endless possibilities exist for the types of key binds one can configure.
+Having the ability to set key bindings to specific R functions and operations opens up the possibilities even more to enhance specific workflows.
+
+# Wrap up
+
+To wrap up, this post overviewed the process of defining custom key bindings for Neovim while using the LazyVim distribution.
+Specifically, this involved describing how to disable global key bindings that may overlap with the intended setup, how to set key bindings for the `R.nvim` plugin, and it provided some additional examples of key bindings that might be helpful.
+Customization is a core reasong for using Neovim, so being able to customize key bindings useful for your workflows is a powerful tool to learn and use.
