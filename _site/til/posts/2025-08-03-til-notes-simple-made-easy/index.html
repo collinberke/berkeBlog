@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2025-08-03">
+<meta name="description" content="Learning more about software and system design">
 
-<title>Collin K. Berke, Ph.D.</title>
+<title>Notes from Rich Hickey’s talk Simple Made Easy – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +26,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./icon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-a8e159b6550ef0b122714fdf25f42c03.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-69d87467896a330188e7f833fde9423c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b659ae6b21898872fc41a480d22f374b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -80,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Collin K. Berke, Ph.D.</span>
     </a>
   </div>
@@ -91,23 +95,23 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./now.html"> 
+    <a class="nav-link" href="../../../now.html"> 
 <span class="menu-text">Now</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog/index.html"> 
+    <a class="nav-link" href="../../../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./til/index.html"> 
+    <a class="nav-link" href="../../../til/index.html"> 
 <span class="menu-text">Today I Learned</span></a>
   </li>  
 </ul>
@@ -122,70 +126,155 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#takeaways" id="toc-takeaways" class="nav-link active" data-scroll-target="#takeaways">Takeaways</a></li>
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final thoughts</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-trestles column-page">
-  <div class="about-entity">
-    <img src="avatar.jpg" class="about-image
-  rounded " style="width: 20em;">
+<main class="content column-page-left" id="quarto-document-content">
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Collin K. Berke, Ph.D.</h1>
-<p class="subtitle lead">Media Research Analyst</p>
-</div>
-<div class="quarto-title-meta column-page">
+<h1 class="title">Notes from Rich Hickey’s talk Simple Made Easy</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">til</div>
+    <div class="quarto-category">notes</div>
+    <div class="quarto-category">links</div>
+    <div class="quarto-category">programming</div>
   </div>
+  </div>
+
+<div>
+  <div class="description">
+    Learning more about software and system design
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 3, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
 </header>
-    <div class="about-links">
-  <a href="https://github.com/collinberke" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="https://twitter.com/BerkeCollin" class="about-link" rel="" target="">
-    <i class="bi bi-twitter"></i>
-     <span class="about-link-text">Twitter</span>
-  </a>
-  <a href="https://www.linkedin.com/in/collinberke/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
+
+
+<p>I was introduced to the talk <a href="https://www.youtube.com/watch?v=SxdOUGdseq4">Simple Made Easy presented by Rich Hickey</a> during a 2025 Nebraska.Code() session. It’s a fairly well-known talk in software development. Though outside of my domain, the topics covered were somewhat related to my work. I thus decided to stretch myself and review the talk.</p>
+<p>Several of the talk’s points stood out to me. Some I’m still trying to fully grok. Below are my notes and takeaways.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-  </div>
-  <div class="about-contents"><main class="content column-page" id="quarto-document-content">
-<section id="hi-im-collin" class="level1">
-<h1><span class="emoji" data-emoji="wave">👋</span> Hi, I’m Collin</h1>
-<p>I’m a media research analyst, data enthusiast, and news, sports, and podcast aficianado.</p>
-<p>Professionally, I use data, audience measurement, and marketing research methods to answer questions on how to best reach and engage audiences–towards the goal of enriching lives and engaging minds with public media content and services. I am particularly interested in the use and development of open-source statistical software (i.e.&nbsp;<a href="https://www.r-project.org/">R</a>) to achieve this goal, and gaining a broader understanding of the role these tools play in media, digital, and marketing analytics. I also adjunct university courses on the side.</p>
-<p>Listening to <a href="https://www.npr.org/">NPR</a>, watching <a href="https://www.pbs.org/">PBS</a> (especially <a href="https://www.pbs.org/wgbh/nova/">NOVA</a>), and college football and baseball are my jam.</p>
-<section id="now" class="level2">
-<h2 data-anchor-id="now">Now</h2>
-<p>Want to know more about what I’m currently working on, reading, or mastering? Check out the <a href="./now.html">now page</a>.</p>
-</section>
-<section id="education" class="level2">
-<h2 data-anchor-id="education">Education</h2>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This post is written in the spirit of <a href="https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/">publishing more frequent blog posts</a>. It’s a bit of a scratchpad of ideas, concepts, and ways of working that I found to be useful or interesting. As such, what’s here is lightly edited. Be aware: there will likely be spelling, grammatical, or syntactical errors along with some disjointed, incomplete ideas.</p>
+</div>
+</div>
+<section id="takeaways" class="level1">
+<h1>Takeaways</h1>
+<blockquote class="blockquote">
+<p>We need to build simple systems if we want to build good systems.</p>
+</blockquote>
+<p>The talk began by differentiating between the definitions of simple and easy in the context of software and system design (<a href="https://youtu.be/SxdOUGdseq4?si=-0QKIV4dzWfkd7zr&amp;t=85">01m25s</a>). Simple is about being one fold, one braid, or one twist. Simple is objective. Easy is defined as being near at hand, near to our understanding or current skill set. Easy is relative. Designing towards easy can be a limitation, as it forces familiarity.</p>
+<blockquote class="blockquote">
+<p>If you want everything to be familiar you will never learn anything new because it can’t be significantly different from what you already know.</p>
+</blockquote>
+<p>The talk then uses these two definitions to further distinguish between constructs vs.&nbsp;artifacts (<a href="https://youtu.be/SxdOUGdseq4?si=kfsyhuwVubbqsClt&amp;t=545">09m05s</a>). Developers work with constructs to create artifacts. At times, too much focus is placed on the constructs of the developer’s experience. Rather, a focus on software quality, correctness, maintenance, and the ability for change will yield more benefits.</p>
+<blockquote class="blockquote">
+<p>We have to start assessing our constructs based around the artifacts, not around the look and feel of the experience of typing it in or the cultural aspects of that.</p>
+</blockquote>
+<p>Users don’t care about our experience writing the program. They only care about whether the program does what it says it’s going to do and if it works well or what the level of the complexity the program yields via its output.</p>
+<p>The talk then addressed the limitations of complexity (<a href="https://youtu.be/SxdOUGdseq4?si=rv6KzWPiagRM1TAw&amp;t=734">12m14s</a>). Our ability to hold onto lots of information is limited. Intertwining of constructs requires us to hold lots of information in our mind. As such:</p>
+<blockquote class="blockquote">
+<p>Complexity undermines understanding.</p>
+</blockquote>
+<p>Rich Hickey then provided some criticism of guard rail programming (e.g., using tests)(<a href="https://youtu.be/SxdOUGdseq4?si=qOLoCLu7mm0qyTkZ&amp;t=932">15m32s</a>). A few questions were posed along with this point:</p>
 <ul>
-<li><strong>Ph.D.&nbsp;in Media and Communication, 2017, Texas Tech University</strong></li>
-<li><strong>M.A.&nbsp;in Communication Studies, 2013, The University of South Dakota</strong></li>
-<li><strong>Bachelor of Science, 2011, The University of South Dakota</strong></li>
+<li>Do guard rails help you get where you’re going?</li>
+<li>What’s true about every bug? They were written, it passed a type checker, and it passed all the tests.</li>
 </ul>
-</section>
-<section id="interests" class="level2">
-<h2 data-anchor-id="interests">Interests</h2>
+<p>So, we’ll always need to reason about our program because these guard rails are just safety nets. Being able to reason about or programs is important to debugging.</p>
+<p>This type of development has been criticized for it’s impact on speed and agility. Hickey addressed this concern:</p>
+<blockquote class="blockquote">
+<p>Ignoring complexity will slow you down over the long haul.</p>
+</blockquote>
+<p>If you focus to much on ease, you’ll be able to move as fast as possible at the start. However, no matter what, complexity will always catch up to you. The net effect will be that you’re not moving forward in any significant way. To make this point more concrete, the talk introduced the knitted castle problem (<a href="https://youtu.be/SxdOUGdseq4?si=JSE3fuibSCMRmIqJ&amp;t=1176">19m36s</a>). What will be easier to change, a castle knitted of yarn or one crafted using Legos? The results can still be complex. But the system may be hard to change in the future. Thus, the benefits of focusing on simplicity include:</p>
 <ul>
-<li><strong>Digital/Marketing analytics</strong></li>
-<li><strong>Audience measurement</strong></li>
-<li><strong>Media testing</strong></li>
-<li><strong>R</strong></li>
-<li><strong>Data engineering</strong></li>
+<li>Ease of understanding</li>
+<li>Ease of change</li>
+<li>Easier debugging</li>
+<li>Flexibility</li>
 </ul>
-<p><a href="https://quarto.org/">Quarto</a> and <a href="https://www.netlify.com/">Netlify</a> were used to build and deploy this site. All my blog posts are released under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+<p>The talk then introduced and applied the term complecting: to interleave, entwine, braid (<a href="https://youtu.be/SxdOUGdseq4?si=tNIUGRpWhvvj-L2b&amp;t=1896">31m36s</a>). Complecting is bad. You should avoid complecting things whenever possible.</p>
+<blockquote class="blockquote">
+<p>You can write as sophisticated a system with dramatically simpler tools, which means you’re going to be focusing on the system, what it’s supposed to do instead of all the guck that falls out of the constructs you’re using. If you want a simpler life, just choose simpler stuff.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Programming is not about typing, it’s about thinking.</p>
+</blockquote>
+<p>However, at times we do need to make our own constructs. <a href="https://youtu.be/SxdOUGdseq4?si=NBtly4XYZT3yQMCf&amp;t=2958">This can require abstraction: drawing things away</a>. A good framework to keep abstraction aligned with simplicity is to use the who, what, when, where, why, and how framework. Another is to take the stance of I don’t know, I don’t want to know.</p>
+<p>Alongside the above points, I found the following collection of quotes from the talk to be interesting:</p>
+<blockquote class="blockquote">
+<p>Simplicity is a choice. It’s your fault if you don’t have a simple system.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Easy is not simple.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Simplicity often means making more things, not fewer.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Simplicity is the ultimate sophistication.</p>
+<p>– Leonardo da Vinci</p>
+</blockquote>
+</section>
+<section id="final-thoughts" class="level1">
+<h1>Final thoughts</h1>
+<p>The distinction between simple and easy stuck with me. Being able to have more precise language to describe the constructs we use in system and software design improves the quality of our output–for both developers and users.</p>
+<p>The discussion of our limitations as developers is a point that resonated with me. Indeed, you can develop towards complexity. However, we’re all limited in our ability to hold large amounts of information. More information, thus, can result in limited understanding. Complecting only compounds problems due to this limitation.</p>
+<p>Complecting is a term I’m walking away with from this talk. The idea of multiple braids or folds as being bad seems like great advice. How to avoid this in practice seems like the challenging task. The talk provides some tools to address this, though.</p>
+<p>Overall, a good talk with some thought-provoking points. I’m still attempting to understand some of what is shared, but I found many of the points were accessible and applicable to the work I do. Despite not being a computer scientist, systems designer, or full-on software developer, I still got great value from reviewing this talk.</p>
+<p>If I misunderstood these points or you’re someone who is interested in discussing this topic further, let’s connect!</p>
 
 
 </section>
-</section>
-</main></div>
-</div>
- <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2025,
+  author = {Berke, Collin K},
+  title = {Notes from {Rich} {Hickey’s} Talk {Simple} {Made} {Easy}},
+  date = {2025-08-03},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2025" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2025. <span>“Notes from Rich Hickey’s Talk Simple Made
+Easy.”</span> August 3, 2025.
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -350,6 +439,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   } else {
     toggleColorMode(false);
   }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     

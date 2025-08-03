@@ -1,0 +1,137 @@
+---
+title: "Notes from Rich Hickey's talk Simple Made Easy"
+description: "Learning more about software and system design"
+date: "2025-08-03"
+author: "Collin K. Berke, Ph.D."
+draft: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - programming
+---
+
+I was introduced to the talk [Simple Made Easy presented by Rich Hickey](https://www.youtube.com/watch?v=SxdOUGdseq4) during a 2025 Nebraska.Code() session.
+It's a fairly well-known talk in software development.
+Though outside of my domain, the topics covered were somewhat related to my work.
+I thus decided to stretch myself and review the talk.
+
+Several of the talk's points stood out to me.
+Some I'm still trying to fully grok.
+Below are my notes and takeaways.
+
+::: {.callout-note}
+This post is written in the spirit of [publishing more frequent blog posts](https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/).
+It's a bit of a scratchpad of ideas, concepts, and ways of working that I found to be useful or interesting.
+As such, what's here is lightly edited.
+Be aware: there will likely be spelling, grammatical, or syntactical errors along with some disjointed, incomplete ideas.
+:::
+
+# Takeaways
+
+> We need to build simple systems if we want to build good systems.
+
+The talk began by differentiating between the definitions of simple and easy in the context of software and system design ([01m25s](https://youtu.be/SxdOUGdseq4?si=-0QKIV4dzWfkd7zr&t=85)).
+Simple is about being one fold, one braid, or one twist.
+Simple is objective.
+Easy is defined as being near at hand, near to our understanding or current skill set.
+Easy is relative.
+Designing towards easy can be a limitation, as it forces familiarity.
+
+> If you want everything to be familiar you will never learn anything new because it can't be significantly different from what you already know.
+
+The talk then uses these two definitions to further distinguish between constructs vs. artifacts ([09m05s](https://youtu.be/SxdOUGdseq4?si=kfsyhuwVubbqsClt&t=545)).
+Developers work with constructs to create artifacts.
+At times, too much focus is placed on the constructs of the developer's experience.
+Rather, a focus on software quality, correctness, maintenance, and the ability for change will yield more benefits.
+
+> We have to start assessing our constructs based around the artifacts, not around the look and feel of the experience of typing it in or the cultural aspects of that.
+
+Users don't care about our experience writing the program.
+They only care about whether the program does what it says it's going to do and if it works well or what the level of the complexity the program yields via its output.
+
+The talk then addressed the limitations of complexity ([12m14s](https://youtu.be/SxdOUGdseq4?si=rv6KzWPiagRM1TAw&t=734)).
+Our ability to hold onto lots of information is limited.
+Intertwining of constructs requires us to hold lots of information in our mind.
+As such:
+
+> Complexity undermines understanding.
+
+Rich Hickey then provided some criticism of guard rail programming (e.g., using tests)([15m32s](https://youtu.be/SxdOUGdseq4?si=qOLoCLu7mm0qyTkZ&t=932)).
+A few questions were posed along with this point:
+
+* Do guard rails help you get where you're going?
+* What's true about every bug? They were written, it passed a type checker, and it passed all the tests.
+
+So, we'll always need to reason about our program because these guard rails are just safety nets.
+Being able to reason about or programs is important to debugging.
+
+This type of development has been criticized for it's impact on speed and agility.
+Hickey addressed this concern:
+
+> Ignoring complexity will slow you down over the long haul.
+
+If you focus to much on ease, you'll be able to move as fast as possible at the start.
+However, no matter what, complexity will always catch up to you.
+The net effect will be that you're not moving forward in any significant way.
+To make this point more concrete, the talk introduced the knitted castle problem ([19m36s](https://youtu.be/SxdOUGdseq4?si=JSE3fuibSCMRmIqJ&t=1176)).
+What will be easier to change, a castle knitted of yarn or one crafted using Legos?
+The results can still be complex.
+But the system may be hard to change in the future.
+Thus, the benefits of focusing on simplicity include:
+
+* Ease of understanding
+* Ease of change
+* Easier debugging
+* Flexibility
+
+The talk then introduced and applied the term complecting: to interleave, entwine, braid ([31m36s](https://youtu.be/SxdOUGdseq4?si=tNIUGRpWhvvj-L2b&t=1896)).
+Complecting is bad.
+You should avoid complecting things whenever possible.
+
+> You can write as sophisticated a system with dramatically simpler tools, which means you're going to be focusing on the system, what it's supposed to do instead of all the guck that falls out of the constructs you're using. If you want a simpler life, just choose simpler stuff.
+
+> Programming is not about typing, it's about thinking.
+
+However, at times we do need to make our own constructs.
+[This can require abstraction: drawing things away](https://youtu.be/SxdOUGdseq4?si=NBtly4XYZT3yQMCf&t=2958).
+A good framework to keep abstraction aligned with simplicity is to use the who, what, when, where, why, and how framework.
+Another is to take the stance of I don't know, I don't want to know.
+
+Alongside the above points, I found the following collection of quotes from the talk to be interesting:
+
+> Simplicity is a choice. It's your fault if you don't have a simple system.
+
+> Easy is not simple.
+
+> Simplicity often means making more things, not fewer.
+
+> Simplicity is the ultimate sophistication.
+>
+> -- Leonardo da Vinci
+
+# Final thoughts
+
+The distinction between simple and easy stuck with me.
+Being able to have more precise language to describe the constructs we use in system and software design improves the quality of our output--for both developers and users.
+
+The discussion of our limitations as developers is a point that resonated with me.
+Indeed, you can develop towards complexity.
+However, we're all limited in our ability to hold large amounts of information.
+More information, thus, can result in limited understanding.
+Complecting only compounds problems due to this limitation.
+
+Complecting is a term I'm walking away with from this talk.
+The idea of multiple braids or folds as being bad seems like great advice.
+How to avoid this in practice seems like the challenging task.
+The talk provides some tools to address this, though.
+
+Overall, a good talk with some thought-provoking points.
+I'm still attempting to understand some of what is shared, but I found many of the points were accessible and applicable to the work I do.
+Despite not being a computer scientist, systems designer, or full-on software developer, I still got great value from reviewing this talk.
+
+If I misunderstood these points or you're someone who is interested in discussing this topic further, let's connect!
