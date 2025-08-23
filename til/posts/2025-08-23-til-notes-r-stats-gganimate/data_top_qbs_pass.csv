@@ -1,0 +1,141 @@
+team,athlete_name,week,passing_yds,cume_pass_yds
+Illinois,Luke Altmyer,1,213,213
+Illinois,Luke Altmyer,2,192,405
+Illinois,Luke Altmyer,3,242,647
+Illinois,Luke Altmyer,4,215,862
+Illinois,Luke Altmyer,5,185,1047
+Illinois,Luke Altmyer,6,0,1047
+Illinois,Luke Altmyer,7,379,1426
+Illinois,Luke Altmyer,8,80,1506
+Illinois,Luke Altmyer,9,161,1667
+Illinois,Luke Altmyer,10,226,1893
+Illinois,Luke Altmyer,11,0,1893
+Illinois,Luke Altmyer,12,231,2124
+Illinois,Luke Altmyer,13,249,2373
+Illinois,Luke Altmyer,14,170,2543
+Indiana,Kurtis Rourke,1,180,180
+Indiana,Kurtis Rourke,2,268,448
+Indiana,Kurtis Rourke,3,307,755
+Indiana,Kurtis Rourke,4,258,1013
+Indiana,Kurtis Rourke,5,359,1372
+Indiana,Kurtis Rourke,6,380,1752
+Indiana,Kurtis Rourke,7,0,1752
+Indiana,Kurtis Rourke,8,189,1941
+Indiana,Kurtis Rourke,9,0,1941
+Indiana,Kurtis Rourke,10,263,2204
+Indiana,Kurtis Rourke,11,206,2410
+Indiana,Kurtis Rourke,12,0,2410
+Indiana,Kurtis Rourke,13,68,2478
+Indiana,Kurtis Rourke,14,349,2827
+Maryland,Billy Edwards,1,311,311
+Maryland,Billy Edwards,2,253,564
+Maryland,Billy Edwards,3,263,827
+Maryland,Billy Edwards,4,328,1155
+Maryland,Billy Edwards,5,289,1444
+Maryland,Billy Edwards,6,0,1444
+Maryland,Billy Edwards,7,296,1740
+Maryland,Billy Edwards,8,373,2113
+Maryland,Billy Edwards,9,201,2314
+Maryland,Billy Edwards,10,0,2314
+Maryland,Billy Edwards,11,206,2520
+Maryland,Billy Edwards,12,335,2855
+Maryland,Billy Edwards,13,26,2881
+Maryland,Billy Edwards,14,0,2881
+Minnesota,Max Brosmer,1,166,166
+Minnesota,Max Brosmer,2,271,437
+Minnesota,Max Brosmer,3,191,628
+Minnesota,Max Brosmer,4,209,837
+Minnesota,Max Brosmer,5,258,1095
+Minnesota,Max Brosmer,6,169,1264
+Minnesota,Max Brosmer,7,193,1457
+Minnesota,Max Brosmer,8,0,1457
+Minnesota,Max Brosmer,9,320,1777
+Minnesota,Max Brosmer,10,213,1990
+Minnesota,Max Brosmer,11,262,2252
+Minnesota,Max Brosmer,12,0,2252
+Minnesota,Max Brosmer,13,175,2427
+Minnesota,Max Brosmer,14,191,2618
+Nebraska,Dylan Raiola,1,238,238
+Nebraska,Dylan Raiola,2,185,423
+Nebraska,Dylan Raiola,3,247,670
+Nebraska,Dylan Raiola,4,297,967
+Nebraska,Dylan Raiola,5,244,1211
+Nebraska,Dylan Raiola,6,134,1345
+Nebraska,Dylan Raiola,7,0,1345
+Nebraska,Dylan Raiola,8,234,1579
+Nebraska,Dylan Raiola,9,152,1731
+Nebraska,Dylan Raiola,10,177,1908
+Nebraska,Dylan Raiola,11,0,1908
+Nebraska,Dylan Raiola,12,191,2099
+Nebraska,Dylan Raiola,13,293,2392
+Nebraska,Dylan Raiola,14,190,2582
+Ohio State,Will Howard,1,228,228
+Ohio State,Will Howard,2,292,520
+Ohio State,Will Howard,3,0,520
+Ohio State,Will Howard,4,275,795
+Ohio State,Will Howard,5,244,1039
+Ohio State,Will Howard,6,209,1248
+Ohio State,Will Howard,7,326,1574
+Ohio State,Will Howard,8,0,1574
+Ohio State,Will Howard,9,221,1795
+Ohio State,Will Howard,10,182,1977
+Ohio State,Will Howard,11,260,2237
+Ohio State,Will Howard,12,247,2484
+Ohio State,Will Howard,13,201,2685
+Ohio State,Will Howard,14,175,2860
+Oregon,Dillon Gabriel,1,380,380
+Oregon,Dillon Gabriel,2,243,623
+Oregon,Dillon Gabriel,3,291,914
+Oregon,Dillon Gabriel,4,0,914
+Oregon,Dillon Gabriel,5,278,1192
+Oregon,Dillon Gabriel,6,257,1449
+Oregon,Dillon Gabriel,7,341,1790
+Oregon,Dillon Gabriel,8,290,2080
+Oregon,Dillon Gabriel,9,291,2371
+Oregon,Dillon Gabriel,10,294,2665
+Oregon,Dillon Gabriel,11,183,2848
+Oregon,Dillon Gabriel,12,218,3066
+Oregon,Dillon Gabriel,13,0,3066
+Oregon,Dillon Gabriel,14,209,3275
+Penn State,Drew Allar,1,216,216
+Penn State,Drew Allar,2,204,420
+Penn State,Drew Allar,3,0,420
+Penn State,Drew Allar,4,309,729
+Penn State,Drew Allar,5,135,864
+Penn State,Drew Allar,6,237,1101
+Penn State,Drew Allar,7,391,1492
+Penn State,Drew Allar,8,0,1492
+Penn State,Drew Allar,9,148,1640
+Penn State,Drew Allar,10,146,1786
+Penn State,Drew Allar,11,220,2006
+Penn State,Drew Allar,12,247,2253
+Penn State,Drew Allar,13,244,2497
+Penn State,Drew Allar,14,171,2668
+UCLA,Ethan Garbers,1,272,272
+UCLA,Ethan Garbers,2,0,272
+UCLA,Ethan Garbers,3,137,409
+UCLA,Ethan Garbers,4,281,690
+UCLA,Ethan Garbers,5,118,808
+UCLA,Ethan Garbers,6,0,808
+UCLA,Ethan Garbers,7,293,1101
+UCLA,Ethan Garbers,8,383,1484
+UCLA,Ethan Garbers,9,0,1484
+UCLA,Ethan Garbers,10,219,1703
+UCLA,Ethan Garbers,11,203,1906
+UCLA,Ethan Garbers,12,267,2173
+UCLA,Ethan Garbers,13,265,2438
+UCLA,Ethan Garbers,14,289,2727
+USC,Miller Moss,1,378,378
+USC,Miller Moss,2,229,607
+USC,Miller Moss,3,0,607
+USC,Miller Moss,4,283,890
+USC,Miller Moss,5,308,1198
+USC,Miller Moss,6,200,1398
+USC,Miller Moss,7,220,1618
+USC,Miller Moss,8,336,1954
+USC,Miller Moss,9,308,2262
+USC,Miller Moss,10,293,2555
+USC,Miller Moss,11,0,2555
+USC,Miller Moss,12,0,2555
+USC,Miller Moss,13,0,2555
+USC,Miller Moss,14,0,2555
