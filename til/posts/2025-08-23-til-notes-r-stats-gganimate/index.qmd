@@ -17,7 +17,7 @@ categories:
 ---
 
 I recently created a [TidyTuesday](https://www.collinberke.com/blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/) data visualization utilizing the [gganimate](https://gganimate.com/articles/gganimate.html) [RStats](https://www.r-project.org/) package.
-While using the package, my focus was mostly to 'getting something up and running'.
+While using the package, my focus was to 'get something up and running quickly'.
 I wanted to go deeper, though.
 Below are my notes from diving into the package's ['Getting Started'](https://gganimate.com/articles/gganimate.html) vignette.
 
@@ -32,7 +32,7 @@ Be aware: there will likely be spelling, grammatical, or syntactical errors alon
 
 gganimate is an extension ggplot2 package that builds on the [grammar of graphics](https://vita.had.co.nz/papers/layered-grammar.pdf).
 It provides an API to create animations by adding additional grammar classes, which utilizes syntax similar to ggplot2.
-The package provides the following family of functions to utilize these new grammar classes:
+The package provides the following family of functions to apply these new grammar classes:
 
 * `transition_*()`
 * `view_*`
@@ -40,9 +40,10 @@ The package provides the following family of functions to utilize these new gram
 * `enter_*()/exit_*()`
 * `ease_aes()`
 
-Check out the [package's README](https://gganimate.com/) for a more in-depth definition of each family of functions.
+Check out the [package's README](https://gganimate.com/).
+It contains a more in-depth definition of each family of functions.
 
-To get started, we just need to install `gganimate` by doing the following.
+To get started, we just need to install `gganimate` by running the following in our console.
 
 ```{r}
 #| label: install-gganimate
@@ -50,7 +51,7 @@ To get started, we just need to install `gganimate` by doing the following.
 install.packages("gganimate")
 ```
 
-Then, we make the package available in our R session by running the following:
+Then, we make the package available in our R session by adding in our file's `setup` code chunk (along with the other packages we seek to use):
 
 ```{r}
 #| label: setup
@@ -79,10 +80,10 @@ These include:
 * rendering
 
 In this post, I provide two examples to highlight the key ideas implemented in gganimate.
-The first will seek to animate a data visulization of the `penguins` data set, and it will be used to demonstrate how each key idea is implemented.
+The first will seek to animate a data visulization of the `penguins` data set, and it will be used to demonstrate how each key idea is implemented within the package.
 The second will be an extension of the docs, where I visualize some [NCAA Big Ten college football](https://en.wikipedia.org/wiki/College_football) data.
-Indeed, the examples here will closely resemble what's already documented in the package's vignette.
-I highly suggest reviewing the package's docs in addition to these notes.
+The examples here will closely resemble what's already documented in the package's vignette.
+As such, I highly suggest reviewing the package's docs in addition to these notes.
 
 Let's start with the `penguins` data set, where we can create a static scatterplot of `flipper_len` by `body_mass`.
 In other words, we want to answer the question: how do bigger flippers relate to a penguin's mass? (i.e., are penguins with longer flippers heavier?).
@@ -100,14 +101,16 @@ vis_flip_mass <- ggplot(
 vis_flip_mass
 ```
 
-Great! Now that we have a static plot go about animating it.
+Great!
+We have now a static plot to animate.
 
 ## Transitions
 
 Transitions is the first concept to know when using gganimate.
-The key points/terms include:
+The terms/key functions include:
 
-* The `transition_states()` function creates transitions based on some discrete variable within your data. That is, it's main purpose is to split the data into various frames, which are then later complied into a `.gif` file.
+* The `transition_states()` function creates transitions based on some discrete variable within your data.
+That is, it's main purpose is to split the data into various frames, which are then later complied into a `.gif` file.
 In the example here, we're splitting by the `species` variable.
 
 * *tweening:* a calculation performed to ensure the transitions between each state of the animation are smooth.
@@ -144,7 +147,7 @@ anim_save(
 ::: {.callout-note}
 Where's the `.gif`?
 
-I found out gganimate opens [Preview](https://en.wikipedia.org/wiki/Preview_(macOS)) (I'm on a Mac) after rendering the `.gif` file.
+I noticed gganimate opens [Preview](https://en.wikipedia.org/wiki/Preview_(macOS)) (I'm on a Mac) after rendering the `.gif` file.
 As such, all you see is a collection of static plots.
 This didn't allow me to 'see' the animation.
 
@@ -399,7 +402,7 @@ anim_save(
 
 Now that we've settled on the specifics of our animation, we need to consider the rendering of the animation.
 Indeed, if we don't want to think about it, the default rendering options are a good start for most situations.
-However,  gganimate provides functionality to modify the rendering of the animtation for cases where we want flexibility.
+However,  gganimate provides functionality to modify the rendering of the animation for cases where we want flexibility.
 Let's highlight some of these options.
 
 An animation's number of frames and frame-rate is established at rendering.
@@ -412,17 +415,17 @@ These include:
 * `renderer`: the function used to perform the rendering.
 
 If you have very specific needs for the outputted animation, `...` are available, and you can call `animate()` with these specific options specified.
-In the background, `gganimate` uses [gifski](https://github.com/r-rust/gifski) to combine each frame into a `gif` file.
+In the background, gganimate uses [gifski](https://github.com/r-rust/gifski) to combine each frame into a `gif` file.
 
 Indeed, in most cases a `.gif` file is what you'll need.
-However, {gganimate} provides additional rendering functions.
-Take for example [BlueSky]. 
-At least at the time of writing this, the platform doesn't support the inclusion of user created `.gifs` within posts.
+However, gganimate provides additional rendering functions.
+Take for example BlueSky.
+At least at the time of writing this post, the platform doesn't support the inclusion of user created `.gifs` within posts.
 So, a video file is needed to share your post.
 `av_renderer()` can be used to output a video file of your animation.
 The [docs](https://gganimate.com/articles/gganimate.html#rendering) have a pretty good example of how to do this.
 
-Just like with {ggplot2}, you can specify dimension options like `height` and `width`, along with `res` (i.e., resolution).
+Just like with ggplot2, you can specify dimension options like `height` and `width`, along with `res` (i.e., resolution).
 For instance:
 
 ```{r}
@@ -459,18 +462,19 @@ Use `anim_save()` to do this.
 
 # Building on the docs
 
-These notes aim to build on the docs, so let's create an additional example using what we learned.
+These notes aim to build on the docs.
+To do this, let's create an additional example applying what we learned.
 I work with timeseries data, so let's create an example animating this type of data.
 
 The 2025 college football season is upon us.
 I'm a Nebraska fan.
-So let's take a look at some Big Ten Quarter Back passing yards from last season.
+So let's take a look at some Big Ten quarterback passing yards from last season.
 Specficially, let's create an animation of cumulative passing yards for each week.
 
 Here's some code to get and transform this data.
-It utilizes a package from the [SportsDataverse](https://www.sportsdataverse.org/), [{cfbfastR}](https://cfbfastr.sportsdataverse.org/) to get the passing data for all Big Ten.
+It utilizes a package from the [SportsDataverse](https://www.sportsdataverse.org/), [cfbfastR](https://cfbfastr.sportsdataverse.org/) to get the passing data for all Big Ten quarterbacks.
 For the sake of brevity and because data transformation is not the main focus of this post, I won't go into detail explaining each step.
-Nonetheless, here's the code needed to get and transform the data.
+Nonetheless, here's the code needed to get and transform the data for our the following example:
 
 ```{r}
 #| label: get-big-passing-data
@@ -640,7 +644,7 @@ anim_top_qbs <- vis_qbs_pass +
   )
 ```
 
-Now it's about setting options for our animation.
+At this point, it's about setting output options for our animation.
 The first is to specify the plot object we want to animate: `anim_top_qbs`.
 The `duration` option is then set to specify the animation's length, in seconds.
 `fps`, or frames per second, follows.
@@ -714,7 +718,7 @@ Awesome! We now have an animated line chart.
 
 # Wrap up
 
-This set of notes aimed to be a review of the 'Getting Started' vignette for the [{gganimate}](https://gganimate.com/) package.
+This set of notes aimed to be a review of the ['Getting Started'](https://gganimate.com/articles/gganimate.html) vignette for the [gganimate](https://gganimate.com/) package.
 The key concepts I took away from reviewing these docs include:
 
   * transitions
@@ -724,7 +728,7 @@ The key concepts I took away from reviewing these docs include:
   * entering and exiting
   * rendering
 
-In addition, the key functions to get started using {gganimate} include:
+In addition, the key functions to get started using gganimate include:
 
   * The `transition_*()` family of functions.
   * The `ease_*()` family of functions.

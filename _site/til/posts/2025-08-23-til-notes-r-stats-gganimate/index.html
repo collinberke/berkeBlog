@@ -205,7 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>I recently created a <a href="https://www.collinberke.com/blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/">TidyTuesday</a> data visualization utilizing the <a href="https://gganimate.com/articles/gganimate.html">gganimate</a> <a href="https://www.r-project.org/">RStats</a> package. While using the package, my focus was mostly to ‘getting something up and running’. I wanted to go deeper, though. Below are my notes from diving into the package’s <a href="https://gganimate.com/articles/gganimate.html">‘Getting Started’</a> vignette.</p>
+</header><p>I recently created a <a href="https://www.collinberke.com/blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/">TidyTuesday</a> data visualization utilizing the <a href="https://gganimate.com/articles/gganimate.html">gganimate</a> <a href="https://www.r-project.org/">RStats</a> package. While using the package, my focus was to ‘get something up and running quickly’. I wanted to go deeper, though. Below are my notes from diving into the package’s <a href="https://gganimate.com/articles/gganimate.html">‘Getting Started’</a> vignette.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -220,7 +220,7 @@ Note
 </div>
 </div>
 <section id="what-is-gganimate" class="level1"><h1>What is gganimate?</h1>
-<p>gganimate is an extension ggplot2 package that builds on the <a href="https://vita.had.co.nz/papers/layered-grammar.pdf">grammar of graphics</a>. It provides an API to create animations by adding additional grammar classes, which utilizes syntax similar to ggplot2. The package provides the following family of functions to utilize these new grammar classes:</p>
+<p>gganimate is an extension ggplot2 package that builds on the <a href="https://vita.had.co.nz/papers/layered-grammar.pdf">grammar of graphics</a>. It provides an API to create animations by adding additional grammar classes, which utilizes syntax similar to ggplot2. The package provides the following family of functions to apply these new grammar classes:</p>
 <ul>
 <li><code>transition_*()</code></li>
 <li><code>view_*</code></li>
@@ -228,12 +228,12 @@ Note
 <li><code>enter_*()/exit_*()</code></li>
 <li><code><a href="https://gganimate.com/reference/ease_aes.html">ease_aes()</a></code></li>
 </ul>
-<p>Check out the <a href="https://gganimate.com/">package’s README</a> for a more in-depth definition of each family of functions.</p>
-<p>To get started, we just need to install <code>gganimate</code> by doing the following.</p>
+<p>Check out the <a href="https://gganimate.com/">package’s README</a>. It contains a more in-depth definition of each family of functions.</p>
+<p>To get started, we just need to install <code>gganimate</code> by running the following in our console.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"gganimate"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then, we make the package available in our R session by running the following:</p>
+<p>Then, we make the package available in our R session by adding in our file’s <code>setup</code> code chunk (along with the other packages we seek to use):</p>
 <div class="cell" data-warnings="false">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">berkeBrand</span><span class="op">)</span></span>
@@ -254,7 +254,7 @@ Note
 <li>entering and exiting</li>
 <li>rendering</li>
 </ul>
-<p>In this post, I provide two examples to highlight the key ideas implemented in gganimate. The first will seek to animate a data visulization of the <code>penguins</code> data set, and it will be used to demonstrate how each key idea is implemented. The second will be an extension of the docs, where I visualize some <a href="https://en.wikipedia.org/wiki/College_football">NCAA Big Ten college football</a> data. Indeed, the examples here will closely resemble what’s already documented in the package’s vignette. I highly suggest reviewing the package’s docs in addition to these notes.</p>
+<p>In this post, I provide two examples to highlight the key ideas implemented in gganimate. The first will seek to animate a data visulization of the <code>penguins</code> data set, and it will be used to demonstrate how each key idea is implemented within the package. The second will be an extension of the docs, where I visualize some <a href="https://en.wikipedia.org/wiki/College_football">NCAA Big Ten college football</a> data. The examples here will closely resemble what’s already documented in the package’s vignette. As such, I highly suggest reviewing the package’s docs in addition to these notes.</p>
 <p>Let’s start with the <code>penguins</code> data set, where we can create a static scatterplot of <code>flipper_len</code> by <code>body_mass</code>. In other words, we want to answer the question: how do bigger flippers relate to a penguin’s mass? (i.e., are penguins with longer flippers heavier?).</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
@@ -271,9 +271,9 @@ Note
 </div>
 </div>
 </div>
-<p>Great! Now that we have a static plot go about animating it.</p>
+<p>Great! We have now a static plot to animate.</p>
 <section id="transitions" class="level2"><h2 class="anchored" data-anchor-id="transitions">Transitions</h2>
-<p>Transitions is the first concept to know when using gganimate. The key points/terms include:</p>
+<p>Transitions is the first concept to know when using gganimate. The terms/key functions include:</p>
 <ul>
 <li><p>The <code><a href="https://gganimate.com/reference/transition_states.html">transition_states()</a></code> function creates transitions based on some discrete variable within your data. That is, it’s main purpose is to split the data into various frames, which are then later complied into a <code>.gif</code> file. In the example here, we’re splitting by the <code>species</code> variable.</p></li>
 <li><p><em>tweening:</em> a calculation performed to ensure the transitions between each state of the animation are smooth.</p></li>
@@ -304,7 +304,7 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>Where’s the <code>.gif</code>?</p>
-<p>I found out gganimate opens <a href="https://en.wikipedia.org/wiki/Preview_(macOS)">Preview</a> (I’m on a Mac) after rendering the <code>.gif</code> file. As such, all you see is a collection of static plots. This didn’t allow me to ‘see’ the animation.</p>
+<p>I noticed gganimate opens <a href="https://en.wikipedia.org/wiki/Preview_(macOS)">Preview</a> (I’m on a Mac) after rendering the <code>.gif</code> file. As such, all you see is a collection of static plots. This didn’t allow me to ‘see’ the animation.</p>
 <p>gganimate writes the <code>.gif</code> file to a temporary directory. The <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code> function can be used to print the file path of the temporary directory used for the current R session. This file path can then be used to point a web browser to the location of the <code>.gif</code> file. This <a href="https://www.youtube.com/watch?v=Hmr6HU2WWcs">video</a> does a pretty good job highlighting how to do this using Google Chrome.</p>
 <p>The <code><a href="https://gganimate.com/reference/anim_save.html">anim_save()</a></code> function can be used to save the <code>.gif</code> file wherever is most convenient.</p>
 </div>
@@ -409,7 +409,7 @@ Note
 </figure>
 </div>
 </section></section><section id="rendering" class="level1"><h1>Rendering</h1>
-<p>Now that we’ve settled on the specifics of our animation, we need to consider the rendering of the animation. Indeed, if we don’t want to think about it, the default rendering options are a good start for most situations. However, gganimate provides functionality to modify the rendering of the animtation for cases where we want flexibility. Let’s highlight some of these options.</p>
+<p>Now that we’ve settled on the specifics of our animation, we need to consider the rendering of the animation. Indeed, if we don’t want to think about it, the default rendering options are a good start for most situations. However, gganimate provides functionality to modify the rendering of the animation for cases where we want flexibility. Let’s highlight some of these options.</p>
 <p>An animation’s number of frames and frame-rate is established at rendering. The <code><a href="https://gganimate.com/reference/animate.html">animate()</a></code> function runs when an animation is printed, and as a result, default arguments are passed to specify the properties of the rendering. These include:</p>
 <ul>
 <li>
@@ -421,9 +421,9 @@ Note
 <li>
 <code>renderer</code>: the function used to perform the rendering.</li>
 </ul>
-<p>If you have very specific needs for the outputted animation, <code>...</code> are available, and you can call <code><a href="https://gganimate.com/reference/animate.html">animate()</a></code> with these specific options specified. In the background, <code>gganimate</code> uses <a href="https://github.com/r-rust/gifski">gifski</a> to combine each frame into a <code>gif</code> file.</p>
-<p>Indeed, in most cases a <code>.gif</code> file is what you’ll need. However, {gganimate} provides additional rendering functions. Take for example [BlueSky]. At least at the time of writing this, the platform doesn’t support the inclusion of user created <code>.gifs</code> within posts. So, a video file is needed to share your post. <code><a href="https://gganimate.com/reference/renderers.html">av_renderer()</a></code> can be used to output a video file of your animation. The <a href="https://gganimate.com/articles/gganimate.html#rendering">docs</a> have a pretty good example of how to do this.</p>
-<p>Just like with {ggplot2}, you can specify dimension options like <code>height</code> and <code>width</code>, along with <code>res</code> (i.e., resolution). For instance:</p>
+<p>If you have very specific needs for the outputted animation, <code>...</code> are available, and you can call <code><a href="https://gganimate.com/reference/animate.html">animate()</a></code> with these specific options specified. In the background, gganimate uses <a href="https://github.com/r-rust/gifski">gifski</a> to combine each frame into a <code>gif</code> file.</p>
+<p>Indeed, in most cases a <code>.gif</code> file is what you’ll need. However, gganimate provides additional rendering functions. Take for example BlueSky. At least at the time of writing this post, the platform doesn’t support the inclusion of user created <code>.gifs</code> within posts. So, a video file is needed to share your post. <code><a href="https://gganimate.com/reference/renderers.html">av_renderer()</a></code> can be used to output a video file of your animation. The <a href="https://gganimate.com/articles/gganimate.html#rendering">docs</a> have a pretty good example of how to do this.</p>
+<p>Just like with ggplot2, you can specify dimension options like <code>height</code> and <code>width</code>, along with <code>res</code> (i.e., resolution). For instance:</p>
 <div class="cell">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">&lt;-</span> <span class="va">anim</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/enter_exit.html">enter_grow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -442,9 +442,9 @@ Note
 </div>
 <p>Saving your animation is simple. Use <code><a href="https://gganimate.com/reference/anim_save.html">anim_save()</a></code> to do this.</p>
 </section><section id="building-on-the-docs" class="level1"><h1>Building on the docs</h1>
-<p>These notes aim to build on the docs, so let’s create an additional example using what we learned. I work with timeseries data, so let’s create an example animating this type of data.</p>
-<p>The 2025 college football season is upon us. I’m a Nebraska fan. So let’s take a look at some Big Ten Quarter Back passing yards from last season. Specficially, let’s create an animation of cumulative passing yards for each week.</p>
-<p>Here’s some code to get and transform this data. It utilizes a package from the <a href="https://www.sportsdataverse.org/">SportsDataverse</a>, <a href="https://cfbfastr.sportsdataverse.org/">{cfbfastR}</a> to get the passing data for all Big Ten. For the sake of brevity and because data transformation is not the main focus of this post, I won’t go into detail explaining each step. Nonetheless, here’s the code needed to get and transform the data.</p>
+<p>These notes aim to build on the docs. To do this, let’s create an additional example applying what we learned. I work with timeseries data, so let’s create an example animating this type of data.</p>
+<p>The 2025 college football season is upon us. I’m a Nebraska fan. So let’s take a look at some Big Ten quarterback passing yards from last season. Specficially, let’s create an animation of cumulative passing yards for each week.</p>
+<p>Here’s some code to get and transform this data. It utilizes a package from the <a href="https://www.sportsdataverse.org/">SportsDataverse</a>, <a href="https://cfbfastr.sportsdataverse.org/">cfbfastR</a> to get the passing data for all Big Ten quarterbacks. For the sake of brevity and because data transformation is not the main focus of this post, I won’t go into detail explaining each step. Nonetheless, here’s the code needed to get and transform the data for our the following example:</p>
 <div class="cell">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_fb_pass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html">map_df</a></span><span class="op">(</span></span>
 <span>  <span class="fl">1</span><span class="op">:</span><span class="fl">14</span>,</span>
@@ -572,7 +572,7 @@ Note
 <span>    <span class="va">week</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now it’s about setting options for our animation. The first is to specify the plot object we want to animate: <code>anim_top_qbs</code>. The <code>duration</code> option is then set to specify the animation’s length, in seconds. <code>fps</code>, or frames per second, follows. Then, the size of the animation is configured with the <code>width</code> and <code>height</code> options. <code>height</code> and <code>width</code> are represented in terms of pixels, though <code><a href="https://gganimate.com/reference/animate.html">animate()</a></code> makes a <code>units</code> argument available if you want to use some other unit to specigy the size. Lastly, we set a <code>res</code>olution value to specify the quality of the images used to make up the animation.</p>
+<p>At this point, it’s about setting output options for our animation. The first is to specify the plot object we want to animate: <code>anim_top_qbs</code>. The <code>duration</code> option is then set to specify the animation’s length, in seconds. <code>fps</code>, or frames per second, follows. Then, the size of the animation is configured with the <code>width</code> and <code>height</code> options. <code>height</code> and <code>width</code> are represented in terms of pixels, though <code><a href="https://gganimate.com/reference/animate.html">animate()</a></code> makes a <code>units</code> argument available if you want to use some other unit to specigy the size. Lastly, we set a <code>res</code>olution value to specify the quality of the images used to make up the animation.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -602,7 +602,7 @@ Note
 </div>
 <p>Awesome! We now have an animated line chart.</p>
 </section><section id="wrap-up" class="level1"><h1>Wrap up</h1>
-<p>This set of notes aimed to be a review of the ‘Getting Started’ vignette for the <a href="https://gganimate.com/">{gganimate}</a> package. The key concepts I took away from reviewing these docs include:</p>
+<p>This set of notes aimed to be a review of the <a href="https://gganimate.com/articles/gganimate.html">‘Getting Started’</a> vignette for the <a href="https://gganimate.com/">gganimate</a> package. The key concepts I took away from reviewing these docs include:</p>
 <ul>
 <li>transitions</li>
 <li>easing</li>
@@ -611,7 +611,7 @@ Note
 <li>entering and exiting</li>
 <li>rendering</li>
 </ul>
-<p>In addition, the key functions to get started using {gganimate} include:</p>
+<p>In addition, the key functions to get started using gganimate include:</p>
 <ul>
 <li>The <code>transition_*()</code> family of functions.</li>
 <li>The <code>ease_*()</code> family of functions.</li>
