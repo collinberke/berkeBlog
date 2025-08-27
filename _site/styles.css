@@ -1,1 +1,18 @@
 /* css styles */
+#container-hi-button {
+  text-align: center;
+}
+
+#hi-button {
+  background-color: #f5f5f5;
+  font-size: 24px;
+  left: 50%;
+  border-radius: 8px;
+  width: 35%;
+  opacity: 0.8;
+  transition: 0.4s;
+}
+
+#hi-button:hover {
+  opacity: 1
+}
