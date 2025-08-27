@@ -1,0 +1,60 @@
+---
+title: "Say Hi!"
+format:
+  html:
+    toc: false
+---
+
+I want to meet you. Yeah, you!
+
+I've set aside time on my calendar for 30-60 minute conversations over coffee, lunch, or other suggestions.
+These conversations can be virtual or in person if you're in my area (Lincoln or Omaha, NE).
+
+# What can our time together be used for?
+
+Whatever you want.
+Are you working as a data scientist, analyst, or any other type of professional in media or marketing?
+Let's talk shop.
+Have an idea or blocker you want to discuss?
+I'm open to sharing objective, external feedback.
+Wrestling with a tricky piece of code?
+I might be able to help, or at the very least could be an extra hand in Googling or AI'ing your problem.
+Have a presentation you want to practice?
+With my background in communication and public speaking, I'd be glad to listen and offer guidance.
+Want to spend 10 minutes screaming into the void of the internet and head out?
+I'm open to that to.
+
+To be clear, I'm not selling anything.
+My intention with this time is connection and networking, and it's not to push a sales pitch or demo.
+
+If any of this sounds interesting, schedule a time and come say hi!
+
+<div id="container-hi-button">
+   <a target="_blank" rel="noopener noreferrer" href="https://calendly.com/collin-berke">
+     <button id="hi-button">👋 Say Hi!</button>
+   </a>
+</div>
+
+# My interests
+
+If you need specifics, the topics I'd like to talk more about include:
+
+* Media, digital, and marketing data science and analytics.
+* Open-source statistical software: mostly R, but I'm open to discussing Python.
+* R package development.
+* Neovim and LazyVim.
+* Cloud computing.
+* The use of data and its relationship to organizational culture.
+* Data visualization.
+
+# Other ways to connect
+
+Not interested in saying hi in person?
+That's cool.
+Here are some other ways to connect with me:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
+
+
