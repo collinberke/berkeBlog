@@ -3,7 +3,7 @@ title: "Notes: Using GitHub search"
 description: "Learning more about GitHub's search"
 date: "2025-08-25"
 author: "Collin K. Berke, Ph.D."
-draft: true
+draft: false
 image: false
 toc: true
 code-link: true
