@@ -1,7 +1,7 @@
 ---
 title: "Notes: Using GitHub search"
 description: "Learning more about GitHub's search"
-date: "2025-08-25"
+date: "2025-09-01"
 author: "Collin K. Berke, Ph.D."
 draft: false
 image: false
@@ -17,9 +17,9 @@ categories:
 ---
 
 I've recently been experimenting more with GitHub search.
-Much of this taken place using GitHub's command line tool: [`gh`](https://cli.github.com/).
+Much of this has taken place using GitHub's command line tool: [`gh`](https://cli.github.com/).
 I wanted to learn more, since I began to see the usefulness of this tool.
-The goal, then, was to identify ways I could be more productive using GitHub's search.
+The goal, then, was to identify ways I could be more productive using search.
 This involved a review of GitHub's docs.
 The following are notes from my review.
 
@@ -32,10 +32,10 @@ Be aware: there will likely be spelling, grammatical, or syntactical errors alon
 
 # What is GitHub search?
 
-Search allows you to navigate and find almost anything availabe within GitHub.
+Search allows you to navigate and find almost anything available within GitHub.
 This includes code, issues, pull requests, and discussions.
 GitHub search enables broad searches across all repositories, and it also can be used to target a search.
-For instance, search can be targetted at specific organizations or repositories you own.
+For instance, search can be targeted at specific organizations or repositories you own.
 GitHub search also provides search qualifiers.
 Search qualifiers are key value pairs, which help limit the results to very specific search criteria.
 
@@ -56,13 +56,13 @@ For instance, you would use the following when searching:
 * `gh search repo` - search repos
 
 Qualifiers and command flags can also be passed along with your search query to further narrow your search results.
-For instance, let's get an output of all the repos owned by the tidyverse:
+For instance, let's get an output of all the repos owned by the Tidyverse:
 
 ```bash
 gh search repos org:tidyverse --limit 50
 ```
 
-Or, how about we list all the tidyverse repos with greater than 500 stars:
+Or, how about we list all the Tidyverse repos with greater than 500 stars:
 
 ```bash
 gh search repos org:tidyverse stars:">500"
@@ -98,7 +98,7 @@ gh pr list
 ```
 
 Both commands include command flags useful for modifying output.
-I won't spend much time overviewing all of these, but I will hightlight some of them throughout this post, especially ones that are useful for search.
+I won't spend much time overviewing all of these, but I will highlight some of them throughout this post, especially ones that are useful for search.
 I suggest reading the help docs if you want details on the different command flags that are available.
 
 ``` bash
@@ -120,7 +120,7 @@ gh search issues org:tidyverse
 ```
 
 Say we want to narrow our search further, we can limit it to a specific repo by passing a value to the `repo` parameter.
-The following code will do this for the `ggplot2` repo, which is associated with the tidyverse organization.
+The following code will do this for the `ggplot2` repo, which is associated with the Tidyverse organization.
 
 ```bash
 gh search issues repo:tidyverse/ggplot2
@@ -282,7 +282,7 @@ gh search code TODO --owner=tidyverse
 It looks as though some developers and maintainers of the Tidyverse utilize this convention to denote to-do items.
 That's a pretty neat find.
 
-Or, you can make the search more localized, say by targetting a specific repo.
+Or, you can make the search more localized, say by targeting a specific repo.
 Is the to-do convention used in `ggplot2`?
 
 ```bash
@@ -291,7 +291,7 @@ gh search code TODO --repo=tidyverse/ggplot2
 
 Indeed, it is!
 
-The possiblities are endless here when it comes to searching code within GitHub.
+The possibilities are endless here when it comes to searching code within GitHub.
 
 # Identifying issues with no assignee
 
@@ -305,7 +305,7 @@ gh search issues org:tidyverse no:assignee
 ```
 
 ::: {.callout}
-I didn't do much research on this, but I assume the tidyverse team doesn't really utilize assignee within their issues.
+I didn't do much research on this, but I assume the Tidyverse team doesn't really utilize assignee within their issues.
 I think this is because repos are given dedicated maintainers, rather than a whole team whose responsible for a repo.
 So, if you run the above query, you'll likely see a lot of issues that are unassigned or assigned to only one person.
 :::
@@ -324,7 +324,7 @@ If you want to learn more about how to leverage GitHub's search features, check 
 * [About searching on GitHub](https://docs.github.com/en/search-github/getting-started-with-searching-on-github/about-searching-on-github)
 * [Searching issues and pull requests](https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests)
 * [Understanding the search syntax](https://docs.github.com/en/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax)
-* [GitHub Search Cheatsheet](https://gist.github.com/bonniss/4f0de4f599708c5268134225dda003e0)
+* [GitHub Search Cheat Sheet](https://gist.github.com/bonniss/4f0de4f599708c5268134225dda003e0)
 
 If you found these notes useful or are just interested in the use of GitHub search, let's connect:
 
