@@ -1,0 +1,333 @@
+---
+title: "Notes: Using GitHub search"
+description: "Learning more about GitHub's search"
+date: "2025-08-25"
+author: "Collin K. Berke, Ph.D."
+draft: true
+image: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+  - productivity
+---
+
+I've recently been experimenting more with GitHub search.
+Much of this taken place using GitHub's command line tool: [`gh`](https://cli.github.com/).
+I wanted to learn more, since I began to see the usefulness of this tool.
+The goal, then, was to identify ways I could be more productive using GitHub's search.
+This involved a review of GitHub's docs.
+The following are notes from my review.
+
+::: {.callout-note}
+This post is written in the spirit of [publishing more frequent blog posts](https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/).
+It's a bit of a scratchpad of ideas, concepts, and ways of working that I found to be useful or interesting.
+As such, what's here is lightly edited.
+Be aware: there will likely be spelling, grammatical, or syntactical errors along with some disjointed, incomplete ideas.
+:::
+
+# What is GitHub search?
+
+Search allows you to navigate and find almost anything availabe within GitHub.
+This includes code, issues, pull requests, and discussions.
+GitHub search enables broad searches across all repositories, and it also can be used to target a search.
+For instance, search can be targetted at specific organizations or repositories you own.
+GitHub search also provides search qualifiers.
+Search qualifiers are key value pairs, which help limit the results to very specific search criteria.
+
+# How do you use GitHub search?
+
+Although search fields within GitHub's UI include this feature, this post focuses on the use of GitHub search from the command line.
+If you're not familiar with the [GitHub CLI tool](https://www.youtube.com/watch?v=uy_PEGgUF4U), I highly suggest checking it out.
+
+The `gh search` command is what's used to search GitHub.
+This command can be used to search code, commits, issues, prs, and repos.
+You just need to specify where you want to search when you use the command.
+For instance, you would use the following when searching:
+
+* `gh search code` - search code
+* `gh search commits` - search commits
+* `gh search issues` - search issues
+* `gh search prs` - search pull requests
+* `gh search repo` - search repos
+
+Qualifiers and command flags can also be passed along with your search query to further narrow your search results.
+For instance, let's get an output of all the repos owned by the tidyverse:
+
+```bash
+gh search repos org:tidyverse --limit 50
+```
+
+Or, how about we list all the tidyverse repos with greater than 500 stars:
+
+```bash
+gh search repos org:tidyverse stars:">500"
+```
+
+More about search can be found by running the following in the terminal:
+
+``` bash
+gh search --help
+```
+
+::: {.callout-note}
+I learned you can't explore issues within a forked repo.
+You have to use either an `org` or `repo` qualifier to explore the issues and PRs from repos you don't own but may have forked.
+
+My personal repos lack the use of issues, which limits my ability to create relevant examples.
+Moreover, any issues in my personal repos mostly involve just myself.
+As such, some of the examples below will utilize the more active, open-source repos owned by the [Tidyverse](https://www.tidyverse.org/).
+When it comes to searching people, I'll utilize some well known and active R developers: [Hadley Wickham](https://github.com/hadley) and [Jenny Bryan](https://github.com/jennybc)
+:::
+
+# List issues and pull requests
+
+A great use case for search is being able to find what we're looking for in a repo's issues or pull requests.
+Before initiating a search, though, we likely want to get an overview of what's in our repo.
+`gh`'s `list` command--as the name implies--can be used to output a list from our repos.
+
+``` bash
+# List open issues in a repo
+gh issue list
+# List open PRs in a repo
+gh pr list
+```
+
+Both commands include command flags useful for modifying output.
+I won't spend much time overviewing all of these, but I will hightlight some of them throughout this post, especially ones that are useful for search.
+I suggest reading the help docs if you want details on the different command flags that are available.
+
+``` bash
+gh issue list --help
+```
+
+You might also watch [this video](https://www.youtube.com/watch?v=vcAIZ4axYZU) to get a rough idea of `gh`'s functionality.
+
+At this point in the post, I'm going to start highlighting some searches with specific use cases that I find helpful.
+
+# Search all issues and PRs for an organization
+
+What if we're curious to view all the issues associated with an entire organization?
+This can be done by passing an organization name to the `org` qualifier.
+For instance, something like the following will return all issues associated with the Tidyverse.
+
+```bash
+gh search issues org:tidyverse
+```
+
+Say we want to narrow our search further, we can limit it to a specific repo by passing a value to the `repo` parameter.
+The following code will do this for the `ggplot2` repo, which is associated with the tidyverse organization.
+
+```bash
+gh search issues repo:tidyverse/ggplot2
+```
+
+What about closed issues? The `is` or `state` qualifier is useful in this case.
+
+```bash
+gh search issues repo:tidyverse/ggplot2 is:closed
+```
+
+What about all the bugs that have been squashed?
+
+```bash
+gh search issues repo:tidyverse/ggplot2 is:closed label:bug
+```
+
+How about recently closed issues related to bugs?
+Say ones closed since the start of the year.
+
+```bash
+gh search issues repo:tidyverse/ggplot2 is:closed label:bug created:"2025-01-01..2025-08-31"
+```
+
+# Search for anyone involved with an issue or pull request
+
+Say you're not sure whether someone has authored, been assigned, mentioned, or commented within a repo.
+The `involved` qualifier can be useful.
+How about we know Jenny Bryan was a part of some issue we're trying to track down, but we can't remember exactly what role she took in that issue.
+Well, the `involved` qualifier is an OR statement for the author, assignee, mention, or commented role within a PR or issue.
+So to broadly search issues or PRs Jenny Bryan was involved, we can run the following from the terminal.
+
+``` bash
+gh search issues involves:jennybc org:tidyverse
+
+gh search pr involves:jennybc org:tidyverse
+```
+
+# Search by author
+
+Sometimes I need to find all the issues or PR's I've authored.
+The `author` search qualifier is useful for this case.
+
+What if I want to re-live my exciting open source contribution to the `ggplot2` package, a simple grammar fix to the docs.
+I can find this by running the following:
+
+``` bash
+gh search prs repo:tidyverse/ggplot2 state:closed author:collinberke
+```
+
+There it is, PR #6053.
+What a great trip down memory lane.
+
+# Search by commenter
+
+Authors are a great start, but we can be even more specific and narrow the results further.
+Say we want to target just commenters.
+Why?
+Well, sometimes I remember I made comment on an issue or pull request, walk away for some time, come back to a project, and vaguely remember I commented somewhere.
+Or, at times I'll remember someone somewhere mentioning something within an issue--but I won't exactly remember which one.
+The `commenter` qualifier is helpful in this case.
+
+Take for example the [`ggplot2`](https://github.com/tidyverse/ggplot2) repo.
+What if we want to filter all the closed issues Hadley has commented on.
+We can use the following:
+
+``` bash
+gh search issues repo:tidyverse/ggplot2 commenter:hadley --state closed
+```
+
+The `author` and `commenter` qualifiers are great starts for narrowing results to specific people.
+However, there's other qualifiers you might consider.
+These include `assignee` and `mentions`.
+The filtering is the same, you just need to swap the qualifier with the role you wish to target.
+
+# Search by dates
+
+Oftentimes issues become stale.
+They're just not worked on.
+As such, you may only want to see issues filed in the past month or were created during a specific date range.
+Search queries by dates can be useful here:
+
+``` bash
+# list issues created on or after the first of May 2025
+gh search issues org:tidyverse created:">=2025-05-01"
+
+# list issues created before 2025
+gh search issues org:tidyverse created:"<2025-01-01"
+
+# list issues created in the month of May 2025 that are still open
+gh search issues org:tidyverse created:"2025-05-01..2025-05-31" --state open
+```
+
+Let's go back to the `ggplot2` repo once again for a couple of examples.
+
+Say we want to view all the PRs that have been created and are still open since the start of the month.
+It's currently August of 2025, so let's use that date.
+
+``` bash
+gh search issues repo:tidyverse/ggplot2 created:">=2025-08-01" --state open
+```
+
+It looks like there's a total of 6 open issues in the repo as of the writing of this post.
+It also looks like there's an issue for tracking a major release of `ggplot2` v4.0.0.
+That's an interesting find.
+
+# Target searches to the title, body, or comments of an issue or PR
+
+Say, for instance, we want to limit our search to just the title of an issue.
+To do this, we can use the `in:title` qualifier.
+What about issues related to already closed releases?
+We can search for these by running the following:
+
+```bash
+gh search issues release in:title repo:tidyverse/ggplot2 --state closed
+```
+
+## Sorting results
+
+We can also sort results in meaningful ways, like sorting by the number of comments.
+The `--sort` flag is used for sorting our results.
+Let's apply this to our previous search.
+
+```bash
+gh search issues release in:title repo:tidyverse/ggplot2 --state closed --sort "comments"
+```
+
+Several values are available that can be passed to the `--sort` flag.
+Check out `gh`'s docs for additional info.
+
+# Filter by label
+
+Say we want to filter out all bug issues.
+The `label` qualifier along with the `-` (i.e., negate) can be used.
+Here's what this looks like from the terminal:
+
+```bash
+gh search issues repo:tidyverse/ggplot2 -label:bug
+```
+
+We can also identify issues that don't have any tags in our repo by using the `--no-label` flag.
+Super useful for when you need to do some issue clean up in your repos.
+
+# Code search
+
+One powerful aspect of GitHub's search is the ability to search your entire code base.
+This can be a search of code in all public repos on GitHub or just to the ones you own.
+Search qualifiers to further narrow results is also available for code searching.
+For instance, I like to drop TODO tags in code some times.
+These serve as markers or places I need to do some more work or fix something.
+But, alas, some times I forget where I've placed these markers.
+
+You can search for these at the global or organizational level by running the following:
+
+```bash
+gh search code TODO --owner=tidyverse
+```
+
+It looks as though some developers and maintainers of the Tidyverse utilize this convention to denote to-do items.
+That's a pretty neat find.
+
+Or, you can make the search more localized, say by targetting a specific repo.
+Is the to-do convention used in `ggplot2`?
+
+```bash
+gh search code TODO --repo=tidyverse/ggplot2
+```
+
+Indeed, it is!
+
+The possiblities are endless here when it comes to searching code within GitHub.
+
+# Identifying issues with no assignee
+
+At times, when you're on the fly, you're just creating issues to flag things you want to address later.
+When I do this, I often don't specify an assignee.
+So, to clean things up, it's often nice to go through repos and identify issues that were created and don't have an assignee.
+The `no` qualifier is great for this use case.
+
+```bash
+gh search issues org:tidyverse no:assignee
+```
+
+::: {.callout}
+I didn't do much research on this, but I assume the tidyverse team doesn't really utilize assignee within their issues.
+I think this is because repos are given dedicated maintainers, rather than a whole team whose responsible for a repo.
+So, if you run the above query, you'll likely see a lot of issues that are unassigned or assigned to only one person.
+:::
+
+# Wrap up
+
+Well that's it for this set of notes.
+GitHub search is a useful, powerful tool to learn.
+It can make you be more productive when working with issues, pull requests, code, and repos.
+I had fun learning more about it, and I hope you did to.
+
+# Resources
+
+If you want to learn more about how to leverage GitHub's search features, check out the following docs for more info:
+
+* [About searching on GitHub](https://docs.github.com/en/search-github/getting-started-with-searching-on-github/about-searching-on-github)
+* [Searching issues and pull requests](https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests)
+* [Understanding the search syntax](https://docs.github.com/en/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax)
+* [GitHub Search Cheatsheet](https://gist.github.com/bonniss/4f0de4f599708c5268134225dda003e0)
+
+If you found these notes useful or are just interested in the use of GitHub search, let's connect:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
