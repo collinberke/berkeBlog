@@ -1,0 +1,110 @@
+---
+title: "TIR: The ghosts in the data by Vicki Boykis"
+description: "Takeaways from what I read recently"
+date: "2025-10-11"
+author: "Collin K. Berke, Ph.D."
+draft: false
+image: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - tir
+  - notes
+  - quotes
+  - links
+---
+
+::: {.callout-note}
+This post is written in the spirit of [publishing more frequent blog posts](https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/).
+It's a bit of a scratchpad of ideas, concepts, and/or ways of working that I found to be useful and interesting.
+As such, what's here is lightly edited.
+Be aware: there will likely be spelling, grammatical, or syntactical errors along with some disjointed, incomplete ideas.
+:::
+
+Today I read [The ghosts in the data](https://vickiboykis.com/2021/03/26/the-ghosts-in-the-data/) blog post by [Vicki Boykis](https://vickiboykis.com/about/).
+Below are notes, quotes, and links I'm taking away from my review of the post.
+Alongside my notations, I reflect on some of the ideas presented in hopes of extending the discussion.
+
+::: {.callout-important}
+Do me a favor.
+Thank the author by clicking on the above link and reading the blog post.
+What's here is not a substitute for the original work.
+:::
+
+I really liked the post's framing of explicit vs. implicit knowledge as it relates to data work.
+That is, much of what's needed to work with data--especially untidy data--isn't explicitly written down in a manual or some type of documentation.
+Rather, experience leads to the implicit knowledge needed for data work.
+This is all summarized in a shared concept from [David R. Maclver](https://drmaciver.substack.com/about) called 'ghost knowledge', which is defined as:
+
+> knowledge that exists within expert communities but is never written down and basically doesn't exist for you unless you have access to those communities.
+
+Getting to clean data may require ghost knowledge to be known.
+The challenge is the needs and processes to get the clean data you need is often not written down or is unavailable.
+Rather, this knowledge is developed from the experience of working with the data.
+
+Going further, the post collected community feedback and documented other areas in data work considered to be forms of ghost knowledge.
+This portion of the post included the following discussions:
+
+  * The power law
+  * Collecting data
+  * Data is programming work
+  * Working with people is hard
+  * People do not operate based on the data
+
+Each of the documented observations has their own merit and contains points relevant to data work.
+I only notate and reflect on the ones I found relevant to my work from the post.
+
+Regarding the [power law](https://en.wikipedia.org/wiki/Power_law), this quote hit the mark:
+
+> Real life phenomena, as I’ve seen them in industry, mostly do not follow a bell curve.
+
+In my experience, as someone who's worked with event based behavioral data (e.g., marketing and digital  abalytics data), many of the distributions I've confronted exhibit long tails.
+That is, people do a lot of a certain activity, while others don't do much at all.
+There's implications to this, which this quote from the piece does an excellent job summarizing:
+
+> In particular, it means that paying attention to tail-end phenomena is just as as important as understanding an “average” user.
+
+Indeed, working with data exhibiting these types of distributions also requires you to consider and further evaluate the types of analysis available.
+
+With this quote in mind, I was reminded of another related blog post worth reading:
+
+* [The Most Useful Probability Distributions for Marketing Analytics](https://blog.marketingdatascience.ai/the-most-useful-probability-distributions-for-marketing-analytics-efe9520d0b41) by [Joe Domaleski](https://www.linkedin.com/in/joedom)
+
+Regarding the observations surronding the collection of data, this quote resonated with me:
+
+> You don’t do the process of verifying the data once, you do it many times because a lot of times some process upstream will change. As long as you don’t control the upstream process, you don’t control your data.
+
+Truer words have never been spoken.
+Data validation is often a constant task, especially in environments where data ownership is limited.
+Some steps can be automated, others require an awareness of the 'ghost knowledge' needed to complete the validation process.
+If you don't control your data, you'll inevitablly have to manage ghost knowledge, and you won't be able to fully fix it.
+
+Ownership and control of data collection is also an important topic.
+I believe this statement to also be true, if you don't have ownership of the data collection process, then you don't control your data.
+You're just managing changes and doing the best with what you have.
+
+The point that data work as programming work is also reflective of my experience.
+That is,
+
+> The further we get away from working with small data sets, and more with large, complicated (often) cloud-based, distributed systems, the more we’ll all have to become developers and adapt development best practices.
+
+Surely, best practices exist.
+Many of which have been developed within software engineering and programming.
+The post has some really good reccomendations.
+
+Following the technical topics, the post covers subjects pertaining to people, teams, and organizations.
+I won't go into too much detail here in these notes.
+However, check this section out.
+The blog's linked resources provided are useful and interesting.
+
+Besides being a great data read, reviewing and writing down my thoughts for this post reminded me that the internet has some really good blog posts.
+You just need to identify those voices.
+[Vicki Boykis](https://vickiboykis.com/) is one of them.
+
+If you found these notes and reflections useful, let's connect:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
