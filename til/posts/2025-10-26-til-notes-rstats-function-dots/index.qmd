@@ -1,0 +1,467 @@
+---
+title: "Notes: On the use of `...` in R"
+description: "What I recently learned about this slippery construct"
+date: "2025-10-26"
+author: "Collin K. Berke, Ph.D."
+draft: false
+image: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+  - notes
+  - links
+---
+
+```{r}
+#| include: false
+#| label: setup
+#| message: false
+#| warnings: false
+library(tidyverse)
+```
+
+> The `...` construct can be a slippery thing to get a hold of until you know the trick.
+>
+> -- [R Inferno section 8.3.15](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf)
+
+The first step toward improvement is admiting you have a problem.
+My problem?
+Understanding the dot-dot-dot (i.e., `...`) when it comes to writing functions in R.
+I had an intuitive sense of how `...`s worked, especially when using functions that had these as part of their implementation.
+I struggled, though, when applying them to my own self-defined functions.
+A few questions would constantly arise: Am I implementing these correctly? What am I missing?
+These notes are thus:
+
+* An admission of my lack of explicit knowledge on the use of dots.
+* An attempt to better understand the use of `...`s through drafting some notes.
+* Evidence that I wresteled with their use to better understand what they are, how they work, and when to use them when defining my own functions in R.
+
+::: {.callout-note}
+This post is written in the spirit of [publishing more frequent blog posts](https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/).
+It's a bit of a scratchpad of ideas, concepts, and/or ways of working that I found to be useful and interesting.
+As such, what's here is lightly edited.
+Be aware: there will likely be spelling, grammatical, or syntactical errors along with some disjointed, incomplete ideas.
+:::
+
+# What are the `...`?
+
+In terms of naming conventions, the dot-dot-dot is most commonly referred to as dots, three-dots, or just `...`.
+
+The [Advanced R](https://adv-r.hadley.nz/) book by [Hadley Wickham](https://bsky.app/profile/hadley.nz) contains a concise and useful [explanation](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot).
+To summarise, `...`s are a special argument.
+When applied to a function, that function can take, as inputs, any additional arguments.
+Dots can also be used to pass arguments to another function.
+This is referred to as [*forwarding* arguments](https://rlang.r-lib.org/reference/dyn-dots.html).
+
+A [blog post](https://www.burns-stat.com/the-three-dots-construct-in-r/) from Burns Statistics further states `...` allows for:
+
+* an aribitraty number and variety of arguments.
+* passing arguments on to other functions.
+
+Simplifying further, [Josiah Parry](https://bsky.app/profile/josiahparry.com) has a really good [YouTube video](https://www.youtube.com/watch?v=oIMFZf5dUFA) overviewing `...` fundamentals.
+The key point made in the video is dots are used to pass arguments ([01M38S](https://youtu.be/oIMFZf5dUFA?si=FvjTjOmw68J8e3hm&t=98)).
+In addition, the video explains another interesting expression of the power of dots ([03M22S](https://youtu.be/oIMFZf5dUFA?si=gaz8kwWwt32d6fVV&t=202)):
+
+> it lets us take different objects restructure them into the required format then pass an arguments to another function.
+
+This is known as *capturing* or *collecting* arguments passed to dots, a powerful utility. 
+This use of dots will be discussed later in these notes.
+
+I highly suggest reviewing this video.
+It was a resource about the basics of `...` which just clicked for me.
+
+Many R functions implement the `...`, including but not limited to those of Base R and the Tidyverse.
+Here are a few examples of functions that implement `...` into their API.
+
+```{r}
+#| label: functions-w-dots
+# dot-dot-dots everywhere
+args(c)
+
+args(list)
+
+args(print)
+
+args(dplyr::filter)
+
+args(purrr::map)
+```
+
+# How are the `...`s used?
+
+Let's observe `...`s in action.
+For one, dots can pass arguments along to other functions, referred to as forwarding.
+Here's an example:
+
+```{r}
+#| label: forwarding-arguments-w-dots
+# Use `...` to forward arguments to other functions
+fn01 <- function(x, y) {
+  c("val1" = x, "val2" = y)
+}
+
+fn02 <- function(z, ...) {
+  fn01(...)
+}
+
+fn02(x = 1, y = 2)
+```
+
+Indeed,
+
+> [When you write a function using the three-dots, you always have to pass it to some function (in order for it to be useful).](https://www.burns-stat.com/the-three-dots-construct-in-r/).
+
+This is pretty straight forward when you want to pass additional arguments to a *specific* function in your own function definitions, like the example code above.
+
+However, if you need more control, then the arguments passed need to be captured using a list.
+
+```{r}
+#| label: capture-for-more-control
+# Capturing for more control
+fn03 <- function(...) {
+  dots <- list(...)
+  print(dots)
+}
+
+fn03(x = 1, y = 2)
+```
+
+Once captured, the objects within the list can be later indexed, parsed, and computed on later.
+[Josiah Parry's](https://bsky.app/profile/josiahparry.com) explainer video goes into more detail about this using another example ([04M45S](https://youtu.be/oIMFZf5dUFA?si=-I-6e1pw0U1BuTMV&t=285)).
+
+In addition, this [video here](https://www.youtube.com/watch?v=WSwObgqWT3M) from [@oggyinformatics](https://www.youtube.com/@oggyinformatics) has a really good overview and example on the use of a list to capture arguments ([01M02s](https://youtu.be/WSwObgqWT3M?si=qrKN5xuqKh9MLm0u&t=62)).
+It also contains a really good reminder and example for why you should use a list rather than a vector to capture arguments forwarded using `...`s ([03M05S](https://youtu.be/WSwObgqWT3M?si=8mkdRQinpc_YZniy&t=185)): lists can contain any collection of the same data type, while vectors can only contain data of a single type.
+That is, vectors will transform all the datatypes to the same type.
+This is summarized in the following examples.
+
+```{r}
+#| label: capture-list-types
+# lists allow for variables of different types to be captured and retain their original type
+x <- c(1, 2, 3, 4)
+
+fn04 <- function(vector, ...) {
+  args <- list(...)
+  for (i in vector) {
+    print(i)
+  }
+
+  print(args)
+}
+
+fn04(x)
+
+# Now add a string and a boolean via dots
+fn04(x, 'a', TRUE)
+```
+
+```{r}
+#| label: avoid-vectors
+# why not use a vector? all items get converted to the same type
+fn05 <- function(vector, ...) {
+  args <- c(...)
+  for (i in vector) {
+    print(i)
+  }
+
+  print(args)
+}
+
+fn05(x, 'a', TRUE)
+```
+
+Moveover, other strategies exist to capture and handle arguments passed using dots.
+
+## Going deeper with `...` handling
+
+Once I realized there's more to the three-dots than the simple forwarding of arguments, I came across other handling strategies.
+The [R Inferno book](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf) overviews three strategies for handling arguments passed via the three-dots.
+The first was discussed above: use a list to capture the argument values passed via dots.
+
+Another strategy is to use `match.call()`.
+That is,
+
+```{r}
+#| label: use-match-call
+fn06 <- function(...) {
+  extras <- match.call(expand.dots = FALSE)$...
+  return(extras)
+}
+
+fn06(a = 1, b = 2, c = 3)
+```
+
+Or, in situations where your function processes the arguments, then you can use `do.call()`
+
+```{r}
+#| label: use-do-call
+#| eval: false
+# I couldn't get this to work, and I didn't fully understand what was going on here
+fn07 <- function(data, ...) {
+  dots <- list(...)
+  ans <- do.call(mean, dots[names(dots) %in% spec])
+}
+
+fn07(mtcars, trim = .01)
+```
+
+While reviewing the `do.call()` strategy, it wasn't immediately apparent to me when this would be useful.
+I also couldn't get it to work using the example provided.
+Nonetheless, it's an available strategy, so someone likely has a need for it and could likely get it to work.
+
+## Packages extending the three-dots
+
+### `rlang`'s dynamic dots
+
+The `rlang` package provides [*dynamic dots*](https://rlang.r-lib.org/reference/dyn-dots.html).
+Some of the package's functions extend the functionality of `...`.
+Besides argument forwarding and collection, `rlang`'s dynamic dots provides additional features.
+Check out the [package's docs](https://rlang.r-lib.org/reference/dyn-dots.html) for a deeper explanation, as the following is just a summary.
+
+Dynamic dots implements what's known as *injection*: the process of modifying a piece of code before R processes it.
+Dynamic dots has two injection operators, `!!!` and `{`.
+As such, this extended functionality allows for:
+
+1. argument list splicing
+2. injecting names with glue syntax
+3. trailing commas, which are ignored
+
+Although examples are available in the package's documentation, I decided to notate their use as a reminder of how they work.
+
+```{r}
+#| label: rlang-list-splicing
+fn08 <- function(...) {
+  out <- rlang::list2(...)
+  return(out)
+}
+
+# list splicing
+x <- list(a = "one", b = "two")
+
+fn09 <- function(x) {
+  arguments <- fn06(!!!x)
+  return(arguments)
+}
+
+fn08(x)
+```
+
+```{r}
+#| label: rlang-name-injection
+# name injections, glue syntax
+nm <- "values"
+fn08("{nm}" := x)
+fn08("prefix_{nm}" := x)
+```
+
+```{r}
+#| label: rlang-trailing-commas
+# ignoring trailing commas
+fn08(x = 6, )
+```
+
+Indeed, `rlang` provides some convenient extensions to `...`'s functionality.
+Check it out.
+
+### Safer use of `...` with ellipsis
+
+Another package useful when implementing dots is `rlib`'s [`ellipsis`](https://ellipsis.r-lib.org/) package.
+The goal of `ellipsis` is to make the use of `...` safer, as some unintended side effects can arise from their use.
+The package provides three convenience functions to do this:
+
+* `check_dots_used()`
+* `check_dots_unnamed()`
+* `check_dots_empty()`
+
+Each function performs some type of check on the arguments being passed with `...`.
+From the documentation, `check_dots_used()` throws an error if any `...` are not evaluated.
+`check_dots_unnamed()` errors if any components of `...` are named.
+`check_dots_empty()` errors if `...` is used.
+
+One concern of `...` is it can "silently swallow" passed arguments.
+Say we want to ensure all the arguments passed to `...` are evaluated.
+The `check_dots_used()` function can be helpful in this case.
+This function sets up a handler that evaluates when a function terminates, enforcing that all arguments have been evaluated.
+Otherwise, it will throw an error.
+For instance,
+
+```{r}
+#| label: all-arugments-used
+#| error: true
+fn09 <- function(...) {
+  ellipsis::check_dots_used()
+  div_vals(...)
+}
+
+div_vals <- function(x, y, ...) {
+  x / y
+}
+
+# works, yay!
+fn09(x = 10, y = 2)
+
+# doesn't work, because we're trying to process more arguments then are available
+try(fn09(x = 10, y = 2, z = 1))
+
+# also helpful when unevaluated unnamed arguments are passed
+try(fn09(x = 10, y = 2, 1, 2, 3))
+```
+
+Named arguments passed with dots may be misspelled.
+As such, the `check_dots_unnamed()` function might be useful and a safer option for a function definition.
+For instance,
+
+```{r}
+#| label: handling-misspelled-arguments
+#| error: true
+# not very safe
+fn10 <- function(..., val_extra = 10) {
+  c(...)
+}
+
+# who hasn't misspelled an argument name before?
+fn10(1, 2, 3, val = 4)
+fn10(1, 2, 3, val_extra = 4)
+
+# safer
+fn11 <- function(..., val_extra = 10) {
+  rlang::check_dots_unnamed()
+  c(...)
+}
+
+fn11(1, 2, 3, val = 10)
+fn11(1, 2, 3, val_extra = 10)
+```
+
+`check_dots_empty()` is useful for when you want users to fully name the details arguments.
+While reviewing, I felt this strategy not only enforces this but it also allows for more informative errors to be pushed to the console.
+It also seems to better handle situations where partial argument matching happens.
+
+```{r}
+#| label: handle-partial-argument-matching
+#| error: true
+fn12 <- function(x, ..., foofy = 8) {
+  x + foofy
+}
+
+fn12(3, foofy = 8)
+fn12(3, foody = 8)
+
+fn13 <- function(x, ..., foofy = 8) {
+  rlang::check_dots_empty()
+  x + foofy
+}
+
+fn13(3, foofy = 8)
+fn13(3, foody = 8)
+```
+
+The ellipsis package provides some powerful, useful functionality for handling edge cases that come up when forwarding arguments via `...`s.
+Check it out if you find yourself needing safer `...` handling methods.
+
+## Other concepts to be aware of when using `...`
+
+[This R-bloggers' post](https://www.r-bloggers.com/2020/11/some-notes-when-using-dot-dot-dot-in-r/) provides some additional overview of `...`'s behavior.
+I attempt to summarize some of the points shared in the post below.
+
+The function receiving the `...`s does not itself need `...`s as an argument.
+
+```{r}
+#| label: no-need-for-dots
+fn14 <- function(x, ...) {
+  fn15(...)
+}
+
+fn15 <- function(y) {
+  print(y)
+}
+
+fn14(x = 1, y = 2)
+```
+
+This is useful because if we pass anything other than `y`, we get an error.
+
+```{r}
+#| label: other-args-than-y
+#| error: true
+fn14(x = 1, y = 2, z = 3)
+```
+
+Using dots within both functions allows for the passing on an additional named argument without error.
+In this example, the `z` argument.
+This is not necessarily a utility of the dots, but rather a behavior to note.
+A behavior one would likely want to account for using functions from the [ellipsis package](https://ellipsis.r-lib.org/), which was already discussed above.
+
+```{r}
+#| label: additional-argument-forwarding
+fn14 <- function(x, ...) {
+  fn15(...)
+}
+fn15 <- function(y, ...) {
+  print(y)
+}
+
+fn14(x = 1, y = 2)
+
+fn14(x = 1, y = 2, z = 3)
+```
+
+`list(...)` can be used to interpret the arguments passed using `...`.
+Why? This is helpful when you want to amend the arguments before forwarding them on.
+In other words, save the output of `list(...)` as a variable, amend this variable, then call the next function with the amended variable using `do.call()`.
+For instance, from the example from the original post:
+
+```{r}
+#| label: modifying-a-capture
+#| error: true
+fn16 <- function(x, ...) {
+  args <- list(...)
+  if ("y" %in% names(args)) {
+    args$y <- 2 * args$y
+  }
+  do.call(fn15, args)
+}
+
+fn15 <- function(y) {
+  print(y)
+}
+
+fn16(x = 1, y = 2)
+```
+
+In this case, if an argument `y` is included, then it will be captured, and subsequently doubled before being outputted.
+A neat additional strategy for handling forwarded arguments, which has some utility for conditionally modifying argument values based on what's forwarded.
+
+# Wrap up
+
+So there you have it, a collection of notes on the use of `...`s.
+Here's a summary of what I've learned about using dots when programming in R:
+
+* `...`s are helpful for forwarding any number of additional arguments along to other functions.
+* Several methods exist for capturing and handling arguments passed via `...`s. List capturing, in my view, seems to be the most useful and straight forward.
+* [`rlang`](https://rlang.r-lib.org/index.html)'s [dynamic dots](https://rlang.r-lib.org/reference/dyn-dots.html) provides additional utilities for working with dots.
+* The [`ellipsis` package](https://ellipsis.r-lib.org/) provides convenience functions to make `...`s safer.
+* `...`s have some interesting behavior to be aware of when implented within in an R function.
+
+What did I miss? What did I completely get wrong? I'd love the feedback.
+
+If you found these notes and reflections useful, let's connect:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
+* [Say Hi!](https://www.collinberke.com/say-hi)
+
+# Additional resources
+
+* [`...` (dot-dot-dot) section from Advanced R](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot)
+* [Dot prefix from Tidy design principles](https://design.tidyverse.org/dots-prefix.html)
+* [Some notes when using dot-dot-dot (…) in R](https://www.r-bloggers.com/2020/11/some-notes-when-using-dot-dot-dot-in-r/)
+* [The three-dots construct in R](https://www.burns-stat.com/the-three-dots-construct-in-r/)
+* [R Inferno section 8.3.15 handling ...](https://www.burns-stat.com/documents/books/the-r-inferno/)
+* [Dynamic dots features from rlang](https://rlang.r-lib.org/reference/dyn-dots.html)
+* [R ... three dots ellipsis](https://www.r-bloggers.com/2015/02/r-three-dots-ellipsis/)
+* [Demystifying ... (dots): R package dev fundamentals](https://www.youtube.com/watch?v=oIMFZf5dUFA)
+* [How to use the ellipsis in R (Tutorial)](https://www.youtube.com/watch?v=WSwObgqWT3M)
