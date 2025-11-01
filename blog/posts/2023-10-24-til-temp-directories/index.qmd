@@ -2,8 +2,7 @@
 title: "TIL: Using `base::tempdir()` for temporary data storage"
 date: "2023-11-03"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpg
+draft: false
 description: "Need to store data in a place that's not persistent, use a temporary directory"
 toc: true
 categories:
@@ -12,8 +11,6 @@ categories:
   - workflow
   - productivity
 ---
-
-![Photo by [Jesse Orrico](https://unsplash.com/photos/gray-metal-drawers-h6xNSDlgciU)](thumbnail-wide.jpg)
 
 Today I learned how to store data in R's per-session temporary directory.
 

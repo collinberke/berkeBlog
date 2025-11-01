@@ -4,7 +4,6 @@ description: "A curated list of data science, analysis, coding, tech-related, an
 date: "2025-01-11"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: thumbnail.jpg
 toc: true
 code-link: true
 code-copy: true
@@ -15,8 +14,6 @@ categories:
   - data analysis
   - resources
 ---
-
-![Photo by [Cristina Gottardi](https://unsplash.com/photos/book-lot-Bj7Pt0ZMBOk)](thumbnail-wide.jpg){fig-align="center"}
 
 # Motivation
 

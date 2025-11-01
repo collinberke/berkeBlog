@@ -3,7 +3,6 @@ title: "TIL: Summarize logical vectors to calculate numeric summaries"
 date: "2024-12-08"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: thumbnail.jpg
 description: "Need proportion and count summaries from a logical vector? Use `mean()` and `sum()`"
 toc: true
 categories:
@@ -12,8 +11,6 @@ categories:
   - logical vectors
   - summary statistics
 ---
-
-![Photo by [Ovidiu Creanga](https://unsplash.com/photos/close-up-photography-brown-wooden-furniture-vfpS6MPv8t0)](thumbnail-wide.jpg){fig-align="center"}
 
 # Background 
 

@@ -4,7 +4,6 @@ description: "What I recently learned about this slippery construct"
 date: "2025-10-26"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: false
 toc: true
 code-link: true
 code-copy: true

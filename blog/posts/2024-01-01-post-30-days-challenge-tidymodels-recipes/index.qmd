@@ -2,8 +2,7 @@
 title: "30 day tidymodels `recipes` challenge"
 date: "2024-01-01"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpg
+draft: false
 description: "Learning how to use the `recipes` package, one day at a time"
 toc: true
 from: markdown+emoji
@@ -13,8 +12,6 @@ categories:
   - tidymodels
   - data wrangling
 ---
-
-![Photo by [Nicolas Gras](https://unsplash.com/photos/assorted-cookware-set-UiGsP8TvOJQ)](thumbnail-wide.jpg)
 
 # Background
 
@@ -1565,9 +1562,11 @@ I am not an EEG professional, and I rarely work with this type of data. The appr
 This data represents EEG sensor measurements of electrical activity during an experimental session for one participant. There are multiple sensors, which collect data intended to observe six known brain wave patterns (again, I'm not an expert here, so this is certainly a more complex topic then I'm making it out to be here). Let's use `step_ica()` to see if we can transform this data into six different signals.
 
 ```{r day-15-data}
-data_eeg <- 
+data_eeg <-
   read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_eeg.csv")
+    here(
+      "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_eeg.csv"
+    )
   ) |>
   clean_names() |>
   rename(id = x1)
@@ -1583,7 +1582,7 @@ I'll have to do some data wrangling here to work with the data first, though. Sp
 data_eeg <- data_eeg |>
   select(sensor_position, sensor_value, time) |>
   pivot_wider(
-    names_from = sensor_position, 
+    names_from = sensor_position,
     values_from = sensor_value
   )
 
@@ -1620,8 +1619,8 @@ For the heck of it, let's plot our baked data. Do you see any of the common [bra
 
 ```{r day-15-vis-bake}
 walk(
-  baked_eeg |> select(-time), 
-  ~plot(baked_eeg$time, .x, type = "line") 
+  baked_eeg |> select(-time),
+  ~ plot(baked_eeg$time, .x, type = "line")
 )
 ```
 
@@ -1635,8 +1634,10 @@ For data, I'm going back to our Google Analytics data. I've used this data for s
 
 ```{r day-16-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 glimpse(data_ga)
 
@@ -1658,7 +1659,7 @@ I'm interested in the `item_category` variable here. Let's get a sense of the un
 data_ga_tr |>
   count(item_category, sort = TRUE) |>
   mutate(prop = n / sum(n)) |>
-  print(n = 25) 
+  print(n = 25)
 ```
 
 Indeed, there are certainly some item categories that are purchased less than 5% of the time in our training data. Let's create our recipe, where we focus on using `step_other()` to create an `other` category.
@@ -1698,7 +1699,7 @@ ga_rec_thresh <- recipe(~., data = data_ga_tr) |>
   prep() |>
   bake(new_data = NULL)
 
-ga_rec_thresh 
+ga_rec_thresh
 
 ga_rec_thresh |>
   count(item_category, sort = TRUE)
@@ -1742,8 +1743,10 @@ Let's continue using our Google Analytics ecommerce data from yesterday. I've ov
 
 ```{r day-17-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 set.seed(20240117)
 ga_split <- initial_split(data_ga, prop = .8)
@@ -1811,8 +1814,17 @@ Just for the heck of it, let's create features using all of the available option
 ga_rec <- recipe(~., data = ga_tr) |>
   step_mutate(event_date = ymd(event_date)) |>
   step_date(
-    event_date, 
-    features = c("month", "dow", "doy", "week", "decimal", "quarter", "semester", "year")
+    event_date,
+    features = c(
+      "month",
+      "dow",
+      "doy",
+      "week",
+      "decimal",
+      "quarter",
+      "semester",
+      "year"
+    )
   ) |>
   prep()
 
@@ -1843,8 +1855,10 @@ Currently, I tend to work with timeseries data. As such, I need to create lagged
 Once again, I'm going to use the obfuscated Google Analytics ecommerce data. You can read more about this data in my previous posts. I'm not going to detail it much here, other than importing it, doing a little wrangling to calculate total revenue and total number of items purchased, and creating a training testing split. Here's all the code to do this:
 
 ```{r day-18-data}
-data_ga <- 
-  read_csv(here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"))
+data_ga <-
+  read_csv(here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+  ))
 
 data_ga <- data_ga |>
   group_by(event_date) |>
@@ -1949,8 +1963,10 @@ To highlight the use of this step function, let's continue using our obfuscated 
 
 ```{r day-19-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 set.seed(20240117)
 ga_split <- initial_split(data_ga, prop = .8)
@@ -2057,8 +2073,10 @@ Let's get our data. I'm going to continue using the obfuscated Google Analytics 
 
 ```{r day-20-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 set.seed(20240122)
 ga_split <- initial_split(data_ga, prop = .8)
@@ -2124,8 +2142,10 @@ Let's go back to our Google Analytics obfuscated ecommerce data for today's exam
 
 ```{r day-21-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 data_ga <- data_ga |>
   group_by(event_date) |>
@@ -2182,8 +2202,10 @@ Let's continue using our Google Analytics ecommerce data for today's example.
 
 ```{r day-22-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 data_ga <- data_ga |>
   group_by(event_date) |>
@@ -2292,9 +2314,9 @@ quotes <- tibble(
 Let's create our recipe to tokenize by word. 
 
 ```{r day-24-rec}
-quotes_rec <- recipe(~ text, data = quotes) |>
+quotes_rec <- recipe(~text, data = quotes) |>
   step_tokenize(text) |>
-  prep() 
+  prep()
 
 quotes_rec
 
@@ -2306,7 +2328,7 @@ baked_quotes
 One thing I didn't expect, but learned, was `step_tokenize()` creates a `tknlist` column. Indeed, I expected the column to still be a character where every token was placed on it's own row, like what happens when you use [`tidytext`](https://juliasilge.github.io/tidytext/) functions. This certainly makes the object more compact and easier to work with, an excellent design decision in my opinion. To see the tokens, though, we need to use `recipes` `show_tokens()` function.
 
 ```{r day-24-show-tokens}
-recipe(~ text, data = quotes) |>
+recipe(~text, data = quotes) |>
   step_tokenize(text) |>
   show_tokens(text)
 ```
@@ -2314,7 +2336,7 @@ recipe(~ text, data = quotes) |>
 `step_tokenize()` defaults to tokenizing by word. However, there are several ways we can tokenize by. To do this, we modify the `tokenizers` argument. For example, say we want to tokenize by character instead of word. We do the following:
 
 ```{r day-24-tokenize-by-char}
-recipe(~ text, data = quotes) |>
+recipe(~text, data = quotes) |>
   step_tokenize(text, token = "characters") |>
   show_tokens(text)
 ```
@@ -2322,7 +2344,7 @@ recipe(~ text, data = quotes) |>
 How about by word stems?
 
 ```{r day-24-tokenize-by-stem}
-recipe(~ text, data = quotes) |>
+recipe(~text, data = quotes) |>
   step_tokenize(text, token = "word_stems") |>
   show_tokens(text)
 ```
@@ -2330,7 +2352,7 @@ recipe(~ text, data = quotes) |>
 ngrams?
 
 ```{r day-24-tokenize-by-ngram}
-recipe(~ text, data = quotes) |>
+recipe(~text, data = quotes) |>
   step_tokenize(text, token = "ngrams") |>
   show_tokens(text)
 ```
@@ -2338,9 +2360,9 @@ recipe(~ text, data = quotes) |>
 Say we only want 2 words in our ngram tokens. In this case, we need to pass argument values to the `tokenizers::tokenize_ngrams()` function using `step_tokenize()`'s `options` argument. Here we pass all the argument values in a list.
 
 ```{r day-24-tokenize-by-2-ngram}
-recipe(~ text, data = quotes) |>
+recipe(~text, data = quotes) |>
   step_tokenize(
-    text, 
+    text,
     token = "ngrams",
     options = list(n = 2)
   ) |>
@@ -2350,9 +2372,9 @@ recipe(~ text, data = quotes) |>
 Going further, say we want to also exclude stop words (e.g., the, is, and) from being included within our ngrams. We just pass this option along in our list of options.
 
 ```{r day-24-tokenize-by-2-ngram-no-stop}
-recipe(~ text, data = quotes) |>
+recipe(~text, data = quotes) |>
   step_tokenize(
-    text, 
+    text,
     token = "ngrams",
     options = list(n = 2, stopwords = c("the", "is", "and"))
   ) |>
@@ -2373,9 +2395,11 @@ Let's apply this text cleaning recipe step to the `item_name` variable in our ob
 
 ```{r day-25-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
-  ) |>
-select(item_name)
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+  )
+) |>
+  select(item_name)
 
 set.seed(20240127)
 ga_split <- initial_split(data_ga, prop = .8)
@@ -2431,8 +2455,10 @@ To highlight this, let's use our obfuscated Google Analytics ecommerce data. Spe
 
 ```{r day-26-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 data_ga <- data_ga |>
   group_by(transaction_id) |>
@@ -2514,10 +2540,10 @@ recipe(~., data = data_ga) |>
   ggplot(
     aes(reorder(shipping_tier, n), y = n)
   ) +
-    geom_col() +
-    coord_flip() +
-    labs(y = "Shipping Tier") +
-    theme_minimal()
+  geom_col() +
+  coord_flip() +
+  labs(y = "Shipping Tier") +
+  theme_minimal()
 ```
 
 Under-sampling is pretty much the same, but we use `step_downsample()` and the `under_ratio` argument. Here's some example code to get you started.
@@ -2532,10 +2558,10 @@ recipe(~., data = data_ga) |>
   ggplot(
     aes(reorder(shipping_tier, n), y = n)
   ) +
-    geom_col() +
-    coord_flip() +
-    labs(y = "Shipping Tier") +
-    theme_minimal()
+  geom_col() +
+  coord_flip() +
+  labs(y = "Shipping Tier") +
+  theme_minimal()
 ```
 
 `themis` makes it pretty easy to utilize over- and under-sampling methods. Indeed, this was just a highlight of some of the package's basics. `themis` also has implemented some more advanced methods to address imbalanced data (e.g., [SMOTE](https://arxiv.org/abs/1106.1813)). If you work with imbalanced data, I suggest checking out the `themis` package.
@@ -2550,15 +2576,17 @@ It's been a few of days. Work was getting busy, so I didn't have time to focus o
 
 ```{r day-27-data}
 data_ga <- read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+  here(
+    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
+)
 
 data_ga <- data_ga |>
   mutate(event_date = ymd(event_date)) |>
   group_by(event_date) |>
   summarise(
     revenue = sum(item_revenue_in_usd),
-  ) 
+  )
 
 # Remove some values to better highlight the example
 data_ga <- data_ga[1:61 %% 2 == 0, ]
@@ -2669,7 +2697,7 @@ How about we add a simple interaction between `Expenses` and `Income` to our rec
 
 ```{r day-28-rec}
 credit_rec <- recipe(~., data = credit_tr) |>
-  step_interact(terms = ~Expenses:Income) |>
+  step_interact(terms = ~ Expenses:Income) |>
   prep()
 
 credit_rec
@@ -2692,7 +2720,7 @@ This naming convention is useful, especially if you intend to specify higher ord
 
 ```{r day-28-rec-three-way}
 credit_rec <- recipe(~., data = credit_tr) |>
-  step_interact(terms = ~Expenses:Income:Assets) |>
+  step_interact(terms = ~ Expenses:Income:Assets) |>
   prep()
 
 bake(credit_rec, new_data = NULL) |>
@@ -2704,7 +2732,11 @@ bake(credit_rec, new_data = NULL) |>
 ```{r day-28-rec-verbose}
 credit_rec <- recipe(~., data = credit_tr) |>
   step_interact(
-    terms = ~Expenses:Income + Expenses:Assets + Income:Assets + Expenses:Income:Assets) |>
+    terms = ~ Expenses:Income +
+      Expenses:Assets +
+      Income:Assets +
+      Expenses:Income:Assets
+  ) |>
   prep()
 
 bake(credit_rec, new_data = NULL) |>
@@ -2720,7 +2752,8 @@ However, a short-cut would be to do something like this:
 ```{r day-28-rec-simple-many-interactions}
 credit_rec <- recipe(~., data = credit_tr) |>
   step_interact(
-    terms = ~(Expenses + Income + Assets)^3) |>
+    terms = ~ (Expenses + Income + Assets)^3
+  ) |>
   prep()
 
 credit_rec
@@ -2738,7 +2771,7 @@ It's also important to mention, again, categorical variables should be converted
 ```{r day-28-rec-dummy-interaction}
 credit_rec <- recipe(~., data = credit_data) |>
   step_dummy(Home) |>
-  step_interact(~starts_with("Home"):Debt) |>
+  step_interact(~ starts_with("Home"):Debt) |>
   prep()
 
 credit_rec
@@ -2798,11 +2831,24 @@ We can manually specify our variable class expectations using the `class_nm` arg
 ```{r day-29-rec-manual-col-check}
 credit_rec <- recipe(~., data = credit_tr) |>
   check_class(
-    Status, Home, Marital, Records, Job, class_nm = "factor"
+    Status,
+    Home,
+    Marital,
+    Records,
+    Job,
+    class_nm = "factor"
   ) |>
   check_class(
-    Seniority, Time, Age, Expenses, Income, 
-    Assets, Debt, Amount, Price, class_nm = "integer"
+    Seniority,
+    Time,
+    Age,
+    Expenses,
+    Income,
+    Assets,
+    Debt,
+    Amount,
+    Price,
+    class_nm = "integer"
   ) |>
   prep(strings_as_factors = FALSE) |>
   bake(new_data = NULL)
@@ -2819,11 +2865,24 @@ Just to highlight what happens when the check fails, let's set the second check 
 ```{r day-29-rec-col-bad-check, error=TRUE}
 credit_rec <- recipe(~., data = credit_tr) |>
   check_class(
-    Status, Home, Marital, Records, Job, class_nm = "factor"
+    Status,
+    Home,
+    Marital,
+    Records,
+    Job,
+    class_nm = "factor"
   ) |>
   check_class(
-    Seniority, Time, Age, Expenses, Income, 
-    Assets, Debt, Amount, Price, class_nm = "numeric"
+    Seniority,
+    Time,
+    Age,
+    Expenses,
+    Income,
+    Assets,
+    Debt,
+    Amount,
+    Price,
+    class_nm = "numeric"
   ) |>
   prep(strings_as_factors = FALSE) |>
   bake(new_data = NULL)
@@ -2927,7 +2986,7 @@ Great, let's use `body_mass_g`'s 25th and 75th percentiles as the cut offs in ou
 penguins_rec <- recipe(~., data = penguins_tr) |>
   step_naomit(body_mass_g) |>
   step_cut(body_mass_g, breaks = c(3550, 4750)) |>
-  prep() 
+  prep()
 
 penguins_rec
 

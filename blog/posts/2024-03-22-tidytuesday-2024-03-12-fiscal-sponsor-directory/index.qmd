@@ -2,20 +2,17 @@
 title: "Exploring data from the Fiscal Sponsor Directory"
 date: "2024-03-22"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpeg
+draft: false
 description: "A contribution to the 2024-03-12 #tidytuesday social data project"
 toc: true
 from: markdown+emoji
 categories:
   - data wrangling
   - data visualization
-  - tidytuesday 
-  - plotly 
+  - tidytuesday
+  - plotly
   - Tableau
 ---
-
-![Image generated using the prompt 'Hexagonal pattern in a grey palette' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
 
 # Background
 
@@ -40,7 +37,7 @@ library(plotly)
 ```{r import-data}
 data_sponsor_dir <- read_csv(
   here(
-    "blog", 
+    "blog",
     "posts",
     "2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory",
     "fiscal_sponsor_directory.csv"
@@ -69,11 +66,11 @@ head(data_sponsor_dir$project_types)
 The first step in the data wrangling process was to clean up the string data in the `project_types` column. I wanted to use this as a dimension to filter out fiscal sponsor potentially relevant to the the R4DS community. Take note, I used a regular expression to remove string values after the `other` in the column. These free text responses would have made it harder to filter data on this dimension.
 
 ```{r wrngl-data}
-# Remove any string text after 'other' 
+# Remove any string text after 'other'
 data_sponsor_dir <- data_sponsor_dir |>
   select(
-    details_url, 
-    name, 
+    details_url,
+    name,
     year_fiscal_sponsor,
     n_sponsored,
     project_types,
@@ -82,7 +79,7 @@ data_sponsor_dir <- data_sponsor_dir |>
   mutate(
     project_types = str_to_lower(project_types),
     project_types = str_remove(project_types, ":.*")
-  ) 
+  )
 ```
 
 The next step was to [tokenize](https://www.tidytextmining.com/tidytext#the-unnest_tokens-function) `project_types`' categories into it's own rows. I did this by using the [`unnest_tokens()`](https://juliasilge.github.io/tidytext/reference/unnest_tokens.html) function from the [`tidytext`](https://juliasilge.github.io/tidytext/) package.
@@ -90,7 +87,7 @@ The next step was to [tokenize](https://www.tidytextmining.com/tidytext#the-unne
 ```{r wrngl-data-cat}
 # What are the unique categories?
 data_sponsor_cat <- data_sponsor_dir |>
-  unnest_tokens(cat, project_types, token = 'regex', pattern = "\\|") 
+  unnest_tokens(cat, project_types, token = 'regex', pattern = "\\|")
 
 head(unique(data_sponsor_cat$cat), n = 10)
 ```
@@ -141,7 +138,7 @@ data_cat_filter <- data_sponsor_cat |>
 
 ```{r write-data-tableau, include=FALSE, eval=FALSE}
 write_csv(
-  data_cat_filter, 
+  data_cat_filter,
   "blog/posts/2024-03-19-tidytuesday-2024-03-12-fiscal-sponsor-directory/data_cat_filter.csv"
 )
 ```
@@ -158,42 +155,48 @@ There will be duplicates in this visualization, as some sponsors will support bo
 plot_ly(type = "box") |>
   add_boxplot(
     data = data_cat_filter |> filter(cat == "Education"),
-    x = ~log(n_sponsored),
+    x = ~ log(n_sponsored),
     y = ~cat,
     boxpoints = "all",
     name = "Education",
     color = I("#189AB4"),
     marker = list(color = "#189AB4"),
     line = list(color = "#000000"),
-    text = ~paste(
-      "Sponsor: ", name,
-      "<br>Projects: ", n_sponsored,
-      "<br>Website: ", website
+    text = ~ paste(
+      "Sponsor: ",
+      name,
+      "<br>Projects: ",
+      n_sponsored,
+      "<br>Website: ",
+      website
     ),
     hoverinfo = "text"
   ) |>
   add_boxplot(
-    data = data_cat_filter |> 
+    data = data_cat_filter |>
       filter(cat == "Economic Development"),
-    x = ~log(n_sponsored),
+    x = ~ log(n_sponsored),
     y = ~cat,
     boxpoints = "all",
     name = "Economic development",
     color = I("#191970"),
     marker = list(color = "#191970"),
     line = list(color = "#000000"),
-    text = ~paste(
-      "Sponsor: ", name,
-      "<br>Projects: ", n_sponsored,
-      "<br>Website: ", website
+    text = ~ paste(
+      "Sponsor: ",
+      name,
+      "<br>Projects: ",
+      n_sponsored,
+      "<br>Website: ",
+      website
     ),
     hoverinfo = "text"
   ) |>
-layout(
-  title = "<b>Distribution of the number of projects (logged) supported by fiscal sponsors",
-  yaxis = list(title = ""),
-  xaxis = list(title = "Projects sponsored on log scale")
-)
+  layout(
+    title = "<b>Distribution of the number of projects (logged) supported by fiscal sponsors",
+    yaxis = list(title = ""),
+    xaxis = list(title = "Projects sponsored on log scale")
+  )
 ```
 
 Not bad. The only thing I ran out of time on was related to the hover tool. I really wanted separate hovers, one for the five number summary in the box and whisker plot and one for the individual data points. Unfortunately, I wasn't able to figure out how to do this with the time I had. Oh well, what resulted was still a useful data visualization, given where we started with the data. 

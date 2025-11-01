@@ -3,14 +3,11 @@ title: "Implementing a next and back button in Shiny"
 author: "Collin K. Berke, Ph.D."
 date: "2021-09-12"
 description: "Taking the time to understand a challenging question from Mastering Shiny."
-image: thumbnail.jpg
 toc: true
 bibliography: bibliography.bib
 categories:
-  - shiny 
+  - shiny
 ---
-
-![Photo by [John Barkiple](https://unsplash.com/photos/l090uFWoPaI)](thumbnail-wide.png)
 
 # Introduction
 
@@ -61,17 +58,22 @@ ui <- fluidPage(
   textOutput("narrative")
 )
 
-server <- function(input, output, session){
-  
+server <- function(input, output, session) {
   observeEvent(input$back, {
-    message(glue("The user clicked the `Back` button. It's value is now {input$back}"))
+    message(glue(
+      "The user clicked the `Back` button. It's value is now {input$back}"
+    ))
   })
-  
+
   observeEvent(input$forward, {
-    message(glue("The user clicked the `Next` button. It's value is now {input$forward}"))
+    message(glue(
+      "The user clicked the `Next` button. It's value is now {input$forward}"
+    ))
   })
-  
-  output$narrative <- renderText(glue("Back is {input$back}. Forward is {input$forward}"))
+
+  output$narrative <- renderText(glue(
+    "Back is {input$back}. Forward is {input$forward}"
+  ))
 }
 
 shinyApp(ui, server)
@@ -84,13 +86,11 @@ Here's the server code applying this subsetting strategy:
 ```{r eval=FALSE}
 ## UI code excluded for brevity
 server <- function(input, output, session) {
- 
   output$narrative <- renderText({
     select_subset <- input$forward - input$back
-    
+
     injuries$narrative[select_subset]
   })
-  
 }
 ```
 
@@ -120,7 +120,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
- # There's nothing in the server function of this simplified reprex yet
+  # There's nothing in the server function of this simplified reprex yet
 }
 
 shinyApp(ui, server)
@@ -149,15 +149,13 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
- 
   # Create a reactive value of 1 in the environment
   place <- reactiveVal(1)
-  
+
   # Use this reactive value to subset our data
   output$series <- renderText({
     series[place()]
   })
-  
 }
 
 shinyApp(ui, server)
@@ -181,18 +179,16 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
- 
   # Determine the upper part of the subset index range
   max_no_values <- reactive(length(series))
-  
+
   # Create a reactive value of 1 in the environment
   place <- reactiveVal(1)
-  
+
   # Use this reactive value to subset our data
   output$series <- renderText({
     series[place()]
   })
-  
 }
 
 shinyApp(ui, server)
@@ -243,27 +239,25 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
- 
-  # Determine the total number 
+  # Determine the total number
   max_no_values <- reactive(length(series))
-  
+
   position <- reactiveVal(1)
-  
+
   # These cause a side-effect by changing the place value
   observeEvent(input$forward, {
     position((position() %% max_no_values()) + 1)
     message(glue("The place value is now {position()}"))
   })
-  
+
   observeEvent(input$back, {
     position(((position() - 2) %% max_no_values()) + 1)
     message(glue("The place value is now {position()}"))
   })
-  
+
   output$series <- renderText({
     series[position()]
   })
-  
 }
 
 shinyApp(ui, server)
@@ -292,7 +286,7 @@ Here's the app's code with all the required functionality. I'll overview the cod
 library(shiny)
 library(dplyr)
 
-# You'll need the data to run this example. 
+# You'll need the data to run this example.
 # You can find how to download the data in Chapter 5 of Mastering Shiny
 if (!exists("injuries")) {
   injuries <- vroom::vroom("data/injuries.tsv.gz")
@@ -302,9 +296,14 @@ if (!exists("injuries")) {
 
 ui <- fluidPage(
   fluidRow(
-    column(8, selectInput("code", "Product",
-                          choices = setNames(products$prod_code, products$title),
-                          width = "100%")
+    column(
+      8,
+      selectInput(
+        "code",
+        "Product",
+        choices = setNames(products$prod_code, products$title),
+        width = "100%"
+      )
     )
   ),
   fluidRow(
@@ -317,32 +316,31 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   # Filter the data based on user's product selection
   selected <- reactive(injuries %>% filter(prod_code == input$code))
-  
+
   # Calculate the maximum length of the series
   max_no_stories <- reactive(length(selected()$narrative))
-  
+
   # Set the initial position of the subset index
   place <- reactiveVal(1)
-  
+
   # In cases where user changes product code, reset the place value
   observeEvent(input$code, {
     place(1)
   })
-  
+
   # Observe for user button clicks, change place value accordingly
   observeEvent(input$forward, {
     place((place() %% max_no_stories()) + 1)
   })
-  
+
   observeEvent(input$back, {
     place(((place() - 2) %% max_no_stories()) + 1)
   })
-  
+
   # Output the text narrative to the UI using subsetting
   output$narrative <- renderText({
     selected()$narrative[place()]
   })
-  
 }
 
 shinyApp(ui, server)
@@ -365,8 +363,8 @@ This reset of the indexing value was provided in the solutions guide referenced 
 
 ```{r eval=FALSE}
 observeEvent(input$code, {
-    place(1)
-  })
+  place(1)
+})
 ```
 
 Here you can see that the `observeEvent()` is waiting for any changes to the `input$code` input. When a change occurs to this input, the `place(1)` is run, and the subsetting index is set back to one. We now have included functionality to the app where when the user changes the product code filtering, the narrative increment index will display the first value in that subset of injuries as selected by the user.  

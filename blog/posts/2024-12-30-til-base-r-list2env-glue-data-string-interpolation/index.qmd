@@ -4,7 +4,6 @@ description: "Need an easy way to access a set of elements from a tibble for str
 date: "2024-12-30"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: thumbnail.jpg
 toc: true
 code-link: true
 code-copy: true
@@ -21,8 +20,6 @@ format:
       - text: "glue::glue_data()'s documentation"
         href: https://glue.tidyverse.org/reference/glue.html
 ---
-
-![Photo by [Ben Neale](https://unsplash.com/photos/green-white-and-gray-illustration-sQQf8Ao3dpk)](thumbnail-wide.jpg){fig-align="center"}
 
 # Motivation
 

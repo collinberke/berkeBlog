@@ -3,13 +3,10 @@ title: "Shiny summary tiles"
 author: "Collin K. Berke, Ph.D."
 date: "2021-12-30"
 description: "Building custom metric summary tiles for Shiny."
-image: thumbnail.jpg
 toc: true
 categories:
-  - shiny 
+  - shiny
 ---
-
-![Photo by [Stephen Dawson](https://unsplash.com/photos/qwtCeJ5cLYs)](thumbnail-wide.png)
 
 Effective reporting tools include user interface (UI) elements to quickly and effectively communicate summary metrics. [Shiny](https://shiny.rstudio.com/), a free software package written in the [`R` statistical computing language](https://www.r-project.org/), provides several tools to communicate analysis and insights. Combining several of these elements together, a developer can create user interface elements that clearly communicate important summary metrics (e.g., Key Performance Indicators) to an application's users.
 
@@ -112,7 +109,7 @@ library(readr) # Import data
 library(dplyr) # Pipe and data manipulation
 library(tidyr) # Tidying data function
 library(purrr) # Used for functional programming
-library(glue)  # Used for string interpolation
+library(glue) # Used for string interpolation
 ```
 
 Many of these packages are part of the [tidyverse](https://www.tidyverse.org/), and thus the import could be simplified to just running `library(tidyverse)`. Be aware this may bring in unused, unneeded libraries. There is nothing wrong with this approach. However, I opted to be more verbose with this example, so as to be clear about what libraries are utilized within the example application and to have more control on what packages were imported by the application.
@@ -123,9 +120,9 @@ Since the data has already been exported and is stored as a `.csv` file, the app
 
 ```{r data-import, eval=FALSE}
 ga4_data <- read_csv(
-  "ga4_data.csv", 
+  "ga4_data.csv",
   col_types = list(event_date = col_date("%Y%m%d"))
-  )
+)
 ```
 
 This chunk of code follows the library imports, and it makes the data object `ga4_data` available within the global environment when the application is running. This object will then be later used in the server side of the application, which will be discussed later in the post.
@@ -138,18 +135,18 @@ The next step is to code the layout of the UI. To keep the design simple, a side
 
 ```{r ui-skeleton, eval=FALSE}
 ui <- fluidPage(
-   # Inputs
-   sidebarLayout(
-      sidebarPanel()
-   ),
-   # Outputs
-   mainPanel(
-      # Summary tiles
-      fluidRow(),
-      br(),
-      # Data information output
-      fluidRow()
-   )
+  # Inputs
+  sidebarLayout(
+    sidebarPanel()
+  ),
+  # Outputs
+  mainPanel(
+    # Summary tiles
+    fluidRow(),
+    br(),
+    # Data information output
+    fluidRow()
+  )
 )
 ```
 
@@ -187,9 +184,9 @@ Before the summary metrics can be displayed in the UI, the application needs dat
 
 ```{r data-reactive, eval=FALSE}
 server <- function(input, output, session) {
-   data <- reactive({
-      ga4_data %>% filter(.data[["event_data"]] == input$date)
-   })
+  data <- reactive({
+    ga4_data %>% filter(.data[["event_data"]] == input$date)
+  })
 }
 ```
 
@@ -208,12 +205,17 @@ server <- function(input, output, session) {
   data <- reactive({
     filter(ga4_date, .data[["event_date"]] == input$date)
   })
-  
+
   output$users <- renderText(format(data()$users, big.mark = ','))
   output$page_view <- renderText(format(data()$page_view, big.mark = ','))
-  output$session_start <- renderText(format(data()$session_start, big.mark = ','))
+  output$session_start <- renderText(format(
+    data()$session_start,
+    big.mark = ','
+  ))
   output$purchase <- renderText(format(data()$purchase, big.mark = ','))
-  output$date <- renderText(glue("Estimates represent data from {data()$event_date}"))
+  output$date <- renderText(glue(
+    "Estimates represent data from {data()$event_date}"
+  ))
 }
 ```
 
@@ -231,23 +233,20 @@ To achieve the intended design, additional Shiny layout functions were applied t
 
 ```{r column-layout, eval=FALSE}
 mainPanel(
-   fluidRow(
-      column(),
-      column(),
-      column()
-   ),
-   br(),
-   fluidRow()
+  fluidRow(
+    column(),
+    column(),
+    column()
+  ),
+  br(),
+  fluidRow()
 )
 ```
 
 As for the design of the summary metric tiles, each tile needed to include some type of title followed by the text representing the metric. To achieve this, the `shiny::div()` function was used. This function creates an individual `HTML` tag that outputs the text being passed along into the function. Directly below the title element, the `textOutput()` function is used to display the outputs coming from the application's server. The code for one summary metric tile would look like the following:
 
 ```{r summary-tile-layout, eval=FALSE}
-column(3,
-       div("Unique Users"),
-       textOutput("users")
-       )
+column(3, div("Unique Users"), textOutput("users"))
 ```
 
 By combining these elements, the application code in its current state can be seen here:
@@ -265,47 +264,36 @@ library(purrr)
 # Import data -------------------------------------------------------------
 
 ga4_data <- read_csv(
-  "ga4_data.csv", 
+  "ga4_data.csv",
   col_types = list(event_date = col_date("%Y%m%d"))
-  )
-  
+)
+
 # UI ----------------------------------------------------------------------
 
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
-      dateInput("date",
-                "Select a date for summary:",
-                value = max(ga4_data$event_date),
-                max = max(ga4_data$event_date),
-                min = min(ga4_data$event_date)
+      dateInput(
+        "date",
+        "Select a date for summary:",
+        value = max(ga4_data$event_date),
+        max = max(ga4_data$event_date),
+        min = min(ga4_data$event_date)
       )
     ),
     mainPanel(
       fluidRow(
         h2("Summary report"),
-        column(3,
-               div("Users"),
-               textOutput("users")
-        ),
-        column(3,
-               div("Page Views"),
-               textOutput("page_view")
-        ),
-        column(3,
-               div("Session Starts"),
-               textOutput("session_start")
-        ),
-        column(3,
-               div("Purchases"),
-               textOutput("purchase")
-        )    
+        column(3, div("Users"), textOutput("users")),
+        column(3, div("Page Views"), textOutput("page_view")),
+        column(3, div("Session Starts"), textOutput("session_start")),
+        column(3, div("Purchases"), textOutput("purchase"))
       ),
       br(),
       fluidRow(
-        textOutput("date")    
+        textOutput("date")
       )
-    ) 
+    )
   )
 )
 
@@ -315,13 +303,18 @@ server <- function(input, output, session) {
   data <- reactive({
     filter(ga4_data, .data[["event_date"]] == input$date)
   })
-  
+
   # Text output
   output$users <- renderText(format(data()$users, big.mark = ','))
   output$page_view <- renderText(format(data()$page_view, big.mark = ','))
-  output$session_start <- renderText(format(data()$session_start, big.mark = ','))
+  output$session_start <- renderText(format(
+    data()$session_start,
+    big.mark = ','
+  ))
   output$purchase <- renderText(format(data()$purchase, big.mark = ','))
-  output$date <- renderText(glue("Estimates represent data from {data()$event_date}"))
+  output$date <- renderText(glue(
+    "Estimates represent data from {data()$event_date}"
+  ))
 }
 
 shinyApp(ui, server)
@@ -338,8 +331,12 @@ An obvious pattern used to create the outputs is `output$foo <- renderText(forma
 Utilizing this strategy simplifies our code to the following:
 
 ```{r purrr-walk-outputs, eval=FALSE}
-c('users', 'page_view', 'session_start', 'purchase') %>% 
-    walk(~{output[[.x]] <- renderText(format(data()[[.x]], big.mark = ','))})
+c('users', 'page_view', 'session_start', 'purchase') %>%
+  walk(
+    ~ {
+      output[[.x]] <- renderText(format(data()[[.x]], big.mark = ','))
+    }
+  )
 ```
 
 Indeed, I can't take full credit for this solution. Thanks goes to `@Kent Johnson` in the [R4DS Slack channel](http://r4ds.io/join) for helping me out.
@@ -351,10 +348,7 @@ The `output$date` object was left out of this simplification of the code. Certai
 Functions and functional programming principles will now be used to address these same issues on the UI side of the application. Much of the repetition occurs with the use of the following pattern:
 
 ```{r rep-ui-code, eval=FALSE}
-column(3,
-       div("Metric Title"),
-       textOutput("metric_output")
-       )
+column(3, div("Metric Title"), textOutput("metric_output"))
 ```
 
 Indeed, this pattern is applied four times. Since it was [copied and pasted more than twice](https://r4ds.had.co.nz/iteration.html) and breaks the DRY principle, it would be best to convert it into a function and iterate it using functional programming tools.
@@ -364,11 +358,8 @@ Indeed, this pattern is applied four times. Since it was [copied and pasted more
 A helper function, `make_summary_tile()`, is added to the setup section of the application. The function looks like this:
 
 ```{r summary-tile-function, eval=FALSE}
-make_summary_tile <- function(title, text_output){
-  column(2,
-         div(title),
-         textOutput(text_output)
-  )
+make_summary_tile <- function(title, text_output) {
+  column(2, div(title), textOutput(text_output))
 }
 ```
 
@@ -379,11 +370,11 @@ The next step is to apply functional programming to iterate the `make_summary_ti
 ```{r map-ui-elements, eval=FALSE}
 # Defined in the Setup section
 tiles <- tribble(
-  ~header         , ~text_output,
-  "Users"         , "users",
-  "Page Views"    , "page_view",
-  "Session Starts", "session_start",
-  "Purchases"     , "purchase"
+  ~header          , ~text_output    ,
+  "Users"          , "users"         ,
+  "Page Views"     , "page_view"     ,
+  "Session Starts" , "session_start" ,
+  "Purchases"      , "purchase"
 )
 
 # Used within the UI
@@ -406,25 +397,22 @@ library(tidyr)
 library(glue)
 library(purrr)
 
-make_summary_tile <- function(header, text_output){
-  column(2,
-         div(header),
-         textOutput(text_output)
-  )
+make_summary_tile <- function(header, text_output) {
+  column(2, div(header), textOutput(text_output))
 }
 
 tiles <- tribble(
-  ~header         , ~text_output,
-  "Users"         , "users",
-  "Page Views"    , "page_view",
-  "Session Starts", "session_start",
-  "Purchases"     , "purchase"
+  ~header          , ~text_output    ,
+  "Users"          , "users"         ,
+  "Page Views"     , "page_view"     ,
+  "Session Starts" , "session_start" ,
+  "Purchases"      , "purchase"
 )
 
 # Import data -------------------------------------------------------------
 
 ga4_data <- read_csv(
-  "ga4_data.csv", 
+  "ga4_data.csv",
   col_types = list(event_date = col_date("%Y%m%d"))
 )
 
@@ -433,11 +421,12 @@ ga4_data <- read_csv(
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
-      dateInput("date",
-                "Select a date for summary:",
-                value = max(ga4_data$event_date),
-                max = max(ga4_data$event_date),
-                min = min(ga4_data$event_date)
+      dateInput(
+        "date",
+        "Select a date for summary:",
+        value = max(ga4_data$event_date),
+        max = max(ga4_data$event_date),
+        min = min(ga4_data$event_date)
       )
     ),
     mainPanel(
@@ -447,9 +436,9 @@ ui <- fluidPage(
       ),
       br(),
       fluidRow(
-        textOutput("date")    
+        textOutput("date")
       )
-    ) 
+    )
   )
 )
 
@@ -459,11 +448,17 @@ server <- function(input, output, session) {
   data <- reactive({
     filter(ga4_data, .data[["event_date"]] == input$date)
   })
-  
-  c('users', 'page_view', 'session_start', 'purchase') %>% 
-    walk(~{output[[.x]] <- renderText(format(data()[[.x]], big.mark = ','))})
-  
-  output$date <- renderText(glue("Estimates represent data from {data()$event_date}"))
+
+  c('users', 'page_view', 'session_start', 'purchase') %>%
+    walk(
+      ~ {
+        output[[.x]] <- renderText(format(data()[[.x]], big.mark = ','))
+      }
+    )
+
+  output$date <- renderText(glue(
+    "Estimates represent data from {data()$event_date}"
+  ))
 }
 
 shinyApp(ui, server)
@@ -506,26 +501,32 @@ A detailed description on how to create `CSS` selectors is outside the scope of 
 Now it's just a matter of modifying the code to call this file and pass these style values to the summary tiles within the application. The following code is added to the ui side of our application to include our `app-styling.css` file:
 
 ```{r call-css-file, eval=FALSE}
-tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "app-styling.css"))
+tags$head(tags$link(
+  rel = "stylesheet",
+  type = "text/css",
+  href = "app-styling.css"
+))
 ```
 
 Since the styling is being applied to the summary metric tiles, the `make_summary_tile()` function is modified to bring in the `CSS` elements. A `css_id` argument is added to the function. 
 
 ```{r modify-make-tile, eval=FALSE}
-make_summary_tile <- function(header, text_output, css_id){
-  column(2,
-         div(header),
-         textOutput(text_output),
-         id = css_id
-  )
+make_summary_tile <- function(header, text_output, css_id) {
+  column(2, div(header), textOutput(text_output), id = css_id)
 }
 ```
 
 Now that we made this modification to the `make_summary_tile()`, its application in the UI is also modified. Specifically, the `#summary-tile` `CSS` element is explicitly called in `pmap()`. To do this, the code is modified like this:
 
 ```{r ui-with-css, eval=FALSE}
-pmap(tiles, ~make_summary_tile(
-          header = ..1, text_output = ..2, css_id = "summary-tile"))
+pmap(
+  tiles,
+  ~ make_summary_tile(
+    header = ..1,
+    text_output = ..2,
+    css_id = "summary-tile"
+  )
+)
 ```
 
 The `header`, `text_output`, and `css_id` arguments are now explicitly defined in the `pmap()` call. To refer to the first two elements in the `tiles` data object, the `..1` (i.e., `header` column) and the `..2` (i.e., `text_output` column) are used. Check out the `pmap()` docs on how to apply the `..1`, `..2` (`?pmap`) for more information.
@@ -544,26 +545,22 @@ library(tidyr)
 library(glue)
 library(purrr)
 
-make_summary_tile <- function(header, text_output, css_id){
-  column(2,
-         div(header),
-         textOutput(text_output),
-         id = css_id
-  )
+make_summary_tile <- function(header, text_output, css_id) {
+  column(2, div(header), textOutput(text_output), id = css_id)
 }
 
 tiles <- tribble(
-  ~header         , ~text_output,
-  "Users"         , "users",
-  "Page Views"    , "page_view",
-  "Session Starts", "session_start",
-  "Purchases"     , "purchase"
+  ~header          , ~text_output    ,
+  "Users"          , "users"         ,
+  "Page Views"     , "page_view"     ,
+  "Session Starts" , "session_start" ,
+  "Purchases"      , "purchase"
 )
 
 # Import data -------------------------------------------------------------
 
 ga4_data <- read_csv(
-  "data/ga4_data.csv", 
+  "data/ga4_data.csv",
   col_types = list(event_date = col_date("%Y%m%d"))
 )
 
@@ -572,27 +569,34 @@ ga4_data <- read_csv(
 ui <- fluidPage(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "app-styling.css")
-    ),
+  ),
   sidebarLayout(
     sidebarPanel(
-      dateInput("date",
-                "Select a date for summary:",
-                value = max(ga4_data$event_date),
-                max = max(ga4_data$event_date),
-                min = min(ga4_data$event_date)
+      dateInput(
+        "date",
+        "Select a date for summary:",
+        value = max(ga4_data$event_date),
+        max = max(ga4_data$event_date),
+        min = min(ga4_data$event_date)
       )
     ),
     mainPanel(
       fluidRow(
         h2("Summary report"),
-        pmap(tiles, ~make_summary_tile(
-          header = ..1, text_output = ..2, css_id = "summary-tile"))
+        pmap(
+          tiles,
+          ~ make_summary_tile(
+            header = ..1,
+            text_output = ..2,
+            css_id = "summary-tile"
+          )
+        )
       ),
       br(),
       fluidRow(
-        textOutput("date")    
+        textOutput("date")
       )
-    ) 
+    )
   )
 )
 
@@ -602,11 +606,17 @@ server <- function(input, output, session) {
   data <- reactive({
     filter(ga4_data, .data[["event_date"]] == input$date)
   })
-  
-  c('users', 'page_view', 'session_start', 'purchase') %>% 
-    walk(~{output[[.x]] <- renderText(format(data()[[.x]], big.mark = ','))})
-  
-  output$date <- renderText(glue("Estimates represent data from {data()$event_date}"))
+
+  c('users', 'page_view', 'session_start', 'purchase') %>%
+    walk(
+      ~ {
+        output[[.x]] <- renderText(format(data()[[.x]], big.mark = ','))
+      }
+    )
+
+  output$date <- renderText(glue(
+    "Estimates represent data from {data()$event_date}"
+  ))
 }
 
 shinyApp(ui, server)

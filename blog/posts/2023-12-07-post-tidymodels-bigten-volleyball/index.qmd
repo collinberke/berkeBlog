@@ -3,7 +3,6 @@ title: "Messing with models: Learning how to fit a binary classification model u
 author: "Collin K. Berke, Ph.D."
 date: "2023-12-07"
 description: "Using tidymodels to predict wins and losses for volleyball matches"
-image: thumbnail.jpeg
 toc: true
 categories:
   - tutorial
@@ -12,8 +11,6 @@ categories:
   - decision tree
   - logistic regression
 ---
-
-![Image generated using the prompt "volleyball analytics in a pop art style" with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
 
 The initial rounds of the NCAA women's volleyball [tournament](https://www.ncaa.com/news/volleyball-women/article/2023-11-18/2023-ncaa-volleyball-tournament-schedule-dates-di-womens-championship) have just begun. As such, I felt it was a good opportunity to understand more about the game while learning to specify models using [Big Ten women's volleyball](https://bigten.org/sports/wvball) match data and the [tidymodels](https://www.tidymodels.org/) framework. This post sought to specify a predictive model of wins and loses. It then used this model to explore and predict match outcomes of the #1 team going into the tournament, the [Nebraska Cornhuskers](https://huskers.com/sports/volleyball).
 

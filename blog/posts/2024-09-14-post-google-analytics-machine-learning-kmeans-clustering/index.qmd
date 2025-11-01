@@ -3,7 +3,6 @@ title: "Messing with models: k-means clustering of Google Analytics 4 data"
 date: "2024-09-14"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: thumbnail.jpg
 description: "A tutorial on how to perform k-means clustering using Google Analytics data"
 toc: true
 from: markdown+emoji
@@ -13,8 +12,6 @@ categories:
   - unsupervised learning
   - k-means clustering
 ---
-
-![Photo by [Daniel Fazio](https://unsplash.com/photos/gray-wire-lot-m9LlUwkPvT8)](thumbnail-wide.jpg)
 
 Marketing campaigns target specific audiences. Some form of customer segmentation is performed to identify these audiences. These segments can be identified using several approaches. This post describes one such approach: the use of data and machine learning to specify clustering models present within [Google Analytics](https://developers.google.com/analytics) data for an e-commerce store.
 

@@ -3,15 +3,12 @@ title: "TIL: Combine plots using `patchwork`"
 date: "2023-12-23"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: thumbnail.jpeg
 description: "Need to add two or more plots together? Use the `patchwork` package"
 toc: true
 categories:
   - til
   - data visualization
 ---
-
-![Image generated using the prompt 'robot stitching a quilt of data visualizations in pop art style' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
 
 Today I learned the [patchwork](https://patchwork.data-imaginist.com/) package makes it easy to combine multiple plots into a single plot. 
 In this post, I overview what I've recently learned from using `patchwork`'s functions to create plot compositions.
