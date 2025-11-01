@@ -1,18 +1,15 @@
 ---
-title: "The Hex Update: June, 2024" 
+title: "The Hex Update: Issue 001"
 date: "2024-07-10"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: hex-update-logo-2024-06.png 
+draft: false
 description: "Key insights and what I learned about the media industry in June 2024"
 toc: true
 from: markdown+emoji
 categories:
-  - the hex update 
+  - the hex update
   - media
 ---
-
-![](hex-update-logo-2024-06-wide.png)
 
 ```{r}
 #| label: setup

@@ -2,8 +2,7 @@
 title: "Exploring objects launched into space and gross domestic product"
 date: "2024-05-03"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpeg
+draft: false
 description: "A contribution to the 2024-04-23 #tidytuesday social data project"
 toc: true
 from: markdown+emoji
@@ -14,8 +13,6 @@ categories:
   - plotly 
   - regression
 ---
-
-![Image generated using the prompt 'boxy robot throwing a satellite into outer space from earth in a pop art style' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
 
 # Background
 
@@ -56,7 +53,7 @@ data_space_objs <- read_csv(
     "outer_space_objects.csv"
   )
 ) |>
-clean_names()
+  clean_names()
 ```
 
 ## Use `wbstats` package to obtain GDP
@@ -72,16 +69,16 @@ wb_variables <- c(
 
 data_wb <- wb_data(
   wb_variables,
-  start_date = 1957, 
+  start_date = 1957,
   end_date = 2023
 ) |>
-select(
-  code = iso3c, 
-  year = date, 
-  country, 
-  gdp,
-  starts_with("tax")
-)
+  select(
+    code = iso3c,
+    year = date,
+    country,
+    gdp,
+    starts_with("tax")
+  )
 ```
 
 ```{r write-wb-data, eval=FALSE, include=FALSE}
@@ -149,36 +146,40 @@ Let's get a sense of the relationship between space objects launched and a count
 vis_space_scatter <- plot_ly(
   data = data_space_wb
 ) |>
-add_trace(
-  x = ~gdp,
-  y = ~num_objects,
-  type = "scatter",
-  mode = "markers",
-  marker = list(
-    color = "#006cd8",
-    size = 10,
-    line = list(
-      color = "#00008c",
-      width = 2
+  add_trace(
+    x = ~gdp,
+    y = ~num_objects,
+    type = "scatter",
+    mode = "markers",
+    marker = list(
+      color = "#006cd8",
+      size = 10,
+      line = list(
+        color = "#00008c",
+        width = 2
+      )
+    ),
+    text = ~ paste(
+      "Year: ",
+      year,
+      "<br>Country: ",
+      entity,
+      "<br>Objects launched: ",
+      comma(num_objects),
+      "<br>GDP: ",
+      comma(gdp)
+    ),
+    hoverinfo = "text"
+  ) |>
+  plotly::layout(
+    title = "<b>A country's GDP is positively related to the number of space objects launched",
+    xaxis = list(title = "Gross Domestic Product (GDP)"),
+    yaxis = list(
+      title = "Objects launced into space",
+      range = c(0, NULL),
+      tickformat = ","
     )
-  ),
-  text = ~paste(
-    "Year: ", year,
-    "<br>Country: ", entity,
-    "<br>Objects launched: ", comma(num_objects),
-    "<br>GDP: ", comma(gdp)
-  ),
-  hoverinfo = "text"
-) |>
-plotly::layout(
-  title = "<b>A country's GDP is positively related to the number of space objects launched",
-  xaxis = list(title = "Gross Domestic Product (GDP)"),
-  yaxis = list(
-    title = "Objects launced into space", 
-    range = c(0, NULL),
-    tickformat = ","
   )
-) 
 
 vis_space_scatter
 ```
@@ -189,36 +190,40 @@ Given the distribution of the data, it's challenging to see the individual value
 plot_ly(
   data = data_space_wb
 ) |>
-add_trace(
-  x = ~log(gdp),
-  y = ~log(num_objects),
-  type = "scatter",
-  mode = "markers",
-  marker = list(
-    color = "#006cd8",
-    size = 10,
-    line = list(
-      color = "#00008c",
-      width = 2
+  add_trace(
+    x = ~ log(gdp),
+    y = ~ log(num_objects),
+    type = "scatter",
+    mode = "markers",
+    marker = list(
+      color = "#006cd8",
+      size = 10,
+      line = list(
+        color = "#00008c",
+        width = 2
+      )
+    ),
+    text = ~ paste(
+      "Year: ",
+      year,
+      "<br>Country: ",
+      entity,
+      "<br>Objects launched: ",
+      comma(num_objects),
+      "<br>GDP: ",
+      comma(gdp)
+    ),
+    hoverinfo = "text"
+  ) |>
+  plotly::layout(
+    title = "<b>A country's GDP is positively related to the number of space objects launched",
+    xaxis = list(title = "Gross Domestic Product (GDP) (logged)"),
+    yaxis = list(
+      title = "Objects launced into space (logged)",
+      range = c(0, NULL),
+      tickformat = ","
     )
-  ),
-  text = ~paste(
-    "Year: ", year,
-    "<br>Country: ", entity,
-    "<br>Objects launched: ", comma(num_objects),
-    "<br>GDP: ", comma(gdp)
-  ),
-  hoverinfo = "text"
-) |>
-plotly::layout(
-  title = "<b>A country's GDP is positively related to the number of space objects launched",
-  xaxis = list(title = "Gross Domestic Product (GDP) (logged)"),
-  yaxis = list(
-    title = "Objects launced into space (logged)", 
-    range = c(0, NULL),
-    tickformat = ","
   )
-) 
 ```
 
 Log transforming these variables now allows us to more easily view the individual values for each country.
@@ -238,8 +243,8 @@ The output provides further evidence of the presence of a positive correlation b
 Given this is a simple linear regression, I'll use `stats`' `lm()` function to specify the model. Given the scale of the values, I also went ahead and set the `scipen` option to avoid printing the output in scientific notation.
 
 ```{r mdl-space-obj-gdp}
-# Set the `scipen` object to avoid printing in scientific notation 
-options(scipen=999)
+# Set the `scipen` object to avoid printing in scientific notation
+options(scipen = 999)
 space_gdp_mdl <- lm(num_objects ~ gdp, data = data_space_wb)
 ```
 
@@ -260,29 +265,30 @@ data_space_wb$obj_pred <- predict(space_gdp_mdl, data_space_wb)
 ```
 
 ```{r vis-mdl}
-vis_space_scatter |> 
+vis_space_scatter |>
   add_trace(
     data = data_space_wb,
-    x = ~gdp, 
-    y = ~obj_pred, 
-    type = "scatter", 
-    mode = "lines", 
+    x = ~gdp,
+    y = ~obj_pred,
+    type = "scatter",
+    mode = "lines",
     showlegend = FALSE,
     line = list(width = 5),
-    text = ~paste(
-      "Prediction: ", obj_pred
+    text = ~ paste(
+      "Prediction: ",
+      obj_pred
     ),
     hoverinfo = "text"
   ) |>
-plotly::layout(
-  title = "<b>A country's GDP is positively related to the number of space objects launched",
-  xaxis = list(title = "Gross Domestic Product (GDP)"),
-  yaxis = list(
-    title = "Objects launced into space",
-    range = c(0, NULL),
-    tickformat = ","
+  plotly::layout(
+    title = "<b>A country's GDP is positively related to the number of space objects launched",
+    xaxis = list(title = "Gross Domestic Product (GDP)"),
+    yaxis = list(
+      title = "Objects launced into space",
+      range = c(0, NULL),
+      tickformat = ","
+    )
   )
-) 
 ```
 
 # Why is the USA so much further away from what is predicted?

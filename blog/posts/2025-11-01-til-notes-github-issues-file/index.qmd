@@ -4,7 +4,6 @@ description: "What I recently learned about GitHub cli tool's `--body-file` comm
 date: "2025-11-01"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: false
 toc: true
 code-link: true
 code-copy: true

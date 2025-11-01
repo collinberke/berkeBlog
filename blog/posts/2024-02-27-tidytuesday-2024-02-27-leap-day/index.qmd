@@ -3,7 +3,6 @@ title: "Exploring the lifespans of historical figures born on a Leap Day"
 date: "2024-03-05"
 author: "Collin K. Berke, Ph.D."
 draft: false 
-image: thumbnail.jpg
 description: "A contribution to the 2024-02-27 #tidytuesday social data project"
 toc: true
 from: markdown+emoji
@@ -14,8 +13,6 @@ categories:
   - plotly
   - Tableau
 ---
-
-![Photo by [Nick Hillier](https://unsplash.com/photos/assorted-numbers-photography-yD5rv8_WzxA)](thumbnail-wide.jpg)
 
 ```{r setup}
 #| message: false
@@ -64,10 +61,13 @@ data_age <- data_births |>
     year_death = ifelse(is.na(year_death), 2024, year_death),
     age = year_death - year_birth
   ) |>
-  arrange(desc(age)) |> 
+  arrange(desc(age)) |>
   relocate(person, description, year_birth, year_death, age)
 
-data_age$person <- factor(data_age$person, levels = data_age$person[order(data_age$year_birth)])
+data_age$person <- factor(
+  data_age$person,
+  levels = data_age$person[order(data_age$year_birth)]
+)
 ```
 
 ```{r write-data-tableau, eval=FALSE, include=FALSE}
@@ -76,7 +76,7 @@ data_age_long <- data_age |>
 
 # Export data for Tableau
 write_csv(
-  data_age_long, 
+  data_age_long,
   here("2024-02-27-tidytuesday-2024-02-27-leap-day/data_age.csv")
 )
 ```
@@ -86,22 +86,42 @@ write_csv(
 To explore this question, I decided to create a dumbbell chart. In the chart, the blue dots represent the person's birth year. The black dot represents the year the person died. Absence of the black dot indicates a person is still alive, while the grey line represents the person's lifespan. If you hover over the dots, a tool tip with information about each person is shown.
 
 ```{r vis-dumbbell-leap-year-people}
-#| fig-height: 12 
+#| fig-height: 12
 not_alive <- data_age |> filter(is_alive == 0)
 
 plot_ly(
-  data_age, 
+  data_age,
   color = I("gray80"),
-  text = ~paste(
-    person, "<br>",
-    "Age: ", age, "<br>",
-    description 
+  text = ~ paste(
+    person,
+    "<br>",
+    "Age: ",
+    age,
+    "<br>",
+    description
   ),
   hoverinfo = "text"
 ) |>
-  add_segments(x = ~year_birth, xend = ~year_death, y = ~person, yend = ~person, showlegend = FALSE) |>
-  add_markers(x = ~year_birth, y = ~person, color = I("#0000FF"), name = "Birth year") |>
-  add_markers(data = not_alive, x = ~year_death, y = ~person, color = I("black"), name = "Year passed") |>
+  add_segments(
+    x = ~year_birth,
+    xend = ~year_death,
+    y = ~person,
+    yend = ~person,
+    showlegend = FALSE
+  ) |>
+  add_markers(
+    x = ~year_birth,
+    y = ~person,
+    color = I("#0000FF"),
+    name = "Birth year"
+  ) |>
+  add_markers(
+    data = not_alive,
+    x = ~year_death,
+    y = ~person,
+    color = I("black"),
+    name = "Year passed"
+  ) |>
   layout(
     title = list(
       text = "<b>Lifespans of historical figures born on a Leap Day</b>",

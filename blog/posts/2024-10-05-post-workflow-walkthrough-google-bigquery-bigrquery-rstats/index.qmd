@@ -2,22 +2,19 @@
 title: "Workflow walkthrough: Interacting with Google BigQuery in R"
 date: "2024-10-05"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpg
+draft: false
 description: "A tutorial on how to use the `bigrquery` package"
 toc: true
 code-link: true
 code-copy: true
 from: markdown+emoji
 categories:
-  - workflow 
+  - workflow
   - tutorial
-  - productivity 
-  - bigquery 
+  - productivity
+  - bigquery
   - sql
 ---
-
-![Photo by [Ricardo Gomez Angel](https://unsplash.com/photos/gray-bridge-over-water-photo-AvN9NLUblUg)](thumbnail-wide.jpg){fig-align="center"}
 
 # Background
 
@@ -95,16 +92,16 @@ For example purposes, I'm going to list the datasets available within the `bigqu
 #| label: get-datasets-in-project
 #| eval: FALSE
 bq_project_datasets(
-  "bigquery-public-data", 
-  page_size = 10, 
+  "bigquery-public-data",
+  page_size = 10,
   warn = FALSE
 )
 # [[1]]
 # <bq_dataset> bigquery-public-data.america_health_rankings
-# 
+#
 # [[2]]
 # <bq_dataset> bigquery-public-data.austin_311
-# 
+#
 # [[3]]
 # <bq_dataset> bigquery-public-data.austin_bikeshare
 #
@@ -137,7 +134,7 @@ For the following examples, the publicly available [US Census Bureau's American 
 #| label: dataset-bq-acs
 #| eval: FALSE
 bq_dataset_acs <- bq_dataset(
-  "bigquery-public-data", 
+  "bigquery-public-data",
   "census_bureau_acs"
 )
 ```
@@ -153,10 +150,10 @@ bq_dataset_tables(bq_dataset_acs)
 
 # [[1]]
 # <bq_table> bigquery-public-data.census_bureau_acs.blockgroup_2010_5yr
-# 
+#
 # [[2]]
 # <bq_table> bigquery-public-data.census_bureau_acs.blockgroup_2011_5yr
-# 
+#
 # [[3]]
 # <bq_table> bigquery-public-data.census_bureau_acs.blockgroup_2012_5yr
 #
@@ -180,7 +177,7 @@ bq_table(
   bq_dataset_acs,
   "county_2020_5yr"
 ) |>
-bq_table_fields()
+  bq_table_fields()
 
 # <bq_fields>
 #   geo_id <STRING>
@@ -313,7 +310,7 @@ The initial step to write data back to BigQuery requires the creation of a `bq_d
 ```{r}
 #| label: bq-check-dataset-exists
 #| eval: FALSE
-bq_example_census <- 
+bq_example_census <-
   bq_dataset("<project_name>", "examples_census")
 
 bq_dataset_exists(bq_example_census)
@@ -335,69 +332,69 @@ bq_dataset_meta(bq_example_census)
 
 # $kind
 # [1] "bigquery#dataset"
-# 
+#
 # $etag
 # [1] "uXJtbL7r9fHqUGxmT7DTEQ=="
-# 
+#
 # $id
 # [1] "<project-name>:examples_census"
-# 
+#
 # $selfLink
 # [1] "https://bigquery.googleapis.com/bigquery/v2
 # /projects/<project-name>/datasets/exa
 # mples_census"
-# 
+#
 # $datasetReference
 # $datasetReference$datasetId
 # [1] "examples_census"
-# 
+#
 # $datasetReference$projectId
 # [1] "<project-name>"
-# 
-# 
+#
+#
 # $access
 # $access[[1]]
 # $access[[1]]$role
 # [1] "WRITER"
-# 
+#
 # $access[[1]]$specialGroup
 # [1] "projectWriters"
-# 
-# 
+#
+#
 # $access[[2]]
 # $access[[2]]$role
 # [1] "OWNER"
-# 
+#
 # $access[[2]]$specialGroup
 # [1] "projectOwners"
-# 
-# 
+#
+#
 # $access[[3]]
 # $access[[3]]$role
 # [1] "OWNER"
-# 
+#
 # $access[[3]]$userByEmail
 # [1] "<user-email>"
-# 
-# 
+#
+#
 # $access[[4]]
 # $access[[4]]$role
 # [1] "READER"
-# 
+#
 # $access[[4]]$specialGroup
 # [1] "projectReaders"
-# 
-# 
-# 
+#
+#
+#
 # $creationTime
 # [1] "1726847703443"
-# 
+#
 # $lastModifiedTime
 # [1] "1726847703443"
-# 
+#
 # $location
 # [1] "US"
-# 
+#
 # $type
 # [1] "DEFAULT"
 ```
@@ -407,7 +404,7 @@ With the dataset available in BigQuery, tables can now be created. First, we cre
 ```{r}
 #| label: bq-create-acs-dataset-table
 #| eval: FALSE
-bq_neb_county_table <- 
+bq_neb_county_table <-
   bq_table(bq_example_census, "data_neb_county_pop")
 
 bq_table_exists(bq_neb_county_table)
@@ -500,9 +497,9 @@ Leveraging BigQuery's functionality to automatically identify field names and ty
 fields_neb_county <- as_bq_fields(
   list(
     bq_field(
-      "geo_id", 
-      type = "INTEGER", 
-      mode = "REQUIRED", 
+      "geo_id",
+      type = "INTEGER",
+      mode = "REQUIRED",
       description = "Geo ID"
     ),
     bq_field(

@@ -3,7 +3,6 @@ title: "The Hex Update: October, 2024"
 date: "2024-11-02"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: hex-update-logo-2024-10.png
 description: "Key insights and what I learned about the media industry as of October 2024"
 toc: true
 from: markdown+emoji
@@ -11,8 +10,6 @@ categories:
   - the hex update
   - media
 ---
-
-![](hex-update-logo-2024-10-wide.png)
 
 ```{r}
 #| label: setup
@@ -178,18 +175,18 @@ data_browsers <- read_csv(
 ```{r}
 #| include: false
 #| label: wrngl-browser-data
-data_browsers <- 
+data_browsers <-
   data_browsers |>
-    pivot_longer(
-      names_to = "browser",
-      values_to = "percent",
-      Chrome:Other
-    ) |>
-    mutate(Date = ym(Date))
+  pivot_longer(
+    names_to = "browser",
+    values_to = "percent",
+    Chrome:Other
+  ) |>
+  mutate(Date = ym(Date))
 
-data_chrome_safari <- 
+data_chrome_safari <-
   data_browsers |>
-    filter(browser %in% c("Chrome", "Safari"))
+  filter(browser %in% c("Chrome", "Safari"))
 ```
 
 ```{r}
@@ -201,9 +198,9 @@ data_chrome_safari <-
 ggplot(data_browsers, aes(Date, percent)) +
   geom_line(aes(group = browser), alpha = .25) +
   geom_line(
-    data = data_chrome_safari, 
-    aes(group = browser, color = browser), 
-    linewidth = 2 
+    data = data_chrome_safari,
+    aes(group = browser, color = browser),
+    linewidth = 2
   ) +
   geom_point(
     data = data_chrome_safari |> slice_max(Date),
@@ -220,7 +217,7 @@ ggplot(data_browsers, aes(Date, percent)) +
     size = 4,
     nudge_x = 200
   ) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y")+ 
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(limits = c(0, 100)) +
   scale_color_manual(values = c("#003F66", "#FFB915")) +
   theme_minimal() +

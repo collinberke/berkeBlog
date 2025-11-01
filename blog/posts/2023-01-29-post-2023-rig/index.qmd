@@ -3,13 +3,10 @@ title: "2023 data science rig: Set up and configuration"
 author: "Collin K. Berke, Ph.D."
 date: "2023-01-29"
 description: "Overviewing and reflecting on my current data science setup."
-image: thumbnail.jpg
 toc: true
 categories:
   - tutorial
 ---
-
-![Photo by [Barn Images](https://unsplash.com/photos/t5YUoHW6zRo)](thumbnail-wide.png)
 
 > What the new year brings to you will depend a great deal on what you bring to the new year. 
 >
@@ -116,7 +113,7 @@ PROMPT='%F{blue}%*%f %F{green}%~%f %F{white}${vcs_info_msg_0_}%f$ '
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr ' *'
 zstyle ':vcs_info:*' stagedstr ' +'
-zstyle ':vcs_info:git:*' formats       '(%b%u%c)'
+zstyle ':vcs_info:git:*' formats '(%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%u%c)'
 ```
 
@@ -400,37 +397,36 @@ I use [packer](https://github.com/wbthomason/packer.nvim) for plugin management.
 
 ```lua
 return packer.startup(function(use)
-  use "wbthomason/packer.nvim"   -- Have packer manage itself
-  use "jalvesaq/Nvim-R"          -- Tools to work with R in nvim
+	use("wbthomason/packer.nvim") -- Have packer manage itself
+	use("jalvesaq/Nvim-R") -- Tools to work with R in nvim
 
-  -- Colorschemes
-  use "lunarvim/colorschemes"     -- A selection of various colorschemes
-  use "tomasiser/vim-code-dark"
-  use "EdenEast/nightfox.nvim"
-  use "folke/tokyonight.nvim"
+	-- Colorschemes
+	use("lunarvim/colorschemes") -- A selection of various colorschemes
+	use("tomasiser/vim-code-dark")
+	use("EdenEast/nightfox.nvim")
+	use("folke/tokyonight.nvim")
 
-  -- LSP 
-  use "neovim/nvim-lspconfig"         -- enable LSP
-  use "williamboman/mason.nvim"
-  use "williamboman/mason-lspconfig.nvim"
+	-- LSP
+	use("neovim/nvim-lspconfig") -- enable LSP
+	use("williamboman/mason.nvim")
+	use("williamboman/mason-lspconfig.nvim")
 
+	-- Telescope
+	use("nvim-telescope/telescope.nvim")
 
-  -- Telescope
-  use "nvim-telescope/telescope.nvim"
+	-- Treesitter
+	use({
+		"nvim-treesitter/nvim-treesitter",
+		run = ":TSUpdate",
+	})
 
-  -- Treesitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-  } 
+	-- Git
+	use("lewis6991/gitsigns.nvim")
+	use("tpope/vim-fugitive")
 
-  -- Git 
-  use "lewis6991/gitsigns.nvim"
-  use "tpope/vim-fugitive"
-
-  if PACKER_BOOTSTRAP then
-    require("packer").sync()
-  end
+	if PACKER_BOOTSTRAP then
+		require("packer").sync()
+	end
 end)
 ```
 
@@ -477,7 +473,7 @@ Setting up syntax highlighting is another important step when setting up Neovim.
 Since Neovim is all about customization of your development environment, one thing to modify is Neovim's keymaps. To configure, you just have to define the configuration in your Neovim config files. For example, the following is some code I use to customize my keymap setup. 
 
 ```lua
--- BigQuery keymappings 
+-- BigQuery keymappings
 keymap("n", "<C-b>", ":w | :! bq query < % --format pretty <CR>", opts)
 
 -- R coding keymappings

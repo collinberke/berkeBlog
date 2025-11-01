@@ -3,14 +3,11 @@ title: "Exploratory analysis of Google Analytics 4 data for forecasting models"
 author: "Collin K. Berke, Ph.D."
 date: "2022-03-03"
 description: "Exploring Google Analytics 4 data for forecasting models."
-image: thumbnail.jpg
 bibliography: bibliography.bib
 toc: true
 categories:
-  - forecasting 
+  - forecasting
 ---
-
-![Photo by [Markus Winkler](https://unsplash.com/photos/IrRbSND5EUc)](thumbnail-wide.png)
 
 # Introduction
 
@@ -78,9 +75,9 @@ project_id <- 'your.google.project.id'
 theme_set(
   theme_minimal() +
     theme(
-       plot.title = element_text(size = 14, face = "bold"),
-       plot.subtitle = element_text(size = 12),
-       panel.grid.minor = element_blank()
+      plot.title = element_text(size = 14, face = "bold"),
+      plot.subtitle = element_text(size = 12),
+      panel.grid.minor = element_blank()
     )
 )
 ```
@@ -157,7 +154,7 @@ regex_page_filter <- glue(
   "^https://googlemerchandisestore.com/$|",
   "^https://shop.googlemerchandisestore.com/$",
   ")"
-  )
+)
 ```
 
 The variable contained multiple regex expressions, as several page paths in the data represented home page visits. Defining the variable in this way ensured the filter excluded all data associated with homepage visits. 
@@ -165,8 +162,8 @@ The variable contained multiple regex expressions, as several page paths in the 
 Once the filter statement was set up, the `str_to_lower()` function from the `stringr` package was used to convert all the page paths to lower case. The following code chunk demonstrates how these operations were performed. 
 
 ```{r filter-homepage-to-lower, eval=FALSE}
-ga4_pagepaths <- ga4_pageviews %>% 
-  filter(!str_detect(string_value, regex_page_filter)) %>% 
+ga4_pagepaths <- ga4_pageviews %>%
+  filter(!str_detect(string_value, regex_page_filter)) %>%
   mutate(string_value = str_to_lower(string_value))
 ```
 
@@ -179,11 +176,14 @@ A semi-join using a regular expression is not supported with `dplyr`'s joins, so
 ```{r page-path-regex-filter, eval=FALSE}
 tracked_pages <- read_csv("tracked_pages.csv")
 
-top_pages_data <- ga4_pagepaths %>% 
+top_pages_data <- ga4_pagepaths %>%
   mutate(
     string_value = str_remove(
-      string_value,'https://shop.googlemerchandisestore.com/')) %>% 
-  regex_semi_join(tracked_pages, by = c("string_value" = "page_path")) %>% 
+      string_value,
+      'https://shop.googlemerchandisestore.com/'
+    )
+  ) %>%
+  regex_semi_join(tracked_pages, by = c("string_value" = "page_path")) %>%
   regex_left_join(tracked_pages, by = c("string_value" = "page_path"))
 ```
 
@@ -208,37 +208,39 @@ A few questions to answer:
 A simple bar plot is created to answer these questions. Here's the code to create these plots, using the `ggplot2` package. 
 
 ```{r most-viewed-user-pages}
-page_summary <- top_pages_data %>% 
-  group_by(page) %>% 
+page_summary <- top_pages_data %>%
+  group_by(page) %>%
   summarise(
     unique_users = n_distinct(user_pseudo_id),
     views = n()
-  ) %>% 
+  ) %>%
   arrange(desc(unique_users))
 ```
 
 ```{r vis-pages-most-users}
-ggplot(page_summary, aes(x = unique_users, y = reorder(page, unique_users))) + 
+ggplot(page_summary, aes(x = unique_users, y = reorder(page, unique_users))) +
   geom_col() +
   scale_x_continuous(labels = scales::comma) +
-  labs(title = "Top-level pages by users",
-       subtitle = "Apparel page viewed by a significant amount of users",
-       y = "",
-       x = "Users",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       )
+  labs(
+    title = "Top-level pages by users",
+    subtitle = "Apparel page viewed by a significant amount of users",
+    y = "",
+    x = "Users",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 ```{r vis-pages-most-views}
-ggplot(page_summary, aes(x = views, y = reorder(page, views))) + 
+ggplot(page_summary, aes(x = views, y = reorder(page, views))) +
   geom_col() +
   scale_x_continuous(labels = scales::comma) +
-  labs(title = "Top-level pages by views",
-       subtitle = "Apparel and basket pages generate significant amount of views",
-       y = "", 
-       x = "Views",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    title = "Top-level pages by views",
+    subtitle = "Apparel and basket pages generate significant amount of views",
+    y = "",
+    x = "Views",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 Apparel clearly seems to not only have received a significant amount of users, but a high number of page views as well. It's also interesting to note that the basket had nearly half the amount of users compared to apparel, but the amount of page views was similar. It's also apparent, at least with the data available, that more users browsed clearance then they did new items during this period. Just looking at the current summary for the period, apparel might be a potential time series to include within forecasting models of order completions. 
@@ -254,23 +256,25 @@ Visualizing the time series is the next step in the exploratory analysis. This s
 The `top_pages_data` `tibble` is now converted to an object that contains temporal structure. To do this, the `as_tsibble()` function from the [`{tsibble}`](https://tsibble.tidyverts.org/) package is used. This package provides a set of tools to create and wrangle tidy temporal data. Before the temporal structure could be mapped to the data set, a few wrangling steps were performed: 1). the `event_date` column was converted into a date variable; and 2). data were aggregated to count the number of `unique_users` and `views`. The following code chunk contains an example of these steps.
 
 ```{r tidy-trend-data}
-pages_of_interest <- c("Apparel", 
-                       "Campus Collection", 
-                       "Clearance", 
-                       "Lifestyle", 
-                       "New", 
-                       "Order Completed", 
-                       "Shop by Brand")
+pages_of_interest <- c(
+  "Apparel",
+  "Campus Collection",
+  "Clearance",
+  "Lifestyle",
+  "New",
+  "Order Completed",
+  "Shop by Brand"
+)
 
-tidy_trend_data <- top_pages_data %>% 
-  mutate(event_date = parse_date(event_date, "%Y%m%d")) %>% 
-  group_by(event_date, page) %>% 
+tidy_trend_data <- top_pages_data %>%
+  mutate(event_date = parse_date(event_date, "%Y%m%d")) %>%
+  group_by(event_date, page) %>%
   summarise(
     unique_users = n_distinct(user_pseudo_id),
-    views = n(), 
+    views = n(),
     .groups = "drop"
-  ) %>% 
-  as_tsibble(index = event_date, key = c("page")) %>% 
+  ) %>%
+  as_tsibble(index = event_date, key = c("page")) %>%
   filter(page %in% pages_of_interest)
 ```
 
@@ -279,12 +283,13 @@ At this point, several trend plots could be created using the `ggplot2` package.
 ```{r vis-user-series}
 autoplot(tidy_trend_data, views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of page views", 
-       subtitle = "Apparel drove a significant amount of views",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) +
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of page views",
+    subtitle = "Apparel drove a significant amount of views",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  ) +
   theme(legend.title = element_blank())
 ```
 
@@ -293,13 +298,14 @@ autoplot(tidy_trend_data, views, size = 1, alpha = .8) +
 ```{r vis-view-trends}
 autoplot(tidy_trend_data, views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  facet_wrap(.~page, scales = "free_y")  +
-  labs(y = "Views",
-       x = "",
-       title = "Time plots of page views", 
-       subtitle = "Various characteristics are present within each series",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) +
+  facet_wrap(. ~ page, scales = "free_y") +
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plots of page views",
+    subtitle = "Various characteristics are present within each series",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  ) +
   theme(legend.position = "none")
 ```
 
@@ -310,16 +316,17 @@ Apparel again emerges as a potential series to include within the forecasting mo
 ### Apparel page's characteristics
 
 ```{r vis-views-apparel}
-tidy_trend_data %>% 
-  filter(page == "Apparel") %>% 
+tidy_trend_data %>%
+  filter(page == "Apparel") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of Apparel page views", 
-       subtitle = "Series exhibits positive trend; slight cyclic patterns; no seasonal patterns present",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of Apparel page views",
+    subtitle = "Series exhibits positive trend; slight cyclic patterns; no seasonal patterns present",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * A clear positive trend. 
@@ -328,16 +335,17 @@ tidy_trend_data %>%
 ### Campus Collection page's notable characteristics
 
 ```{r vis-views-campus-collection}
-tidy_trend_data %>% 
-  filter(page == "Campus Collection") %>% 
+tidy_trend_data %>%
+  filter(page == "Campus Collection") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of Campus Collection page views", 
-       subtitle = "Cyclic behavior present within the series",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of Campus Collection page views",
+    subtitle = "Cyclic behavior present within the series",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * A slight positive trend is present up until the middle of the series. Towards the middle of the series, no real trend is present.
@@ -346,16 +354,17 @@ tidy_trend_data %>%
 ### Clearance page's notable characteristics
 
 ```{r vis-views-clearance}
-tidy_trend_data %>% 
-  filter(page == "Clearance") %>% 
+tidy_trend_data %>%
+  filter(page == "Clearance") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of Clearance page views", 
-       subtitle = "Slight trend components are present; weekly seasonality is also present",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of Clearance page views",
+    subtitle = "Slight trend components are present; weekly seasonality is also present",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * A slight upward trend towards the middle of the series, followed by a steep downward trend, and then a slight upward trend towards the end of the series is present. 
@@ -364,16 +373,17 @@ tidy_trend_data %>%
 ### Lifestyle page's notable characteristics
 
 ```{r vis-views-lifestyle}
-tidy_trend_data %>% 
-  filter(page == "Lifestyle") %>% 
+tidy_trend_data %>%
+  filter(page == "Lifestyle") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of Lifestyle page views", 
-       subtitle = "Trend not clear in this series; some strong cyclic behavior",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of Lifestyle page views",
+    subtitle = "Trend not clear in this series; some strong cyclic behavior",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * Trend is not clear in this series. 
@@ -382,16 +392,17 @@ tidy_trend_data %>%
 ### New page's notable characteristics
 
 ```{r vis-views-new}
-tidy_trend_data %>% 
-  filter(page == "New") %>% 
+tidy_trend_data %>%
+  filter(page == "New") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of New page views", 
-       subtitle = "No trend present; some some strong cyclic behavior",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of New page views",
+    subtitle = "No trend present; some some strong cyclic behavior",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * No real trend is present. 
@@ -400,16 +411,17 @@ tidy_trend_data %>%
 ### Shop by brand characteristics
 
 ```{r vis-views-shop-brand}
-tidy_trend_data %>% 
-  filter(page == "Shop by Brand") %>% 
+tidy_trend_data %>%
+  filter(page == "Shop by Brand") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of Shop by Brand page views", 
-       subtitle = "Some trend components; slight cyclic behavior",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of Shop by Brand page views",
+    subtitle = "Some trend components; slight cyclic behavior",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * The trend here seems to be positive from the start, then declines sharply, and then exhibits a slight positive trend towards the end of the series. 
@@ -418,16 +430,17 @@ tidy_trend_data %>%
 ### Order completed characteristics
 
 ```{r vis-views-order-completes}
-tidy_trend_data %>% 
-  filter(page == "Order Completed") %>% 
+tidy_trend_data %>%
+  filter(page == "Order Completed") %>%
   autoplot(views, size = 1, alpha = .8) +
   scale_y_continuous(labels = comma) +
-  labs(y = "Views",
-       x = "",
-       title = "Time plot of Order Completed page views", 
-       subtitle = "Some trend components; slight cyclic behavior",
-       caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
-       ) 
+  labs(
+    y = "Views",
+    x = "",
+    title = "Time plot of Order Completed page views",
+    subtitle = "Some trend components; slight cyclic behavior",
+    caption = "Source: Google Merchandise Store GA4 data exported from BigQuery"
+  )
 ```
 
 * The trend from the start seems to be positive, up until the middle of the series. From there, a steep decline is present. Towards the end of the series, there is a subtle positive trend. 
@@ -438,12 +451,14 @@ Since this analysis is focused on creating a forecast for order completions, add
 Before additional exploratory plots can be created, though, additional data wrangling steps needed to be taken. Specifically, the data was transformed from a long format to a wide format, where the `page` variable is turned into several numeric columns within the transformed data set. The following code chunk was used to perform this task.
 
 ```{r wrangle-page-data-wide}
-tidy_trend_wide <- tidy_trend_data %>% 
-  select(-unique_users) %>% 
-  mutate(page = str_replace(str_to_lower(page), " ", "_")) %>% 
-  pivot_wider(names_from = page, 
-              values_from = views, 
-              names_glue = "{page}_views")
+tidy_trend_wide <- tidy_trend_data %>%
+  select(-unique_users) %>%
+  mutate(page = str_replace(str_to_lower(page), " ", "_")) %>%
+  pivot_wider(
+    names_from = page,
+    values_from = views,
+    names_glue = "{page}_views"
+  )
 ```
 
 With data in a wide format, the `ggpairs()` function from the `GGally` package was used to create a matrix of scatterplots and correlation estimates for the various series within the dataset. 
@@ -451,7 +466,7 @@ With data in a wide format, the `ggpairs()` function from the `GGally` package w
 Here is the code to perform this analysis and output the matrix of plots. 
 
 ```{r vis-series-corr}
-tidy_trend_wide %>% 
+tidy_trend_wide %>%
   ggpairs(columns = 2:8)
 ```
 
@@ -468,7 +483,7 @@ It's time to shift focus onto exploring the characteristics of the outcome varia
 The `gg_lag` function from the `feats` package makes it easy to produce the lag plots. Here the `tidy_trend_wide` data will be used. 
 
 ```{r vis-order-complete-lag-plots}
-tidy_trend_wide %>% 
+tidy_trend_wide %>%
   gg_lag(order_completed_views, geom = "point")
 ```
 
@@ -479,8 +494,8 @@ The plots provide little evidence that any lagged relationships--positive or neg
 Exploring for autocorrelation is the next step. A correlogram is created to explore for this characteristic within the series. A correlogram "measures the linear relationship between lagged values of a time series" [@hynd_atha_2018]. The ACF is first calculated for each value within the series. This value is then plotted according to it's corresponding lag values. The `ACF()` function from the `feasts` package was used to calculate these values. The resulting data object is then passed along to the `autoplot()` function, which creates the correlogram for the data. Here is what the code looks like, along with the outputted plot. 
 
 ```{r vis-acf-order-completes}
-tidy_trend_wide %>% 
-  ACF(order_completed_views, lag_max = 28) %>% 
+tidy_trend_wide %>%
+  ACF(order_completed_views, lag_max = 28) %>%
   autoplot()
 ```
 
@@ -505,7 +520,7 @@ The series was broken down into its multiple components: seasonal, trend-cycle, 
 First, the trend components are calculated using the `STL()` and `model()` functions. `STL()` decomposes the trend. The `model()` function creates a `mabel` object of estimates. The `components()` function is then used to view the model object. 
 
 ```{r order-views-dcmp}
-order_views_dcmp <- tidy_trend_wide %>% 
+order_views_dcmp <- tidy_trend_wide %>%
   model(stl = STL(order_completed_views))
 
 components(order_views_dcmp)
@@ -514,7 +529,7 @@ components(order_views_dcmp)
 Plotting the decomposition is done by piping the output from the `components()` function to `autoplot()`. The visualization will contain the original trend, the trend component, the seasonal component, and the remainder of the series after the trend and seasonal components are removed. 
 
 ```{r vis-order-views-dcmp}
-components(order_views_dcmp) %>% 
+components(order_views_dcmp) %>%
   autoplot() +
   labs(x = "Event Date")
 ```

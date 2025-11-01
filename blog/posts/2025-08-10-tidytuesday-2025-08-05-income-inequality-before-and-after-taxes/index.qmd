@@ -4,7 +4,6 @@ description: "Income Inequality Before and After Taxes"
 date: "2025-08-10"
 author: "Collin K. Berke, Ph.D."
 draft: false
-image: thumbnail.jpg
 toc: true
 code-link: true
 code-copy: true
@@ -13,8 +12,6 @@ categories:
   - data visualization
   - tidytuesday
 ---
-
-![Photo by [Martin Sanchez](https://unsplash.com/photos/red-and-black-abstract-art-j2c7yf223Mk)](thumbnail-wide.jpg)
 
 # Background
 

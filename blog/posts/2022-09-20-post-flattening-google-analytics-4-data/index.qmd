@@ -3,15 +3,12 @@ title: "Flattening Google Analytics 4 data"
 author: "Collin K. Berke, Ph.D."
 date: "2022-09-20"
 description: "Let's deep dive into working with Google Analytics data stored in BigQuery."
-image: thumbnail.png
 toc: true
 categories:
   - BigQuery
   - sql
   - data wrangling
 ---
-
-![Photo by [Alvaro Calvo](https://unsplash.com/photos/R8cA47Uk-14)](thumbnail-wide.png)
 
 ### Introduction
 

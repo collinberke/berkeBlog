@@ -2,19 +2,16 @@
 title: "TIL: Use `base::dput()` to easily create and save objects"
 date: "2024-02-10"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpeg
+draft: false
 description: "Need to create and store an object quickly, use this trick"
 toc: true
 categories:
   - til
-  - productivity 
+  - productivity
   - vim
   - testing
   - data wrangling
 ---
-
-![Image generated using the prompt 'Robot manufacturing several widgets on a conveyor belt in a pop art style' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.png)
 
 ```{r setup, warnings=FALSE, message=FALSE}
 library(tidyverse)

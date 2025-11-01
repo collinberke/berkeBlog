@@ -2,20 +2,17 @@
 title: "Messing with models: Market basket analysis of online merchandise store data" 
 date: "2024-06-11"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpeg
+draft: false
 description: "A tutorial on how to perform a market basket analysis using Google Analytics data"
 toc: true
 from: markdown+emoji
 bibliography: references.bib
 categories:
-  - machine learning 
+  - machine learning
   - unsupervised learning
   - association rules
   - market basket analysis
 ---
-
-![Image generated using the prompt 'robot browsing an e-commerce store on laptop in pixel art, warm colors' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)
 
 # Background
 
@@ -80,7 +77,7 @@ bq_dataset_exists(data_ga)
 ```
 
 ```{r}
-#| label: query-ga-transactions 
+#| label: query-ga-transactions
 #| eval: FALSE
 query <- "
   select 
@@ -95,13 +92,13 @@ query <- "
 ```
 
 ```{r}
-#| label: extract-ga-transactions 
+#| label: extract-ga-transactions
 #| eval: FALSE
 data_ga_transactions <- bq_project_query(
   "insert-your-project-name",
   query
 ) |>
-bq_table_download()
+  bq_table_download()
 
 # Write and read the data to limit calls to BigQuery
 write_csv(data_ga_transactions, "data_ga_transactions.csv")
@@ -110,14 +107,14 @@ write_csv(data_ga_transactions, "data_ga_transactions.csv")
 Now that I have a `.csv` file containing transactions from 2020-11-01 to 2020-12-31, I can use `readr`'s `read_csv()` function to import data into the session. Again, this will help limit the number of times I need to query the dataset, as a result, reducing cost.
 
 ```{r}
-#| label: read-data-ga-transactions 
+#| label: read-data-ga-transactions
 data_ga_transactions <- read_csv("data_ga_transactions.csv")
 ```
 
 Before we go about wrangling data, let's get a sense of its structure. `dplyr`'s `glimpse()` function can be used to do this.
 
 ```{r}
-#| label: summ-glimpse-data 
+#| label: summ-glimpse-data
 glimpse(data_ga_transactions)
 ```
 
@@ -130,12 +127,12 @@ At first glance, we see the dataset contains 13,113 logged events (i.e., rows) a
 After reviewing the dataset's structure, my first question is how many examples are missing a `transaction_id`? `transaction_id`s are critical here, as they are used to group items into transactions. To answer this question, I used the following code:
 
 ```{r}
-#| label: summ-missing-id 
+#| label: summ-missing-id
 data_ga_transactions |>
   mutate(
     has_id = case_when(
       is.na(transaction_id) | transaction_id == "(not set)" ~ FALSE,
-      TRUE ~ TRUE 
+      TRUE ~ TRUE
     )
   ) |>
   count(has_id) |>
@@ -151,8 +148,8 @@ Although the temporal aspects of the data are not relevant for this analysis, fo
 Here's the code to perform the wrangling steps described above:
 
 ```{r}
-#| label: wrngl-data-ga-transactions 
-data_ga_transactions <- 
+#| label: wrngl-data-ga-transactions
+data_ga_transactions <-
   data_ga_transactions |>
   drop_na(transaction_id) |>
   filter(transaction_id != "(not set)") |>
@@ -163,12 +160,12 @@ data_ga_transactions <-
 We can verify these steps have been applied by once again using `dplyr`'s `glimpse()` function. Base R's `summary()` function is also useful to verify the data is as expected.
 
 ```{r}
-#| label: view-wrngl-data-structure 
+#| label: view-wrngl-data-structure
 glimpse(data_ga_transactions)
 ```
 
 ```{r}
-#| label: summ-wrngl-data 
+#| label: summ-wrngl-data
 summary(data_ga_transactions)
 ```
 
@@ -179,7 +176,7 @@ Looks good from a structural standpoint. However, I did notice that our wranglin
 Data exploration is the next step. How many transactions are represented in the data? Let's use `summarise()` with `n_distinct()` on the `transaction_id` to get a unique count of the total number of transactions. Our distinct count reveals a total of 3,562 transactions are present within the data. We'll use each transaction to generate association rules here in a little bit. 
 
 ```{r}
-#| label: summ-total-transactions 
+#| label: summ-total-transactions
 # Number of transactions
 data_ga_transactions |>
   summarise(transactions = n_distinct(transaction_id))
@@ -188,7 +185,7 @@ data_ga_transactions |>
 `skim()` from the `skimr` package can now be used to calculate summary statistics for our data. Given the type of data we're working with, there's not much to report from this output. The output does confirm our previous count of transactions we got above. We also can see there are 371 unique items purchased during this 51 day period.
 
 ```{r}
-#| label: summ-skim-data 
+#| label: summ-skim-data
 skim(data_ga_transactions)
 ```
 
@@ -198,15 +195,15 @@ We can view the top ten items purchased during this period with the use of a sim
 
 ```{r summ-item-counts}
 #| label: summ-item-counts
-data_item_counts <- 
+data_item_counts <-
   data_ga_transactions |>
-  count(item_name, name = "purchased", sort = TRUE) 
+  count(item_name, name = "purchased", sort = TRUE)
 ```
 
 ::: {.panel-tabset}
 ## Top 10 Plot
 ```{r}
-#| label: vis-item-counts 
+#| label: vis-item-counts
 #| code-fold: TRUE
 plot_ly(
   data = slice_head(data_item_counts, n = 10),
@@ -215,35 +212,36 @@ plot_ly(
   type = "bar",
   orientation = "h"
 ) |>
-layout(
-  title = list(
-    text = "<b>Top 10 Google Merchandise Store items purchased during the 2020 holiday season (2020-11-11 to 2020-12-31)</b>",
-    font = list(size = 24, family = "Arial"),
-    x = 0.1 
-  ),
-  yaxis = list(title = "", categoryorder = "total ascending"),
-  xaxis = list(title = "Number of items purchased"),
-  margin = list(t = 105)
-)
+  layout(
+    title = list(
+      text = "<b>Top 10 Google Merchandise Store items purchased during the 2020 holiday season (2020-11-11 to 2020-12-31)</b>",
+      font = list(size = 24, family = "Arial"),
+      x = 0.1
+    ),
+    yaxis = list(title = "", categoryorder = "total ascending"),
+    xaxis = list(title = "Number of items purchased"),
+    margin = list(t = 105)
+  )
 ```
 
 ## Table
 ```{r}
-#| label: tbl-item-counts 
+#| label: tbl-item-counts
 #| code-fold: TRUE
-#| tbl-cap: "Top 10 Google Merchandise Store items purchased during the 2020 holiday season (2020-11-11 to 2020-12-31)" 
+#| tbl-cap: "Top 10 Google Merchandise Store items purchased during the 2020 holiday season (2020-11-11 to 2020-12-31)"
 
-options(reactable.theme = reactableTheme(
-  color = "#000000",
-  backgroundColor = "#ffffff"
- )
+options(
+  reactable.theme = reactableTheme(
+    color = "#000000",
+    backgroundColor = "#ffffff"
+  )
 )
 
 reactable(
   data_ga_transactions |> count(item_name, sort = TRUE),
   searchable = TRUE,
   columns = list(
-    item_name = colDef(name = "Item name"), 
+    item_name = colDef(name = "Item name"),
     n = colDef(name = "Purchases")
   )
 )
@@ -257,8 +255,8 @@ We're now at the point where we can start performing our market basket analysis.
 Before we can go about creating association rules, though, we need to transform the `data_ga_transactions` tibble into an object that can be used by `arules`' functions. Indeed, the `arules` package [works well](https://mhahsler.github.io/arules/) when writing code in a tidyverse style, especially if you're used to working with tibbles. In fact, the `transactions()` function accepts a tibble as an input and outputs the needed data structure used by the package's functions. You do, however, need to be aware of and specify if your data is in 'wide' or 'long' format. Since this post's data initially is in a long format, we specify `"long"` for the `format` argument in the `transactions()` function.
 
 ```{r}
-#| label: wrngl-ga-transactions 
-ga_transactions <- data_ga_transactions |> 
+#| label: wrngl-ga-transactions
+ga_transactions <- data_ga_transactions |>
   select(-event_date) |>
   mutate(across(transaction_id:item_name, factor)) |>
   transactions(format = "long")
@@ -269,7 +267,7 @@ ga_transactions
 Now we have a `ga_transactions` object we can use with `arules`' functions. Specifically, this `transactions()` function is creating a sparse matrix, where the matrix has 3,562 rows (the number of transactions) and 371 columns (the number of unique items). If we do some simple multiplication, we can calculate that the matrix contains over 1.3 million spaces. 
 
 ```{r}
-#| label: summ-size-sparse-matrix 
+#| label: summ-size-sparse-matrix
 3562 * 371
 ```
 
@@ -280,7 +278,7 @@ Each space within the matrix either contains a value (i.e., an item was purchase
 We can now pass the `ga_transactions` object into `summary()`. Outputted will be some summary information about the transactions.
 
 ```{r}
-#| label: summ-ga-transactions 
+#| label: summ-ga-transactions
 summary(ga_transactions)
 ```
 
@@ -293,7 +291,7 @@ With these values in mind, we can also calculate the total number of items purch
 ```{r}
 #| label: summ-items-purchased
 # Over 1.3M different positions within the matrix
-mat_pos <- 3562 * 371 
+mat_pos <- 3562 * 371
 
 # Total number of items purchased during the period (ignoring duplicates)
 items_purchased <- mat_pos * .007850158
@@ -326,14 +324,14 @@ head(toLongFormat(ga_transactions, decode = TRUE), n = 10)
 If we're interested in exploring complete sets of transactions, `arules`' `inspect` generic function is useful. Say we want to inspect the item sets for the first five transactions. We can do this by using the following code.
 
 ```{r}
-#| label: summ-view-head-transactions 
+#| label: summ-view-head-transactions
 inspect(ga_transactions[1:5])
 ```
 
 The `itemFrequency()` generic function is also useful to make quick calculations on individual items. Say we want to calculate the proportion of times our most popular items, the Super G Unisex Jogger and the Google Camp Mug Gray, were a part of a transaction. We can do this with the following code:
 
 ```{r}
-#| label: summ-item-frequency 
+#| label: summ-item-frequency
 itemFrequency(
   ga_transactions[, c("Super G Unisex Joggers", "Google Camp Mug Gray")]
 )
@@ -342,26 +340,29 @@ itemFrequency(
 We can also get the count values by passing `absolute` to `itemFrequency()`'s `type` argument. This is exactly the same as we saw in the summary output of the `ga_transaction` object. However, this can be useful to find the frequency of items that are not the top items purchased.
 
 ```{r}
-#| label: summ-item-freq-absolute 
-itemFrequency(ga_transactions[, c("Super G Unisex Joggers", "Google Camp Mug Gray")], type = "absolute")
+#| label: summ-item-freq-absolute
+itemFrequency(
+  ga_transactions[, c("Super G Unisex Joggers", "Google Camp Mug Gray")],
+  type = "absolute"
+)
 ```
 
 Perhaps we would also like to visualize these results. `arules` `itemFrequencyPlot()` function allows us to do this. Take for example the following code, which outputs a plot of the top 20 items with the greatest support.
 
 ```{r}
-#| label: vis-item-frequency 
+#| label: vis-item-frequency
 itemFrequencyPlot(ga_transactions, topN = 20)
 ```
 
 In addition to these plots, we can also output some visualizations of the sparse matrix. Since the matrix contains over 1.3 million spaces, we're limited in the output we can generate. To output a visualization of the sparse matrix, we can use `arules`' `image()` generic function. The first following code chunk outputs a visualization of the first 100 transactions, while the second is a random sample of 100 transactions.
 
 ```{r}
-#| label: vis-sparse-matrix 
+#| label: vis-sparse-matrix
 image(ga_transactions[1:100])
 ```
 
 ```{r}
-#| label: vis-sample-sparse-matrix} 
+#| label: vis-sample-sparse-matrix}
 image(sample(ga_transactions, 100))
 ```
 
@@ -450,7 +451,7 @@ Now let's do some modeling. Here we'll use `arules`' `apriori()` function to spe
 #   confidence: 0.8
 #   minlen: 2
 mdl_ga_rules <- apriori(
-  ga_transactions, 
+  ga_transactions,
   parameter = list(support = 0.1, confidence = 0.8, minlen = 2)
 )
 
@@ -476,13 +477,13 @@ When it comes to confidence, it is more about picking a starting point and adjus
 Here's the updated code for our model with the adjusted parameters:
 
 ```{r}
-#| label: mdl-train-apriori-reasonable 
-# Use parameters we think are reasonable 
+#| label: mdl-train-apriori-reasonable
+# Use parameters we think are reasonable
 #   support: 0.002
 #   confidence: 0.1
 #   minlen: 2
 mdl_ga_rules <- apriori(
-  ga_transactions, 
+  ga_transactions,
   parameter = list(support = 0.002, confidence = 0.1, minlen = 2)
 )
 
@@ -496,7 +497,7 @@ With more reasonable parameters in place, the model identified 277 rules. Is 277
 We now need to assess model performance. To obtain information useful for evaluating model performance, we pass the `mdl_ga_rules` object to `summary()`. Printed to the console is summary information about our rule set.
 
 ```{r}
-#| label: summ-model-rules 
+#| label: summ-model-rules
 summary(mdl_ga_rules)
 ```
 
@@ -521,7 +522,7 @@ The final section of the output, `mining info`, is a copy of what we already spe
 We can now begin exploring our rules for insights. `arules`' `inspect()` generic function is used for rule exploration. Perhaps we just want to view the top 20 rules by lift. To do this, we can `sort()` our output, use some vector subsetting, and wrap this code within `inspect()`.
 
 ```{r}
-#| label: view-top-rules-by-lift 
+#| label: view-top-rules-by-lift
 inspect(sort(mdl_ga_rules, by = "lift")[1:20])
 ```
 
@@ -542,7 +543,7 @@ The code should be pretty self-explanatory. All we're doing is using `head()` to
 Let's use our first rule as an example, where we'll seek to interpret it.
 
 ```{r}
-#| label: view-first-rule-tidy 
+#| label: view-first-rule-tidy
 first_rule <- mdl_ga_rules |>
   head(1, by = "lift") |>
   as("data.frame") |>
@@ -569,14 +570,14 @@ inspect(subset(mdl_ga_rules, items %in% "Google Camp Mug Ivory"))
 Say for example the marketing team finds these rules are not enough to build a campaign around, so they request all rules associated with any mug. The `%pin%` infix operator can be used for partial matching.
 
 ```{r}
-#| label: view-all-mugs 
+#| label: view-all-mugs
 inspect(subset(mdl_ga_rules, items %pin% "Mug"))
 ```
 
 This can also be achieved in a more tidyverse style by doing the following:
 
 ```{r}
-#| label: view-google-camp-mug-tidy 
+#| label: view-google-camp-mug-tidy
 # Google Camp Mug Ivory tidy way
 mdl_ga_rules |>
   as("data.frame") |>
@@ -585,7 +586,7 @@ mdl_ga_rules |>
 ```
 
 ```{r}
-#| label: view-all-mugs-tidy 
+#| label: view-all-mugs-tidy
 # All mugs tidy way
 mdl_ga_rules |>
   as("data.frame") |>
@@ -600,14 +601,14 @@ Slicing and dicing rules can be useful. However, say we want to explore all the 
 We start with a simple scatter plot of our rules. `confidence` for each rule is plotted on the y-axis, `support` is on the x-axis, and the brightness of each point represents the rule's `lift`. The hover tool provides additional useful information about each rule represented in the plot.
 
 ```{r}
-#| label: vis-scatter-rules 
+#| label: vis-scatter-rules
 plot(mdl_ga_rules, engine = "html")
 ```
 
 Now, we can also use the `plot()` generic function to create a network graph of the rule sets. To do this, we just set `method = "graph"`. You'll also notice I set the argument `limit = 300`. This is because rule sets can be quite large, which when plotted interactively can cause issues if too many rules are plotted. Thus, the generic defaults to the top 100 rule rule sets based on lift. Given we have a relatively small rule set (i.e., 277 rules), I bumped this up a bit.
 
 ```{r}
-#| label: vis-network-rules 
+#| label: vis-network-rules
 plot(mdl_ga_rules, method = "graph", engine = "html", limit = 300)
 ```
 
@@ -626,7 +627,7 @@ Not all collaborators will have the time to review every rule. So, how do we get
 To share these rules with other collaborators, I'm going to sort and slice the top 100 rules based on the `lift` metric, transform into a tibble, and write a `.csv` file for stakeholders to view the rules. A file in this format should be easily opened in programs familiar to your typical business user (e.g., Excel, Google Sheets).
 
 ```{r}
-#| label: sort-top-hundred-rules-lift-tidy 
+#| label: sort-top-hundred-rules-lift-tidy
 rules_top <- mdl_ga_rules |>
   head(100, by = "lift") |>
   as("data.frame") |>
@@ -634,9 +635,9 @@ rules_top <- mdl_ga_rules |>
 ```
 
 ```{r}
-#| label: write-top-hundred-rules-lift-tidy 
+#| label: write-top-hundred-rules-lift-tidy
 write_csv(
-  rules_top, 
+  rules_top,
   glue("{str_replace_all(Sys.Date(), '-', '_')}_data_top_rules.csv")
 )
 ```

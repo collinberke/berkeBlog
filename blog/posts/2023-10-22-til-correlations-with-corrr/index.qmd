@@ -2,8 +2,7 @@
 title: "TIL: Calculating correlations with `corrr`"
 date: "2023-10-22"
 author: "Collin K. Berke, Ph.D."
-draft: false 
-image: thumbnail.jpg
+draft: false
 description: "Use the corrr package to calculate and visualize correlations"
 toc: true
 categories:
@@ -33,8 +32,6 @@ write_csv(
   )
 )
 ```
-
-![Photo by [Omar Flores](https://unsplash.com/photos/MOO6k3RaiwE)](thumbnail-wide.jpg)
 
 Today I learned calculating, visualising, and exploring correlations is easy with the [`corrr package`](https://corrr.tidymodels.org/index.html).
 
@@ -166,6 +163,4 @@ Have fun exploring your data with `corrr`!
 
 # Resources to learn more
 
-* [Exploring correlations in R with corrr](https://drsimonj.svbtle.com/exploring-correlations-in-r-with-corrr) 
-
-
+* [Exploring correlations in R with corrr](https://drsimonj.svbtle.com/exploring-correlations-in-r-with-corrr)
