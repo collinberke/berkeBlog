@@ -1,10 +1,11 @@
 ---
 title: "Blog"
 listing:
-    type: default
+    type: table
     contents: "posts/**/index.qmd"
     sort: "date desc"
     categories: true
+    fields: [date, title, description]
     page-size: 10
 format:
   html:
@@ -12,4 +13,3 @@ format:
 citation: false
 license: ""
 ---
-

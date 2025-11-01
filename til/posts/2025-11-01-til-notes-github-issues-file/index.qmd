@@ -1,0 +1,235 @@
+---
+title: "TIL: Use a file to draft a GitHub issue or PR"
+description: "What I recently learned about GitHub cli tool's `--body-file` command option"
+date: "2025-11-01"
+author: "Collin K. Berke, Ph.D."
+draft: false
+image: false
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - til
+---
+
+# Background
+
+Recently, while using [GitHub's CLI tool](https://cli.github.com/), I ran into an error editing an issue.
+Thinking I'd found a bug, I searched the [tool's issues](https://github.com/cli/cli/issues) for any information on what may be going on.
+I later identified it as a version issue, as I hadn't updated the tool for some time.
+While researching the error, though, I came across this [issue](https://github.com/cli/cli/issues/11983) submitted by [ThePlenkov](https://github.com/ThePlenkov).
+In the issue, I saw this code example:
+
+```txt
+gh pr edit <pr_number> --body-file /tmp/release-pr.md
+```
+
+I was taken aback. I'd never seen this before.
+
+Why?
+GitHub has been core to my workflow for several years.
+As an extension and from someone who enjoys working from the command line, I've come to really enjoy [GitHub's CLI tool](https://cli.github.com/).
+In addition to the version control features, It's also great for project management tasks.
+However, one feature I disliked was the use of temporary files when drafting a new issue or PR.
+Seeing the `--body-file` option used in the code example made me wonder: Is there a better way to draft issues and PRs?
+There was.
+So, I had to document and share what I learned in this post.
+
+::: {.callout-note}
+This post is written in the spirit of [publishing more frequent blog posts](https://www.collinberke.com/til/posts/2025-01-26-til-notes-quotes-links-credibility-blogs/).
+It's a bit of a scratchpad of ideas, concepts, and/or ways of working that I found to be useful and interesting.
+As such, what's here is lightly edited.
+Be aware: there will likely be spelling, grammatical, or syntactical errors along with some disjointed, incomplete ideas.
+:::
+
+# The problem
+
+When using the GitHub CLI tool, you can run the following command to create a new issue for your repo:
+
+```bash
+gh issue create
+```
+
+When you do this, you are prompted with a few prompts.
+First, you're prompted to provide a title for the issue.
+
+```bash
+Creating issue in collinberke/testRepo
+
+? Title (required) This be a new issue
+```
+
+Once the title is submitted, you're prompted with the option to edit the issue's body.
+Here you'll be asked if you want to open a text editor to edit the issue's body.
+
+```bash
+? Body [(e) to launch nvim, enter to skip]
+```
+
+::: {.callout-note}
+Want to change your default text editor?
+You can view the gh tool's configuration by running `gh config list`.
+Here you'll see the variable `editor`, which will be the name of the default text editor that will open when editing issues and PR bodies.
+If you want to change this to your prefered text editor, you can run something like `gh config set editor vim`.
+
+More about the gh tool's config can be found [here](https://cli.github.com/manual/), [here](https://cli.github.com/manual/gh_config), and [here](https://cli.github.com/manual/gh_config_set).
+:::
+
+Once you open the text editor, a temporary file is created.
+The path to the file you're working in will look something like this:
+
+```txt
+/private/var/folders/wj/k605chy55yxglcgsgm40_mrm0000gp/T/801663841.md
+```
+
+Since I use a Mac, it creates a temporary file in this location.
+I get why this happens, but it always made me uneasy--especially when drafting long issues or PRs.
+I always had several questions in the background while drafting this way:
+
+* If I'm writing a longer issue or PR and close this file, what happens if I don't submit?
+Do I just lose everything I was writing and have to start over?
+* Would I have to dig deeply into the system's temporary files to find what I was working on?
+That seems like a painful experience.
+* If I want to save my progress, do I just fall into a constant send to GitHub to save the issue, edit, and re-submit loop to save my work?
+Indeed, another perceived pain point.
+
+All along, there was a solution to assuge my fears and resolve my pain points: `--body-file`.
+
+# The solution
+
+Here were my requirements:
+
+* Since most of my work is organized using repos, I wanted to identify a means to leverage this organizational strutrure.
+* For convenience, I wanted draft issues or PRs close to the code.
+* I didn't want to version control draft issues or PRs.
+
+The following is the solution I've come up with to meet my requirements.
+
+## A place to put files
+
+I needed a place to park my drafts.
+A directory in the repo made sense.
+I debated different directory names, and I even consulted AI for some additional ideas.
+Some of these names included:
+
+* `issues/`
+* `issues-prs/`
+* `issue-prs-drafts/`
+* `drafts/`
+* `tmp/`
+* `draft-den/` (my favorite, but it didn't make the final cut)
+* `workspace/`
+* `.staging/` (I liked the idea of a hidden directory)
+
+I decided to go with `.workspace/`.
+I felt this could be a directory for not only issue drafts, but for other things that I didn't want version controlled but was expirmenting with.
+In reality, choose what makes most sense for you and your team.
+
+Now that I had a place to park my drafts, I needed to exclude these files from version control.
+
+## Ignoring draft files from version control
+
+Indeed, there's two options to do this.
+Files can be ignored at the global or repo level.
+A `.gitignore` file is used in both instances.
+
+::: {.callout-note}
+If you're not familiar with what a  `.gitignore` file is or how to edit it, I higly suggest reading this tutorial [here](https://www.w3schools.com/git/git_ignore.asp).
+:::
+
+Since this directory and drafts are specific to me, I opted for a global approach.
+Indeed, the potential for an untidy mess may occur if repo level `.gitignore` files were written to account for everyone's nuanced setups.
+Also, global `.gitignore` files are great for helping ignore other pesky files.
+I'm looking at you `.DS_Store` files ...
+
+This article [here](https://sebastiandedeyne.com/setting-up-a-global-gitignore-file/) provides a good description of how to set this up.
+As such, here's a simplified summary:
+
+1. Create a global `.gitignore` file, most likely in your system's root directory (e.g., `~/.gitignore`).
+2. Add any files you want to ignore at a global level to the file.
+That is:
+
+```txt
+.DS_Store
+.workspace/
+```
+
+3. For a Mac, configure git to use this new global ignore file by running the following from your command line (Windows is a little different so check out the post I linked above).
+
+```bash
+git config --global core.excludesfile ~/.gitignore
+```
+
+Setup is now complete.
+These draft files should now be ignored.
+There's also now less of a chance these files accidentally get commited to our repos.
+
+## Using the `--body-file` argument flag
+
+Since we have a place to park and draft our issues and PRs, we just need to create an `.md` file and start drafting.
+Once we complete our draft, run the following command in your console to submit using the `.md` file.
+
+```bash
+# Create an issue
+gh issue create --body-file /.workspace/110-draft-issue.md
+
+# Create a PR
+gh pr create --body-file /.workspace/111-draft-pr.md
+```
+
+For short hand purposes, you can use the short option `-F` to achieve the same results.
+I like to think of this option as 'File' when I use it.
+Choose the flavor you like the most.
+
+```bash
+# Create an issue with short option
+gh issue create -F /.workspace/110-draft-issue.md
+
+# Create a PR with short option
+gh pr create -F /.workspace/111-draft-pr.md
+```
+
+Your draft files can also be used to edit issues and PRs.
+You just need to modify your command using `edit` instead of `create`.
+
+```bash
+# Edit an issue
+gh issue edit 110 --body-file /.workspace/110-draft-issue.md
+
+# Edit a PR
+gh pr edit 110 --F /.workspace/111-draft-pr.md
+```
+
+However, know that the file in your `.workspace` will not update if you make any edits to an issue via the web UI.
+If you do submit again, know the body file contents will relpace the current version of the issue with what's in your file. 
+Indeed, the edits you just created will be version controlled in the issue and you can refer back to them.
+They just will no longer be current.
+
+Want to know more about these commands?
+Access the CLI tool's docs by running the following:
+
+```bash
+gh issue create --help
+gh issue edit --help
+```
+
+# Wrap up
+
+Today I learned how to draft issues and PRs using a `.md` file.
+Here's a list of what I learned:
+
+* How to use [GitHub's CLI tool](https://cli.github.com/) to create and edit issues.
+* Where temporary drafts of issues and PRs are stored.
+* How to create and ignore a `.workspace` directory using a global `.gitignore` file and git configuration.
+* How to use this file in `gh issue create`, `gh issue edit`, `gh pr create`, and `gh pr edit` commands by using either the `--body-file` option or `-F` short option.
+
+This was a fun little option of the `gh` command line tool to learn, and I've found it quite handy.
+
+If you found this post to be useful, please share with others.
+If you're interested in these types of topics, let's connect:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
+* [Say Hi!](https://www.collinberke.com/say-hi)
