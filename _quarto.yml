@@ -14,14 +14,13 @@ website:
       - about.qmd
       - now.qmd
       - blog/index.qmd
-      - til/index.qmd
       - say-hi.qmd
 
 format:
   html:
-    theme: 
+    theme:
       dark: [superhero, theme-dark.scss]
-      light: flatly 
+      light: flatly
     css: styles.css
-    toc: false 
+    toc: false
     page-layout: full
