@@ -1,5 +1,5 @@
 ---
-title: "Notes from Rich Hickey's talk Simple Made Easy"
+title: "Notes: Rich Hickey's talk Simple Made Easy"
 description: "Learning more about software and system design"
 date: "2025-08-03"
 author: "Collin K. Berke, Ph.D."

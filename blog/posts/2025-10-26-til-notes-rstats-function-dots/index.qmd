@@ -1,5 +1,5 @@
 ---
-title: "Notes: On the use of `...` in R"
+title: "Notes: The use of `...` in R"
 description: "What I recently learned about this slippery construct"
 date: "2025-10-26"
 author: "Collin K. Berke, Ph.D."

@@ -1,17 +1,17 @@
 ---
-title: "Messing with models: k-means clustering of Google Analytics 4 data" 
+title: "Messing with models: k-means clustering of Google Analytics 4 data"
 date: "2024-09-14"
 author: "Collin K. Berke, Ph.D."
-draft: false 
+draft: false
 image: thumbnail.jpg
 description: "A tutorial on how to perform k-means clustering using Google Analytics data"
 toc: true
 from: markdown+emoji
 bibliography: references.bib
 categories:
-  - machine learning 
+  - machine learning
   - unsupervised learning
-  - k-means clustering 
+  - k-means clustering
 ---
 
 ![Photo by [Daniel Fazio](https://unsplash.com/photos/gray-wire-lot-m9LlUwkPvT8)](thumbnail-wide.jpg)
@@ -37,7 +37,7 @@ library(gt)
 
 ```{r}
 #| label: vis-theme-setup
-ggplot_theme <- 
+ggplot_theme <-
   theme_bw() +
   theme(
     text = element_text(size = 12),
@@ -102,7 +102,7 @@ data_ga_transactions <- bq_project_query(
   "<your-project-name>",
   query
 ) |>
-bq_table_download()
+  bq_table_download()
 ```
 
 ```{r}
@@ -117,13 +117,13 @@ write_csv(data_ga_transactions, "data_ga_transactions.csv")
 #| label: import-transactions-again
 #| include: FALSE
 # write_csv() transforms `""` into `NA`s, so transform them back upon
-# reading in the data. Doing this to make it consistent with what was 
+# reading in the data. Doing this to make it consistent with what was
 # outputted from the BigQuery query.
 data_ga_transactions <- read_csv("data_ga_transactions.csv") |>
   mutate(
     item_category = ifelse(
-      is.na(item_category), 
-      "", 
+      is.na(item_category),
+      "",
       as.character(item_category)
     )
   )
@@ -179,18 +179,18 @@ Initial data exploration is complete. We now have enough information to begin da
 
 ```{r}
 #| label: wrngl-user-items
-data_user_items <- 
+data_user_items <-
   data_ga_transactions |>
   filter(transaction_id != "(not set)") |>
   drop_na() |>
   mutate(
-    user_id = random_id(), 
-    .by = user_pseudo_id, 
+    user_id = random_id(),
+    .by = user_pseudo_id,
     .after = user_pseudo_id
   ) |>
   select(-user_pseudo_id) |>
   summarise(
-    quantity = sum(quantity), 
+    quantity = sum(quantity),
     .by = c(user_id, item_category)
   ) |>
   mutate(
@@ -200,7 +200,7 @@ data_user_items <-
     )
   ) |>
   pivot_wider(
-    names_from = item_category, 
+    names_from = item_category,
     values_from = quantity,
     values_fill = 0
   ) |>
@@ -261,7 +261,7 @@ Before moving ahead with removing examples, dropping some features might be wort
 ```{r}
 #| label: summ-glimpse-category-purchase
 summarise(
-  data_user_items, 
+  data_user_items,
   across(apparel:black_lives_matter, sum)
 ) |>
   glimpse()
@@ -271,8 +271,8 @@ Reviewing the output, `small_goods`; `fun`; `electronics_accessories`; `notebook
 
 ```{r}
 #| label: wrngl-numeric-data
-data_items <- 
-  data_user_items |> 
+data_items <-
+  data_user_items |>
   select(
     -c(
       small_goods,
@@ -296,7 +296,7 @@ data_item_hist <- data_items |>
   pivot_longer(
     cols = apparel:stationery,
     values_to = "items"
-  ) 
+  )
 
 ggplot(data_item_hist, aes(x = items)) +
   geom_histogram(binwidth = 1) +
@@ -347,7 +347,7 @@ Here's the code to filter out customers considered to be outliers:
 #| label: wrngl-no-outliers
 data_items_stnd <- data_items_stnd |>
   select(-user_id) |>
-  filter(!if_any(everything(), ~ . > 3)) 
+  filter(!if_any(everything(), ~ . > 3))
 
 summary(data_items_stnd)
 ```
@@ -362,15 +362,15 @@ data_items_stnd |>
   pivot_longer(
     cols = apparel:stationery,
     values_to = "items"
-  ) |> 
+  ) |>
   ggplot(aes(x = items)) +
-    geom_histogram(binwidth = 1) +
-    facet_wrap(~name, ncol = 4, scales = "free") +
-    labs(
-      title = "Distribution of purchases by item category post wrangling",
-      y = "",
-      x = ""
-    )
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~name, ncol = 4, scales = "free") +
+  labs(
+    title = "Distribution of purchases by item category post wrangling",
+    y = "",
+    x = ""
+  )
 ```
 
 Although this helped with the issues caused by outliers, we still have to contend with the fact that some customers just don't buy certain items.  We'll want to keep this in mind when drawing conclusions from the final clusters.
@@ -410,7 +410,7 @@ Now the modeling step. We'll use base R's [`kmeans()`](https://rdrr.io/r/stats/k
 ```{r}
 #| label: mdl-initial-clusters
 set.seed(20240722)
-mdl_clusters <- 
+mdl_clusters <-
   map(c(3, 6), \(x) kmeans(data_items_stnd, centers = x))
 ```
 
@@ -465,7 +465,7 @@ The [`kmeans()`'s](https://rdrr.io/r/stats/kmeans.html) output has an object lab
 
 ```{r}
 #| label: view-three-cluster-centers
-mdl_clusters[[1]]$centers 
+mdl_clusters[[1]]$centers
 ```
 
 ```{r}

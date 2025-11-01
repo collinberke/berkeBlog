@@ -1,11 +1,12 @@
 ---
-title: "Find and replace in Vim"
+title: "TIL: Find and replace in Vim"
 author: "Collin K. Berke, Ph.D."
 date: "2023-02-24"
 image: thumbnail.png
 description: "Improving productivity by using Vim's `:substitute` command"
 toc: true
 categories:
+  - til
   - vim
   - neovim
   - productivity

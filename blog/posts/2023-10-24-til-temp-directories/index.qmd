@@ -1,5 +1,5 @@
 ---
-title: "Using `base::tempdir()` for temporary data storage"
+title: "TIL: Using `base::tempdir()` for temporary data storage"
 date: "2023-11-03"
 author: "Collin K. Berke, Ph.D."
 draft: false 
@@ -7,7 +7,8 @@ image: thumbnail.jpg
 description: "Need to store data in a place that's not persistent, use a temporary directory"
 toc: true
 categories:
-  - data wrangling 
+  - til
+  - data wrangling
   - workflow
   - productivity
 ---
@@ -108,7 +109,7 @@ If you're looking to create files with unique names, you can pass the `tempfile(
 
 ```{r write-mtcars-temp-file}
 write_csv(
-  mtcars, 
+  mtcars,
   file = tempfile(pattern = "mtcars", fileext = ".csv")
 )
 ```

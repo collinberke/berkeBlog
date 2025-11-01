@@ -1,5 +1,5 @@
 ---
-title: "Use `list2env()` or `glue::glue_data()` to use a set of elements from a tibble in a string"
+title: "TIL: Use `list2env()` or `glue::glue_data()` to use a set of elements from a tibble in a string"
 description: "Need an easy way to access a set of elements from a tibble for string interpolation? Here's two examples"
 date: "2024-12-30"
 author: "Collin K. Berke, Ph.D."
@@ -81,7 +81,8 @@ My overall aim in doing this was to pass the values of these variables to a SQL 
 ```{r}
 #| label: query-insert-data
 #| eval: FALSE
-query_insert <- glue("
+query_insert <- glue(
+  "
   INSERT INTO employees (
       first_name,
       last_name,
@@ -94,7 +95,8 @@ query_insert <- glue("
       {start_date},
       {department}
   )
-")
+"
+)
 ```
 
 My initial solution was to do this:
@@ -102,7 +104,7 @@ My initial solution was to do this:
 ```{r}
 #| label: wrngl-this-stinks
 first_name <- data_employee[["first_name"]]
-last_name  <- data_employee[["last_name"]]
+last_name <- data_employee[["last_name"]]
 start_date <- data_employee[["start_date"]]
 department <- data_employee[["department"]]
 ```
@@ -118,7 +120,8 @@ Further confirmation results from inspecting the SQL `INSERT` statement string o
 
 ```{r}
 #| label: query-insert-data-2
-query_insert <- glue("
+query_insert <- glue(
+  "
   INSERT INTO employees (
       first_name,
       last_name,
@@ -131,7 +134,8 @@ query_insert <- glue("
       {start_date},
       {department}
   )
-")
+"
+)
 
 query_insert
 ```
@@ -193,7 +197,8 @@ ls()
 
 ```{r}
 #| label: query-insert-data-3
-query_insert <- glue("
+query_insert <- glue(
+  "
   INSERT INTO employees (
       first_name,
       last_name,
@@ -206,7 +211,8 @@ query_insert <- glue("
       {start_date},
       {department}
   )
-")
+"
+)
 
 query_insert
 ```
@@ -259,7 +265,8 @@ glue_data(
       {last_name},
       {start_date},
       {department}
-")
+"
+)
 ```
 
 🤯🤯.

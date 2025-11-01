@@ -1,13 +1,14 @@
 ---
-title: "Combine plots using `patchwork`"
+title: "TIL: Combine plots using `patchwork`"
 date: "2023-12-23"
 author: "Collin K. Berke, Ph.D."
-draft: false 
+draft: false
 image: thumbnail.jpeg
 description: "Need to add two or more plots together? Use the `patchwork` package"
 toc: true
 categories:
-  - data visualization 
+  - til
+  - data visualization
 ---
 
 ![Image generated using the prompt 'robot stitching a quilt of data visualizations in pop art style' with the [Bing Image Creator](https://www.bing.com/images/create)](thumbnail-wide.jpeg)

@@ -1,5 +1,5 @@
 ---
-title: "Separate character strings into rows and columns using `tidyr` functions"
+title: "TIL: Separate character strings into rows and columns using `tidyr` functions"
 description: "Need to separate strings? Use the `separate_*` family of functions"
 date: "2024-12-27"
 author: "Collin K. Berke, Ph.D."
@@ -143,21 +143,69 @@ How about days it rained in Lincoln, NE for the months of September and October,
 ```{r}
 #| label: data-lnk-rain
 rain_sept <- str_c(
-  "N", "N", "N", "N", "N",
-  "Y", "N", "N", "N", "Y",
-  "N", "N", "N", "N", "N",
-  "N", "Y", "Y", "Y", "N",
-  "Y", "Y", "Y", "Y", "N",
-  "N", "N", "N", "N", "N"
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "Y",
+  "N",
+  "N",
+  "N",
+  "Y",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "Y",
+  "Y",
+  "Y",
+  "N",
+  "Y",
+  "Y",
+  "Y",
+  "Y",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N"
 )
 
 rain_oct <- str_c(
-  "N", "N", "Y", "N", "N",
-  "N", "N", "N", "N", "N",
-  "N", "N", "N", "N", "N",
-  "N", "N", "N", "N", "N",
-  "Y", "N", "Y", "N", "N",
-  "N", "N", "N", "N", "Y",
+  "N",
+  "N",
+  "Y",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "Y",
+  "N",
+  "Y",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "N",
+  "Y",
   "N"
 )
 

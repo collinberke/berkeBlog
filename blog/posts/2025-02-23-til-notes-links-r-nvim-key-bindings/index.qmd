@@ -1,5 +1,5 @@
 ---
-title: "Notes on customizing Neovim's key bindings"
+title: "Notes: Customizing Neovim's key bindings"
 description: "Learning more about how to customize the R.nvim plugin while using LazyVim"
 date: "2025-02-23"
 author: "Collin K. Berke, Ph.D."
@@ -67,20 +67,20 @@ Specifically, this custom key binding configuration is defined in the table like
 
 ``` lua
 config = function()
-  local opts = {
-    hook = {
-      on_filetype = function()
-        -- Map local leader L to run `devtools::load_all()`
-          vim.api.nvim_buf_set_keymap(
-            0,
-            "n",
-            "<LocalLeader>L",
-            "<Cmd>lua require('r.send').cmd('devtools::load_all()')<CR>",
-            { desc = "R devtools::load_all()" }
-          )
-      end
-    }
-  }
+	local opts = {
+		hook = {
+			on_filetype = function()
+				-- Map local leader L to run `devtools::load_all()`
+				vim.api.nvim_buf_set_keymap(
+					0,
+					"n",
+					"<LocalLeader>L",
+					"<Cmd>lua require('r.send').cmd('devtools::load_all()')<CR>",
+					{ desc = "R devtools::load_all()" }
+				)
+			end,
+		},
+	}
 end
 ```
 
@@ -107,27 +107,27 @@ For instance, you'll likely want to add additional package development convenien
 
 ``` lua
 vim.api.nvim_buf_set_keymap(
-  0,
-  "n",
-  "<LocalLeader>D",
-  "<Cmd>lua require('r.send').cmd('devtools::document()')<CR>",
-  { desc = "R devtools::test()" }
+	0,
+	"n",
+	"<LocalLeader>D",
+	"<Cmd>lua require('r.send').cmd('devtools::document()')<CR>",
+	{ desc = "R devtools::test()" }
 )
 
 vim.api.nvim_buf_set_keymap(
-  0,
-  "n",
-  "<LocalLeader>T",
-  "<Cmd>lua require('r.send').cmd('devtools::test()')<CR>",
-  { desc = "R devtools::test()" }
+	0,
+	"n",
+	"<LocalLeader>T",
+	"<Cmd>lua require('r.send').cmd('devtools::test()')<CR>",
+	{ desc = "R devtools::test()" }
 )
 
 vim.api.nvim_buf_set_keymap(
-  0,
-  "n",
-  "<LocalLeader>U",
-  "<Cmd>lua require('r.send').cmd('devtools::install()')<CR>",
-  { desc = "R devtools::install()" }
+	0,
+	"n",
+	"<LocalLeader>U",
+	"<Cmd>lua require('r.send').cmd('devtools::install()')<CR>",
+	{ desc = "R devtools::install()" }
 )
 ```
 
@@ -135,23 +135,18 @@ If you do any [Shiny](https://shiny.posit.co/) development, it's convenient to h
 
 ``` lua
 vim.api.nvim_buf_set_keymap(
-  0,
-  "n",
-  "<LocalLeader>sa",
-  "<Cmd>lua require('r.send').cmd('shiny::runApp()')<CR>",
-  { desc = "R shiny::runApp()" }
+	0,
+	"n",
+	"<LocalLeader>sa",
+	"<Cmd>lua require('r.send').cmd('shiny::runApp()')<CR>",
+	{ desc = "R shiny::runApp()" }
 )
 ```
 
 You'll also likely want a key binding that interrupts a busy R terminal:
 
 ``` lua
-vim.keymap.set(
-  "n",
-  "<LocalLeader>ts",
-  "<Cmd>RStop<CR>",
-  { desc = "R stop terminal" }
-)
+vim.keymap.set("n", "<LocalLeader>ts", "<Cmd>RStop<CR>", { desc = "R stop terminal" })
 ```
 
 Above you'll notice we're using an alternative function to specify our key binding, `vim.keymap.set()`. 
@@ -162,11 +157,11 @@ The configuration code looks like this:
 
 ``` lua
 vim.api.nvim_buf_set_keymap(
-  0,
-  "n",
-  "<LocalLeader>g",
-  "<Cmd>lua require('r.run').action('dplyr::glimpse')<CR>",
-  { desc = "R dplyr::glimpse()" }
+	0,
+	"n",
+	"<LocalLeader>g",
+	"<Cmd>lua require('r.run').action('dplyr::glimpse')<CR>",
+	{ desc = "R dplyr::glimpse()" }
 )
 ```
 
