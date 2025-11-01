@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2024-12-27">
+<meta name="description" content="Need to separate strings? Use the separate_* family of functions">
+<title>Separate character strings into rows and columns using tidyr functions – Collin K. Berke, Ph.D.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-69d87467896a330188e7f833fde9423c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-b659ae6b21898872fc41a480d22f374b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link rel="stylesheet" href="../../../styles.css">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../say-hi.html"> 
+<span class="menu-text">Say Hi!</span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#separate_longer_delim" id="toc-separate_longer_delim" class="nav-link" data-scroll-target="#separate_longer_delim"><code>separate_longer_delim()</code></a></li>
+  <li><a href="#separate_wider_position" id="toc-separate_wider_position" class="nav-link" data-scroll-target="#separate_wider_position"><code>separate_wider_position()</code></a></li>
+  <li><a href="#separate_wider_delim" id="toc-separate_wider_delim" class="nav-link" data-scroll-target="#separate_wider_delim"><code>separate_wider_delim()</code></a></li>
+  <li>
+<a href="#too-much-or-too-little-data" id="toc-too-much-or-too-little-data" class="nav-link" data-scroll-target="#too-much-or-too-little-data">Too much or Too little data</a>
+  <ul class="collapse">
+<li><a href="#too_many" id="toc-too_many" class="nav-link" data-scroll-target="#too_many"><code>too_many</code></a></li>
+  <li><a href="#too_few" id="toc-too_few" class="nav-link" data-scroll-target="#too_few"><code>too_few</code></a></li>
+  </ul>
+</li>
+  <li><a href="#separate_wider_regex" id="toc-separate_wider_regex" class="nav-link" data-scroll-target="#separate_wider_regex"><code>separate_wider_regex()</code></a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  </ul><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://r4ds.hadley.nz/strings#extracting-data-from-strings"><i class="bi bi-link-45deg"></i>Chapter 14: Strings R4DS</a></li><li><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html"><i class="bi bi-link-45deg"></i>separate_wider_* docs</a></li><li><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html"><i class="bi bi-link-45deg"></i>separate_longer_* docs</a></li><li><a href="https://www.tidyverse.org/blog/2023/01/tidyr-1-3-0/"><i class="bi bi-link-45deg"></i>tidyr 1.3.0 release notes</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Separate character strings into rows and columns using <code>tidyr</code> functions</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">til</div>
+    <div class="quarto-category">tidyr</div>
+    <div class="quarto-category">data wrangling</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Need to separate strings? Use the <code>separate_*</code> family of functions
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 27, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="thumbnail-wide.jpg" class="img-fluid figure-img"></p>
+<figcaption>Photo by <a href="https://unsplash.com/photos/blue-and-white-pepsi-can-Fxz3_gc2RR8">Johnny Briggs</a></figcaption></figure>
+</div>
+<section id="background" class="level1"><h1>Background</h1>
+<p>TIL, as of <a href="https://www.tidyverse.org/blog/2023/01/tidyr-1-3-0/"><code>tidyr</code> 1.3.0</a>, there’s a new family of string separation functions:</p>
+<ul>
+<li><code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code></li>
+<li><code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_position()</a></code></li>
+<li><code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code></li>
+<li><code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim()</a></code></li>
+<li><code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code></li>
+</ul>
+<p>These functions generally do two things:</p>
+<ol type="1">
+<li>Separate strings into individual rows or columns.</li>
+<li>Separate strings by some character delimiter, position, or regular expression.</li>
+</ol>
+<p>If you’ve used <code>tidyr</code> in the past, you’re likely familiar with the <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> function. This function was useful in cases where character strings needed to be separated into different columns based on a pattern. While re-reading the 2nd edition of the <a href="https://r4ds.hadley.nz/">R for Data Science</a> book for the Online Data Science Learning Community (check us out <a href="https://dslc.io/">here</a>), I was reminded <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> was superseded by this family of functions. For myself, I decided writing a post was needed to better understand how to use these functions. In this post I’ll describe each function and build on what’s discussed in the book by sharing some examples I might use these functions.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="separate_longer_delim" class="level1"><h1><code>separate_longer_delim()</code></h1>
+<p>Let’s start with <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim()</a></code>. This function takes a character string and turns it into additional rows using a delimiter. We’ll need some example data.</p>
+<p>I’m a college sports fan, so let’s create a dataset containing Big Ten and Big 12 conference teams. Here’s the code to create some example data:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">big_ten</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Illinois"</span>,</span>
+<span>  <span class="st">"Indiana"</span>,</span>
+<span>  <span class="st">"Iowa"</span>,</span>
+<span>  <span class="st">"Maryland"</span>,</span>
+<span>  <span class="st">"Michigan"</span>,</span>
+<span>  <span class="st">"Michigan State"</span>,</span>
+<span>  <span class="st">"Minnesota"</span>,</span>
+<span>  <span class="st">"Nebraska"</span>,</span>
+<span>  <span class="st">"Northwestern"</span>,</span>
+<span>  <span class="st">"Ohio State"</span>,</span>
+<span>  <span class="st">"Oregon"</span>,</span>
+<span>  <span class="st">"Penn State"</span>,</span>
+<span>  <span class="st">"Purdue"</span>,</span>
+<span>  <span class="st">"Rutgers"</span>,</span>
+<span>  <span class="st">"UCLA"</span>,</span>
+<span>  <span class="st">"USC"</span>,</span>
+<span>  <span class="st">"Washington"</span>,</span>
+<span>  <span class="st">"Wisconsin"</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">", "</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">big_12</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Arizona State"</span>,</span>
+<span>  <span class="st">"Iowa State"</span>,</span>
+<span>  <span class="st">"BYU"</span>,</span>
+<span>  <span class="st">"Colorado"</span>,</span>
+<span>  <span class="st">"Baylor"</span>,</span>
+<span>  <span class="st">"TCU"</span>,</span>
+<span>  <span class="st">"Texas Tech"</span>,</span>
+<span>  <span class="st">"Kansas State"</span>,</span>
+<span>  <span class="st">"West Virginia"</span>,</span>
+<span>  <span class="st">"Kansas"</span>,</span>
+<span>  <span class="st">"Cincinnati"</span>,</span>
+<span>  <span class="st">"Houston"</span>,</span>
+<span>  <span class="st">"Utah"</span>,</span>
+<span>  <span class="st">"Arizona"</span>,</span>
+<span>  <span class="st">"UCF"</span>,</span>
+<span>  <span class="st">"Oklahoma State"</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">", "</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_teams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  conferene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Big Ten"</span>, <span class="st">"Big 12"</span><span class="op">)</span>,</span>
+<span>  teams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">big_ten</span>, <span class="va">big_12</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_teams</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  conferene teams                                                                                   
+  &lt;chr&gt;     &lt;chr&gt;                                                                                   
+1 Big Ten   Illinois, Indiana, Iowa, Maryland, Michigan, Michigan State, Minnesota, Nebraska, North…
+2 Big 12    Arizona State, Iowa State, BYU, Colorado, Baylor, TCU, Texas Tech, Kansas State, West V…</code></pre>
+</div>
+</div>
+<p>In practice, this dataset isn’t really useful: having a list of teams in a character string doesn’t afford us any ability to apply other operations to the data. It would be useful if the data were in <strong>long</strong> format, where each team is on its own row, and the conference is repeated. It’s also important to recognize each team in the character string are <strong>delimited</strong> by a comma. Let’s use the <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim()</a></code> function to make it more useful. Here’s what the code looks like:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_teams</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">teams</span>,</span>
+<span>    delim <span class="op">=</span> <span class="st">", "</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 34 × 2
+   conferene teams         
+   &lt;chr&gt;     &lt;chr&gt;         
+ 1 Big Ten   Illinois      
+ 2 Big Ten   Indiana       
+ 3 Big Ten   Iowa          
+ 4 Big Ten   Maryland      
+ 5 Big Ten   Michigan      
+ 6 Big Ten   Michigan State
+ 7 Big Ten   Minnesota     
+ 8 Big Ten   Nebraska      
+ 9 Big Ten   Northwestern  
+10 Big Ten   Ohio State    
+# ℹ 24 more rows</code></pre>
+</div>
+</div>
+</section><section id="separate_wider_position" class="level1"><h1><code>separate_wider_position()</code></h1>
+<p><code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code> separates character strings into additional rows using a position index, rather than some type of character delimiter. The book mentions the use of <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code> is quite rare. In fact, I struggled thinking of a practical example of where this might be applied. As such, this example is a little contrived. How about days it rained in Lincoln, NE for the months of September and October, 2024?</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rain_sept</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rain_oct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_lnk_rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  year <span class="op">=</span> <span class="fl">2024</span>,</span>
+<span>  month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"September"</span>, <span class="st">"October"</span><span class="op">)</span>,</span>
+<span>  rain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">rain_sept</span>, <span class="va">rain_oct</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_lnk_rain</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+   year month     rain                           
+  &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;                          
+1  2024 September NNNNNYNNNYNNNNNNYYYNYYYYNNNNNN 
+2  2024 October   NNYNNNNNNNNNNNNNNNNNYNYNNNNNNYN</code></pre>
+</div>
+</div>
+<p>Again, what if we want <strong>longer</strong> data, where each day’s observation gets its own row? The character strings in the <code>rain</code> variable don’t really have a point of reference where to separate the string. The only point of reference we have is <strong>positionally</strong> using some type of index. In this case, we have a character string of length 1 representing whether precipitation was observed that day: “Y” = rain; “N” = no rain. While we’re at it, let’s also mutate a <code>day</code> column for each observation. The following code chunk demonstrates how to do this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_lnk_rain</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position</a></span><span class="op">(</span><span class="va">rain</span>, width <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>day <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, .before <span class="op">=</span> <span class="va">rain</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 61 × 4
+# Groups:   year, month [2]
+    year month       day rain 
+   &lt;dbl&gt; &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;
+ 1  2024 September     1 N    
+ 2  2024 September     2 N    
+ 3  2024 September     3 N    
+ 4  2024 September     4 N    
+ 5  2024 September     5 N    
+ 6  2024 September     6 Y    
+ 7  2024 September     7 N    
+ 8  2024 September     8 N    
+ 9  2024 September     9 N    
+10  2024 September    10 Y    
+# ℹ 51 more rows</code></pre>
+</div>
+</div>
+</section><section id="separate_wider_delim" class="level1"><h1><code>separate_wider_delim()</code></h1>
+<p>Separating strings into columns is a common operation. At times, extra variables are crammed into one variable, where it would be useful if the data was separated into additional variables. Let’s go back to our college teams example data.</p>
+<p>This data will combine team names with conferences. However, it’s often useful to have a separate variable only containing the conference (i.e., we may want to filter out specific conferences for an analysis). At times, our data will look like this:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_team_conference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Nebraska (Big Ten)"</span>,</span>
+<span>    <span class="st">"Texas (Big 12)"</span>,</span>
+<span>    <span class="st">"Pittsburgh (ACC)"</span>,</span>
+<span>    <span class="st">"Creighton (Big East)"</span>,</span>
+<span>    <span class="st">"Texas A&amp;M (SEC)"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_team_conference</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 1
+  team                
+  &lt;chr&gt;               
+1 Nebraska (Big Ten)  
+2 Texas (Big 12)      
+3 Pittsburgh (ACC)    
+4 Creighton (Big East)
+5 Texas A&amp;M (SEC)     </code></pre>
+</div>
+</div>
+<p>We can now separate this column of character strings into multiple columns using <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code>. In the end, we want two columns: <code>team</code> and <code>conference</code>. Column names are passed as a character string of names to the <code>names</code> argument. The <code>(</code> character will be used as the delimiter to separate into the two columns, passed to the <code>delim</code> argument. The last step is to use <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove()</a></code> to remove the extra <code>)</code> at the end of the character string. Here is the code to perform all these steps:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_team_conference</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>    <span class="va">team</span>,</span>
+<span>    delim <span class="op">=</span> <span class="st">" ("</span>,</span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"team"</span>, <span class="st">"conference"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    conference <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">conference</span>, <span class="st">"\\)"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  team       conference
+  &lt;chr&gt;      &lt;chr&gt;     
+1 Nebraska   Big Ten   
+2 Texas      Big 12    
+3 Pittsburgh ACC       
+4 Creighton  Big East  
+5 Texas A&amp;M  SEC       </code></pre>
+</div>
+</div>
+</section><section id="too-much-or-too-little-data" class="level1"><h1>Too much or Too little data</h1>
+<p>One common problem arises when you separate strings, though: sometimes you end up with <strong>too much</strong> or <strong>too little</strong> data. Moreover, at times, you need more information to debug problems with the separation step. <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code> provides several arguments when confronted with these issues. These arguments provide additional functionality, including creating additional columns, dropping extra data, merging, or outputting debugging information.</p>
+<p>The <code>too_few</code> and <code>too_many</code> arguments are available to help in these situations. I highlight their utility with a couple of examples to follow. However, I suggest reading and reviewing the examples in the docs to gain a complete understanding of the utility of these arguments.</p>
+<p>Take for example file path parsing. Let’s start with some example data.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"2024_10_01-1925-f-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_11_01-1925-f-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_12_01-1925-f-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_10_01-1925-m-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_11_01-1925-m-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_12_01-1925-m-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_10_01-2635-f-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_11_01-2635-f-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_12_01-2635-f-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_10_01-2635-m-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_11_01-2635-m-monthly_users"</span>,</span>
+<span>    <span class="st">"2024_12_01-2635-m-monthly_users"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_file_paths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 1
+   path                           
+   &lt;chr&gt;                          
+ 1 2024_10_01-1925-f-monthly_users
+ 2 2024_11_01-1925-f-monthly_users
+ 3 2024_12_01-1925-f-monthly_users
+ 4 2024_10_01-1925-m-monthly_users
+ 5 2024_11_01-1925-m-monthly_users
+ 6 2024_12_01-1925-m-monthly_users
+ 7 2024_10_01-2635-f-monthly_users
+ 8 2024_11_01-2635-f-monthly_users
+ 9 2024_12_01-2635-f-monthly_users
+10 2024_10_01-2635-m-monthly_users
+11 2024_11_01-2635-m-monthly_users
+12 2024_12_01-2635-m-monthly_users</code></pre>
+</div>
+</div>
+<p>Column separation can be performed either by specifying a delimiter or by position. Let’s start off by separating by delimiter by using the <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code> function. We specify the following arguments:</p>
+<ul>
+<li>
+<code>data</code> - The data containing the column(s) we want to separate.</li>
+<li>
+<code>cols</code> - The column(s) we want to separate.</li>
+<li>
+<code>delim</code> - The character delimiter we want to use to separate our information into newly mutated columns.</li>
+<li>
+<code>names</code> - The names of the columns the separated column will be separated into.</li>
+</ul>
+<p>In this example we’ll separate <code>path</code> into four columns: <code>date</code>, <code>age_grp</code>, <code>gender</code>, and <code>report</code>. Here’s what the code looks like to separate by a character delimiter:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"age_grp"</span>, <span class="st">"gender"</span>, <span class="st">"report"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 4
+   date       age_grp gender report       
+   &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        
+ 1 2024_10_01 1925    f      monthly_users
+ 2 2024_11_01 1925    f      monthly_users
+ 3 2024_12_01 1925    f      monthly_users
+ 4 2024_10_01 1925    m      monthly_users
+ 5 2024_11_01 1925    m      monthly_users
+ 6 2024_12_01 1925    m      monthly_users
+ 7 2024_10_01 2635    f      monthly_users
+ 8 2024_11_01 2635    f      monthly_users
+ 9 2024_12_01 2635    f      monthly_users
+10 2024_10_01 2635    m      monthly_users
+11 2024_11_01 2635    m      monthly_users
+12 2024_12_01 2635    m      monthly_users</code></pre>
+</div>
+</div>
+<p>The same outcome can be achieved by separating positionally as well. Here we just use some index values passed via a semi-named vector to the <code>widths</code> argument. The unnamed portions are the empty, unneeded portions of the string we want to separate by. The named numeric values are the character lengths of each piece of information we want to capture into our newly created columns.</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_position</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>  widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fl">10</span>, <span class="fl">1</span>, age_grp <span class="op">=</span> <span class="fl">4</span>, <span class="fl">1</span>, gender <span class="op">=</span> <span class="fl">1</span>, <span class="fl">1</span>, report <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 4
+   date       age_grp gender report       
+   &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        
+ 1 2024_10_01 1925    f      monthly_users
+ 2 2024_11_01 1925    f      monthly_users
+ 3 2024_12_01 1925    f      monthly_users
+ 4 2024_10_01 1925    m      monthly_users
+ 5 2024_11_01 1925    m      monthly_users
+ 6 2024_12_01 1925    m      monthly_users
+ 7 2024_10_01 2635    f      monthly_users
+ 8 2024_11_01 2635    f      monthly_users
+ 9 2024_12_01 2635    f      monthly_users
+10 2024_10_01 2635    m      monthly_users
+11 2024_11_01 2635    m      monthly_users
+12 2024_12_01 2635    m      monthly_users</code></pre>
+</div>
+</div>
+<section id="too_many" class="level2"><h2 class="anchored" data-anchor-id="too_many"><code>too_many</code></h2>
+<p>Say we have a case where we don’t need the end of the path, specifically the <code>-monthly_users</code> portion. For example:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"age_grp"</span>, <span class="st">"gender"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `separate_wider_delim()`:
+! Expected 3 pieces in each element of `path`.
+! 12 values were too long.
+ℹ Use `too_many = "debug"` to diagnose the problem.
+ℹ Use `too_many = "drop"/"merge"` to silence this message.</code></pre>
+</div>
+</div>
+<p>We get an error. The error is the result of having more data then there are columns to separate into. To address this, we need to pass different options to the <code>too_many</code> argument of the function. Let’s use <code>too_many = "debug"</code> to receive additional information on what needs to be fixed. Although the problem is pretty straightforward here, I wanted to show this option in case you’re confronted with a situation with a more complex separation.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"age_grp"</span>, <span class="st">"gender"</span><span class="op">)</span>,</span>
+<span>  too_many <span class="op">=</span> <span class="st">"debug"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Debug mode activated: adding variables `path_ok`, `path_pieces`, and `path_remainder`.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 7
+   date       age_grp gender path                            path_ok path_pieces path_remainder
+   &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;                           &lt;lgl&gt;         &lt;int&gt; &lt;chr&gt;         
+ 1 2024_10_01 1925    f      2024_10_01-1925-f-monthly_users FALSE             4 -monthly_users
+ 2 2024_11_01 1925    f      2024_11_01-1925-f-monthly_users FALSE             4 -monthly_users
+ 3 2024_12_01 1925    f      2024_12_01-1925-f-monthly_users FALSE             4 -monthly_users
+ 4 2024_10_01 1925    m      2024_10_01-1925-m-monthly_users FALSE             4 -monthly_users
+ 5 2024_11_01 1925    m      2024_11_01-1925-m-monthly_users FALSE             4 -monthly_users
+ 6 2024_12_01 1925    m      2024_12_01-1925-m-monthly_users FALSE             4 -monthly_users
+ 7 2024_10_01 2635    f      2024_10_01-2635-f-monthly_users FALSE             4 -monthly_users
+ 8 2024_11_01 2635    f      2024_11_01-2635-f-monthly_users FALSE             4 -monthly_users
+ 9 2024_12_01 2635    f      2024_12_01-2635-f-monthly_users FALSE             4 -monthly_users
+10 2024_10_01 2635    m      2024_10_01-2635-m-monthly_users FALSE             4 -monthly_users
+11 2024_11_01 2635    m      2024_11_01-2635-m-monthly_users FALSE             4 -monthly_users
+12 2024_12_01 2635    m      2024_12_01-2635-m-monthly_users FALSE             4 -monthly_users</code></pre>
+</div>
+</div>
+<p>The <code>too_many = "debug"</code> outputs a tibble with some additional columns ( <code>*_ok</code>, <code>*_pieces</code>, <code>*_remainder</code>) of information. The <code>*</code> being the name of the column to be separated. These columns contain information to help us quickly diagnose the problem. Using our example data, we get the following:</p>
+<p>This column is useful for identifying the presence of any variable length strings.</p>
+<ul>
+<li><p><code>path_ok</code> provides a boolean to quickly identify cases where the separation failed.</p></li>
+<li><p><code>path_pieces</code> represents the number of pieces resulting from separating the string.</p></li>
+<li><p><code>path_remainder</code> shows what’s left after the separation is performed. This is useful for identifying if there’s any additional information you want to retain in additional columns.</p></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although not applicable here, a neat trick to quickly identify the columns that didn’t separate as we expected is to use the following:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">debug_path</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">x_ok</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have additional information to help us figure out what’s going on, we can choose another option for the <code>too_many</code> argument to handle our specific case. We have two additional options beyond <code>error</code> and <code>debug</code>:</p>
+<ul>
+<li>
+<code>drop</code> will drop the additional information that doesn’t fit into our newly specified columns.</li>
+<li>
+<code>merge</code> will keep the additional information, but it will merge it with the data in the final column.</li>
+</ul>
+<p>Let’s observe both options:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"age_grp"</span>, <span class="st">"gender"</span><span class="op">)</span>,</span>
+<span>  too_many <span class="op">=</span> <span class="st">"drop"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   date       age_grp gender
+   &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt; 
+ 1 2024_10_01 1925    f     
+ 2 2024_11_01 1925    f     
+ 3 2024_12_01 1925    f     
+ 4 2024_10_01 1925    m     
+ 5 2024_11_01 1925    m     
+ 6 2024_12_01 1925    m     
+ 7 2024_10_01 2635    f     
+ 8 2024_11_01 2635    f     
+ 9 2024_12_01 2635    f     
+10 2024_10_01 2635    m     
+11 2024_11_01 2635    m     
+12 2024_12_01 2635    m     </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"age_grp"</span>, <span class="st">"gender"</span><span class="op">)</span>,</span>
+<span>  too_many <span class="op">=</span> <span class="st">"merge"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   date       age_grp gender         
+   &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;          
+ 1 2024_10_01 1925    f-monthly_users
+ 2 2024_11_01 1925    f-monthly_users
+ 3 2024_12_01 1925    f-monthly_users
+ 4 2024_10_01 1925    m-monthly_users
+ 5 2024_11_01 1925    m-monthly_users
+ 6 2024_12_01 1925    m-monthly_users
+ 7 2024_10_01 2635    f-monthly_users
+ 8 2024_11_01 2635    f-monthly_users
+ 9 2024_12_01 2635    f-monthly_users
+10 2024_10_01 2635    m-monthly_users
+11 2024_11_01 2635    m-monthly_users
+12 2024_12_01 2635    m-monthly_users</code></pre>
+</div>
+</div>
+<p>Either operation is pretty straightforward: drop the additional information or merge what’s left in the newly created column. Nonetheless, it’s likely best to debug first. Knowing what’s going on with your separation before applying a fix can be useful, and it will help you avoid parsing mistakes.</p>
+</section><section id="too_few" class="level2"><h2 class="anchored" data-anchor-id="too_few"><code>too_few</code></h2>
+<p>Next, I want to highlight options for when you have too few data. Let’s go back to some college sports examples, specifically college basketball game log data. Such data might look like <a href="https://www.sports-reference.com/cbb/schools/nebraska/men/2024-gamelogs-advanced.html">this</a>. Take note of the <code>W/L</code> column. Not only are wins and losses denoted, but the variable may also contain info if the win occurred during an overtime period. Let’s mimic this structure in some example data.</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_bball_wl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  game <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
+<span>  team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Nebraska"</span>,</span>
+<span>    <span class="st">"Nebraska"</span>,</span>
+<span>    <span class="st">"Nebraska"</span>,</span>
+<span>    <span class="st">"Nebraska"</span>,</span>
+<span>    <span class="st">"Nebraska"</span>,</span>
+<span>    <span class="st">"Nebraska"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  w_l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"W"</span>,</span>
+<span>    <span class="st">"W (1 OT)"</span>,</span>
+<span>    <span class="st">"L"</span>,</span>
+<span>    <span class="st">"W (3 OT)"</span>,</span>
+<span>    <span class="st">"L (2 OT)"</span>,</span>
+<span>    <span class="st">"W"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_bball_wl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+   game team     w_l     
+  &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;   
+1     1 Nebraska W       
+2     2 Nebraska W (1 OT)
+3     3 Nebraska L       
+4     4 Nebraska W (3 OT)
+5     5 Nebraska L (2 OT)
+6     6 Nebraska W       </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
+<span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"w_l"</span>, <span class="st">"ots"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `separate_wider_delim()`:
+! Expected 2 pieces in each element of `w_l`.
+! 3 values were too short.
+ℹ Use `too_few = "debug"` to diagnose the problem.
+ℹ Use `too_few = "align_start"/"align_end"` to silence this message.</code></pre>
+</div>
+</div>
+<p>Error, so let’s debug what’s happening with our separation.</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
+<span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"w_l"</span>, <span class="st">"ots"</span><span class="op">)</span>,</span>
+<span>  too_few <span class="op">=</span> <span class="st">"debug"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Debug mode activated: adding variables `w_l_ok`, `w_l_pieces`, and `w_l_remainder`.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+   game team     w_l      ots   w_l_ok w_l_pieces w_l_remainder
+  &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; &lt;lgl&gt;       &lt;int&gt; &lt;chr&gt;        
+1     1 Nebraska W        &lt;NA&gt;  FALSE           1 ""           
+2     2 Nebraska W (1 OT) 1 OT) TRUE            2 ""           
+3     3 Nebraska L        &lt;NA&gt;  FALSE           1 ""           
+4     4 Nebraska W (3 OT) 3 OT) TRUE            2 ""           
+5     5 Nebraska L (2 OT) 2 OT) TRUE            2 ""           
+6     6 Nebraska W        &lt;NA&gt;  FALSE           1 ""           </code></pre>
+</div>
+</div>
+<p>Just what we thought, rows 1, 3, 5, and 6 don’t contain enough information to complete our operation of filling the <code>ots</code> variable. The <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code> function has two options for the <code>too_many</code> argument to address this issue:</p>
+<ul>
+<li>
+<code>align_end</code> adds <code>NA</code> at the start of short matches to pad to the correct length.</li>
+<li>
+<code>align_start</code> adds <code>NA</code> at the end of the short matches to pad to the correct length.</li>
+</ul>
+<p>I’ll start with <code>align_end</code> first, just to demonstrate what it does, though this operation isn’t what we’re looking to do here. Then, I’ll show you <code>align_start</code>, the operation needed to complete our separation successfully.</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
+<span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"w_l"</span>, <span class="st">"ot"</span><span class="op">)</span>,</span>
+<span>  too_few <span class="op">=</span> <span class="st">"align_end"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+   game team     w_l   ot   
+  &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
+1     1 Nebraska &lt;NA&gt;  W    
+2     2 Nebraska W     1 OT)
+3     3 Nebraska &lt;NA&gt;  L    
+4     4 Nebraska W     3 OT)
+5     5 Nebraska L     2 OT)
+6     6 Nebraska &lt;NA&gt;  W    </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
+<span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
+<span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"w_l"</span>, <span class="st">"ot"</span><span class="op">)</span>,</span>
+<span>  too_few <span class="op">=</span> <span class="st">"align_start"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+   game team     w_l   ot   
+  &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
+1     1 Nebraska W     &lt;NA&gt; 
+2     2 Nebraska W     1 OT)
+3     3 Nebraska L     &lt;NA&gt; 
+4     4 Nebraska W     3 OT)
+5     5 Nebraska L     2 OT)
+6     6 Nebraska W     &lt;NA&gt; </code></pre>
+</div>
+</div>
+<p>In short, all the align selection does is modify where the <code>NA</code> will be placed, essentially modifying the padding to create a correct length for the separation to be valid.</p>
+<p>Great, now that we’ve identified where to separate the columns, we just need to do some additional string manipulation to finish the wrangling of this data. Below are the wrangling steps I applied:</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_bball_wl</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
+<span>    delim <span class="op">=</span> <span class="st">" ("</span>,</span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"w_l"</span>, <span class="st">"ot"</span><span class="op">)</span>,</span>
+<span>    too_few <span class="op">=</span> <span class="st">"align_start"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    n_ot <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">ot</span>, <span class="st">" OT\\)"</span><span class="op">)</span>,</span>
+<span>    ot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">ot</span><span class="op">)</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+   game team     w_l   ot    n_ot 
+  &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;lgl&gt; &lt;chr&gt;
+1     1 Nebraska W     FALSE &lt;NA&gt; 
+2     2 Nebraska W     TRUE  1    
+3     3 Nebraska L     FALSE &lt;NA&gt; 
+4     4 Nebraska W     TRUE  3    
+5     5 Nebraska L     TRUE  2    
+6     6 Nebraska W     FALSE &lt;NA&gt; </code></pre>
+</div>
+</div>
+</section></section><section id="separate_wider_regex" class="level1"><h1><code>separate_wider_regex()</code></h1>
+<p>In this last section, we’ll cover a slightly more advanced topic: using regular expressions to separate into different columns. The <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code> performs this operation. To highlight how to do this, let’s go back to our file path example data, <code>data_file_paths</code>.</p>
+<p>Say, for some reason, after we separated the different fields embedded in the file path, we want to separate the data further into year and month columns, dropping the day information, since it’s redundant in this case (i.e., these files are always the first of the month). Here’s the additional code we would need:</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>    delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"date"</span>,</span>
+<span>      <span class="st">"age_grp"</span>,</span>
+<span>      <span class="st">"gender"</span>,</span>
+<span>      <span class="st">"report"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">date</span>,</span>
+<span>    patterns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      year <span class="op">=</span> <span class="st">"\\d{4}"</span>,</span>
+<span>      <span class="st">"_"</span>,</span>
+<span>      month <span class="op">=</span> <span class="st">"\\d{2}"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    too_few <span class="op">=</span> <span class="st">"align_start"</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 5
+   year  month age_grp gender report       
+   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        
+ 1 2024  10    1925    f      monthly_users
+ 2 2024  11    1925    f      monthly_users
+ 3 2024  12    1925    f      monthly_users
+ 4 2024  10    1925    m      monthly_users
+ 5 2024  11    1925    m      monthly_users
+ 6 2024  12    1925    m      monthly_users
+ 7 2024  10    2635    f      monthly_users
+ 8 2024  11    2635    f      monthly_users
+ 9 2024  12    2635    f      monthly_users
+10 2024  10    2635    m      monthly_users
+11 2024  11    2635    m      monthly_users
+12 2024  12    2635    m      monthly_users</code></pre>
+</div>
+</div>
+<p>Indeed, it’s not lost on me that this operation could be successfully completed using the following approach as well:</p>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">path</span>,</span>
+<span>    delim <span class="op">=</span> <span class="st">"-"</span>,</span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"date"</span>,</span>
+<span>      <span class="st">"age_grp"</span>,</span>
+<span>      <span class="st">"gender"</span>,</span>
+<span>      <span class="st">"report"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">date</span>,</span>
+<span>    delim <span class="op">=</span> <span class="st">"_"</span>,</span>
+<span>    names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"month"</span><span class="op">)</span>,</span>
+<span>    too_many <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 5
+   year  month age_grp gender report       
+   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        
+ 1 2024  10    1925    f      monthly_users
+ 2 2024  11    1925    f      monthly_users
+ 3 2024  12    1925    f      monthly_users
+ 4 2024  10    1925    m      monthly_users
+ 5 2024  11    1925    m      monthly_users
+ 6 2024  12    1925    m      monthly_users
+ 7 2024  10    2635    f      monthly_users
+ 8 2024  11    2635    f      monthly_users
+ 9 2024  12    2635    f      monthly_users
+10 2024  10    2635    m      monthly_users
+11 2024  11    2635    m      monthly_users
+12 2024  12    2635    m      monthly_users</code></pre>
+</div>
+</div>
+<p>However, using a regular expression affords a little more accuracy. We’re able to specifically specify the pattern we’re looking to capture for our column.</p>
+</section><section id="wrap-up" class="level1"><h1>Wrap up</h1>
+<p>The takeaway from this TIL post is simple: use <code>tidyr</code>’s family of <code>separate_wider_*</code> and <code>separate_longer_*</code> functions when you need to separate a string into additional columns or rows.</p>
+<p>This post wasn’t aiming to be a fully comprehensive guide on how to use this family of functions. As such, I highly suggest reviewing the following to learn more and view additional example use cases:</p>
+<ul>
+<li><p><a href="https://r4ds.hadley.nz/strings#extracting-data-from-strings">Chapter 14: Strings</a> from the <a href="https://r4ds.hadley.nz/">R for Data Science (2e)</a> book.</p></li>
+<li><p><code>tidyr</code>’s <a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html"><code>separate_wider_*</code></a> and <a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html"><code>separate_longer_*</code></a> function documentation (or run <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">?separate_wider_delim</a></code> / <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">?separate_longer_delim</a></code> in your console).</p></li>
+<li><p><code>tidyr</code>’s 1.3.0 <a href="https://www.tidyverse.org/blog/2023/01/tidyr-1-3-0/">release notes</a>.</p></li>
+</ul>
+<p>Until next time, keep having fun with your data wrangling 📈.</p>
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
+  author = {Berke, Collin K},
+  title = {Separate Character Strings into Rows and Columns Using
+    `Tidyr` Functions},
+  date = {2024-12-27},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2024" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2024. <span>“Separate Character Strings into Rows and
+Columns Using `Tidyr` Functions.”</span> December 27, 2024.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = true;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
