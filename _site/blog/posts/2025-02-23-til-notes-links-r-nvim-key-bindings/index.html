@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2025-02-23">
 <meta name="description" content="Learning more about how to customize the R.nvim plugin while using LazyVim">
 
-<title>Notes on customizing Neovim’s key bindings – Collin K. Berke, Ph.D.</title>
+<title>Notes: Customizing Neovim’s key bindings – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -179,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on customizing Neovim’s key bindings</h1>
+<h1 class="title">Notes: Customizing Neovim’s key bindings</h1>
   <div class="quarto-categories">
     <div class="quarto-category">til</div>
     <div class="quarto-category">notes</div>
@@ -249,20 +249,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Next, I consulted <code>R.nvim</code>’s docs to better understand how the plugin expected key bindings to be defined. I use <a href="https://www.lazyvim.org/extras">LazyVim Extras</a> along with a plugin extension file (located at <code>~/.config/lazyvim/lua/plugins/extend-r-nvim.lua</code>) to manage setup and configuration of this plugin. This extension file follows the conventions detailed in the <a href="https://github.com/R-nvim/R.nvim/blob/48c0cafdad3baddc350dea9d68f3bc3d1db3065a/doc/R.nvim.txt#L2193"><code>R.nvim-key-bindings</code></a> section of the docs for the custom key bindings definitions.</p>
 <p>The custom key binding configuration is defined deeply within several nested levels of a lua table. Specifically, this custom key binding configuration is defined in the table like this, which is associated with the <code>config</code> key of the table.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">config</span> <span class="op">=</span> <span class="kw">function</span><span class="op">()</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">local</span> <span class="va">opts</span> <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">hook</span> <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="va">on_filetype</span> <span class="op">=</span> <span class="kw">function</span><span class="op">()</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- Map local leader L to run `devtools::load_all()`</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>          <span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"&lt;LocalLeader&gt;L"</span><span class="op">,</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::load_all()')&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::load_all()"</span> <span class="op">}</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>          <span class="op">)</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">end</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> <span class="va">opts</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">hook</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="va">on_filetype</span> <span class="op">=</span> <span class="kw">function</span><span class="op">()</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                <span class="co">-- Map local leader L to run `devtools::load_all()`</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                <span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"n"</span><span class="op">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"&lt;LocalLeader&gt;L"</span><span class="op">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::load_all()')&lt;CR&gt;"</span><span class="op">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                    <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::load_all()"</span> <span class="op">}</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                <span class="op">)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="kw">end</span><span class="op">,</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This configuration code uses the <code>vim.api.nvim_buf_set_keymap()</code> function to set a local key binding for the current buffer, which will likely be open to a file type used within the R programming environment (e.g., <code>.R</code>, <code>.Rmd</code>, or <code>.qmd</code> file). You can run <code>help nvim_buf_set_keymap</code> from neovim’s command line to view more info about the function. Within the function, we pass values to several parameters:</p>
 <ul>
@@ -277,51 +277,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Other useful key bindings for <code>R.nvim</code></h1>
 <p>You’ll likely want to add more key bindings then the one I’ve shared above. For instance, you’ll likely want to add additional package development convenience functions provided by the <code>devtools</code> package to your configuration:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;LocalLeader&gt;D"</span><span class="op">,</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::document()')&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::test()"</span> <span class="op">}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n"</span><span class="op">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;LocalLeader&gt;D"</span><span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::document()')&lt;CR&gt;"</span><span class="op">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::test()"</span> <span class="op">}</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;LocalLeader&gt;T"</span><span class="op">,</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::test()')&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::test()"</span> <span class="op">}</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n"</span><span class="op">,</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;LocalLeader&gt;T"</span><span class="op">,</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::test()')&lt;CR&gt;"</span><span class="op">,</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::test()"</span> <span class="op">}</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;LocalLeader&gt;U"</span><span class="op">,</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::install()')&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::install()"</span> <span class="op">}</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n"</span><span class="op">,</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;LocalLeader&gt;U"</span><span class="op">,</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('devtools::install()')&lt;CR&gt;"</span><span class="op">,</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R devtools::install()"</span> <span class="op">}</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If you do any <a href="https://shiny.posit.co/">Shiny</a> development, it’s convenient to have a key binding that quickly kicks off an app:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;LocalLeader&gt;sa"</span><span class="op">,</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('shiny::runApp()')&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R shiny::runApp()"</span> <span class="op">}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n"</span><span class="op">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;LocalLeader&gt;sa"</span><span class="op">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;Cmd&gt;lua require('r.send').cmd('shiny::runApp()')&lt;CR&gt;"</span><span class="op">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R shiny::runApp()"</span> <span class="op">}</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You’ll also likely want a key binding that interrupts a busy R terminal:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">keymap</span><span class="op">.</span>set<span class="op">(</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;LocalLeader&gt;ts"</span><span class="op">,</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;Cmd&gt;RStop&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R stop terminal"</span> <span class="op">}</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">keymap</span><span class="op">.</span>set<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;LocalLeader&gt;ts"</span><span class="op">,</span> <span class="st">"&lt;Cmd&gt;RStop&lt;CR&gt;"</span><span class="op">,</span> <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R stop terminal"</span> <span class="op">})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Above you’ll notice we’re using an alternative function to specify our key binding, <code>vim.keymap.set()</code>. This is an alternative function for specifying key bindings.</p>
 <p>Finally, one of my favorites is to configure key bindings for common operations I perform all the time, like running <code>dplyr::glimpse()</code> on objects. The configuration code looks like this:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">vim</span><span class="op">.</span><span class="va">api</span><span class="op">.</span>nvim_buf_set_keymap<span class="op">(</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n"</span><span class="op">,</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;LocalLeader&gt;g"</span><span class="op">,</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;Cmd&gt;lua require('r.run').action('dplyr::glimpse')&lt;CR&gt;"</span><span class="op">,</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R dplyr::glimpse()"</span> <span class="op">}</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n"</span><span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;LocalLeader&gt;g"</span><span class="op">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;Cmd&gt;lua require('r.run').action('dplyr::glimpse')&lt;CR&gt;"</span><span class="op">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span> <span class="va">desc</span> <span class="op">=</span> <span class="st">"R dplyr::glimpse()"</span> <span class="op">}</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Take notice of what’s happening here in the <code>{rhs}</code> parameter of the <code>vim.api.nvim_buf_set_keymap()</code> function. <code>require()</code> is calling <code>r.run.action()</code>, a lua function that will run an R function on the object currently under the cursor. This is very convenient, as you can put your cursor over any object and pass that object to the R function.</p>
 <p>Certainly, endless possibilities exist for the types of key binds one can configure. Having the ability to set key bindings to specific R functions and operations opens up the possibilities even more to enhance specific workflows.</p>
@@ -335,12 +330,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2025,
   author = {Berke, Collin K},
-  title = {Notes on Customizing {Neovim’s} Key Bindings},
+  title = {Notes: {Customizing} {Neovim’s} Key Bindings},
   date = {2025-02-23},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2025" class="csl-entry quarto-appendix-citeas" role="listitem">
-Berke, Collin K. 2025. <span>“Notes on Customizing Neovim’s Key
+Berke, Collin K. 2025. <span>“Notes: Customizing Neovim’s Key
 Bindings.”</span> February 23, 2025.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

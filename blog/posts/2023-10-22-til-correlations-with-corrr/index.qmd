@@ -28,7 +28,7 @@ vb_game_by_game <- data_vb_game_by_game |>
 write_csv(
   vb_game_by_game,
   here(
-    "til/posts/2023-10-22-correlations-with-corrr/2023_10_14_big10_vb_game_by_game.csv"
+    "blog/posts/2023-10-22-correlations-with-corrr/2023_10_14_big10_vb_game_by_game.csv"
   )
 )
 ```
@@ -60,7 +60,7 @@ Let's import this data. [`readr::read_csv()`](https://readr.tidyverse.org/refere
 ```{r import-data}
 data_vball <-
   read_csv(here(
-    "blog/posts/2023-10-22-correlations-with-corrr/2023_10_14_big10_vb_game_by_game.csv"
+    "blog/posts/2023-10-22-til-correlations-with-corrr/2023_10_14_big10_vb_game_by_game.csv"
   ))
 ```
 

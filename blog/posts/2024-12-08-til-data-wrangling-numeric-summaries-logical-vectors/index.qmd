@@ -12,7 +12,7 @@ categories:
   - summary statistics
 ---
 
-# Background 
+# Background
 
 Today I relearned you can easily calculate counts and proportions with a logical vector (e.g., `c(TRUE, FALSE, FALSE, TRUE)`) in [R](https://www.r-project.org/).
 

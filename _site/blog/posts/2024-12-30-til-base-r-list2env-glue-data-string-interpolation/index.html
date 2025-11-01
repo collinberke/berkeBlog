@@ -7,7 +7,7 @@
 <meta name="author" content="Collin K. Berke, Ph.D.">
 <meta name="dcterms.date" content="2024-12-30">
 <meta name="description" content="Need an easy way to access a set of elements from a tibble for string interpolation? Here’s two examples">
-<title>Use list2env() or glue::glue_data() to use a set of elements from a tibble in a string – Collin K. Berke, Ph.D.</title>
+<title>TIL: Use list2env() or glue::glue_data() to use a set of elements from a tibble in a string – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -159,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Use <code>list2env()</code> or <code>glue::glue_data()</code> to use a set of elements from a tibble in a string</h1>
+<h1 class="title">TIL: Use <code>list2env()</code> or <code>glue::glue_data()</code> to use a set of elements from a tibble in a string</h1>
   <div class="quarto-categories">
     <div class="quarto-category">til</div>
     <div class="quarto-category">base r</div>
@@ -195,11 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="thumbnail-wide.jpg" class="img-fluid figure-img"></p>
-<figcaption>Photo by <a href="https://unsplash.com/photos/green-white-and-gray-illustration-sQQf8Ao3dpk">Ben Neale</a></figcaption></figure>
-</div>
-<section id="motivation" class="level1"><h1>Motivation</h1>
+</header><section id="motivation" class="level1"><h1>Motivation</h1>
 <p>Today I learned base R’s <code><a href="https://rdrr.io/r/base/list2env.html">list2env()</a></code> function can be used to assign a set of variables to the Global Environment.</p>
 <p>For a personal project, I was creating a simple CRUD application using <a href="https://shiny.posit.co/">Shiny</a>. The purpose of the application was pretty straightforward: to serve as a tool for entering data into a database. The app had the following requirements:</p>
 <ul>
@@ -234,7 +230,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>What if I also wanted the tibble’s variables to be their own objects? That is, I wanted code resulting in four objects being made available in the Global Environment, each containing a value from a variable in the tibble: <code>first_name</code>, <code>last_name</code>, <code>start_date</code>, and <code>department</code>.</p>
 <p>My overall aim in doing this was to pass the values of these variables to a SQL <code>INSERT</code> statement using the <code><a href="https://glue.tidyverse.org/reference/glue.html">glue()</a></code> package:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_insert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_insert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span></span>
+<span>  <span class="st">"</span></span>
 <span><span class="st">  INSERT INTO employees (</span></span>
 <span><span class="st">      first_name,</span></span>
 <span><span class="st">      last_name,</span></span>
@@ -247,12 +244,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="st">      {start_date},</span></span>
 <span><span class="st">      {department}</span></span>
 <span><span class="st">  )</span></span>
-<span><span class="st">"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="st">"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>My initial solution was to do this:</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">first_name</span> <span class="op">&lt;-</span> <span class="va">data_employee</span><span class="op">[[</span><span class="st">"first_name"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="va">last_name</span>  <span class="op">&lt;-</span> <span class="va">data_employee</span><span class="op">[[</span><span class="st">"last_name"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">last_name</span> <span class="op">&lt;-</span> <span class="va">data_employee</span><span class="op">[[</span><span class="st">"last_name"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">start_date</span> <span class="op">&lt;-</span> <span class="va">data_employee</span><span class="op">[[</span><span class="st">"start_date"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">department</span> <span class="op">&lt;-</span> <span class="va">data_employee</span><span class="op">[[</span><span class="st">"department"</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -265,7 +263,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Further confirmation results from inspecting the SQL <code>INSERT</code> statement string outputted from our use of the <code><a href="https://glue.tidyverse.org/reference/glue.html">glue()</a></code> function.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_insert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_insert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span></span>
+<span>  <span class="st">"</span></span>
 <span><span class="st">  INSERT INTO employees (</span></span>
 <span><span class="st">      first_name,</span></span>
 <span><span class="st">      last_name,</span></span>
@@ -278,7 +277,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="st">      {start_date},</span></span>
 <span><span class="st">      {department}</span></span>
 <span><span class="st">  )</span></span>
-<span><span class="st">"</span><span class="op">)</span></span>
+<span><span class="st">"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">query_insert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -351,7 +351,8 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_insert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">query_insert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span></span>
+<span>  <span class="st">"</span></span>
 <span><span class="st">  INSERT INTO employees (</span></span>
 <span><span class="st">      first_name,</span></span>
 <span><span class="st">      last_name,</span></span>
@@ -364,7 +365,8 @@ Note
 <span><span class="st">      {start_date},</span></span>
 <span><span class="st">      {department}</span></span>
 <span><span class="st">  )</span></span>
-<span><span class="st">"</span><span class="op">)</span></span>
+<span><span class="st">"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">query_insert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -406,7 +408,8 @@ VALUES (
 <span><span class="st">      {last_name},</span></span>
 <span><span class="st">      {start_date},</span></span>
 <span><span class="st">      {department}</span></span>
-<span><span class="st">"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="st">"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>INSERT INTO employees (
     first_name,
@@ -427,15 +430,15 @@ VALUES (
 
 </section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
   author = {Berke, Collin K},
-  title = {Use `List2env()` or `Glue::glue\_data()` to Use a Set of
-    Elements from a Tibble in a String},
+  title = {TIL: {Use} `List2env()` or `Glue::glue\_data()` to Use a Set
+    of Elements from a Tibble in a String},
   date = {2024-12-30},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2024" class="csl-entry quarto-appendix-citeas" role="listitem">
-Berke, Collin K. 2024. <span>“Use `List2env()` or `Glue::glue_data()` to
-Use a Set of Elements from a Tibble in a String.”</span> December 30,
-2024.
+Berke, Collin K. 2024. <span>“TIL: Use `List2env()` or
+`Glue::glue_data()` to Use a Set of Elements from a Tibble in a
+String.”</span> December 30, 2024.
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

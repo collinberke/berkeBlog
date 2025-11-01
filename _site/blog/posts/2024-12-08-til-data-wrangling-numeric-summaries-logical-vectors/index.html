@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-12-08">
 <meta name="description" content="Need proportion and count summaries from a logical vector? Use mean() and sum()">
 
-<title>Summarize logical vectors to calculate numeric summaries – Collin K. Berke, Ph.D.</title>
+<title>TIL: Summarize logical vectors to calculate numeric summaries – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -176,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Summarize logical vectors to calculate numeric summaries</h1>
+<h1 class="title">TIL: Summarize logical vectors to calculate numeric summaries</h1>
   <div class="quarto-categories">
     <div class="quarto-category">til</div>
     <div class="quarto-category">data wrangling</div>
@@ -216,12 +216,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="thumbnail-wide.jpg" class="img-fluid figure-img"></p>
-<figcaption>Photo by <a href="https://unsplash.com/photos/close-up-photography-brown-wooden-furniture-vfpS6MPv8t0">Ovidiu Creanga</a></figcaption>
-</figure>
-</div>
 <section id="background" class="level1">
 <h1>Background</h1>
 <p>Today I relearned you can easily calculate counts and proportions with a logical vector (e.g., <code>c(TRUE, FALSE, FALSE, TRUE)</code>) in <a href="https://www.r-project.org/">R</a>.</p>
@@ -242,11 +236,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Let’s look at an example of this in action. We start by creating an example dataset, which builds on the example used in the book:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_user_engagement <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">date =</span> <span class="fu">sort</span>(<span class="fu">rep</span>(<span class="fu">seq</span>(<span class="fu">as_date</span>(<span class="st">"2024-12-02"</span>), <span class="fu">as_date</span>(<span class="st">"2024-12-08"</span>), <span class="at">by =</span> <span class="dv">1</span>), <span class="at">times =</span> <span class="dv">100</span>)),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">user_id =</span> <span class="fu">rep</span>(<span class="fu">random_id</span>(<span class="at">bytes =</span> <span class="dv">4</span>, <span class="at">n =</span> <span class="dv">100</span>), <span class="at">times =</span> <span class="dv">7</span>),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_engaged_sec =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>), <span class="dv">700</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">date =</span> <span class="fu">sort</span>(<span class="fu">rep</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">seq</span>(<span class="fu">as_date</span>(<span class="st">"2024-12-02"</span>), <span class="fu">as_date</span>(<span class="st">"2024-12-08"</span>), <span class="at">by =</span> <span class="dv">1</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">times =</span> <span class="dv">100</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  )),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">user_id =</span> <span class="fu">rep</span>(<span class="fu">random_id</span>(<span class="at">bytes =</span> <span class="dv">4</span>, <span class="at">n =</span> <span class="dv">100</span>), <span class="at">times =</span> <span class="dv">7</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_engaged_sec =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>), <span class="dv">700</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This dataset is loosely based on the domain I work in: digital analytics. It’s modeled after event-based timeseries data for a week of web site visits. The dataset contains the following columns:</p>
 <ul>
@@ -266,13 +263,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 7 × 3
   date       count_low_engagement proportion_engaged
   &lt;date&gt;                    &lt;int&gt;              &lt;dbl&gt;
-1 2024-12-02                    6               0.77
-2 2024-12-03                   10               0.74
-3 2024-12-04                    8               0.75
-4 2024-12-05                    7               0.75
-5 2024-12-06                    8               0.73
-6 2024-12-07                    8               0.78
-7 2024-12-08                    6               0.68</code></pre>
+1 2024-12-02                   11               0.74
+2 2024-12-03                    7               0.76
+3 2024-12-04                    6               0.75
+4 2024-12-05                   11               0.73
+5 2024-12-06                    8               0.75
+6 2024-12-07                   10               0.74
+7 2024-12-08                    4               0.74</code></pre>
 </div>
 </div>
 <p>At first glance, you might ask where are the logical vectors? They’re created in the <code>sum()</code> and <code>mean()</code> functions when we use the <code>&lt;=</code> and <code>&gt;=</code> operators. That is, the statement <code>time_engaged_sec &lt;= 10</code> initially creates the logical vector in the background, and then the <code>sum()</code> or <code>mean()</code> is computed on that logical vector.</p>
@@ -288,13 +285,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2024,
   author = {Berke, Collin K},
-  title = {Summarize Logical Vectors to Calculate Numeric Summaries},
+  title = {TIL: {Summarize} Logical Vectors to Calculate Numeric
+    Summaries},
   date = {2024-12-08},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2024" class="csl-entry quarto-appendix-citeas" role="listitem">
-Berke, Collin K. 2024. <span>“Summarize Logical Vectors to Calculate
-Numeric Summaries.”</span> December 8, 2024.
+Berke, Collin K. 2024. <span>“TIL: Summarize Logical Vectors to
+Calculate Numeric Summaries.”</span> December 8, 2024.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -60,7 +60,7 @@ We'll start by importing our data using `readr::read_csv()`.
 data_vball <-
   read_csv(
     glue(
-      here("blog/posts/2023-12-07-tidymodels-bigten-volleyball/"),
+      here("blog/posts/2023-12-07-post-tidymodels-bigten-volleyball/"),
       "2023-12-04_bigten_vb_data.csv"
     )
   ) |>

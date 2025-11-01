@@ -265,12 +265,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="thumbnail-wide.png" class="img-fluid figure-img"></p>
-<figcaption>Photo by <a href="https://unsplash.com/photos/t5YUoHW6zRo">Barn Images</a></figcaption>
-</figure>
-</div>
 <blockquote class="blockquote">
 <p>What the new year brings to you will depend a great deal on what you bring to the new year.</p>
 <p>– Vern McLellan</p>
@@ -357,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:*'</span> check-for-changes true</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:*'</span> unstagedstr <span class="st">' *'</span></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:*'</span> stagedstr <span class="st">' +'</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:git:*'</span> formats       <span class="st">'(%b%u%c)'</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:git:*'</span> formats <span class="st">'(%b%u%c)'</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">zstyle</span> <span class="st">':vcs_info:git:*'</span> actionformats <span class="st">'(%b|%a%u%c)'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Indeed, this might not be the custom prompt for everyone. So, the following are links to blog posts that do an excellent job describing how to customize the different prompt elements:</p>
 <ul>
@@ -556,38 +550,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="neovim-package-manager">Neovim package manager</h3>
 <p>I use <a href="https://github.com/wbthomason/packer.nvim">packer</a> for plugin management. Packer simplifies plugin installation. For example, here is the Lua code to install some plugins I highlight in the following sections:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="va">packer</span><span class="op">.</span>startup<span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">use</span><span class="op">)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"wbthomason/packer.nvim"</span>   <span class="co">-- Have packer manage itself</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"jalvesaq/Nvim-R"</span>          <span class="co">-- Tools to work with R in nvim</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"wbthomason/packer.nvim"</span><span class="op">)</span> <span class="co">-- Have packer manage itself</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"jalvesaq/Nvim-R"</span><span class="op">)</span> <span class="co">-- Tools to work with R in nvim</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Colorschemes</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"lunarvim/colorschemes"</span>     <span class="co">-- A selection of various colorschemes</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"tomasiser/vim-code-dark"</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"EdenEast/nightfox.nvim"</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"folke/tokyonight.nvim"</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Colorschemes</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"lunarvim/colorschemes"</span><span class="op">)</span> <span class="co">-- A selection of various colorschemes</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"tomasiser/vim-code-dark"</span><span class="op">)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"EdenEast/nightfox.nvim"</span><span class="op">)</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"folke/tokyonight.nvim"</span><span class="op">)</span></span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- LSP </span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"neovim/nvim-lspconfig"</span>         <span class="co">-- enable LSP</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"williamboman/mason.nvim"</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"williamboman/mason-lspconfig.nvim"</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- LSP</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"neovim/nvim-lspconfig"</span><span class="op">)</span> <span class="co">-- enable LSP</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"williamboman/mason.nvim"</span><span class="op">)</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"williamboman/mason-lspconfig.nvim"</span><span class="op">)</span></span>
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Telescope</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"nvim-telescope/telescope.nvim"</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Treesitter</span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  use <span class="op">{</span></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nvim-treesitter/nvim-treesitter"</span><span class="op">,</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">run</span> <span class="op">=</span> <span class="st">":TSUpdate"</span><span class="op">,</span></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> </span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Git </span></span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"lewis6991/gitsigns.nvim"</span></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  use <span class="st">"tpope/vim-fugitive"</span></span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="cn">PACKER_BOOTSTRAP</span> <span class="cf">then</span></span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">require</span><span class="op">(</span><span class="st">"packer"</span><span class="op">).</span>sync<span class="op">()</span></span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Telescope</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"nvim-telescope/telescope.nvim"</span><span class="op">)</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Treesitter</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    use<span class="op">({</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"nvim-treesitter/nvim-treesitter"</span><span class="op">,</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">run</span> <span class="op">=</span> <span class="st">":TSUpdate"</span><span class="op">,</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">})</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Git</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"lewis6991/gitsigns.nvim"</span><span class="op">)</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    use<span class="op">(</span><span class="st">"tpope/vim-fugitive"</span><span class="op">)</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="cn">PACKER_BOOTSTRAP</span> <span class="cf">then</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">require</span><span class="op">(</span><span class="st">"packer"</span><span class="op">).</span>sync<span class="op">()</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This code might not make much sense, as I only included a snippet of the code needed to install plugins I use most often. It’s mainly intended to show with a few lines of code, packer can manage all the plugin installation steps. This example code deviates slightly from the <a href="https://github.com/wbthomason/packer.nvim">original packer docs</a> on how to install plugins. Check out the previously linked docs if you would like an alternative setup while using Packer.</p>
 <p>Here is a <a href="https://github.com/collinberke/dotfiles/blob/main/nvim/lua/user/plugins.lua">link</a> to a file with all the plugins I use in my setup. Admittedly, some plugins are carry overs from chris@machine’s YouTube series, and I will fully admit I’m still learning the reason why some of these plugins are present within my configuration. Thus, my setup is not as lean as I would like it to be. But hey, I’m still learning.</p>
 </section>
@@ -629,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="custom-neovim-keymaps" class="level4">
 <h4 class="anchored" data-anchor-id="custom-neovim-keymaps">Custom Neovim keymaps</h4>
 <p>Since Neovim is all about customization of your development environment, one thing to modify is Neovim’s keymaps. To configure, you just have to define the configuration in your Neovim config files. For example, the following is some code I use to customize my keymap setup.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- BigQuery keymappings </span></span>
+<div class="sourceCode" id="cb25"><pre class="sourceCode lua code-with-copy"><code class="sourceCode lua"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- BigQuery keymappings</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>keymap<span class="op">(</span><span class="st">"n"</span><span class="op">,</span> <span class="st">"&lt;C-b&gt;"</span><span class="op">,</span> <span class="st">":w | :! bq query &lt; % --format pretty &lt;CR&gt;"</span><span class="op">,</span> <span class="va">opts</span><span class="op">)</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- R coding keymappings</span></span>

@@ -1,5 +1,5 @@
 ---
-title: "The Hex Update: October, 2024"
+title: "The Hex Update: Issue 002"
 date: "2024-11-02"
 author: "Collin K. Berke, Ph.D."
 draft: false
