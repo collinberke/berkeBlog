@@ -6,7 +6,7 @@ listing:
     sort: "date desc"
     categories: true
     fields: [date, title, description]
-    page-size: 10
+    page-size: 15
 format:
   html:
     page-layout: article

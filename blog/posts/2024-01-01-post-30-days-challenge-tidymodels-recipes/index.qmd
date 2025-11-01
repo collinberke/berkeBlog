@@ -516,9 +516,9 @@ Some notes about what wrangling was done:
 For simplicity, I'm not going to create a testing training split for this data.
 
 ```{r day-05-data}
-data_ga <- 
+data_ga <-
   read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+    here("blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
   ) |>
   mutate(
     event_date = ymd(event_date),
@@ -1241,7 +1241,7 @@ Let's get some data for today's examples. I'm going back to our obfuscated [Goog
 ```{r day-12-data}
 data_ga <- 
   read_csv(
-    here("blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
+    here("blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv")
   ) |>
   mutate(
     event_date = ymd(event_date),
@@ -1565,7 +1565,7 @@ This data represents EEG sensor measurements of electrical activity during an ex
 data_eeg <-
   read_csv(
     here(
-      "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_eeg.csv"
+      "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_eeg.csv"
     )
   ) |>
   clean_names() |>
@@ -1635,7 +1635,7 @@ For data, I'm going back to our Google Analytics data. I've used this data for s
 ```{r day-16-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -1744,7 +1744,7 @@ Let's continue using our Google Analytics ecommerce data from yesterday. I've ov
 ```{r day-17-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -1857,7 +1857,7 @@ Once again, I'm going to use the obfuscated Google Analytics ecommerce data. You
 ```{r day-18-data}
 data_ga <-
   read_csv(here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   ))
 
 data_ga <- data_ga |>
@@ -1964,7 +1964,7 @@ To highlight the use of this step function, let's continue using our obfuscated 
 ```{r day-19-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -2074,7 +2074,7 @@ Let's get our data. I'm going to continue using the obfuscated Google Analytics 
 ```{r day-20-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -2143,7 +2143,7 @@ Let's go back to our Google Analytics obfuscated ecommerce data for today's exam
 ```{r day-21-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -2203,7 +2203,7 @@ Let's continue using our Google Analytics ecommerce data for today's example.
 ```{r day-22-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -2396,7 +2396,7 @@ Let's apply this text cleaning recipe step to the `item_name` variable in our ob
 ```{r day-25-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 ) |>
   select(item_name)
@@ -2456,7 +2456,7 @@ To highlight this, let's use our obfuscated Google Analytics ecommerce data. Spe
 ```{r day-26-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
@@ -2577,7 +2577,7 @@ It's been a few of days. Work was getting busy, so I didn't have time to focus o
 ```{r day-27-data}
 data_ga <- read_csv(
   here(
-    "blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
+    "blog/posts/2024-01-01-post-30-days-challenge-tidymodels-recipes/data_google_merch.csv"
   )
 )
 
