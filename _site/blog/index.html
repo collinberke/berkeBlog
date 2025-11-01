@@ -81,10 +81,10 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       page: 10,
     pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -189,7 +189,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(21)</span></div><div class="category" data-category="QmlnUXVlcnk=">BigQuery <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGFibGVhdQ==">Tableau <span class="quarto-category-count">(4)</span></div><div class="category" data-category="YXNzb2NpYXRpb24lMjBydWxlcw==">association rules <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YmlncXVlcnk=">bigquery <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y2xhc3NpZmljYXRpb24=">classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMGFuYWx5c2lz">data analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMHNjaWVuY2U=">data science <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMHZpc3VhbGl6YXRpb24=">data visualization <span class="quarto-category-count">(6)</span></div><div class="category" data-category="ZGF0YSUyMHdyYW5nbGluZw==">data wrangling <span class="quarto-category-count">(7)</span></div><div class="category" data-category="ZGVjaXNpb24lMjB0cmVl">decision tree <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZmVhdHVyZSUyMGVuZ2luZWVyaW5n">feature engineering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Zm9yZWNhc3Rpbmc=">forecasting <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ay1tZWFucyUyMGNsdXN0ZXJpbmc=">k-means clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bG9naXN0aWMlMjByZWdyZXNzaW9u">logistic regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWFjaGluZSUyMGxlYXJuaW5n">machine learning <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bWFya2V0JTIwYmFza2V0JTIwYW5hbHlzaXM=">market basket analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWVkaWE=">media <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGVyc29uYWw=">personal <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGxvdGx5">plotly <span class="quarto-category-count">(5)</span></div><div class="category" data-category="cHJvZHVjdGl2aXR5">productivity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVmbGVjdGlvbg==">reflection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVncmVzc2lvbg==">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVzb3VyY2Vz">resources <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c2hpbnk=">shiny <span class="quarto-category-count">(2)</span></div><div class="category" data-category="c3Fs">sql <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGFsa3M=">talks <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGhlJTIwaGV4JTIwdXBkYXRl">the hex update <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGlkeW1vZGVscw==">tidymodels <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGlkeXR1ZXNkYXk=">tidytuesday <span class="quarto-category-count">(6)</span></div><div class="category" data-category="dHV0b3JpYWw=">tutorial <span class="quarto-category-count">(3)</span></div><div class="category" data-category="dW5zdXBlcnZpc2VkJTIwbGVhcm5pbmc=">unsupervised learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="d29ya2Zsb3c=">workflow <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(22)</span></div><div class="category" data-category="QmlnUXVlcnk=">BigQuery <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGFibGVhdQ==">Tableau <span class="quarto-category-count">(4)</span></div><div class="category" data-category="YXNzb2NpYXRpb24lMjBydWxlcw==">association rules <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YmlncXVlcnk=">bigquery <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y2xhc3NpZmljYXRpb24=">classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMGFuYWx5c2lz">data analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMHNjaWVuY2U=">data science <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YSUyMHZpc3VhbGl6YXRpb24=">data visualization <span class="quarto-category-count">(6)</span></div><div class="category" data-category="ZGF0YSUyMHdyYW5nbGluZw==">data wrangling <span class="quarto-category-count">(7)</span></div><div class="category" data-category="ZGVjaXNpb24lMjB0cmVl">decision tree <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZmVhdHVyZSUyMGVuZ2luZWVyaW5n">feature engineering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Zm9yZWNhc3Rpbmc=">forecasting <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ay1tZWFucyUyMGNsdXN0ZXJpbmc=">k-means clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bG9naXN0aWMlMjByZWdyZXNzaW9u">logistic regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWFjaGluZSUyMGxlYXJuaW5n">machine learning <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bWFya2V0JTIwYmFza2V0JTIwYW5hbHlzaXM=">market basket analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWVkaWE=">media <span class="quarto-category-count">(3)</span></div><div class="category" data-category="cGVyc29uYWw=">personal <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGxvdGx5">plotly <span class="quarto-category-count">(5)</span></div><div class="category" data-category="cHJvZHVjdGl2aXR5">productivity <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVmbGVjdGlvbg==">reflection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVncmVzc2lvbg==">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVzb3VyY2Vz">resources <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c2hpbnk=">shiny <span class="quarto-category-count">(2)</span></div><div class="category" data-category="c3Fs">sql <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGFsa3M=">talks <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGhlJTIwaGV4JTIwdXBkYXRl">the hex update <span class="quarto-category-count">(3)</span></div><div class="category" data-category="dGlkeW1vZGVscw==">tidymodels <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGlkeXR1ZXNkYXk=">tidytuesday <span class="quarto-category-count">(6)</span></div><div class="category" data-category="dHV0b3JpYWw=">tutorial <span class="quarto-category-count">(3)</span></div><div class="category" data-category="dW5zdXBlcnZpc2VkJTIwbGVhcm5pbmc=">unsupervised learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="d29ya2Zsb3c=">workflow <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -216,834 +216,288 @@ window.Quarto = {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ZGF0YSUyMHZpc3VhbGl6YXRpb24lMkN0aWR5dHVlc2RheQ==" data-listing-date-sort="1754802000000" data-listing-file-modified-sort="1754892254772" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="886">
-<div class="thumbnail">
-<p><a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external"></a></p><a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external">TidyTueday contribution: 2028-08-05</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHZpc3VhbGl6YXRpb24='); return false;">
-data visualization
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXR1ZXNkYXk='); return false;">
-tidytuesday
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external">Income Inequality Before and After Taxes</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="no-external">
-<div class="listing-date">
-Aug 10, 2025
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="cmVmbGVjdGlvbiUyQ2RhdGElMjBzY2llbmNlJTJDZGF0YSUyMGFuYWx5c2lzJTJDcmVzb3VyY2Vz" data-listing-date-sort="1736575200000" data-listing-file-modified-sort="1736627388705" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1272">
-<div class="thumbnail">
-<p><a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external"></a></p><a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external">What’s Worth Your Time: Read, Watch, and Listen</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('cmVmbGVjdGlvbg=='); return false;">
-reflection
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHNjaWVuY2U='); return false;">
-data science
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMGFuYWx5c2lz'); return false;">
-data analysis
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cmVzb3VyY2Vz'); return false;">
-resources
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external">A curated list of data science, analysis, coding, tech-related, and miscellaneous work I’ve found to be useful and impactful</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="no-external">
-<div class="listing-date">
-Jan 11, 2025
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1730523600000" data-listing-file-modified-sort="1736625614798" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3162">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external"></a></p><a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-11-01-2024-10-hex-update/hex-update-logo-2024-10.png" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external">The Hex Update: October, 2024</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('dGhlJTIwaGV4JTIwdXBkYXRl'); return false;">
-the hex update
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('bWVkaWE='); return false;">
-media
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external">Key insights and what I learned about the media industry as of October 2024</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="no-external">
-<div class="listing-date">
-Nov 2, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="d29ya2Zsb3clMkN0dXRvcmlhbCUyQ3Byb2R1Y3Rpdml0eSUyQ2JpZ3F1ZXJ5JTJDc3Fs" data-listing-date-sort="1728104400000" data-listing-file-modified-sort="1728158605333" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3881">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external"></a></p><a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external">Workflow walkthrough: Interacting with Google BigQuery in R</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('d29ya2Zsb3c='); return false;">
-workflow
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dHV0b3JpYWw='); return false;">
-tutorial
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvZHVjdGl2aXR5'); return false;">
-productivity
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('YmlncXVlcnk='); return false;">
-bigquery
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('c3Fs'); return false;">
-sql
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external">A tutorial on how to use the <code>bigrquery</code> package</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="no-external">
-<div class="listing-date">
-Oct 5, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdW5zdXBlcnZpc2VkJTIwbGVhcm5pbmclMkNrLW1lYW5zJTIwY2x1c3RlcmluZw==" data-listing-date-sort="1726290000000" data-listing-file-modified-sort="1726434588188" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4397">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external"></a></p><a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external">Messing with models: k-means clustering of Google Analytics 4 data</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bWFjaGluZSUyMGxlYXJuaW5n'); return false;">
-machine learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dW5zdXBlcnZpc2VkJTIwbGVhcm5pbmc='); return false;">
-unsupervised learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ay1tZWFucyUyMGNsdXN0ZXJpbmc='); return false;">
-k-means clustering
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external">A tutorial on how to perform k-means clustering using Google Analytics data</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="no-external">
-<div class="listing-date">
-Sep 14, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1720587600000" data-listing-file-modified-sort="1722436304182" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2850">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external"></a></p><a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-07-10-2024-07-hex-update/hex-update-logo-2024-06.png" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external">The Hex Update: June, 2024</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('dGhlJTIwaGV4JTIwdXBkYXRl'); return false;">
-the hex update
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('bWVkaWE='); return false;">
-media
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external">Key insights and what I learned about the media industry in June 2024</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="no-external">
-<div class="listing-date">
-Jul 10, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdW5zdXBlcnZpc2VkJTIwbGVhcm5pbmclMkNhc3NvY2lhdGlvbiUyMHJ1bGVzJTJDbWFya2V0JTIwYmFza2V0JTIwYW5hbHlzaXM=" data-listing-date-sort="1718082000000" data-listing-file-modified-sort="1722436304180" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="29" data-listing-word-count-sort="5761">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external"></a></p><a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/thumbnail.jpeg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external">Messing with models: Market basket analysis of online merchandise store data</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bWFjaGluZSUyMGxlYXJuaW5n'); return false;">
-machine learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dW5zdXBlcnZpc2VkJTIwbGVhcm5pbmc='); return false;">
-unsupervised learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('YXNzb2NpYXRpb24lMjBydWxlcw=='); return false;">
-association rules
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('bWFya2V0JTIwYmFza2V0JTIwYW5hbHlzaXM='); return false;">
-market basket analysis
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external">A tutorial on how to perform a market basket analysis using Google Analytics data</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="no-external">
-<div class="listing-date">
-Jun 11, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNyZWdyZXNzaW9u" data-listing-date-sort="1714712400000" data-listing-file-modified-sort="1722436304178" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2019">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external"></a></p><a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/thumbnail.jpeg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external">Exploring objects launched into space and gross domestic product</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHZpc3VhbGl6YXRpb24='); return false;">
-data visualization
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXR1ZXNkYXk='); return false;">
-tidytuesday
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">
-plotly
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cmVncmVzc2lvbg=='); return false;">
-regression
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external">A contribution to the 2024-04-23 #tidytuesday social data project</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="no-external">
-<div class="listing-date">
-May 3, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1711083600000" data-listing-file-modified-sort="1722436304176" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1130">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external"></a></p><a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/thumbnail.jpeg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external">Exploring data from the Fiscal Sponsor Directory</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHZpc3VhbGl6YXRpb24='); return false;">
-data visualization
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXR1ZXNkYXk='); return false;">
-tidytuesday
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">
-plotly
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('VGFibGVhdQ=='); return false;">
-Tableau
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external">A contribution to the 2024-03-12 #tidytuesday social data project</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="no-external">
-<div class="listing-date">
-Mar 22, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1710219600000" data-listing-file-modified-sort="1722436304173" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1321">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external"></a></p><a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external">
-<p><img loading="lazy" src="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external">Exploring the relationship between trash processed by Mr.&nbsp;Trash Wheel and precipitation</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHZpc3VhbGl6YXRpb24='); return false;">
-data visualization
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXR1ZXNkYXk='); return false;">
-tidytuesday
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">
-plotly
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('VGFibGVhdQ=='); return false;">
-Tableau
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external">A contribution to the 2024-03-05 #tidytuesday social data project</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="no-external">
-<div class="listing-date">
-Mar 12, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1709618400000" data-listing-file-modified-sort="1722436304171" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="573">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external"></a></p><a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external">Exploring the lifespans of historical figures born on a Leap Day</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHZpc3VhbGl6YXRpb24='); return false;">
-data visualization
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXR1ZXNkYXk='); return false;">
-tidytuesday
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">
-plotly
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('VGFibGVhdQ=='); return false;">
-Tableau
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external">A contribution to the 2024-02-27 #tidytuesday social data project</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="no-external">
-<div class="listing-date">
-Mar 5, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1708927200000" data-listing-file-modified-sort="1722436304170" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="720">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external"></a></p><a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external">Exploring R Consortium ISC Grants</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHZpc3VhbGl6YXRpb24='); return false;">
-data visualization
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXR1ZXNkYXk='); return false;">
-tidytuesday
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGxvdGx5'); return false;">
-plotly
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('VGFibGVhdQ=='); return false;">
-Tableau
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external">A contribution to the 2024-02-20 #tidytuesday social data project</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="no-external">
-<div class="listing-date">
-Feb 26, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDZmVhdHVyZSUyMGVuZ2luZWVyaW5nJTJDdGlkeW1vZGVscyUyQ2RhdGElMjB3cmFuZ2xpbmc=" data-listing-date-sort="1704088800000" data-listing-file-modified-sort="1722436304160" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="88" data-listing-word-count-sort="17401">
-<div class="thumbnail">
-<p><a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external"></a></p><a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external">30 day tidymodels <code>recipes</code> challenge</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bWFjaGluZSUyMGxlYXJuaW5n'); return false;">
-machine learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZmVhdHVyZSUyMGVuZ2luZWVyaW5n'); return false;">
-feature engineering
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeW1vZGVscw=='); return false;">
-tidymodels
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external">Learning how to use the <code>recipes</code> package, one day at a time</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2024
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-categories="dHV0b3JpYWwlMkN0aWR5bW9kZWxzJTJDY2xhc3NpZmljYXRpb24lMkNkZWNpc2lvbiUyMHRyZWUlMkNsb2dpc3RpYyUyMHJlZ3Jlc3Npb24=" data-listing-date-sort="1701928800000" data-listing-file-modified-sort="1722436304156" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27" data-listing-word-count-sort="5244">
-<div class="thumbnail">
-<p><a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external"></a></p><a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/thumbnail.jpeg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external">Messing with models: Learning how to fit a binary classification model using NCAA Big Ten women’s volleyball data</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('dHV0b3JpYWw='); return false;">
-tutorial
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeW1vZGVscw=='); return false;">
-tidymodels
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Y2xhc3NpZmljYXRpb24='); return false;">
-classification
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVjaXNpb24lMjB0cmVl'); return false;">
-decision tree
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('bG9naXN0aWMlMjByZWdyZXNzaW9u'); return false;">
-logistic regression
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external">Using tidymodels to predict wins and losses for volleyball matches</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="no-external">
-<div class="listing-date">
-Dec 7, 2023
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="14" data-categories="dHV0b3JpYWw=" data-listing-date-sort="1674972000000" data-listing-file-modified-sort="1722436304153" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25" data-listing-word-count-sort="4962">
-<div class="thumbnail">
-<p><a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external"></a></p><a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2023-01-29-2023-rig/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external">2023 data science rig: Set up and configuration</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('dHV0b3JpYWw='); return false;">
-tutorial
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external">Overviewing and reflecting on my current data science setup.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2023-01-29-2023-rig/index.html" class="no-external">
-<div class="listing-date">
-Jan 29, 2023
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="15" data-categories="QmlnUXVlcnklMkNzcWwlMkNkYXRhJTIwd3JhbmdsaW5n" data-listing-date-sort="1663650000000" data-listing-file-modified-sort="1722436304151" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3601">
-<div class="thumbnail">
-<p><a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external"></a></p><a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2022-09-20-flattening-google-analytics-4-data/thumbnail.png" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external">Flattening Google Analytics 4 data</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('QmlnUXVlcnk='); return false;">
-BigQuery
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('c3Fs'); return false;">
-sql
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHdyYW5nbGluZw=='); return false;">
-data wrangling
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external">Let’s deep dive into working with Google Analytics data stored in BigQuery.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="no-external">
-<div class="listing-date">
-Sep 20, 2022
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="16" data-categories="Zm9yZWNhc3Rpbmc=" data-listing-date-sort="1646287200000" data-listing-file-modified-sort="1722436304145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="29" data-listing-word-count-sort="5663">
-<div class="thumbnail">
-<p><a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external"></a></p><a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external">Exploratory analysis of Google Analytics 4 data for forecasting models</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Zm9yZWNhc3Rpbmc='); return false;">
-forecasting
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external">Exploring Google Analytics 4 data for forecasting models.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="no-external">
-<div class="listing-date">
-Mar 3, 2022
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="17" data-categories="c2hpbnk=" data-listing-date-sort="1640844000000" data-listing-file-modified-sort="1722436304143" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27" data-listing-word-count-sort="5272">
-<div class="thumbnail">
-<p><a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external"></a></p><a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2021-12-30-shiny-metric-summary-tiles/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external">Shiny summary tiles</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('c2hpbnk='); return false;">
-shiny
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external">Building custom metric summary tiles for Shiny.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2021
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="18" data-categories="dGFsa3M=" data-listing-date-sort="1634619600000" data-listing-file-modified-sort="1722436304140" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="531">
-<div class="thumbnail">
-<p><a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external"></a></p><a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external">2021 PBS TechCon: Your Data is Disgusting!</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('dGFsa3M='); return false;">
-talks
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external">I was fortunate to be invited to present about topics I’m passionate about: tidy data and data pipelines.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="no-external">
-<div class="listing-date">
-Oct 19, 2021
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="19" data-categories="c2hpbnk=" data-listing-date-sort="1631422800000" data-listing-file-modified-sort="1722436304139" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3984">
-<div class="thumbnail">
-<p><a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external"></a></p><a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external">
-<p><img loading="lazy" data-src="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/thumbnail.jpg" class="thumbnail-image"></p>
-</a><p><a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external">Implementing a next and back button in Shiny</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('c2hpbnk='); return false;">
-shiny
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external">Taking the time to understand a challenging question from Mastering Shiny.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="no-external">
-<div class="listing-date">
-Sep 12, 2021
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="20" data-categories="cGVyc29uYWw=" data-listing-date-sort="1617339600000" data-listing-file-modified-sort="1722436304138" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="514">
-<div class="thumbnail">
-<p><a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external"></a></p><a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external">Intro Post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('cGVyc29uYWw='); return false;">
-personal
-</div>
-</div>
-<div class="listing-description">
-<a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external"><code>Hello World!</code>, my name is Collin, and this is my blog.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/2021-04-02-intro-post/index.html" class="no-external">
-<div class="listing-date">
-Apr 2, 2021
-</div>
-<div class="listing-author">
-Collin K. Berke, Ph.D.
-</div>
-</a>
-</div>
-</div>
-</div>
+<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-title-sort" data-direction="asc">
+          Title
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+<th>
+<a class="sort" data-sort="listing-date-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Date</a>
+</th>
+<th>
+<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Title</a>
+</th>
+<th>
+Description
+</th>
+</tr>
+</thead>
+<tbody class="list">
+<tr data-index="0" data-categories="ZGF0YSUyMHZpc3VhbGl6YXRpb24lMkN0aWR5dHVlc2RheQ==" data-listing-date-sort="1754802000000" data-listing-file-modified-sort="1754892254772" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="886" data-listing-title-sort="TidyTueday contribution: 2028-08-05" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Aug 10, 2025</span>
+</td>
+<td>
+<a href="../blog/posts/2025-08-10-post-tidy-tuesday-2025-08-05-income-inequality-before-and-after-taxes/index.html" class="title listing-title">TidyTueday contribution: 2028-08-05</a>
+</td>
+<td>
+<span class="listing-description">Income Inequality Before and After Taxes</span>
+</td>
+</tr>
+<tr data-index="1" data-categories="cmVmbGVjdGlvbiUyQ2RhdGElMjBzY2llbmNlJTJDZGF0YSUyMGFuYWx5c2lzJTJDcmVzb3VyY2Vz" data-listing-date-sort="1736575200000" data-listing-file-modified-sort="1736627388705" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1272" data-listing-title-sort="What's Worth Your Time: Read, Watch, and Listen" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jan 11, 2025</span>
+</td>
+<td>
+<a href="../blog/posts/2025-01-11-post-data-science-analysis-things-you-should-read-watch-listen/index.html" class="title listing-title">What’s Worth Your Time: Read, Watch, and Listen</a>
+</td>
+<td>
+<span class="listing-description">A curated list of data science, analysis, coding, tech-related, and miscellaneous work I’ve found to be useful and impactful</span>
+</td>
+</tr>
+<tr data-index="2" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1730523600000" data-listing-file-modified-sort="1736625614798" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3162" data-listing-title-sort="The Hex Update: October, 2024" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Nov 2, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-11-01-2024-10-hex-update/index.html" class="title listing-title">The Hex Update: October, 2024</a>
+</td>
+<td>
+<span class="listing-description">Key insights and what I learned about the media industry as of October 2024</span>
+</td>
+</tr>
+<tr data-index="3" data-categories="d29ya2Zsb3clMkN0dXRvcmlhbCUyQ3Byb2R1Y3Rpdml0eSUyQ2JpZ3F1ZXJ5JTJDc3Fs" data-listing-date-sort="1728104400000" data-listing-file-modified-sort="1728158605333" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3881" data-listing-title-sort="Workflow walkthrough: Interacting with Google BigQuery in R" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Oct 5, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-10-05-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html" class="title listing-title">Workflow walkthrough: Interacting with Google BigQuery in R</a>
+</td>
+<td>
+<span class="listing-description">A tutorial on how to use the <code>bigrquery</code> package</span>
+</td>
+</tr>
+<tr data-index="4" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdW5zdXBlcnZpc2VkJTIwbGVhcm5pbmclMkNrLW1lYW5zJTIwY2x1c3RlcmluZw==" data-listing-date-sort="1726290000000" data-listing-file-modified-sort="1726434588188" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4397" data-listing-title-sort="Messing with models: k-means clustering of Google Analytics 4 data" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Sep 14, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-09-14-google-analytics-machine-learning-kmeans-clustering/index.html" class="title listing-title">Messing with models: k-means clustering of Google Analytics 4 data</a>
+</td>
+<td>
+<span class="listing-description">A tutorial on how to perform k-means clustering using Google Analytics data</span>
+</td>
+</tr>
+<tr data-index="5" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1720587600000" data-listing-file-modified-sort="1722436304182" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2850" data-listing-title-sort="The Hex Update: June, 2024" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jul 10, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-07-10-2024-07-hex-update/index.html" class="title listing-title">The Hex Update: June, 2024</a>
+</td>
+<td>
+<span class="listing-description">Key insights and what I learned about the media industry in June 2024</span>
+</td>
+</tr>
+<tr data-index="6" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1720587600000" data-listing-file-modified-sort="1761588259550" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="259" data-listing-title-sort="The Hex Update: Issue 003" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jul 10, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2025-10-30-hex-update-003/index.html" class="title listing-title">The Hex Update: Issue 003</a>
+</td>
+<td>
+<span class="listing-description">A weekly collection of what I recently read and learned about the media industry</span>
+</td>
+</tr>
+<tr data-index="7" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDdW5zdXBlcnZpc2VkJTIwbGVhcm5pbmclMkNhc3NvY2lhdGlvbiUyMHJ1bGVzJTJDbWFya2V0JTIwYmFza2V0JTIwYW5hbHlzaXM=" data-listing-date-sort="1718082000000" data-listing-file-modified-sort="1722436304180" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="29" data-listing-word-count-sort="5761" data-listing-title-sort="Messing with models: Market basket analysis of online merchandise store data" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jun 11, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-06-11-machine-learning-market-basket-analysis-google-analytics/index.html" class="title listing-title">Messing with models: Market basket analysis of online merchandise store data</a>
+</td>
+<td>
+<span class="listing-description">A tutorial on how to perform a market basket analysis using Google Analytics data</span>
+</td>
+</tr>
+<tr data-index="8" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNyZWdyZXNzaW9u" data-listing-date-sort="1714712400000" data-listing-file-modified-sort="1722436304178" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2019" data-listing-title-sort="Exploring objects launched into space and gross domestic product" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">May 3, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html" class="title listing-title">Exploring objects launched into space and gross domestic product</a>
+</td>
+<td>
+<span class="listing-description">A contribution to the 2024-04-23 #tidytuesday social data project</span>
+</td>
+</tr>
+<tr data-index="9" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1711083600000" data-listing-file-modified-sort="1722436304176" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1130" data-listing-title-sort="Exploring data from the Fiscal Sponsor Directory" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Mar 22, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html" class="title listing-title">Exploring data from the Fiscal Sponsor Directory</a>
+</td>
+<td>
+<span class="listing-description">A contribution to the 2024-03-12 #tidytuesday social data project</span>
+</td>
+</tr>
+<tr data-index="10" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1710219600000" data-listing-file-modified-sort="1722436304173" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1321" data-listing-title-sort="Exploring the relationship between trash processed by Mr. Trash Wheel and precipitation" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Mar 12, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-03-12-tidytuesday-2024-03-05-mr-trash-wheel/index.html" class="title listing-title">Exploring the relationship between trash processed by Mr.&nbsp;Trash Wheel and precipitation</a>
+</td>
+<td>
+<span class="listing-description">A contribution to the 2024-03-05 #tidytuesday social data project</span>
+</td>
+</tr>
+<tr data-index="11" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1709618400000" data-listing-file-modified-sort="1722436304171" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="573" data-listing-title-sort="Exploring the lifespans of historical figures born on a Leap Day" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Mar 5, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-02-27-tidytuesday-2024-02-27-leap-day/index.html" class="title listing-title">Exploring the lifespans of historical figures born on a Leap Day</a>
+</td>
+<td>
+<span class="listing-description">A contribution to the 2024-02-27 #tidytuesday social data project</span>
+</td>
+</tr>
+<tr data-index="12" data-categories="ZGF0YSUyMHdyYW5nbGluZyUyQ2RhdGElMjB2aXN1YWxpemF0aW9uJTJDdGlkeXR1ZXNkYXklMkNwbG90bHklMkNUYWJsZWF1" data-listing-date-sort="1708927200000" data-listing-file-modified-sort="1722436304170" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="720" data-listing-title-sort="Exploring R Consortium ISC Grants" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Feb 26, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-02-23-tidytuesday-2024-02-20-r-consortium-grants/index.html" class="title listing-title">Exploring R Consortium ISC Grants</a>
+</td>
+<td>
+<span class="listing-description">A contribution to the 2024-02-20 #tidytuesday social data project</span>
+</td>
+</tr>
+<tr data-index="13" data-categories="bWFjaGluZSUyMGxlYXJuaW5nJTJDZmVhdHVyZSUyMGVuZ2luZWVyaW5nJTJDdGlkeW1vZGVscyUyQ2RhdGElMjB3cmFuZ2xpbmc=" data-listing-date-sort="1704088800000" data-listing-file-modified-sort="1722436304160" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="88" data-listing-word-count-sort="17401" data-listing-title-sort="30 day tidymodels `recipes` challenge" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jan 1, 2024</span>
+</td>
+<td>
+<a href="../blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/index.html" class="title listing-title">30 day tidymodels <code>recipes</code> challenge</a>
+</td>
+<td>
+<span class="listing-description">Learning how to use the <code>recipes</code> package, one day at a time</span>
+</td>
+</tr>
+<tr data-index="14" data-categories="dHV0b3JpYWwlMkN0aWR5bW9kZWxzJTJDY2xhc3NpZmljYXRpb24lMkNkZWNpc2lvbiUyMHRyZWUlMkNsb2dpc3RpYyUyMHJlZ3Jlc3Npb24=" data-listing-date-sort="1701928800000" data-listing-file-modified-sort="1722436304156" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27" data-listing-word-count-sort="5244" data-listing-title-sort="Messing with models: Learning how to fit a binary classification model using NCAA Big Ten women's volleyball data" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Dec 7, 2023</span>
+</td>
+<td>
+<a href="../blog/posts/2023-12-07-tidymodels-bigten-volleyball/index.html" class="title listing-title">Messing with models: Learning how to fit a binary classification model using NCAA Big Ten women’s volleyball data</a>
+</td>
+<td>
+<span class="listing-description">Using tidymodels to predict wins and losses for volleyball matches</span>
+</td>
+</tr>
+<tr data-index="15" data-categories="dHV0b3JpYWw=" data-listing-date-sort="1674972000000" data-listing-file-modified-sort="1722436304153" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25" data-listing-word-count-sort="4962" data-listing-title-sort="2023 data science rig: Set up and configuration" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Jan 29, 2023</span>
+</td>
+<td>
+<a href="../blog/posts/2023-01-29-2023-rig/index.html" class="title listing-title">2023 data science rig: Set up and configuration</a>
+</td>
+<td>
+<span class="listing-description">Overviewing and reflecting on my current data science setup.</span>
+</td>
+</tr>
+<tr data-index="16" data-categories="QmlnUXVlcnklMkNzcWwlMkNkYXRhJTIwd3JhbmdsaW5n" data-listing-date-sort="1663650000000" data-listing-file-modified-sort="1722436304151" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3601" data-listing-title-sort="Flattening Google Analytics 4 data" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Sep 20, 2022</span>
+</td>
+<td>
+<a href="../blog/posts/2022-09-20-flattening-google-analytics-4-data/index.html" class="title listing-title">Flattening Google Analytics 4 data</a>
+</td>
+<td>
+<span class="listing-description">Let’s deep dive into working with Google Analytics data stored in BigQuery.</span>
+</td>
+</tr>
+<tr data-index="17" data-categories="Zm9yZWNhc3Rpbmc=" data-listing-date-sort="1646287200000" data-listing-file-modified-sort="1722436304145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="29" data-listing-word-count-sort="5663" data-listing-title-sort="Exploratory analysis of Google Analytics 4 data for forecasting models" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Mar 3, 2022</span>
+</td>
+<td>
+<a href="../blog/posts/2022-03-03-exploratory-trend-analysis-of-google-analytics-4-data-for-forecasting-models/index.html" class="title listing-title">Exploratory analysis of Google Analytics 4 data for forecasting models</a>
+</td>
+<td>
+<span class="listing-description">Exploring Google Analytics 4 data for forecasting models.</span>
+</td>
+</tr>
+<tr data-index="18" data-categories="c2hpbnk=" data-listing-date-sort="1640844000000" data-listing-file-modified-sort="1722436304143" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27" data-listing-word-count-sort="5272" data-listing-title-sort="Shiny summary tiles" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Dec 30, 2021</span>
+</td>
+<td>
+<a href="../blog/posts/2021-12-30-shiny-metric-summary-tiles/index.html" class="title listing-title">Shiny summary tiles</a>
+</td>
+<td>
+<span class="listing-description">Building custom metric summary tiles for Shiny.</span>
+</td>
+</tr>
+<tr data-index="19" data-categories="dGFsa3M=" data-listing-date-sort="1634619600000" data-listing-file-modified-sort="1722436304140" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="531" data-listing-title-sort="2021 PBS TechCon: Your Data is Disgusting!" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Oct 19, 2021</span>
+</td>
+<td>
+<a href="../blog/posts/2021-10-19-2021-pbs-techcon-your-data-is-disgusting/index.html" class="title listing-title">2021 PBS TechCon: Your Data is Disgusting!</a>
+</td>
+<td>
+<span class="listing-description">I was fortunate to be invited to present about topics I’m passionate about: tidy data and data pipelines.</span>
+</td>
+</tr>
+<tr data-index="20" data-categories="c2hpbnk=" data-listing-date-sort="1631422800000" data-listing-file-modified-sort="1722436304139" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3984" data-listing-title-sort="Implementing a next and back button in Shiny" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Sep 12, 2021</span>
+</td>
+<td>
+<a href="../blog/posts/2021-09-12-shiny-implementing-a-next-and-back-button/index.html" class="title listing-title">Implementing a next and back button in Shiny</a>
+</td>
+<td>
+<span class="listing-description">Taking the time to understand a challenging question from Mastering Shiny.</span>
+</td>
+</tr>
+<tr data-index="21" data-categories="cGVyc29uYWw=" data-listing-date-sort="1617339600000" data-listing-file-modified-sort="1722436304138" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="514" data-listing-title-sort="Intro Post" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Apr 2, 2021</span>
+</td>
+<td>
+<a href="../blog/posts/2021-04-02-intro-post/index.html" class="title listing-title">Intro Post</a>
+</td>
+<td>
+<span class="listing-description"><code>Hello World!</code>, my name is Collin, and this is my blog.</span>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
