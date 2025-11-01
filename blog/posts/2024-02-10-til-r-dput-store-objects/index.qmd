@@ -1,5 +1,5 @@
 ---
-title: "Use `base::dput()` to easily create and save objects"
+title: "TIL: Use `base::dput()` to easily create and save objects"
 date: "2024-02-10"
 author: "Collin K. Berke, Ph.D."
 draft: false 
@@ -7,6 +7,7 @@ image: thumbnail.jpeg
 description: "Need to create and store an object quickly, use this trick"
 toc: true
 categories:
+  - til
   - productivity 
   - vim
   - testing
@@ -27,8 +28,20 @@ Lately, I've been doing a lot of data validation tests for a package I'm working
 ```{r example-test}
 test_that("column names are as expected", {
   expect_named(
-    mtcars, 
-    c("mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
+    mtcars,
+    c(
+      "mpg",
+      "cyl",
+      "disp",
+      "hp",
+      "drat",
+      "wt",
+      "qsec",
+      "vs",
+      "am",
+      "gear",
+      "carb"
+    )
   )
 })
 ```
@@ -53,7 +66,7 @@ Pretty neat.
 
 ```{r dput-write-to-file, eval=FALSE}
 dput(
-  names(mtcars), 
+  names(mtcars),
   here::here("til/posts/2024-02-10-til-r-dput-store-objects/mtcars-names.R")
 )
 ```

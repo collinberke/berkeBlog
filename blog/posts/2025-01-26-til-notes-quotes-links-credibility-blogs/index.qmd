@@ -1,5 +1,5 @@
 ---
-title: "Notes on link blogs and more frequent blog posting"
+title: "Notes: Link blogs and more frequent blog posting"
 description: "Some notes, quotes, and links about writing more and sharing your work"
 date: "2025-01-26"
 author: "Collin K. Berke, Ph.D."

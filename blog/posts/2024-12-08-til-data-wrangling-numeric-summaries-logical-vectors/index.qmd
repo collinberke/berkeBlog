@@ -1,5 +1,5 @@
 ---
-title: "Summarize logical vectors to calculate numeric summaries"
+title: "TIL: Summarize logical vectors to calculate numeric summaries"
 date: "2024-12-08"
 author: "Collin K. Berke, Ph.D."
 draft: false
@@ -44,11 +44,14 @@ Let's look at an example of this in action. We start by creating an example data
 ```{r}
 #| label: data-user-example
 data_user_engagement <- data.frame(
-  date = sort(rep(seq(as_date("2024-12-02"), as_date("2024-12-08"), by = 1), times = 100)),
+  date = sort(rep(
+    seq(as_date("2024-12-02"), as_date("2024-12-08"), by = 1),
+    times = 100
+  )),
   user_id = rep(random_id(bytes = 4, n = 100), times = 7),
   time_engaged_sec = sample(c(1:100), 700, replace = TRUE)
 ) |>
-tibble()
+  tibble()
 ```
 
 This dataset is loosely based on the domain I work in: digital analytics. It's modeled after event-based timeseries data for a week of web site visits. The dataset contains the following columns:

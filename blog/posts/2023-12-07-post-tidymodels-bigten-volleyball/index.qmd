@@ -49,17 +49,18 @@ There might be a slight issue of data leakage in this example. [In a previous po
 library(dataBigTenVolleyball)
 
 write_csv(
-  data_vb_game_by_game, 
+  data_vb_game_by_game,
   glue(
-    here("blog/posts/2023-12-07-tidymodels-bigten-volleyball/"), 
-    "{Sys.Date()}_bigten_vb_data.csv")
+    here("blog/posts/2023-12-07-tidymodels-bigten-volleyball/"),
+    "{Sys.Date()}_bigten_vb_data.csv"
   )
+)
 ```
 
 We'll start by importing our data using `readr::read_csv()`.
 
 ```{r import-data}
-data_vball <- 
+data_vball <-
   read_csv(
     glue(
       here("blog/posts/2023-12-07-tidymodels-bigten-volleyball/"),
@@ -174,7 +175,7 @@ An argument could be made for further exploratory analysis of these variables, f
 The next step in the exploratory analysis is to identify the presence of any correlations among features. This can [easily be done](https://www.collinberke.com/til/posts/2023-10-22-correlations-with-corrr/) using functions from the [`corrr`](https://corrr.tidymodels.org/index.html) package. Specifically, the `correlate()` function calculates correlations among the various numeric features within our data. The output from the `correlate()` function is then passed to the `autoplot()` method, which outputs a visualization of the correlations values.
 
 ```{r vis-var-correlations}
-data_vball_train |> 
+data_vball_train |>
   correlate() |>
   corrr::focus(-set_wins, -set_loss, -s, mirror = TRUE) |>
   autoplot(triangular = "lower")
@@ -203,12 +204,12 @@ Specifying the two models in this post looks like this:
 
 ```{r model-specs}
 # Logistic regression specification
-log_reg_spec <- 
+log_reg_spec <-
   logistic_reg() |>
   set_engine("glm")
 
 # Decision tree specification
-dt_spec <- 
+dt_spec <-
   decision_tree() |>
   set_engine("rpart") |>
   set_mode("classification")
@@ -250,7 +251,7 @@ log_reg_wflow <-
     w_l ~ hit_pct + errors + block_solos + block_assists + digs
   )
 
-dt_wflow <- 
+dt_wflow <-
   workflow() |>
   add_model(dt_spec) |>
   add_formula(
@@ -261,7 +262,7 @@ dt_wflow <-
 This syntax can be a bit long, so there's a shortcut. We can pass both the model formula and the model specification as arguments to the `workflow()` function instead of using a piped chain of functions.
 
 ```{r simplified-workflows}
-log_reg_wflow <- 
+log_reg_wflow <-
   workflow(
     w_l ~ hit_pct + errors + block_solos + block_assists + digs,
     log_reg_spec
@@ -305,7 +306,7 @@ log_reg_fit |> extract_fit_engine()
 ```
 
 ```{r extract-fit-engine-dt}
-dt_fit |> extract_fit_engine() 
+dt_fit |> extract_fit_engine()
 ```
 
 The output when passing the fit object to the `extract_fit_engine()` is similar to what was printed when we called the fit object alone. However, the `extract_*` family of workflow functions are great for extracting elements of a workflow. According to the docs (`?extract_fit_engine`), this family of functions are helpful when accessing elements within the fit object. This is especially helpful when needing to pass along elements of the fit object to generics like `print()`, `summary()`, and `plot()`.
@@ -348,14 +349,14 @@ With this data, we can visualize these prediction estimates with the various fea
 plot_log_mdl <- function(data, x_var, y_var, color) {
   ggplot() +
     geom_point(
-      data = data_vball_aug, 
+      data = data_vball_aug,
       aes(x = {{ x_var }}, y = {{ y_var }}, color = {{ color }}),
       alpha = .4
     ) +
     geom_smooth(
       data = data_vball_aug,
       aes(x = {{ x_var }}, y = {{ y_var }}),
-      method = "glm", 
+      method = "glm",
       method.args = list(family = "binomial"),
       se = FALSE
     ) +
@@ -365,30 +366,31 @@ plot_log_mdl <- function(data, x_var, y_var, color) {
 ```
 
 ```{r plot-mdls, warning=FALSE, message=FALSE, fig.width = 8, fig.height = 6}
-plot_hit_pct <- 
+plot_hit_pct <-
   plot_log_mdl(data_vball_aug, hit_pct, .pred_win, w_l)
 
-plot_errors <- 
+plot_errors <-
   plot_log_mdl(data_vball_aug, errors, .pred_win, w_l)
 
-plot_block_solos <- 
+plot_block_solos <-
   plot_log_mdl(data_vball_aug, block_solos, .pred_win, w_l) +
-  scale_x_continuous(labels = label_number(accuracy = 1))	
+  scale_x_continuous(labels = label_number(accuracy = 1))
 
-plot_block_assists <- 
+plot_block_assists <-
   plot_log_mdl(data_vball_aug, block_assists, .pred_win, w_l)
 
 plot_digs <-
   plot_log_mdl(data_vball_aug, digs, .pred_win, w_l)
 
 wrap_plots(
-  plot_hit_pct, 
+  plot_hit_pct,
   plot_errors,
-  plot_block_solos, 
+  plot_block_solos,
   plot_block_assists,
-  plot_digs, 
+  plot_digs,
   guides = "collect"
-) & theme(legend.position = "bottom")
+) &
+  theme(legend.position = "bottom")
 ```
 
 To summarise our decision tree, we need to use the [`rpart.plot`](https://cran.r-project.org/web/packages/rpart.plot/) package to create a plot of the tree. The code to do this looks like this:
@@ -442,7 +444,7 @@ The `conf_mat()` also has an `autoplot()` method. This makes it easier to visual
 ```{r vis-log-reg-conf-matrix}
 augment(log_reg_fit, data_vball_train) |>
   conf_mat(truth = w_l, estimate = .pred_class) |>
-  autoplot(type = "mosaic") 
+  autoplot(type = "mosaic")
 ```
 
 ```{r vis-dt-conf-matrix}
@@ -512,7 +514,7 @@ A few things to note:
 Although the above code provided the output we were looking for, we can simplify our code by using `yardstick`'s `metric_set()` function. Inside `metric_set()` we specify the different metrics we want to calculate for each model. 
 
 ```{r metrics-set}
-vball_mdl_metrics <- 
+vball_mdl_metrics <-
   metric_set(accuracy, sensitivity, specificity)
 ```
 
@@ -587,18 +589,18 @@ Our model assessment suggested logistic regression is a good candidate model to 
 tidymodels makes this step easy with the `last_fit()` function. This is where our previous step of specifying a workflow comes in handy. In the function, we'll pass along the `log_reg_wflow` workflow object and the `data_vball_split` object. We'll also calculate metrics by passing along `metric_set(accuracy, sensitivity, specificity, roc_auc)` to the `metrics` argument of the function.
 
 ```{r final-fit}
-final_log_reg_fit <- 
+final_log_reg_fit <-
   last_fit(
-    log_reg_wflow, 
+    log_reg_wflow,
     data_vball_split,
-    metrics = metric_set(accuracy, sensitivity, specificity, roc_auc) 
+    metrics = metric_set(accuracy, sensitivity, specificity, roc_auc)
   )
 ```
 
 When you print the `final_log_reg_fit` object, a tibble is returned. The tibble contains list columns holding relevant model information, like our metrics and predictions. Take notice that all these columns are prefixed with a `.`.
 
 ```{r print-final-fit}
-final_log_reg_fit 
+final_log_reg_fit
 ```
 
 To grab the information from these list columns, tidymodels makes several accessor functions available. In the case of obtaining our metrics, we can use the `collect_metrics()` function.
@@ -638,7 +640,7 @@ final_fit_wflow <- extract_workflow(final_log_reg_fit)
 At this point in the season, let's see how the Nebraska women's volleyball team stacked up in several of their matches using our model. First, let's examine Nebraska's win against Wisconsin, [a five set thriller](https://huskers.com/boxscore/21265).
 
 ```{r predict-first-wisconsin-match}
-wisc_mtch_one <- data_vball |> 
+wisc_mtch_one <- data_vball |>
   filter(team_name == "Nebraska Huskers", date == as_date("2023-10-21"))
 
 predict(final_fit_wflow, new_data = wisc_mtch_one)
@@ -649,7 +651,7 @@ According to our model, Nebraska should have lost this match. This makes Nebrask
 What about Nebraska's 0-3, [second match loss against Wisconsin](https://huskers.com/boxscore/21274)?
 
 ```{r predict-second-wisconsin-match}
-wisc_mtch_two <- data_vball |> 
+wisc_mtch_two <- data_vball |>
   filter(team_name == "Nebraska Huskers", date == as_date("2023-11-24"))
 
 predict(final_fit_wflow, new_data = wisc_mtch_two)
@@ -699,7 +701,7 @@ if Nebraska will win or lose a match at the 25% quartile for these statistics.
 ```{r predict-quantile-25}
 quantile_25 <- data_vball |>
   filter(team_name == "Nebraska Huskers", year(date) == 2023) |>
-  summarise(across(where(is.numeric), ~quantile(.x, .25))) |>
+  summarise(across(where(is.numeric), ~ quantile(.x, .25))) |>
   select(hit_pct, errors, block_solos, block_assists, digs)
 
 predict(final_fit_wflow, new_data = quantile_25)

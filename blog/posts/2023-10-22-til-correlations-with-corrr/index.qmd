@@ -1,5 +1,5 @@
 ---
-title: "Calculating correlations with `corrr`"
+title: "TIL: Calculating correlations with `corrr`"
 date: "2023-10-22"
 author: "Collin K. Berke, Ph.D."
 draft: false 
@@ -7,8 +7,9 @@ image: thumbnail.jpg
 description: "Use the corrr package to calculate and visualize correlations"
 toc: true
 categories:
+  - til
   - data analysis
-  - exploratory analysis 
+  - exploratory analysis
   - data visualization
 ---
 

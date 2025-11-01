@@ -1,5 +1,5 @@
 ---
-title: "Notes on date and time data types in PostgreSQL"
+title: "Note: Date and time data types in PostgreSQL"
 description: "A scratchpad of concepts and code examples I collected while learning about the dates and times data types"
 date: "2025-02-15"
 author: "Collin K. Berke, Ph.D."

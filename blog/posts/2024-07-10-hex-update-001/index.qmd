@@ -158,32 +158,32 @@ Here's what I came up with:
 
 ```{r}
 #| label: data-extract-trend
-#| eval: FALSE 
+#| eval: FALSE
 #| include: FALSE
-trend_terms <- 
+trend_terms <-
   c(
-    "public media", 
-    "public tv", 
-    "public radio", 
-    "public media news", 
+    "public media",
+    "public tv",
+    "public radio",
+    "public media news",
     "public radio news",
     "public tv news"
   )
 
 get_trends <- function(trend_terms, time_range) {
-   Sys.sleep(10)
-   data <- 
-     gtrends(
-       trend_terms,
-       geo = c("US"),
-       onlyInterest = TRUE,
-       time = time_range
-     )
-   return(data)
+  Sys.sleep(10)
+  data <-
+    gtrends(
+      trend_terms,
+      geo = c("US"),
+      onlyInterest = TRUE,
+      time = time_range
+    )
+  return(data)
 }
 
-data_public_media_trend <- 
-  map_df(trend_terms, ~get_trends(.x, "2018-01-01 2024-05-31"))
+data_public_media_trend <-
+  map_df(trend_terms, ~ get_trends(.x, "2018-01-01 2024-05-31"))
 ```
 
 ```{r}
@@ -196,7 +196,7 @@ write_csv(data_public_media_trend[[1]], "data_public_media_trend.csv")
 ```{r}
 #| label: import-trends-data
 #| include: FALSE
-data_public_media_trend <- 
+data_public_media_trend <-
   read_csv("data_public_media_trend.csv") |>
   select(-c(geo, time, gprop, category))
 ```
@@ -204,9 +204,9 @@ data_public_media_trend <-
 ```{r}
 #| label: vis-public-media-trends
 #| echo: FALSE
-#| include: TRUE 
-#| fig-width: 10 
-#| fig-height: 7 
+#| include: TRUE
+#| fig-width: 10
+#| fig-height: 7
 ggplot(data_public_media_trend, aes(x = date, y = hits)) +
   geom_line(linewidth = 1.5, aes(color = keyword)) +
   scale_color_manual(

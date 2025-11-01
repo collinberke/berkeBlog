@@ -1,5 +1,5 @@
 ---
-title: "Notes on the use and management of GitHub projects"
+title: "Notes: The use and management of GitHub projects"
 description: "Learning how to take project management to the next level"
 date: "2025-01-27"
 author: "Collin K. Berke, Ph.D."
