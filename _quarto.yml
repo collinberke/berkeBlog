@@ -6,6 +6,7 @@ execute:
 
 website:
   title: "Collin K. Berke, Ph.D."
+  draft-mode: gone
   favicon: icon.png
   navbar:
     left:
