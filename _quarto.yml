@@ -7,7 +7,6 @@ execute:
 website:
   title: "Collin K. Berke, Ph.D."
   favicon: icon.png
-  draft-mode: gone
   navbar:
     left:
       - href: index.qmd
