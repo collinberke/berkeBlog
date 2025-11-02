@@ -1,14 +1,6 @@
 ---
 title: "The Hex Update: Issue 003"
 draft: true
-date: "2025-11-01"
-author: "Collin K. Berke, Ph.D."
-description: "A weekly collection of what I recently read and learned about the media industry"
-toc: true
-from: markdown+emoji
-categories:
-  - the hex update
-  - media
 ---
 
 # Let's catch up

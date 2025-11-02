@@ -1,21 +1,6 @@
 ---
 title: "Notes: A series on probability"
 draft: true
-description: "An attempt to better understand probability theory"
-date: "2025-09-02"
-author: "Collin K. Berke, Ph.D."
-image: false
-toc: true
-code-link: true
-code-copy: true
-from: markdown+emoji
-categories:
-  - til
-  - notes
-  - links
-  - productivity
-execute:
-  eval: false
 ---
 
 The following will be a series of blog posts containing notes of my attempt to better understand probability theory.
