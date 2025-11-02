@@ -1,0 +1,15 @@
+{
+  "hash": "77e576bf02e5d27a7a5eb6c0a1fe8e5c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nexecute:\n  eval: false\n---\n\n\n\n### Probability distributions\n\nA probability distribution is another fundamental concept within probability.\nProbability distributions are best represented in table form, where all the disjoint outcomes and their associated probabilities are listed.\n\nTo be considered a valid probability distribution, three criteria must be met.\nThese include:\n\n1. The outcomes listed must be disjoint.\n2. Each probability must be between 0 and 1.\n3. The probabilities must total to 1.\n\nThe canonical and most accessible example of a probability distribution is the sum of rolling two dice.\nHere is some R code to simulate this, while also providing a histogram of the probabilities for each outcome.\n\nWhen it comes to rolling two dice, there are 11 possible outcomes: two die roll outcomes = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}.\nOr, represented in R code, it would look something like this:\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata_two_dice <- tibble(\n  die1 = sample(1:6, 10000, replace = TRUE),\n  die2 = sample(1:6, 10000, replace = TRUE)\n) |>\n  mutate(total = die1 + die2)\n\ntable(data_two_dice$total)\ntable(data_two_dice$total) / 10000\nhist(data_two_dice$total, breaks = 1.5:12.5)\n```\n:::\n\n\n\n### Complement\n\nThe complement involves the outcomes not part of the original observed events.\nLet's go back to our single, six-sided die example.\nSay we have an event A, which is defined as the following A = {1, 3, 5}.\nIn other words, the dice's odd numbers on a single six-sided die.\nThe complement of A would be the even values.\nThat is A^c = {2, 4, 6}.\nJust like any probability calculation, the probability of a complement can be calculated, and can be useful when working with a more complex problem.\n\n### Independence\n\nIndependence of outcomes is also a key term for probability theory.\nThat is, independence means that knowing the outcome of one event provides no useful information about the outcome of the other.\nFor instance, let's say we roll a 20-sided die twice.\nWhat we roll the first time gives us no useful information on what our second roll will be.\nThis is because a roll of 2 is independent of a roll of 1.\n\n## Conditional probability\n\n## Tree diagrams\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

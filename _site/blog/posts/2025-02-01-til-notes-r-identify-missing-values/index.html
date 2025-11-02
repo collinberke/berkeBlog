@@ -7,7 +7,7 @@
 <meta name="author" content="Collin K. Berke, Ph.D.">
 <meta name="dcterms.date" content="2025-02-01">
 <meta name="description" content="Highlights from the DSLC book club discussion of Chapter 18: Missing values from R4DS">
-<title>Notes on identifying explicit and implicit missing values – Collin K. Berke, Ph.D.</title>
+<title>TIL: Identifying explicit and implicit missing values – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -165,7 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Notes on identifying explicit and implicit missing values</h1>
+<h1 class="title">TIL: Identifying explicit and implicit missing values</h1>
   <div class="quarto-categories">
     <div class="quarto-category">til</div>
     <div class="quarto-category">notes</div>
@@ -578,7 +578,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  campaign_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"no purchase"</span>, <span class="st">"purchase"</span>, <span class="st">"purchase"</span>, <span class="st">"no purchase"</span>, <span class="st">"no purchase"</span>, <span class="st">"purchase"</span><span class="op">)</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"no purchase"</span>,</span>
+<span>    <span class="st">"purchase"</span>,</span>
+<span>    <span class="st">"purchase"</span>,</span>
+<span>    <span class="st">"no purchase"</span>,</span>
+<span>    <span class="st">"no purchase"</span>,</span>
+<span>    <span class="st">"purchase"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  revenue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">11.25</span>, <span class="fl">25.37</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">7.45</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

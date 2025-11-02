@@ -7,7 +7,7 @@
 <meta name="author" content="Collin K. Berke, Ph.D.">
 <meta name="dcterms.date" content="2024-12-27">
 <meta name="description" content="Need to separate strings? Use the separate_* family of functions">
-<title>Separate character strings into rows and columns using tidyr functions – Collin K. Berke, Ph.D.</title>
+<title>TIL: Separate character strings into rows and columns using tidyr functions – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Separate character strings into rows and columns using <code>tidyr</code> functions</h1>
+<h1 class="title">TIL: Separate character strings into rows and columns using <code>tidyr</code> functions</h1>
   <div class="quarto-categories">
     <div class="quarto-category">til</div>
     <div class="quarto-category">tidyr</div>
@@ -203,11 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="thumbnail-wide.jpg" class="img-fluid figure-img"></p>
-<figcaption>Photo by <a href="https://unsplash.com/photos/blue-and-white-pepsi-can-Fxz3_gc2RR8">Johnny Briggs</a></figcaption></figure>
-</div>
-<section id="background" class="level1"><h1>Background</h1>
+</header><section id="background" class="level1"><h1>Background</h1>
 <p>TIL, as of <a href="https://www.tidyverse.org/blog/2023/01/tidyr-1-3-0/"><code>tidyr</code> 1.3.0</a>, there’s a new family of string separation functions:</p>
 <ul>
 <li><code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code></li>
@@ -313,21 +309,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code> separates character strings into additional rows using a position index, rather than some type of character delimiter. The book mentions the use of <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code> is quite rare. In fact, I struggled thinking of a practical example of where this might be applied. As such, this example is a little contrived. How about days it rained in Lincoln, NE for the months of September and October, 2024?</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rain_sept</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span></span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">rain_oct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>,</span>
-<span>  <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"N"</span>, <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"N"</span>,</span>
+<span>  <span class="st">"Y"</span>,</span>
 <span>  <span class="st">"N"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
