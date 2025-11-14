@@ -1,0 +1,119 @@
+---
+title: "The Hex Update: Issue 003"
+date: "2025-11-13"
+author: "Collin K. Berke, Ph.D."
+description: "A weekly collection of what I recently read and learned about while working in the media industry"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Hi.
+I haven't done much with [The Hex Update](https://www.collinberke.com/blog/posts/2024-07-10-hex-update-001/) in a while.
+The first couple of issues were a bit of a false start.
+I wasn't realistic with what I could achieve with the time available.
+
+So, here we go again.
+
+This is another attempt to restart The Hex Update.
+The aim is to be simple and easy to manage.
+Thus, I'll be making a few changes.
+The goal is a weekly issue, which will include three sections: Let's catch up; Three things from this week; and Just for fun.
+
+The sections are as follows:
+
+* **Let's catch up:** a space to discuss what's on my mind regarding media, entertainment, or other industry news.
+* **Three things from this week:** links to articles, blogs, etc. I bumped into this week, each with a brief summary and a discussion about why what I share matters.
+* **Just for fun:** one thing I found fun during the week.
+What's parked here may be media related or not.
+It's more of a place to end the week on a high note, maybe even a laugh.
+
+I also intend for the article summaries to be shorter.
+The goal is paragraph length.
+This will be a challenge for me.
+My writing can be a bit verbose at times.
+
+With a renewed vision, let's highlight what I found interesting this week.
+
+# Three things from this week
+
+[Article: YouTube Just Ate TV. It's Only Getting Started from The Hollywood Reporter](https://www.hollywoodreporter.com/business/digital/youtube-impact-tv-sports-late-night-comedy-shows-1236400353/)
+
+Here's an article focused on the rapid growth of YouTube, no longer just a place of user-generated content, but a dominant force in media.
+The platform aims to expand its footprint by capturing the *other* hours people are spend while watching televisions.
+Indeed, if you read [YouTube's big bets](https://blog.youtube/inside-youtube/our-big-bets-for-2025/), you'll be confronted with the fact that YouTube viewing on TVs has surpassed viewing on mobile devices.
+This is a fact [Neal Mohan](https://www.linkedin.com/in/neal-mohan/), YouTube's CEO, is leaning into.
+In addition, it's staggering that YouTube claims 1 billion podcast users monthly.
+The article contains some further discussion about how various media formats (e.g., cooking, children's content, and late night) are now finding success and moving toward a YouTube first strategy--though the platform is still challenged by scripted content.
+However, some examples of creators trying to grow this space were highlighted.
+The article then wraps up with a conversation about content production, the economics of content creation, and the role creators and larger production studios play.
+
+#### Why does this matter?
+
+YouTube is the new TV.
+It's now moving into other spaces traditionally dominated by traditional broadcasters and media organizations: live events like sports.
+More striking is audiences are interacting with YouTube's content beyond a mobile device, which includes televisions.
+YouTube's intentions are to drive more competition for audience's attention.
+Pay attention to this space.
+
+[Podcast: Why GM will give you Gemini, but not Carplay from Decoder with Nilay Patel](https://www.youtube.com/watch?v=GIr_oscnob4)
+
+Here's a conversation between [Nilay Patel](https://www.theverge.com/authors/nilay-patel) and [General Motors](https://www.gm.com/) CEO [Mary Barra](https://www.linkedin.com/in/mary-barra/) and Chief Product Officer [Sterling Anderson](https://www.linkedin.com/in/sterlinganderson/).
+The conversation centered around electric vehicles, current market dynamics, product development, and various GM product offerings.
+Relevant to media was the conversation about the integration of AI into new GM models and the step back from offering [Apple's Carplay](https://www.apple.com/ios/carplay/) within newer GM models.
+Here are some points in the conversation I found worth review:
+
+* The rollout of [Gemini AI](https://gemini.google.com/) into 2026 GM models and the step back from smart phone projection apps like Apple Car Play [(37M03S)](https://youtu.be/GIr_oscnob4?si=7XmmWQt6rzhnZ08e&t=2223).
+* An interesting point for why users want access to the large library of apps made available via phone projection [(41M41S)](https://youtu.be/GIr_oscnob4?si=q7jfEGP2TE4RbxPG&t=2501): smaller apps will likely not be supported.
+* Natural language and LLM interfaces are being further integrated into infotainment systems. This affords expanded functionality for more customized experiences for users [(46M58S)](https://youtu.be/GIr_oscnob4?si=e6u02S_fyE5fLn6R&t=2818).
+
+#### Why does this matter?
+
+It's about the human machine interface.
+The legacy radio experience of knobs, dials, and buttons to a touchscreen infotainment system will only continue to change in the near and distant future.
+Some car manufacturers don't view phone projection systems to be the path forward, and they are developing their own software solutions.
+Natural language interfaces will also be a part of and further impact media consumption patterns for car owners.
+If so, media organizations need to consider the impact this interface change may have on content discovery and the consumption experience.
+
+[Report: Relatively few Americans are getting news from AI chatbots like ChatGPT from Pew Research](https://www.pewresearch.org/short-reads/2025/10/01/relatively-few-americans-are-getting-news-from-ai-chatbots-like-chatgpt/)
+
+Here's a short report I bumped into from The Pew Research Center.
+It's no surprise Americans are increasingly turning to artificial chatbots.
+According to this report, though, many still do not use these as a regular source for news.
+In fact, 75% of those surveyed say they 'Never' get news from an AI chatbot like ChatGPT or Gemini.
+However additional [reporting](https://www.niemanlab.org/2025/10/people-are-using-chatgpt-twice-as-much-as-they-were-last-year-theyre-still-just-as-skeptical-of-ai-in-news/) from [Reuters](https://reutersinstitute.politics.ox.ac.uk/generative-ai-and-news-report-2025-how-people-think-about-ais-role-journalism-and-society) finds AI to be used more and more for information seeking tasks, though many are still skeptical of its role in news.
+Many users cite mixed experiences regarding the quality of the information, which includes the identification of inaccurate information.
+
+#### Why does this matter?
+
+Something has to give.
+AI use is increasing, which includes the growth of AI use for information seeking tasks.
+News is information.
+Although the experience and quality of this information via AI chatbots may not meet the needs of many users at this time, their quality will likely continue to improve.
+Publishers will need to consider the impact this will have on news consumption, including how to get their content in AI summaries while also identifying the impact summaries might have on traffic to their online properties.
+
+# Just for fun
+
+[Playlist: 𝐔𝐓𝐎𝐏𝐈𝐀𝐍 𝐒𝐂𝐇𝐎𝐋𝐀𝐒𝐓𝐈𝐂 📖 1990s Nostalgic Atmospheres (Music & Ambience) ✨🛰️🌍🦒🌿](https://www.youtube.com/watch?v=6QOUNvMX-ws) by [Kester Spach](https://www.youtube.com/@KesterSpach)
+
+Taking it back to the 90's to wrap up the week.
+I came across this ambient playlist while looking for new ambient playlists on YouTube.
+Listening just brought up lots of good memories from growing up in the 90's.
+I became nostalgic for times playing [Encarta MindMaze](https://en.wikipedia.org/wiki/Encarta_MindMaze).
+I hope the playlist's vibe results in some good memories for you as well.
+
+Have a good end to your week.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
+* [Say Hi!](https://www.collinberke.com/say-hi)
