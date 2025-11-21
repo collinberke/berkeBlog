@@ -1,0 +1,127 @@
+---
+title: "The Hex Update: Issue 004"
+date: "2025-11-21"
+author: "Collin K. Berke, Ph.D."
+description: "A weekly collection of what I recently read and learned about while working in the media industry"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome folks!
+Here's Issue 004.
+
+This week's articles were focused on two topics: AI and users' relationships with their smartphones.
+The first article I bumped into reports on Disney's exploration of partnerships with AI companies to craft more immersive and customizeable experiences--a growing expectation for many audiences.
+Second, I share an article about the changing relationship between people and their smartphones and how the digital detox industry is growing.
+Lastly, I share an article with a cautionary tale about the impact AI has on online survey data collection.
+Soon to be published research shows agentic AI, without additional response validation measures, will make future results from this methodology suspect.
+All interesting topics relevant to the media industry.
+
+So, let's get into it.
+
+# Three things from this week
+
+Here are three things that caught my attention this week.
+
+[Article: DIY Disney? The company is exploring AI so fans can make content from Disney stories](https://www.npr.org/2025/11/13/nx-s1-5608271/disney-ai-user-generated-content)
+
+Here's a read from NPR's culture desk that caught my attention.
+According to the reporting, Disney is exploring how to make Disney+ subscription-based streaming services more interactive and customizeable for its users.
+The focus is this: develop ways for users to craft their own content using Disney's existing intellectual property.
+In support of these interactive and immersive experiences, the article highlights some thoughts from Netflix's CTO, Elizabeth Stone:
+
+> The future of entertainment is likely to be even more personalized, even more interactive, even more immersive.
+
+Such a focus has lead [Bob Iger](https://en.wikipedia.org/wiki/Bob_Iger), Disney's current CEO, to hold discussions about partnership with various AI companies.
+However, not much else was mentioned about these current partnerships.
+This may be a sign that some of the larger media companies are becoming more open to licensing aggreements of IP to AI companies.
+The article also contains some discussion about younger audiences (i.e., Gen Z in particular) preferences in this space.
+That is, younger audiences seek out media and places where they can participate, remix, and respond.
+It's no longer a passive experience.
+The article also shares research stating younger audiences have lower expectations regarding the content they consume.
+
+#### Why does this matter?
+
+Audience's media consumption will likely not remain passive.
+Instead, audiences will likely come to expect more interactive and customizeable experiences while consuming media.
+As a result, larger media companies seem more comfortable negotiating deals with tech companies to develop these experiences, while striking up licensing deals for AI companies to use their IP.
+Besides this shift toward more interactive experiences, it's also important to recognize younger audiences are less concerned about the quality of the content they consumed.
+Like the article states, content doesn't need to be fully polished to be popular.
+
+[Audio: The growing business of disconnecting](https://www.marketplace.org/story/2025/11/12/the-growing-business-of-disconnecting)
+
+Here's an interesting listen from [Marketplace](https://www.marketplace.org/) about the growth of companies aimed at helping people disconnect from their phones.
+The goal: provide useful tools to limit users' screentime.
+This includes companies who've developed apps, and others who've created physical devices to help limit this screentime.
+My favorite shared within article is the [six pound phone case](https://www.kickstarter.com/projects/458223518/6-pound-phone-case).
+Although this may seem like exterme measures, these are signs that the digital detox industry is growing.
+For instance, from research cited in the article, this industry will grow to $19.44 billion by 2032.
+There's certainly some irony here: you're paying for your phone but purchase apps to not use your phone that provide information on how much you're not using your phone.
+Despite this, a good point was shared in the article.
+It's not a personal fault of users--they're just using these devices for what they were designed to do.
+
+#### Why does this matter?
+
+Users' relationship with their phones may be shifting.
+Screentime is top-of-mind for users now more than ever.
+Many are aware of the stickyness and addictiveness of applications, which is further afforded by the functionality these devices.
+As such, many users are exploring ways to limit their screentime.
+Certainly, mobile devices are important delivery vehicles of content and experiences for media organizations.
+Maybe it's not about crafting experiences that are and feel 'addictive', 'sticky', or 'functional'.
+Rather, it's about creating content, experiences, and spaces that are useful and impactful to users' lived experience.
+Creating value for the time users spend consuming your media or engaging within your space.
+
+[Article: A Researcher Made and AI That Completely Breaks the Online Surveys Scientists Rely On](https://www.404media.co/a-researcher-made-an-ai-that-completely-breaks-the-online-surveys-scientists-rely-on/)
+
+A collegue recently shared this article with me, and it peaked my interest.
+The article highlights a soon to be released academic research paper by Sean Westwood from the [Polarization Research Lab](https://polarizationresearchlab.org/).
+The paper, soon to be published in the [Proceedings of the National Academy of Sciences (PNAS)](https://www.pnas.org/), demonstrates AI puts into question the current methods of synthetic participant response identification.
+AI bots are now sophisticated enough to mimic human behavior, and these actions taken by the AI can bypass verification methods like attention check questions (ACQs), behavioral flags, and response patterns (e.g., reading time, character-by-character entry, etc.).
+Besides being able to subvert advanced validation checks, these bots are even good enough to mimic responses comparable to specific demographic groups.
+Consequently, this raises some serious questions about the validity of survey results, especially if they were collected using some type of online sampling method and some sort of monetary compensation is provided.
+
+I did some more digging.
+Here's some additional reporting on the study I found to be interesting:
+
+* [This AI mimics humans so perfectly it can corrupt public opinion polls and surveys](https://www.techspot.com/news/110297-ai-mimics-humans-perfectly-can-corrupt-public-opinion.html)
+* [AI poses ‘existential threat’ to polling, mimicking human responses almost perfectly, study finds](https://www.euronews.com/next/2025/11/18/ai-poses-existential-threat-to-polling-mimicking-human-responses-almost-perfectly-study-fi)
+
+I'll link to the original paper once it becomes available.
+
+#### Why does this matter?
+
+Survey methods are essential to audience measurement.
+The impact of AI on the realness of survey responses will require those working in the media, marketing, and audience measurement space to consider the validity of specific survey methods and sampling services.
+To me, it seems greater value will be placed on firms with validation checks that can prove the liveness of participants in their survey panels.
+Despite this, there may be little that can be done to address the use of agentic AI tools potential survey participants might use, like that of [Actions (01M00S)](https://openai.com/index/introducing-chatgpt-atlas/) in [OpenAI's Atlas browser](https://chatgpt.com/atlas/).
+For publishers, platform, and property owners, this may be a further argument for shoring up first party data collection.
+The random survey respondent you receive from a *user* on your platform may no longer reach a level of validty decisions can be made.
+This is especially true if incentives are tied to these survey responses.
+
+# Just for fun
+
+[Smokey the Bear](https://smokeybear.com/) is iconic.
+So much so that he even has his own zip code: 20252.
+While researching more about Zip Codes, I came across this [blog post](https://kottke.org/19/08/the-bear-with-its-own-zip-code).
+I discovered Zip Codes don't necessarily represent geographic areas.
+Rather, they are considered to be *address groups or delivery routes*.
+The more you know.
+
+Want to learn more about Smokey the Bear? Here's some more I bumped into while falling down the rabbit hole:
+
+* [Smokey's Story](https://smokeybear.com/smokeys-story)
+* [Letters to Smokey Bear Reveal Promise of Hope for the Future](https://www.usda.gov/about-usda/news/blog/letters-smokey-bear-reveal-promise-hope-future)
+
+Have a good end to your week. Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
