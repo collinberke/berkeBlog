@@ -1,0 +1,126 @@
+---
+title: "The Hex Update: Issue 005"
+date: "2025-12-05"
+author: "Collin K. Berke, Ph.D."
+description: "A weekly collection of what I recently read and learned while working in the media industry"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome folks!
+Here's Issue 005.
+
+If you're in the US and celebrated, I hope you had a restful holiday.
+I unfortunately wasn't able to get an issue out last week, as I was taking some much needed rest and prepping for the holiday.
+We all need the time to recharge, as the final push to end of the year is upon us.
+
+This week's issue contains an interesting collection of articles focused on tools, copyright, and NextGen TV (ATSC 3.0).
+Are you interested in open-source tools useful for investigative reporting work?
+Check out the [Bellingcat's Online Investigation Toolkit](https://bellingcat.gitbook.io/toolkit).
+Are you interested in what [Roger Rabbit](https://en.wikipedia.org/wiki/Roger_Rabbit) can teach us about US Copyright Law?
+Check out the second article.
+Or, are you curious about the current adoption of next generation television (i.e. ATSC 3.0)?
+Then check out the last article.
+For a fun ending to the week, check out [strudel](https://strudel.cc/workshop/getting-started/): a programming language used to create music.
+
+Let's get to the articles from this week.
+
+# Three things from this week
+
+Here are three things that caught my attention this week.
+
+[Article: Lessons from Building an Online Toolkit to Aid Open-Source Investigations](https://niemanreports.org/osint-open-source-investigations-bellingcat-volunteers/)
+
+Here's an interesting, useful read.
+This article highlights a recent project developed as part of a fellowship with Harvard's Nieman Foundations for Journalism and the Berkman Klein Center for the Internet and Society by Johanna Wild.
+The goal of the project was to identify and make it easier for journalists to find and use open-source tools for investigative work.
+The project resulted in a volunteer created toolkit, which provides an easy to navigate interface and tool descriptions useful for investigative work.
+The article also discusses some of the lessons learned when building a collaborative toolkit.
+
+The Bellingcat's Online Investigation Toolkit can be found [here](https://bellingcat.gitbook.io/toolkit).
+
+#### Why does this matter?
+
+The open-source ecosystem has so many useful tools for journalists and content producers.
+However, the challenge is identifying what is useful or relevant, given the fluidity and volume of the open-source ecosystem
+This toolkit does some of the heavy lifting.
+Not only is having filterable lists based on category useful, the product descriptions make it even easier to quickly decide if further research of a tool could lead to meaningful outcomes.
+I highly suggest checking this toolkit out if you're doing any type of investigative work.
+
+[Blog: Disney has lost Roger Rabbit](https://pluralistic.net/2025/11/18/im-not-bad/#im-just-drawn-that-way)
+
+If you grew up around the time I did, you likely remember the 1988 film [*Who Framed Roger Rabbit*](https://en.wikipedia.org/wiki/Who_Framed_Roger_Rabbit).
+Well, while you take a trip down memory lane, why not also learn some more about US Copyright Law?
+This article discusses the Termination of Transfer provision, which was introduced into the 1976 Copyright Act.
+That is:
+
+> It allows creators to unilatterally cancel the copyright licenses they have signed over to others, by waiting 35 years and then filing some paperwork with the US Copyright Office.
+
+Using the original creator's, [Gary K Wolf](https://en.wikipedia.org/wiki/Gary_K._Wolf), recent reacquisition of the copyright for Roger the Rabbit, the article overviews an interesting example of how this provision was used.
+Also, it will be interesting to observe how Disney proceeds with this matter, as they currently distribute the original movie and have a [ride featuring these characters at Disneyland in California](https://en.wikipedia.org/wiki/Roger_Rabbit%27s_Car_Toon_Spin).
+
+#### Why does this matter?
+
+I'm certainly no a legal expert.
+Reading this piece, however, reminded me of how critical copyright law is to publishers and creators.
+The Termination of Transfer provision is one such portion of the law to be aware of, especially if you're a creator.
+It provides a mechanism for creators to reclaim rights back to their original IP in cases that turned out to be successful for the copyright holder.
+Like the article mentions:
+
+> Termination is copyright's lookback, a way to renegotiate the deal once you've gotten the leverage that comes from success.
+
+[Article: ATSC 3.0: 'I Can't Imagine Anyone Defending Our Current Adoption Strategy'](https://www.tvtechnology.com/opinion/atsc-3-0-i-cant-imagine-anyone-defending-our-current-adoption-strategy) via this newsletter [here](https://www.linkedin.com/pulse/ai-threenager-how-we-respond-chad-davis-t0abc/).
+
+NextGen TV (AKA ATSC 3.0) continues to receive criticism regarding its rollout.
+This article contains additional thoughts, and it provides some explanation and solutions.
+Aside from manufacturers' unwilliness to integrate the required tuners into consumers' TVs, broadcasters and regulators continue to create and contend with issues.
+These include issues around the use of encryption to limit signal access, the hurdles consumers are confronted with to access an ATSC 3.0 signal, and the lack of incentive for broadcasters to develop engaging experiences leveraging NextGen technology.
+If these issues continue to go unaddressed, then adoption and regulation will continue to falter and likely could fall to the wayside in the sea of other media viewing options (i.e., internet streaming services).
+Here's a quote from the article that summarizes the impact this slow rollout might have on broadcast television:
+
+> NextGen can be an excellent advancement with real world benefits in viewer behavior. It can also become incredibly destructive and hurtful. Or we can do nothing at all and see how ridged 8-VSB, MPEG, braindead purely linear broadcast ages out. Let’s not find out how long before TV manufacturers smother or abandon OTA.
+
+#### Why does this matter?
+
+NextGen TV has the potential to be a revolution for the broadcast industry.
+I've been witness to what the technology can provide broadcasters in terms of creating a [more interactive, informative experience for viewers](https://www.youtube.com/watch?v=ezNY83levrM).
+The idea that all this can be done with an over the air signal feels like something significant.
+However, the slow rollout caused by issues from both broadcasters and regulators is only limiting its promised potential.
+NextGen TV won't become a part of consumers' viewing experiences if they are confronted with:
+
+1. Access hurdles. Who's going to buy an antenna or other physical hardware that needs to be connected to a TV, especially when streaming internet services are already native within the viewing environment and make it easy for viewers to access content?
+2. Unenjoyable experiences, which results from the lack of development due to little incentive for broadcasters to create these engaging experiences.
+
+NextGen TV has been around for awhile, so it's not a new idea.
+If you want to get up to speed on the current state of ATSC 3.0, I highly suggest [@AttenaMan's](https://www.youtube.com/@AntennaMan) recent video.
+Check it out [here](https://www.youtube.com/watch?v=U6HobQJQe6Q).
+
+# Just for fun
+
+[Videos: Strudel Showcase](https://strudel.cc/intro/showcase/)
+
+I'm a huge nerd for all things tech, computers, coding, and data.
+I find great joy in discovering creators who leverage these tools to do something creative.
+I'm also a huge fan of ambient and trance music, especially while I work.
+[strudel](https://strudel.cc/workshop/getting-started/) mashes all these interests together.
+It's a programming language that allows you to make music with code.
+It's been fun discovering what others have created with it.
+Check out the showcase in strudel's docs [here](https://strudel.cc/intro/showcase/).
+You might find a few gems for your listening pleasure.
+If you want to learn more, it looks like [@terryds](https://github.com/terryds) has the beginnings of an online course and interactive sandbox available in a [GitHub repo](https://github.com/terryds/learning-music-production-with-strudel).
+
+I hope you continue to have a great start to December.
+I'll see you next week.
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
