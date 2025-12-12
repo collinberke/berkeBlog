@@ -1,0 +1,125 @@
+---
+title: "The Hex Update: Issue 006"
+date: "2025-12-12"
+author: "Collin K. Berke, Ph.D."
+description: "A weekly collection of what I recently read and learned while working in the media industry"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Howdy folks!
+Here's Issue 006.
+
+Three topics caught my attention this week: media restoration, the use of AI for media management tasks, and data clean rooms.
+Rounding out the week with a little bit of fun, I look back to 1996, the year [Space Jam](https://en.wikipedia.org/wiki/Space_Jam) was released.
+The [first article](https://fxrant.blogspot.com/2025/12/the-mad-men-in-4k-on-hbo-max-debacle.html) explores media restoration for streaming platforms and the potential impact it may have on our collective culture.
+Then, I share a [podcast](https://www.youtube.com/watch?v=9ngbZwA_h00) highlighting AI usecases to automate some of the tedious tasks within the media management workflow.
+The [third article](https://www.businessinsider.com/uber-ads-launches-intelligence-insights-trips-takeout-data-marketers-2025-12) is a report on Uber's new insights platform, which utilizes a data clean room to make data and insights available to marketers in a privacy-consious way.
+Lastly, I share share two articles focused on using AI to recreate the infamous [Space Jam website](https://www.spacejam.com/1996/), which is still online today.
+
+# Three things from this week
+
+Here are three things that caught my attention this week.
+
+### [Blog: The "Mad Men" in 4K on HBO Max Debacle](https://fxrant.blogspot.com/2025/12/the-mad-men-in-4k-on-hbo-max-debacle.html)
+
+Here's a cautionary tale of the impact media restoration for streaming services can have.
+It overviews the recent missteps of [HBO Max's](https://en.wikipedia.org/wiki/HBO_Max) remastering of the [Mad Men](https://en.wikipedia.org/wiki/Mad_Men) series to [4K](https://en.wikipedia.org/wiki/4K_resolution).
+It's an interesting case study of the quality control needed to update archival content for streaming platforms.
+Not only is it about avoiding silly gaffes that reveal the behind the scenes work, it also emphasizes the impact this form of restoration has on the original storytelling in the content.
+The following quote from the piece does an excellent job summarizing this point, using the conversion of film to the 16:9 aspect ratio as an example:
+
+> Reframing old shows to fit a new aspect ratio is antithetical to the spirit of media restoration, and cheapens the future of our shared culture.
+
+Several examples of the impact restoration has on the original storytelling in Mad Men are highlighted in the piece.
+
+#### Why does this matter?
+
+Restoration has the ability to impact our collective culture resulting from storytelling.
+Streaming is all about on-demand content access, which audiences want and have come to expect.
+As such, media organizations are turning to previously popular shows to fill their streaming libraries to meet their needs.
+However, the restoration of this content to fit the streaming environment has the potential to impact the original experience intended by the content and its creators.
+All of us have those TV moments we just remember.
+Moments where the line between making media and crafting an unforgetable cultural moment blends.
+Moments we talk about years after we finish a series.
+Modifying these experiences for future audiences just to fit the format of the viewing environment has the potential to alter these cultural moments.
+I believe this to be even more true as some of this restoration work will likely be offloaded to AI in the future, and these moments will inevitably be altered, impacting the shared culture created by the original content experience.
+
+### [Podcast: How Emmy Award–winning filmmakers use AI to automate the tedious parts of documentaries](https://www.youtube.com/watch?v=9ngbZwA_h00)
+
+Quoted from the episode:
+
+> Post-production is like a technical mess of media management.
+
+Here's an interesting podcast on how [Tim McAleer](https://www.linkedin.com/in/timmcaleer/), producer at [Florentine Films](https://www.florentinefilms.com/), uses AI to develop solutions and automations to improve the post-production workflow.
+
+Here are some points in the episode that I found to be interesting and relevant:
+
+* [05M17S](https://youtu.be/9ngbZwA_h00?si=bZuQot4Mn47qRiSA&t=314): Automating manual data entry for media management tasks.
+* [09M40S](https://youtu.be/9ngbZwA_h00?si=E1hTqa4F6HW1j4U6&t=580): Using file metadata to improve prompts and end results.
+* [13M40S](https://youtu.be/9ngbZwA_h00?si=iNcxtUMt3qOBkvT0&t=820): Scaling workflow to create media descriptions.
+* [20M08S](https://youtu.be/9ngbZwA_h00?si=riHBS9vJsln4l3qS&t=1207): Improved media searchability with semantic discovery.
+* [30M24S](https://youtu.be/9ngbZwA_h00?si=U3llFQTcvY_A0oos&t=1824): Loading context for AI using file metadata.
+* [40M14S](https://www.youtube.com/watch?v=9ngbZwA_h00): The future of AI for creative industries.
+
+#### Why does this matter?
+
+Creative industries often emphasize generative AI, particularly its role in media creation.
+This is the first example where I've seen AI solutions applied to improve some of the more tedious media management tasks.
+What I found interesting was this idea that AI can be leveraged to develop custom, bespoke software solutions and automations that no other company will create.
+As such, AI provides the capability for semi-technical folks to craft these solutions on their own to improve their specific workflows.
+This was a really interesting listen.
+I suggest you check it out.
+
+### [Uber's latest play for ad dollars: turning data about your trips and takeout into insights for marketers](https://www.businessinsider.com/uber-ads-launches-intelligence-insights-trips-takeout-data-marketers-2025-12)
+
+Here's an interesting article from [Business Insider](https://www.businessinsider.com/).
+It reports on [Uber Intelligence](https://www.uber.com/us/en/advertising/insights/), the company's recently rolled out marketing insights platform.
+The platform seeks to provide marketers with insights derived from the millions of data points Uber collects on rides and deliveries happening every day.
+To do this, Uber partnered with [LiveRamp](https://liveramp.com/), which makes the data accessible via a data clean room: technology that makes data accessible to marketers in a privacy-safe environment.
+That is, an environment where insights and data points are made available, but raw or personally identifiable information remains inaccessible.
+This has several advantages.
+Aside from allowing businesses the ability to identify partnership opportunities through greater data access, this data will also be used to improve Uber's advertising business.
+These improvements include improved capability for segmentation and targetting, where the aim is to improve the ads experience across Uber's various platforms.
+As quoted in the article, [Edwin Wong](https://www.linkedin.com/in/edwinhwong/)—Uber Advertising’s global head of measurement—wants marketers to say the following about their experience:
+
+> Oh, I'm not understanding Uber, I'm understanding Uber in my marketing context.
+
+#### Why does this matter?
+
+This reporting grabbed my attention because this is one of the first examples where I've seen data clean rooms discussed in terms of data access in the marketing analytics space.
+Given audience consumption has turned to online, digital streaming services and platforms, there will likely be a time when user viewing data will be consolidated and made available via a data clean room solution.
+This will hopefully lead to improved privacy and identity protection for audiences, while also providing only the data marketers and media organizations need to create better experiences for audiences and consumers.
+Organizations who rely on this type of data will need to be aware of and be prepared for this adoption of such tools.
+Soon, they may be accessing their data via data clean room service providers.
+If you're not familiar with the idea of a data clean room, check out [Digiday's](https://digiday.com/) YouTube video explaining it in more accessible terms [here](https://www.youtube.com/watch?v=MA1yfTL8I-s).
+
+# Just for fun
+
+Let's pause and look back to 1996, specfically around the time the movie [Space Jam](https://en.wikipedia.org/wiki/Space_Jam) was released.
+A website was created as part of the release.
+It was one of the first examples a website was used for a film's promotion.
+The website is still online today, and you can get a little nostalgic by viewing it [here](https://www.spacejam.com/1996/).
+There's been some focus on this site recently, where people online have attempted to use AI to recreate the site.
+It's a really interesting cross-section between the new and the old.
+It's also fascinating to see others failed and successful attempts.
+Here's the posts I bumped into:
+
+* [I failed to recreate the 1996 Space Jam Website with Claude](https://j0nah.com/i-failed-to-recreate-the-1996-space-jam-website-with-claude)
+* [I successfully recreated the 1996 Space Jam Website with Claude](https://theahura.substack.com/p/i-successfully-recreated-the-1996)
+
+Congratulations on making it to end of the week.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
