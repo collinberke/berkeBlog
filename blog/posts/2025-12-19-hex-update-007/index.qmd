@@ -1,0 +1,120 @@
+---
+title: "The Hex Update: Issue 007"
+date: "2025-12-19"
+author: "Collin K. Berke, Ph.D."
+description: "A weekly collection of what I recently read and learned while working in the media industry"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Howdy folks!
+Here's Issue 007.
+
+Three topics caught my attention this week: AI use in content generation and the impacts in can have; some 2026 predictions for journalism; and the impact the non-humaness of internet content might have on our ability to think.
+In the first article, Amazon's use of AI to create a season-one recap for its Fallout series is discussed, along with several highlighted missteps.
+Next, digital media experts' predictions for journalism in 2026, collected by NiemanLab, are overviewed.
+The third article provides some opinions on the impact of non-human web content and traffic--now the majority online--has on users' experiences.
+For a little fun to end the week, I share a short article with facts about the origins of the Times New Roman font.
+
+Enough summary.
+Let's get into what was interesting.
+
+# Three things from this week
+
+Here are three things that caught my attention:
+
+### [Article: Amazon’s Official ‘Fallout’ Season 1 Recap Is AI Garbage Filled With Mistakes](https://gizmodo.com/fallout-ai-recap-prime-video-amazon-2000698573)
+
+[In issue 006](https://www.collinberke.com/blog/posts/2025-12-12-hex-update-006/), I shared an article highlighting the potential impact media restoration for streaming environments might have on a series' original storytelling.
+Expanding on what was shared, I further shared some thoughts regarding the potential impact AI may have on creator's original storytelling.
+[Gizmodo](https://gizmodo.com/), in the linked article, provides an example using the AI generated recap [Prime Video](https://en.wikipedia.org/wiki/Amazon_Prime_Video) used for the premier of [Fallout's](https://en.wikipedia.org/wiki/Fallout_(American_TV_series)) second season.
+The article reports on the inaccuracies and halucinations injected into the recap resulting from the use of generative AI.
+Indeed, this is not a new use of AI by the streaming platform, as the article links to a [blog post](https://www.aboutamazon.com/news/entertainment/ai-plot-summary-video-recaps-prime-video) from Amazon exploring their use of generative AI for other season recaps.
+The goal, according to [Gérard Medioni](https://en.wikipedia.org/wiki/G%C3%A9rard_G._Medioni), vice president of technology at Prime Video, is to use innovation to make the viewing experience more accessible and enjoyable for customers.
+Despite this intention, the use of this innovation has resulted in some of the audience to be critical of its impact on the original storytelling.
+
+#### Why does this matter?
+
+Is this what audiences' want?
+Will fans enjoy AI summarized recaps that, yes, improves the productivity from the standpoint of the platform, and potentially increases the accessbility and enjoyment of the viewing experience?
+At what cost, though?
+Are these improvements worth the expense of impacting the original storytelling intended by the series?
+I believe there's some give and take here.
+Blindly generating content without blending it with the human craft of storytelling doesn't seem, to me anyways, what audiences want.
+In the future, generative AI may become good enough to fully replicate the craft.
+Even then, audiences will likely still want and appreciate the nuances provided by the work of humans, likely aided by AI tools.
+In addition, for now, the chances for inaccuracies and halucinations to impact the original storytelling are too high of a cost, even if it's just a short season recap.
+
+### [Collection: Predictions of Journalism 2026](https://www.niemanlab.org/collection/predictions-2026/)
+
+Annually, [NiemanLab](https://www.niemanlab.org/) publishes predictions from some of the leading experts in digital media.
+Journalism is the focus of this collection.
+These predictions range from the actual work of journalists, AI, and the business behind the newsroom.
+Each prediction has its own merit, and I wish I had the time to read and reflect on all of them.
+Nonetheless, here are several that caught my attention, each with a brief description:
+
+* [No more loose taxonomies or dirty data](https://www.niemanlab.org/2025/12/no-more-loose-taxonomies-or-dirty-data/): makes the case for why media organizations need to be mindful of the state of their taxonomy data--so they can better understand their audiences.
+* [Google will look beyond volume journalism](https://www.niemanlab.org/2025/12/google-will-look-beyond-volume-journalism/): provides an argument why volume journalism will no longer as a content strategy, and it provides publishers with some suggestions on where to focus their efforts in the current digital news ecosystem.
+* [Every media business becomes an events business](https://www.niemanlab.org/2025/12/every-media-business-becomes-an-events-business/): two quotes summarize this prediction really well
+
+>  The success of a media product can be gauged by its ability to bring strangers together in person.
+
+> Community is when people keep showing up to a series of events, when they meet eyes and shake hands and exchange numbers.
+
+* [Journalism will become the center of gravity for YouTube's next era](https://www.niemanlab.org/2025/12/journalism-will-become-the-center-of-gravity-for-youtubes-next-era/): discusses the role journalism will play in the future of YouTube.
+* [Short-form video drives reach. That's exactly the problem](https://www.niemanlab.org/2025/12/short-form-video-drives-reach-thats-exactly-the-problem/): provides a case for why newsrooms may not want to solely focus on publishing short-form videos for audiences.
+
+#### Why does this matter?
+
+It's that time of year again when predictions for the coming year are made.
+This collection comes from some of the leading experts and leaders in the digital media space, so they're close to the trends happening in journalism.
+These are trends media organizations should be paying attention to, and may even want to lean into.
+Hearing these perspectives provides an anchor point to consider where and what to focus on next.
+Not all these predictions may actualize, but many are worth some awareness going into 2026.
+
+### [Article: Humans are now the minority online](https://www.euractiv.com/opinion/humans-are-now-the-minority-online/)
+
+Here's an interesting opinion piece on the current state of the internet.
+Specifically, it links to some reports sharing data showing how the majority of web content and traffic is now from bots.
+Going further, the article shares some opinion on the effect this will have on users' experiences while browsing the web.
+The impact of this is captured in the following quote from the piece:
+
+> We think of the internet as a tool, but it has long been a habitat for our public reasoning; a place where we gather information, form opinions, build trust, and search for meaning. As that habitat fills with synthetic content and automated behaviour, the quality of human thought degrades because the environment itself becomes less human.
+
+#### Why does this matter?
+
+Where do we go and how should we feel engaging in a place that is no longer human?
+Are there still online spaces media organizations can currate and operate in that are still human and can be a space where human thought doesn't degrade?
+I still think so, but there must be firm commitment from media organizations to build and cultivate these spaces.
+I believe there's also opportunity for media organizations to build products the help the internet feel more human once again, even if the bots and AI have taken over.
+
+# Just for fun
+
+[Blog: A brief history of Times New Roman](https://typographyforlawyers.com/a-brief-history-of-times-new-roman.html)
+
+[Times New Roman](https://en.wikipedia.org/wiki/Times_New_Roman) served as the pre-2007 default font for Microsoft Word until [Calibri](https://en.wikipedia.org/wiki/Calibri) took over.
+However, many published documents and reports still till this day use this font.
+Where did it come from?
+What's its origin story?
+This post provides answers to these questions.
+In short, [Stanley Morrison](https://en.wikipedia.org/wiki/Stanley_Morison) designed the font, who initially created the text for the [Times of London](https://www.thetimes.com/) in 1929.
+The piece also contains some additional facts about the font.
+It's a fun, short read.
+
+Hey, you know what?
+It's the end of the week, and we're on the cusp of starting the weekend.
+I hope you have a great one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
