@@ -1,0 +1,107 @@
+---
+title: "The Hex Update: Issue 008"
+date: "2025-12-25"
+author: "Collin K. Berke, Ph.D."
+description: "A weekly collection of what I recently read and learned while working in the media industry"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Howdy folks!
+
+Happy holidays to those that celebrate.
+Given the momentum I've generated from the past several posts, I wanted to publish an issue over the holiday.
+So, here's Issue 008.
+
+Three topics caught my attention this week: podcasts taking over the living room, Netflix's deal with Barstool Sports, and the fading faith younger folks have in the internet.
+To end the week with a little fun, I share an article looking back at the internet in 2023.
+
+Let's get into it.
+
+# Three things from this week
+
+Here are three things that caught my attention:
+
+### [Blog: How podcasts took over the living room in 2025](https://blog.youtube/news-and-events/podcasts-living-room-in-2025/)
+
+According to YouTube's official blog, podcast listening via TVs dominated this past year.
+In October 2025 alone, YouTube users listened to 700 million hours of podcasts via a living room device.
+This was up from last year's 450 million hours.
+That amounts to a year-over-year increase of 650%, a signal of massive growth.
+As such, YouTube sought to meet this demand by making changes to their TV UI and through the rollout of a [top podcasts chart](https://charts.youtube.com/podcasts), which both are aimed  at making it easier for users to find their favorite podcasts.
+
+#### Why does this matter?
+
+Podcast listening has continued to grow steadily, according to [research and reporting](https://www.edisonresearch.com/podcast-listening-hits-record-highs/) from [Edison Research](https://www.edisonresearch.com/).
+Noting this growth can be attributed to listening on TVs is something to be aware of.
+In fact, could podcasts soon become the new late night TV for some audiences?
+If so, YouTube might have found some additional leverage to further disrupt and compete with linear broadcast offerings in the television space.
+This is a trend worth continuous monitoring.
+
+### [Article: Netflix Strikes Video Podcast Deal With Barstool Sports](https://www.hollywoodreporter.com/business/digital/netflix-video-podcast-deal-barstool-sports-1236453031/)
+
+This article from the [The Hollywood Reporter](https://www.hollywoodreporter.com/) covers the recent partnerhsip between [Netflix](https://en.wikipedia.org/wiki/Barstool_Sports) and [Barstool Sports](https://www.barstoolsports.com/).
+The deal includes exclusive rights to some of Barstool's most popular podcasts.
+This also involves rights to some of the pocast's video library content.
+In addition to the deal struck with Barstool Sports, the article highlights additional deals Netflix has struck up with other podcast production companies, including [iHeartPodcasts](https://www.iheartmedia.com/podcasts) and [SpotifyStudios](https://artists.spotify.com/spotify-music-studios).
+
+#### Why does this matter?
+
+This just feels like another inflection point for podcasts.
+Indeed, many of these deals are likely part and parcel of the trend that audiences, more and more, are consuming podcasts via their televisions.
+But even more than this, it just feels like additional leverage for streaming platforms to compete with linear broadcast for the time spent audiences give when using their TVs.
+YouTube and Netflix seem to be fully aware of this trend, and they are striking deals to remain competitive.
+Watch this space, as this might be another opening for podcasts from independent creators and smaller media organizations to break into and disrupt spaces typically dominated by traditional media brands.
+
+### [Article: Faith in the internet is fading among young Brits](https://www.theregister.com/2025/12/19/internet_bad_for_society/)
+
+Here's some interesting reporting from [The Register](https://www.theregister.com/).
+It highlights recent survey results on young British persons' (18 to 34) view of the internet.
+The data, collected by [OfCom](https://en.wikipedia.org/wiki/Ofcom), the United Kingdom's regulatory group for the broadcasting, internet, telecommunications, and postal industries, shows many young adults find the internet to be negative for society and unhelpful for their mental health.
+A question is then posed: why are younger individuals losing faith in the internet?
+This quote from the article summarizes an answer:
+
+> One reason may be that their online experiences differ significantly from those of their elders, including more material chosen by algorithms than actively selected by users.
+
+#### Why does this matter?
+
+These findings are not surprising.
+Many younger folks are beginning to feel more and more negative toward their online experiences, and some will continue to believe it has a neative impact on society.
+Many experiences and platforms suffer from what [Cory Doctrow](https://en.wikipedia.org/wiki/Cory_Doctorow) claims to be the [enshitification of the internet](https://www.vox.com/technology/465922/enshittification-cory-doctorow-amazon-google-facebook).
+These negative feelings are likely related.
+Why should media organizations care, then?
+Although it may be profitable in some cases to degrade experiences while locking users into your platforms, this will only catch up to those that do so.
+There's already negativity towards the internet, so this will only exacerbate users' negative feelings even more.
+Maybe there's space and opportunity to address this negativity in some way via platforms and the expericences created by media organizations.
+
+# Just for fun
+
+[Article: What the Internet Was Like in 2003](https://cybercultural.com/p/internet-2003/)
+
+Here's another interesting look back at 2003.
+Specifically, it's an entertaining look back what the internet was like post the [dot-com crash](https://en.wikipedia.org/wiki/Dot-com_bubble).
+This included new terms like 'social software' to be defined, blogs going mainstream, [RSS feeds](https://en.wikipedia.org/wiki/RSS), the introduction of Google's AdSense, Friendster, MySpace, the iTunesMusicStore, and the use of [Adobe Flash](https://en.wikipedia.org/wiki/Adobe_Flash) everywhere.
+Why was 2003 so significant?
+The article's final paragraph provides some perspective:
+
+> So by the end of 2003, the web felt primed for a new era: social software was going mainstream, web standards were stable while Flash brought the pizzazz, and business models were emerging. Could this be the second generation of the internet coming online?
+
+A really fun read.
+Check it out.
+
+From my family to yours, I wish you a happy holiday season and a great start to to the new year.
+I look forward to sharing more in 2026.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
