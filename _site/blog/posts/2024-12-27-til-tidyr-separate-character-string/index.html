@@ -220,12 +220,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you’ve used <code>tidyr</code> in the past, you’re likely familiar with the <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> function. This function was useful in cases where character strings needed to be separated into different columns based on a pattern. While re-reading the 2nd edition of the <a href="https://r4ds.hadley.nz/">R for Data Science</a> book for the Online Data Science Learning Community (check us out <a href="https://dslc.io/">here</a>), I was reminded <code><a href="https://tidyr.tidyverse.org/reference/separate.html">separate()</a></code> was superseded by this family of functions. For myself, I decided writing a post was needed to better understand how to use these functions. In this post I’ll describe each function and build on what’s discussed in the book by sharing some examples I might use these functions.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.5.2</code></pre>
+</div>
 </div>
 </section><section id="separate_longer_delim" class="level1"><h1><code>separate_longer_delim()</code></h1>
 <p>Let’s start with <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim()</a></code>. This function takes a character string and turns it into additional rows using a delimiter. We’ll need some example data.</p>
 <p>I’m a college sports fan, so let’s create a dataset containing Big Ten and Big 12 conference teams. Here’s the code to create some example data:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">big_ten</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">big_ten</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Illinois"</span>,</span>
 <span>  <span class="st">"Indiana"</span>,</span>
 <span>  <span class="st">"Iowa"</span>,</span>
@@ -283,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>In practice, this dataset isn’t really useful: having a list of teams in a character string doesn’t afford us any ability to apply other operations to the data. It would be useful if the data were in <strong>long</strong> format, where each team is on its own row, and the conference is repeated. It’s also important to recognize each team in the character string are <strong>delimited</strong> by a comma. Let’s use the <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim()</a></code> function to make it more useful. Here’s what the code looks like:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_teams</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_teams</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="va">teams</span>,</span>
 <span>    delim <span class="op">=</span> <span class="st">", "</span></span>
@@ -308,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="separate_wider_position" class="level1"><h1><code>separate_wider_position()</code></h1>
 <p><code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code> separates character strings into additional rows using a position index, rather than some type of character delimiter. The book mentions the use of <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position()</a></code> is quite rare. In fact, I struggled thinking of a practical example of where this might be applied. As such, this example is a little contrived. How about days it rained in Lincoln, NE for the months of September and October, 2024?</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rain_sept</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rain_sept</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"N"</span>,</span>
 <span>  <span class="st">"N"</span>,</span>
 <span>  <span class="st">"N"</span>,</span>
@@ -392,7 +398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Again, what if we want <strong>longer</strong> data, where each day’s observation gets its own row? The character strings in the <code>rain</code> variable don’t really have a point of reference where to separate the string. The only point of reference we have is <strong>positionally</strong> using some type of index. In this case, we have a character string of length 1 representing whether precipitation was observed that day: “Y” = rain; “N” = no rain. While we’re at it, let’s also mutate a <code>day</code> column for each observation. The following code chunk demonstrates how to do this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_lnk_rain</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_lnk_rain</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_position</a></span><span class="op">(</span><span class="va">rain</span>, width <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>day <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, .before <span class="op">=</span> <span class="va">rain</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -418,7 +424,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Separating strings into columns is a common operation. At times, extra variables are crammed into one variable, where it would be useful if the data was separated into additional variables. Let’s go back to our college teams example data.</p>
 <p>This data will combine team names with conferences. However, it’s often useful to have a separate variable only containing the conference (i.e., we may want to filter out specific conferences for an analysis). At times, our data will look like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_team_conference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_team_conference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Nebraska (Big Ten)"</span>,</span>
 <span>    <span class="st">"Texas (Big 12)"</span>,</span>
@@ -442,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can now separate this column of character strings into multiple columns using <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code>. In the end, we want two columns: <code>team</code> and <code>conference</code>. Column names are passed as a character string of names to the <code>names</code> argument. The <code>(</code> character will be used as the delimiter to separate into the two columns, passed to the <code>delim</code> argument. The last step is to use <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove()</a></code> to remove the extra <code>)</code> at the end of the character string. Here is the code to perform all these steps:</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_team_conference</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_team_conference</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>    <span class="va">team</span>,</span>
 <span>    delim <span class="op">=</span> <span class="st">" ("</span>,</span>
@@ -467,7 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>too_few</code> and <code>too_many</code> arguments are available to help in these situations. I highlight their utility with a couple of examples to follow. However, I suggest reading and reviewing the examples in the docs to gain a complete understanding of the utility of these arguments.</p>
 <p>Take for example file path parsing. Let’s start with some example data.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"2024_10_01-1925-f-monthly_users"</span>,</span>
 <span>    <span class="st">"2024_11_01-1925-f-monthly_users"</span>,</span>
@@ -516,7 +522,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>In this example we’ll separate <code>path</code> into four columns: <code>date</code>, <code>age_grp</code>, <code>gender</code>, and <code>report</code>. Here’s what the code looks like to separate by a character delimiter:</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
 <span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
@@ -542,7 +548,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The same outcome can be achieved by separating positionally as well. Here we just use some index values passed via a semi-named vector to the <code>widths</code> argument. The unnamed portions are the empty, unneeded portions of the string we want to separate by. The named numeric values are the character lengths of each piece of information we want to capture into our newly created columns.</p>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_position</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_position</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
 <span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>  widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fl">10</span>, <span class="fl">1</span>, age_grp <span class="op">=</span> <span class="fl">4</span>, <span class="fl">1</span>, gender <span class="op">=</span> <span class="fl">1</span>, <span class="fl">1</span>, report <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span>
@@ -568,7 +574,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="too_many" class="level2"><h2 class="anchored" data-anchor-id="too_many"><code>too_many</code></h2>
 <p>Say we have a case where we don’t need the end of the path, specifically the <code>-monthly_users</code> portion. For example:</p>
 <div class="cell">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
 <span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
@@ -584,7 +590,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We get an error. The error is the result of having more data then there are columns to separate into. To address this, we need to pass different options to the <code>too_many</code> argument of the function. Let’s use <code>too_many = "debug"</code> to receive additional information on what needs to be fixed. Although the problem is pretty straightforward here, I wanted to show this option in case you’re confronted with a situation with a more complex separation.</p>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
 <span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
@@ -631,7 +637,7 @@ Note
 <div class="callout-body-container callout-body">
 <p>Although not applicable here, a neat trick to quickly identify the columns that didn’t separate as we expected is to use the following:</p>
 <div class="cell">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">debug_path</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">x_ok</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">debug_path</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">x_ok</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -644,7 +650,7 @@ Note
 </ul>
 <p>Let’s observe both options:</p>
 <div class="cell">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
 <span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
@@ -670,7 +676,7 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_file_paths</span>,</span>
 <span>  cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">"-"</span>,</span>
@@ -699,7 +705,7 @@ Note
 </section><section id="too_few" class="level2"><h2 class="anchored" data-anchor-id="too_few"><code>too_few</code></h2>
 <p>Next, I want to highlight options for when you have too few data. Let’s go back to some college sports examples, specifically college basketball game log data. Such data might look like <a href="https://www.sports-reference.com/cbb/schools/nebraska/men/2024-gamelogs-advanced.html">this</a>. Take note of the <code>W/L</code> column. Not only are wins and losses denoted, but the variable may also contain info if the win occurred during an overtime period. Let’s mimic this structure in some example data.</p>
 <div class="cell">
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_bball_wl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_bball_wl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  game <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
 <span>  team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Nebraska"</span>,</span>
@@ -733,7 +739,7 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
 <span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
@@ -749,7 +755,7 @@ Note
 </div>
 <p>Error, so let’s debug what’s happening with our separation.</p>
 <div class="cell">
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
 <span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
@@ -780,7 +786,7 @@ Note
 </ul>
 <p>I’ll start with <code>align_end</code> first, just to demonstrate what it does, though this operation isn’t what we’re looking to do here. Then, I’ll show you <code>align_start</code>, the operation needed to complete our separation successfully.</p>
 <div class="cell">
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
 <span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
@@ -800,7 +806,7 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_bball_wl</span>,</span>
 <span>  cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
 <span>  delim <span class="op">=</span> <span class="st">" ("</span>,</span>
@@ -822,7 +828,7 @@ Note
 <p>In short, all the align selection does is modify where the <code>NA</code> will be placed, essentially modifying the padding to create a correct length for the separation to be valid.</p>
 <p>Great, now that we’ve identified where to separate the columns, we just need to do some additional string manipulation to finish the wrangling of this data. Below are the wrangling steps I applied:</p>
 <div class="cell">
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_bball_wl</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_bball_wl</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="st">"w_l"</span>,</span>
 <span>    delim <span class="op">=</span> <span class="st">" ("</span>,</span>
@@ -849,7 +855,7 @@ Note
 <p>In this last section, we’ll cover a slightly more advanced topic: using regular expressions to separate into different columns. The <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code> performs this operation. To highlight how to do this, let’s go back to our file path example data, <code>data_file_paths</code>.</p>
 <p>Say, for some reason, after we separated the different fields embedded in the file path, we want to separate the data further into year and month columns, dropping the day information, since it’s redundant in this case (i.e., these files are always the first of the month). Here’s the additional code we would need:</p>
 <div class="cell">
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>    delim <span class="op">=</span> <span class="st">"-"</span>,</span>
@@ -889,7 +895,7 @@ Note
 </div>
 <p>Indeed, it’s not lost on me that this operation could be successfully completed using the following approach as well:</p>
 <div class="cell">
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_file_paths</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="va">path</span>,</span>
 <span>    delim <span class="op">=</span> <span class="st">"-"</span>,</span>

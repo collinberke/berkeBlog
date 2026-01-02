@@ -239,12 +239,18 @@ Warning
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.1     ✔ stringr   1.5.2
-✔ ggplot2   4.0.0     ✔ tibble    3.3.0
+✔ dplyr     1.1.4     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.1     ✔ tibble    3.3.0
 ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.1.0     
+✔ purrr     1.2.0     
 ── Conflicts ────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
@@ -268,9 +274,9 @@ Note
 </div>
 <p>The temporary directory, simply, is a location on your system. You can store files in this location just like any other directory. The difference is data stored within a temporary directory are not meant to be persistent, and your system will delete them automatically. File deletion either occurs when the system is shut down or after a set amount of time.</p>
 <p>If you’re working on a Mac operating system, you can get the path to the temporary directory by running the following in your terminal:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$TMPDIR</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$TMPDIR</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>When I last ran this command on my system, <code>echo</code> returned the following path (later we’ll use <code>base::tempdir()</code> to get and use this path in R).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>/var/folders/_4/t3mpnn5n5rzg4sdq2fr_n4y80000gn/T/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>/var/folders/_4/t3mpnn5n5rzg4sdq2fr_n4y80000gn/T/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This directory is located at the system level. The <code>cd</code> command can be used to navigate to it from the terminal. You may have to back up a few directories if your root starts at the user level, though. This is pretty standard, especially if you’re working on a Mac.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -293,16 +299,16 @@ Note
 <p>At the start of every session, <a href="https://stackoverflow.com/a/13567465">R creates a temporary per-session directory, and it removes this temporary directory when the session ends.</a>. This temporary directory is stored in the system’s temporary directory location (e.g., <code>/var/folders/_4/t3mpnn5n5rzg4sdq2fr_n4y80000gn/T/</code>). R also provides <a href="http://rstat.consulting/blog/temporary-dir-and-files-in-r/">several functions</a> to work with the temporary directory, create, and interact with files within it.</p>
 <p><code>base::tempdir()</code> can be used to print the file path of the temporary directory on your system. Let’s run it and take a look at what happens.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tempdir</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tempdir</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Outputted to the terminal is the path to the R session’s temporary directory. When I ran it, the returned path looked like this:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>/var/folders/_4/t3mpnn5n5rzg4sdq2fr_n4y80000gn/T//RtmpaYxspA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>/var/folders/_4/t3mpnn5n5rzg4sdq2fr_n4y80000gn/T//RtmpaYxspA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The temporary directory R uses for the current session is labeled using the <code>RtmpXXXXXX</code> pattern. The final six characters of the path (i.e., the Xs) are determined by the system. Note, <code>tempdir()</code> doesn’t create this directory, it just prints the temporary directory’s path to the console. This directory is created every time a R session begins.</p>
 <p>Since the temporary directory is just like any location on your computer, you can navigate to it from your terminal during an active R session. With your terminal pointing to the temporary directory, you can use the following code to find R’s per-session temporary directory:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">la</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"Rtmp"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">la</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"Rtmp"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s take a peak at what’s in this directory. R’s <code>list.files()</code> function can be helpful in this case.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="fu">tempdir</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="fu">tempdir</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>character(0)</code></pre>
 </div>
@@ -313,15 +319,15 @@ Note
 <h1>Writing files to the temporary directory</h1>
 <p>Now that we know a little more about this temp directory and where it is located on our system, let’s write some data to it. We can do this by doing something like the following.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(mtcars, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/mtcars.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(mtcars, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">"/mtcars.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now when we list the files in the temporary directory (e.g., <code>list.files(tempdir())</code>), you should see the <code>mtcars.csv</code> file.</p>
 <p>If you’re looking to create files with unique names, you can pass the <code>tempfile()</code> function to the <code>file</code> argument. This looks something like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  mtcars,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">tempfile</span>(<span class="at">pattern =</span> <span class="st">"mtcars"</span>, <span class="at">fileext =</span> <span class="st">".csv"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  mtcars,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">tempfile</span>(<span class="at">pattern =</span> <span class="st">"mtcars"</span>, <span class="at">fileext =</span> <span class="st">".csv"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>tempfile()</code> creates unique file names, which concatenates together the file path, the character vector passed to the <code>pattern</code> argument, a random string in hex, and the character vector inputed to the <code>fileext</code> argument. When you list the files in the temporary directory now, you’ll see the initial <code>mtcars.csv</code> file along with a file that looks something like this: <code>mtcars7eb3503ac74c.csv</code>. The random hex string ensures files remain unique.</p>
 <p>Indeed, the above is just one way to write files to the temporary directory. You can use other methods to read and write files at this location. However, you now know what is needed to interact with this directory, read and write files to and from it. At this point you can do any data wrangling steps your project requires. After which, we can go about deleting our files from this directory.</p>
@@ -345,7 +351,7 @@ Note
 </div>
 <p>To delete our files we wrote to the temporary directory, run the following in the console:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.remove</span>(<span class="fu">list.files</span>(<span class="fu">tempdir</span>(), <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">".csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.remove</span>(<span class="fu">list.files</span>(<span class="fu">tempdir</span>(), <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">".csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE TRUE</code></pre>
 </div>
