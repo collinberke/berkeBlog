@@ -235,8 +235,14 @@ Note
 </div>
 <p>Then, we make the package available in our R session by adding in our file’s <code>setup</code> code chunk (along with the other packages we seek to use):</p>
 <div class="cell" data-warnings="false">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">berkeBrand</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">berkeBrand</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glue.tidyverse.org/">glue</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com">gganimate</a></span><span class="op">)</span></span>
@@ -257,7 +263,7 @@ Note
 <p>In this post, I provide two examples to highlight the key ideas implemented in gganimate. The first will seek to animate a data visulization of the <code>penguins</code> data set, and it will be used to demonstrate how each key idea is implemented within the package. The second will be an extension of the docs, where I visualize some <a href="https://en.wikipedia.org/wiki/College_football">NCAA Big Ten college football</a> data. The examples here will closely resemble what’s already documented in the package’s vignette. As such, I highly suggest reviewing the package’s docs in addition to these notes.</p>
 <p>Let’s start with the <code>penguins</code> data set, where we can create a static scatterplot of <code>flipper_len</code> by <code>body_mass</code>. In other words, we want to answer the question: how do bigger flippers relate to a penguin’s mass? (i.e., are penguins with longer flippers heavier?).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">penguins</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">flipper_len</span>, <span class="va">body_mass</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">+</span></span>
@@ -280,7 +286,7 @@ Note
 </ul>
 <p>Here’s how we create the transitions utilizing the <code>transitions_states()</code> function, outputted as a <code>.gif</code> file.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">&lt;-</span> <span class="va">vis_flip_mass</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">&lt;-</span> <span class="va">vis_flip_mass</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/transition_states.html">transition_states</a></span><span class="op">(</span></span>
 <span>    <span class="va">species</span>,</span>
 <span>    transition_length <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -316,7 +322,7 @@ Note
 </ul>
 <p>Here are a few examples applied to our <code>penguins</code> scatterplot:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/ease_aes.html">ease_aes</a></span><span class="op">(</span><span class="st">"quintic-in-out"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -324,7 +330,7 @@ Note
 </figure>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/ease_aes.html">ease_aes</a></span><span class="op">(</span><span class="st">"cubic-in-out"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -332,7 +338,7 @@ Note
 </figure>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/ease_aes.html">ease_aes</a></span><span class="op">(</span><span class="st">"quadratic-in-out"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -340,7 +346,7 @@ Note
 </figure>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/ease_aes.html">ease_aes</a></span><span class="op">(</span><span class="st">"exponential-in-out"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -351,7 +357,7 @@ Note
 </section><section id="labelling" class="level2"><h2 class="anchored" data-anchor-id="labelling">Labelling</h2>
 <p>The ability to add labels to our animations is the next key concept to know. gganimate makes it easy to show dynamic labels. This is due to the package providing glue like syntax for plot labelling. For instance, let’s say we wanted to include the type of penguin species within the title to match the current state of the data being shown. This can be done by doing the following:</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_flip_mass_trans</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Flipper length and body mass for {closest_state} penguins"</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -365,7 +371,7 @@ Note
 <p>Object permanence is another important concept to consider, especially as it relates to the semantics and validity of your plot. I think of object permanence like this: data points may not be connected, so the animation applied should avoid implying a connection. This isn’t true in all cases (i.e., timeseries data). However, it’s important to consider that if you have distinct classes in your data, the animations should make this clear. In the context of the penguins example, the different penguin species are not related, but with how the animation morphs to different species implies that they are connected–this is not true for this data.</p>
 <p>As the docs mention, we need to tell gganimate to not morph observations between different categories in our data to make it clear that observations are not connected. The docs provide two suggestions for fixing this: add an aesthetic to distinguish between the groups or set the group directly. So, let’s apply the doc’s preferred fix to our example: set the group directly.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">flipper_len</span>, <span class="va">body_mass</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">flipper_len</span>, <span class="va">body_mass</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">species</span>, group <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/transition_states.html">transition_states</a></span><span class="op">(</span></span>
 <span>    <span class="va">species</span>,</span>
@@ -383,7 +389,7 @@ Note
 <p>As the docs mention, another alternative to fix our problem above is to provide transitions to have data appear and disapear. This is where the <code>enter_*()</code> and <code>exit_*()</code> family of functions become useful.</p>
 <p>Let’s apply some of these functions to our <code>penguins</code> plot. Here’s a few examples:</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">flipper_len</span>, <span class="va">body_mass</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">flipper_len</span>, <span class="va">body_mass</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/transition_states.html">transition_states</a></span><span class="op">(</span></span>
 <span>    <span class="va">species</span>,</span>
@@ -400,7 +406,7 @@ Note
 </figure>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/enter_exit.html">enter_grow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/enter_exit.html">exit_recolour</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -425,7 +431,7 @@ Note
 <p>Indeed, in most cases a <code>.gif</code> file is what you’ll need. However, gganimate provides additional rendering functions. Take for example BlueSky. At least at the time of writing this post, the platform doesn’t support the inclusion of user created <code>.gifs</code> within posts. So, a video file is needed to share your post. <code><a href="https://gganimate.com/reference/renderers.html">av_renderer()</a></code> can be used to output a video file of your animation. The <a href="https://gganimate.com/articles/gganimate.html#rendering">docs</a> have a pretty good example of how to do this.</p>
 <p>Just like with ggplot2, you can specify dimension options like <code>height</code> and <code>width</code>, along with <code>res</code> (i.e., resolution). For instance:</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">&lt;-</span> <span class="va">anim</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim</span> <span class="op">&lt;-</span> <span class="va">anim</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/enter_exit.html">enter_grow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/enter_exit.html">exit_recolour</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#000000"</span><span class="op">)</span></span>
 <span></span>
@@ -446,7 +452,7 @@ Note
 <p>The 2025 college football season is upon us. I’m a Nebraska fan. So let’s take a look at some Big Ten quarterback passing yards from last season. Specficially, let’s create an animation of cumulative passing yards for each week.</p>
 <p>Here’s some code to get and transform this data. It utilizes a package from the <a href="https://www.sportsdataverse.org/">SportsDataverse</a>, <a href="https://cfbfastr.sportsdataverse.org/">cfbfastR</a> to get the passing data for all Big Ten quarterbacks. For the sake of brevity and because data transformation is not the main focus of this post, I won’t go into detail explaining each step. Nonetheless, here’s the code needed to get and transform the data for our the following example:</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_fb_pass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html">map_df</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_fb_pass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html">map_df</a></span><span class="op">(</span></span>
 <span>  <span class="fl">1</span><span class="op">:</span><span class="fl">14</span>,</span>
 <span>  \<span class="op">(</span><span class="va">week</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
@@ -461,7 +467,7 @@ Note
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">regular_qbs</span> <span class="op">&lt;-</span> <span class="va">data_fb_pass</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">regular_qbs</span> <span class="op">&lt;-</span> <span class="va">data_fb_pass</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">team</span>, <span class="va">athlete_name</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">athlete_name</span><span class="op">)</span></span>
@@ -490,7 +496,7 @@ Note
 </div>
 <p>With the data transformed, we start by creating a static plot. I do a little abstracting here by setting color scale values as it’s own variable: <code>color_values</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">color_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">color_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Dillon Gabriel"</span> <span class="op">=</span> <span class="st">"#007030"</span>,</span>
 <span>  <span class="st">"Billy Edwards"</span> <span class="op">=</span> <span class="st">"#E21833"</span>,</span>
 <span>  <span class="st">"Will Howard"</span> <span class="op">=</span> <span class="st">"#A7B1B7"</span>,</span>
@@ -505,7 +511,7 @@ Note
 </div>
 <p>Then, the static plot, <code>vis_qbs_pass</code> is created using <code>ggplot2</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_qbs_pass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vis_qbs_pass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">data_top_qbs_pass</span>,</span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
@@ -567,7 +573,7 @@ Note
 </div>
 <p>Now the <code>transitions_reveal()</code> function is used to split the data into frames based on some variable within the data. In this example, we use the <code>week</code> variable for our transitions.</p>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim_top_qbs</span> <span class="op">&lt;-</span> <span class="va">vis_qbs_pass</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anim_top_qbs</span> <span class="op">&lt;-</span> <span class="va">vis_qbs_pass</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/transition_reveal.html">transition_reveal</a></span><span class="op">(</span></span>
 <span>    <span class="va">week</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -587,7 +593,7 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://gganimate.com/reference/animate.html">animate</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://gganimate.com/reference/animate.html">animate</a></span><span class="op">(</span></span>
 <span>  <span class="va">anim_top_qbs</span>,</span>
 <span>  duration <span class="op">=</span> <span class="fl">15</span>,</span>
 <span>  fps <span class="op">=</span> <span class="fl">15</span>,</span>

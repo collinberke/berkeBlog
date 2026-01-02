@@ -11,7 +11,7 @@
     ],
     "includes": {
       "include-in-header": [
-        "<script src=\"../../../site_libs/core-js-2.5.3/shim.min.js\"></script>\n<script src=\"../../../site_libs/react-18.2.0/react.min.js\"></script>\n<script src=\"../../../site_libs/react-18.2.0/react-dom.min.js\"></script>\n<script src=\"../../../site_libs/reactwidget-2.0.0/react-tools.js\"></script>\n<script src=\"../../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js\"></script>\n<link href=\"../../../site_libs/reactable-0.4.4/reactable.css\" rel=\"stylesheet\" />\n<script src=\"../../../site_libs/reactable-binding-0.4.4/reactable.js\"></script>\n"
+        "<script src=\"../../../site_libs/core-js-2.5.3/shim.min.js\"></script>\n<script src=\"../../../site_libs/react-18.2.0/react.min.js\"></script>\n<script src=\"../../../site_libs/react-18.2.0/react-dom.min.js\"></script>\n<script src=\"../../../site_libs/reactwidget-2.0.0/react-tools.js\"></script>\n<script src=\"../../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js\"></script>\n<link href=\"../../../site_libs/reactable-0.4.5/reactable.css\" rel=\"stylesheet\" />\n<script src=\"../../../site_libs/reactable-binding-0.4.5/reactable.js\"></script>\n"
       ]
     },
     "engineDependencies": {},
