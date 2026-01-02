@@ -1,0 +1,86 @@
+---
+title: "Media and Marketing Research Resources"
+subtitle: "A collection of resources related to media and marketing research, curated by [Collin K. Berke](https://www.collinberke.com/)."
+execute:
+  include: false
+  message: false
+  echo: false
+format:
+  html:
+    toc: false
+    date-modified: last-modified
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(glue)
+library(reactable)
+```
+
+```{r}
+#| label: get-data-resources
+resources <- read_csv("https://raw.githubusercontent.com/collinberke/data-media-marketing-resources/refs/heads/main/resources.csv") |>
+  mutate(
+    LinkText = str_remove_all(Link, "https://|/$"),
+    Link = glue(
+      "<a href='{Link}' target='_blank'>{LinkText}</a>"
+    ),
+    Tags = str_replace_all(Tags, ";", ", ")
+  ) |>
+  select(-LinkText)
+```
+
+This resource list was last updated on `r Sys.Date()`.
+Want to add a resource? File an issue or edit the `resources.csv` file on [GitHub](https://github.com/collinberke/data-media-marketing-resources) and submit a Pull Request.
+
+```{r}
+#| include: true
+resources |>
+  arrange(Category, Name) |>
+  reactable(
+    columns = list(
+      Category = colDef(
+        name = "Category",
+        maxWidth = 180
+      ),
+      Name = colDef(
+        name = "Name"
+      ),
+      Link = colDef(
+        html = TRUE
+      ),
+      Tags = colDef(
+        maxWidth = 180
+      )
+    ),
+    searchable = TRUE,
+    striped = TRUE,
+    pagination = FALSE,
+    filterable = TRUE,
+    sortable = TRUE,
+    showSortable = TRUE,
+    elementId = "tbl-resources"
+  )
+```
+
+### Note
+
+This list is provided for convenience and informational purposes only.
+Some resources may be open-source and freely available.
+Others may require a monetary payment, subscription, or account to access.
+Inclusion on this list does not represent an endorsement or guarantee of the accuracy, reliability, or content of any linked site.
+Content within these links may be invalid or inaccurate.
+We take no responsibility of what is contained within these links or what results from their review or use.
+
+This list will be updated periodically.
+Resources will be added and removed during these updates.
+
+### Inspiration
+
+This list and its structure was inspired by [Nicola Rennie's](https://nrennie.rbind.io/) data visualization and data science resources list.
+
+Check them out:
+
+* [Data Visualization Resources](https://nrennie.rbind.io/data-viz-resources/)
+* [Data Science Resources](https://nrennie.rbind.io/data-science-resources/)

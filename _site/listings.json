@@ -1,9 +1,5 @@
 [
   {
-    "listing": "/talks/index.html",
-    "items": []
-  },
-  {
     "listing": "/blog/index.html",
     "items": [
       "/blog/posts/2026-01-01-hex-update-009/index.html",
@@ -55,5 +51,9 @@
       "/blog/posts/2021-09-12-post-shiny-implementing-a-next-and-back-button/index.html",
       "/blog/posts/2021-04-02-post-intro/index.html"
     ]
+  },
+  {
+    "listing": "/talks/index.html",
+    "items": []
   }
 ]
