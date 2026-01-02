@@ -16,20 +16,27 @@ Howdy folks!
 
 Welcome to Issue 009.
 
-Three topics caught my attention this week:
-To end the week with a little fun, 
-
+2026! It's a new year, and I'm looking forward to sharing some more interesting work and articles I've found.
 Let's get into it.
 
-# Three things from this week
+Three topics caught my attention this week:
 
-Here are three things that caught my attention:
+* AI and its impact on web traffic
+* An opinion on the impact AI will have on the advertising industry
+* A piece highlighting the effects big streaming platforms’ strategies will have on local broadcasters
+
+To end the week with a little fun, I share an article highlighting the effect your TV settings might have on your viewing experience.
+I know... TV settings, a fun topic.
+
+# Three things
+
+Here's what caught my attention this week:
 
 ### [As AI Eats Web Traffic, Don’t Panic—Evolve](https://insight.kellogg.northwestern.edu/article/as-ai-eats-web-traffic-dont-panic-evolve)
 
-Past updates have highlighted [Google Zero](https://www.theverge.com/24167865/google-zero-search-crash-housefresh-ai-overviews-traffic-data-audience)
-Google Zero has been cited for eating web traffic, which in part is being attributed to the rollout of AI summaries.
-As a result, digital industry professionals are assessing whether the SEO handbook still applies in the age of Generative Engine Optimization (GEO).
+Past Hex Updates pointed out the idea of [Google Zero](https://www.theverge.com/24167865/google-zero-search-crash-housefresh-ai-overviews-traffic-data-audience): changes in search resulting in significant drops in website referal traffic.
+This loss in website traffic has been posited, in part, to be caused by the rollout of AI summaries.
+As a result, digital industry professionals are assessing whether the SEO handbook still applies in the age of [Generative Engine Optimization (GEO)](https://arxiv.org/pdf/2311.09735).
 This article, from [KelloggInsight](https://insight.kellogg.northwestern.edu/) provides some direction and advice for practitioners.
 These include: focusing on engagement rather than count metrics; focusing strategy and budget on experimentation; and further developing personalized experiences.
 
@@ -38,45 +45,75 @@ These include: focusing on engagement rather than count metrics; focusing strate
 Although this is a moment of disruption, this is not a new or novel mode for the marketing and advertising industry.
 Search, since the beginning, has always gone through changes.
 Rather than viewing this as an industry killing event, it should be thought more as a realignment.
-A realignment toward a renewed focus on the purpose of websites: connect people with information.
+This realignment involves a renewed focus on the purpose of websites: to connect people with information.
 This quote from the article puts it best:
 
 > But even if users don’t click through from AI summaries or personalized newsletters, Cutler thinks adapting to this new era of optimization might just mean getting back to the original purpose of websites: connecting people with information.
 
 ### [I've Watched Three "Revolutions" transform advertising. Here's what actually changed](https://beth-egan.com/ive-watched-three-revolutions-transform-advertising-heres-what-actually-changed/)
 
-This short blog post provides a viewpoint on the impact technical revolutions have had on the advertising industry.
-It acknowledges several of these changes over the years: the introduction of the internet in the 1990's; programatic ad sales in the 2000's; and now AI.
-Despite all these revolutions, the post re-orients advertising professionals toward a focus on the fundamentals.
+This post offers a perspective on how technological revolutions have affected the advertising industry.
+It highlights several changes: the introduction of the internet in the 1990's; programatic ad sales in the 2000's; and now AI.
+Despite these revolutions, the post reorients advertising professionals toward a focus on fundamentals.
 These include understanding your audience, development and execution of strategy, critical thinking, understanding human psychology, and asking better questions with our data.
 
 #### Why does this matter?
 
-Technology will always change.
-Disruption will happen.
+Technology changes.
+Disruption will result, as observed with AI.
 The ways media professionals work will be impacted.
 But, the fundamentals remain the same.
-AI is not a replacement, but rather a tool to further assist in executing industry fundamentals.
-An important fundamental is to understand your audience, so you can develop the media and experiences they will truly engage with.
+AI doesn't overide these fundamentals, but rather they're a tool to more effectively leverage the fundamentals.
+Audiences are human, and they still expect media to reflect some level of humaness.
+AI might assist in creating a better understanding of auidences, strategy, critical thinking, understanding human psychology, and lead to better question to be asked of our data, but in the end, these are the key components that bring humaness to the work.
+Humaness I believe can't be replaced.
 
 ### [Screencasting Is Gone. Bundles Are Breaking. The TV Ecosystem Is Locking Down](https://tvnewscheck.com/business/article/screencasting-is-gone-bundles-are-breaking-the-tv-ecosystem-is-locking-down/)
 
-This article provides a relevant perspective on the impact large platform packaging and levels of access will have on local broadcaster's protections allowing for reach, visibility, and stability.
-The article posits that the industry is moving toward a state of television lockdown.
+This article provides perspective on the impact large platform packaging and levels of access will have on local broadcaster's hold on reach, visibility, and stability.
+The article posits the industry is moving toward a state of television lockdown.
 That is:
 
 > Together, they signal the television lock-down — a shift toward platform-controlled devices, curated bundles and tightly managed viewing environments. Openness is no longer a feature.
 
-In fact, the larger point made in the article is that this is a signal that platforms now decide how television is assembeled and promoted, not broadcasters.
-Such a switch has major implications on local broadcasters, who in the past had structural boundaries that provided protections from platform influence.
-These will only lead streaming platforms to further harden their control over discovery, content availability, the playback surface, and forms of content monetization that are more predictable.
-There's also some conversation about how these larger platform offerings influence audience's expectations, which broadcaster's may not be able to meet.
+In fact, the article highlights a larger point: platforms now decide how television is assembeled and promoted, not broadcasters.
+Such a switch has major implications for local broadcasters, who in the past had structural boundaries that provided protections from platform influence.
+These protections are quickly disappearing.
+This will only lead streaming platforms to further harden their control over discovery, content availability, the playback surface, and forms of content monetization that are more predictable to further erode these protections.
+There's also some conversation about how these larger platform offerings influence audiences' expectations, which broadcaster's may not be able to meet.
 
 #### Why does this matter?
 
+Audience expectations matter.
+The platforms that best meet these expectations will drive reach, engagement, and revenue.
+Broadcasters, who in the past had protections due to infrastructure, may be losing ground to meet these expectations.
+This is especially pertinent to local broadcasters, as larger platforms now drive audience expectations due to their ability to deliver engaging experiences in the digital space.
+Is the promise of openess of broadcasting enough?
+Maybe?
+However, the more time audiences spend on platforms that produce amazing experiences, the more they'll come to expect other forms of delivery to meet the standard generated from large platforms.
+As such, content access may not be enough.
+Rather, the delivery experience might be a major component.
+
 # Just for fun
 
-[]()
+### [Stranger Things Creator Says Turn Off "Garbage" Settings](https://screenrant.com/stranger-things-creator-turn-off-settings-premiere/)
+
+It's been almost 10 years since [Stranger Things](https://en.wikipedia.org/wiki/Stranger_Things) was released on Netflix.
+Now we've come to the series' conclusion.
+The majority of audiences will likely watch the final season on their home TVs.
+Many of these TVs are likely configured to default viewing settings.
+Have you ever thought about how these settings might alter the original look the creators were striving for?
+Me neither.
+As such, one of the [Duffer Brothers](https://en.wikipedia.org/wiki/The_Duffer_Brothers) considered this to be a big enough problem that they needed to address via their socials.
+I, unforuntately, was too late to catch the message.
+In the future, though, I'll be sure to consider my TV's settings.
+If you haven't watched the final season yet, consider taking this advice.
+Also, if you're a fan, enjoy the finale.
+
+The first update of 2026 is now in the books.
+I look forward to sharing more.
+
+I hope you have a wonderful start to the new year, and I wish you all the best this coming year.
 
 Cheers 🎉!
 
