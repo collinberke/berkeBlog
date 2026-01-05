@@ -13,7 +13,9 @@ format:
 
 ```{r}
 #| label: setup
-library(tidyverse)
+library(readr)
+library(stringr)
+library(dplyr)
 library(glue)
 library(reactable)
 ```
