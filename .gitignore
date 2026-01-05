@@ -50,3 +50,5 @@ vignettes/*.pdf
 /content/post/.DS_Store
 
 /.quarto/
+
+**/*.quarto_ipynb
