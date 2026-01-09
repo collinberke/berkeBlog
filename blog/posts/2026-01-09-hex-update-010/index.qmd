@@ -1,0 +1,134 @@
+---
+title: "The Hex Update: Issue 010"
+date: "2026-01-09"
+author: "Collin K. Berke, Ph.D."
+description: "Appointment viewing, is it back?; the future of the web; revenue models for streaming-first audiences"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 010, folks.
+
+Three topics caught my attention this week:
+
+* Is appointment viewing back for streaming series?
+What's new is old, and streaming platforms are turning to chunk releases to seize cultural momemnts.
+* A discussion with Sir Tim Berners-Lee about the future of the internet.
+I was particularly interested to hear the conversation about how agentic AI could change the interface and revenue models of the web.
+* Platforms are turning to hybrid revenue models for streaming-first audiences.
+It's no longer about having the largest number of platform users, rather it's about engaged and addressable audiences that make the business model work.
+
+To end the week with a little fun, I share an interesting data visualization of global shipping.
+It's amazing to see the scale of this industry within the global economy.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Article: Your favourite TV shows are changing how episodes are released. Is appointment viewing back?](https://www.cbc.ca/news/entertainment/television-shows-streaming-weekly-release-9.7000536)
+
+This article provides observations and expert comments about the effects streaming service release schedules have on audiences.
+Many streaming services have now identified a happy middle ground between appointment viewing and binge watching with staggered releases.
+Weekly or chunk releases appeal to audiences for multiple reasons: it gives audiences something to look forward to, it affords audiences the ability to still participate in the cultural moments around releases, and it still allows audiences to stack and binge watch episodes.
+Indeed, according to some of the earnings calls cited in the article, many streaming services find these types of release schedules are what audiences want.
+This is counter to what platforms were striving for in the past, where availability and volume of content was the strategy.
+In practical terms, the strategy focused on creating the largest library of content that could be viewed anytime, anywhere, and appealled to the largest audience possible.
+Despite the positive effects of staggered releases, the article provides additional expert opinion that this is not the only factor for a shows success.
+Shows still need to generate excitement, and they must have a compelling story for audiences to want to watch it.
+If a show meets this criteria, then staggered release schedules will lead to boosted benefits for platforms.
+
+#### Why does this matter?
+
+What's new is old.
+What matters here, as long as a show has created some excitement and is compelling in terms of the storytelling, is the opportunity to manage the cultural moment.
+Content accessibility via a platform's library is no longer enough.
+Rather, it's about using the release of content to facilitate and amplify the cultural moment.
+Large drops of whole seasons of popular series by large platforms may be behind us.
+Audiences' expectations are driven by large streaming platforms, smaller streaming services should take note.
+There's opportunities to be seized with the modification of release schedules.
+
+### [Podcast: Sir Tim Berners-Lee doesn’t think AI will destroy the web](https://www.theverge.com/podcast/814552/tim-berners-lee-world-wide-web-ai-future-interview)
+
+I've been attempting to get caught up on all my bookmarked podcasts episodes.
+One episode in the queue, from [Decoder](https://www.theverge.com/decoder-podcast-with-nilay-patel), interviews the creator of the internet, [Sir Tim Berners-Lee](https://en.wikipedia.org/wiki/Tim_Berners-Lee).
+The episode explores his views on the current state of the web.
+Some points were interesting, especially these ones linked below:
+
+* The shift towards closed platforms on the web [01M54S](https://youtu.be/78w61I62N_0?si=GR9NHWVD1Nn82BCi&t=114)
+* Centralized players and their impact on open web ecosystems [03M35S](https://youtu.be/78w61I62N_0?si=GR9NHWVD1Nn82BCi&t=215)
+* Views on the commercialization of the web [11M20S](https://youtu.be/78w61I62N_0?si=4CYSGOIsIYWHunet&t=682)
+* With AI agents, will the web be the same? How does the interface change? Does the revenue model of the web survive? [12M45S](https://youtu.be/78w61I62N_0?si=N4-oBu45XIBS9NGO&t=765)
+* Structural changes to the web to manage AI extraction of data [33M52S](https://youtu.be/78w61I62N_0?si=OaffY4AOqGpUTkUP&t=2032)
+* Views on the role of centralized services and whether this functionality could be built into the web [37M33S](https://youtu.be/78w61I62N_0?si=QWPw57yJbaelZDfe)
+
+#### Why does this matter?
+
+The web is changing--now more than ever.
+The initial view of it being an open ecosystem of information is eroding, and many publishers and platforms are moving toward closed environments (e.g., walled gardens, apps, etc.).
+Moreover, agentic AI has the potential to fundamentally impact the web's interface, how users interact with it, and traditional revenue models.
+In this new version of the web, the economics and business models underpinning the web may no longer feasible.
+What role does advertising serve when AI agents, on the behalf of a user, capture, summarizes, delivers information about or performs some action on sites users no longer access?
+Ad impressions, a key currency for publishers, diminishes.
+The role of centralized services on the web are also an important consideration.
+Although useful and solves problems, centralized service's impact on the open web need to be considered.
+Standards and protocols could be created that more greatly elevates the impact of the web beyond that of a single, centralized service provider.
+All players involved would need to agree upon adoption, though.
+This is an unlikely prospect.
+
+### [Article: Industry Insights: How monetization models are being rebuilt for streaming-first audiences](https://www.newscaststudio.com/2026/01/07/industry-insights-how-monetization-models-are-being-rebuilt-for-streaming-first-audiences/)
+
+I recently bumped into this collection of broadcast, streaming, and advertising professional's insights into the future of monetizing streaming-first audiences.
+The conversation included perspectives about the shift of single revenue model strategies to more blended models, which now include SVOD, AVOD, FAST, and transactional forms of monetization.
+Some have coined this to be a new type of monetization strategy called HVOD (Hybrid Video on Demand).
+Going further, the expert opinions focused on the need for broadcasters to further develop there collection and use of first-party data.
+Some experts opined these changes are intended to improve revenue numbers, rather than it being a startegy solely focused on generating the highest user count.
+There was also discussion that emphasized the importance of engaged and addressable audiences, as these are the audiences most valuable to advertisers.
+For instance, from the article:
+
+> The next critical step is monetizing this enhanced first-party data into revenue opportunities, specifically through addressable advertising, content sales, and audience development use cases.
+
+Moreover, some of the views expressed first-party data's role in generating behavioral and contextual intelligence.
+That is:
+
+> Broadcasters are adopting similar discipline — focusing on recency, intent, household composition, and content affinity rather than broad demographic assumptions.
+
+Lastly, there was some commentary about the revenue opportunities afforded to broadcasters monetizing extended digital offerings: content bundles, e-commerce, and adjacent areas like gaming and audio.
+
+#### Why does this matter?
+
+Many revenue generating opportunities exist for streaming-first audiences.
+These opportunities are not just about generating the largest user number, but rather are business models that make the economics work.
+It's all about giving audiences options, which HVOD does, while also making the revenue strategy feasible for a platform.
+It's important to recognize that if other platforms are providing these options, then audiences will come to expect these from the others they use.
+The conversation about first-party data is also a point of emphasis.
+It's not simply about a user count anymore.
+Platforms need to have evidence that audiences are engaged and addressable.
+That's where the value lies.
+
+# Just for fun
+
+### [shipmap](https://www.shipmap.org/)
+
+Have you ever considered the role shipping has within the global economy?
+I hadn't either, until I saw this iteractive data visualization.
+It's a really neat, interesting way to show how massive this industry is to the world.
+Check it out.
+
+Another week--done.
+We're on the cusp of the weekend.
+Yay!
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
