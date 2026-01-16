@@ -1,0 +1,111 @@
+---
+title: "The Hex Update: Issue 011"
+date: "2026-01-15"
+author: "Collin K. Berke, Ph.D."
+description: "Developing young journalists is the future for news; teenagers' negative views of news; streaming platforms placing pressure on broadcasters"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Folks, welcome to Issue 011.
+
+Three topics caught my attention this week:
+
+* The future of news is in the balance, especially if opportunities for young storytellers remain limited.
+* Many teenagers hold negative views towards news media.
+* Streaming platforms, audience expectations, and advertising are placing additional pressure on one of broadcaster's last remaining structural advantages: live sports.
+
+To end the week with a little fun, I share a resource overviewing the different data types every professional should know.
+
+Let's get into it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Article: Youth Media and the Future of News](https://niemanreports.org/teen-media-funding-pbs-student-reporting-labs/)
+
+This article argues the need for support of future news industry professionals.
+The ability to build an informed, engaged audience depends on actions taken now to generate interest and develop young journalists' skillsets.
+Moreover, the article cites a study (see the following link) reporting many younger audiences view news media as boring, biased, and bad.
+The article posits young storyteller skill development can be a solution to address this concerning trend.
+Some stories are best told by younger producers, and these stories may more resonate with younger audiences, and may improve these audiences' view of news media.
+Indeed, the program model to support young storytellers already exists.
+The article includes several examples, although many have been disbanded due to funding.
+Perhaps it's time to rethink the support for these programs.
+
+#### Why does this matter?
+
+The pressures of the news industry surely weighs on all media organizations.
+Much of this pressure can result in a focus more on the short-term rather than long-term.
+However, the ability for media organizations to produce content and products that reaches and engages audiences will depend on the availability of professionals that can do the work.
+So, development of young storytellers should be viewed as an investment, rather than another line-item affecting the short-term bottom line.
+
+### [Report: "Biased", "Boring", and "Bad": Unpacking perceptions of news media and journalism among U.S. teens (2025)](https://newslit.org/news-and-research/teens-and-news-media/)
+
+The article linked above cites this study, and some of the reported results were striking enough for me to further review the key findings.
+The article emphasizes many of the negative views teenagers have of the news media and journalists.
+These include results related to an overall negative view of news media, beliefs around journalists maintaining standards of accuracy and fairness, and views related to news organization bias.
+Digging deeper into the report's key findings, there's some more results mentioning the majority of news organizations don't produce information less impartial than other content creators online.
+The key findings were interesting enough that I have the full report in the queue for review.
+
+#### Why does this matter?
+
+Besides the results emphasizing negative views, teenagers views related to the impartiality of other online content creators was interesting.
+It raises further questions on what younger news consumers consider to be news.
+In fact, maybe this is a signal to news organizations to experiment with other formats of information delivery used by alternative creators.
+It could benefit not only improving the views younger audiences have of the news industry, but it might result in reaching and engaging a younger audience.
+
+### [Article: Rewriting The Ad Playbook To Bring Linear and Streaming Together](https://tvnewscheck.com/digital/article/rewriting-the-ad-playbook-to-bring-linear-streaming-together/)
+
+This article provides commentary related to the impact further migration of audiences to streaming has on one of the last strongholds of linear television: live sports.
+This move by audiences is applying more pressure to the economic models of distribution.
+From the article:
+
+> Audiences are gravitating towards ad-supported and subscription streaming options that offer more flexibility, interactivity and measurable engagement.
+> For leagues and broadcasters, the implications are clear: Sustaining fan engagement and monetizing live sports now requires a blended strategy which pairs the scale of linear with the precision and dynamism of digital.
+
+Such pressure has prompted changes in content packaging, distribution, and monetization.
+As such, broadcasters are further exploring and creating partnerships with [Free Ad Supported Television (FAST) platforms](https://en.wikipedia.org/wiki/Free_ad-supported_streaming_television).
+
+> The goal is no longer simply delivering a game, but creating richer, more immersive experiences that retain viewers, attract advertisers and sustain revenue as local markets evolve.
+
+This strategy is not only focused on audience, but in addition is an aim to improve the inventory for greater monetization opportunities.
+
+#### Why does this matter?
+
+Streaming platform adoption by audiences is nothing new.
+However, broadcasters delivery of live sports was one of the bulwarks to digital streaming disruption.
+This is no longer the case.
+Broadcasters are increasingly feeling the pressure as audiences are finding ad supported platforms to also be a viable, engaging viewing option for live events.
+This is not all that negative, as audiences have come to expect the richer, more immersive experiences streaming platforms provide.
+Thus, this competition could lead broadcasters to further innovate and develop such experiences on their platforms.
+Further monetization opportunities also become available with this change in focus.
+As such, broadcasters with live events in their portfolio might want to consider the benefits FAST platforms provide.
+
+# Just for fun
+
+### [Understanding the Types of Data in Data Science](https://ischool.syracuse.edu/types-of-data/)
+
+I'm taking a step into the data domain to end the week with a little bit of fun.
+At least, it's a topic I find fun.
+Knowing the basics of data types is useful for any professional.
+This post was one of the more accessible ones I've found recently.
+It was also fun brushing up on some data fundamentals.
+I hope you find some use from it.
+
+Onward to the weekend.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
