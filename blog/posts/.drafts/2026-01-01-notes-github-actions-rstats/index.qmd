@@ -18,26 +18,25 @@ categories:
 # Background
 
 I have a resource list--saved as a `.csv` file--stored in another [GitHub repo](https://github.com/collinberke/data-media-marketing-resources).
-In short, it's a list of links to several resources in the media and marketing research domain.
-This list is hosted on my personal website.
-It is updated from time to time, as I add new resources.
-The goal here was simple: automate this process using a scheduled [GitHub Action](https://github.com/features/actions).
-One aim for this action was to build the site so as to keep the resources updated.
-An additional goal--as a result of my interests--was to become more proficient working with actions from the command-line.
-As such, you'll see several of these examples highlighting this work from the terminal.
-However, many of these same steps can take place via the UI.
+In short, it's a list of links to several resources in the media and marketing research domain, which I add new resources to time-to-time.
+My personal website hosts this list.
+
+The goal for this post was simple: automate the build of the table using [GitHub Actions](https://github.com/features/actions).
+One aim was to schedule this automation, so the resources remain current.
+A second aim--resulting from my interests--was to become more proficient working with actions from the command-line.
+As such, this post will share several examples highlighting how to work with GH Actions using the [GitHub CLI tool](https://cli.github.com/).
 
 # Storing workflows
 
-GitHub actions are included within a workflow: a file that lists out the jobs and steps to be performed.
+GH Actions are part of a workflow, a file that lists out the jobs and steps.
 These files live in your repo under the `.github/workflow/` directory.
-A [YAML file](https://learnxinyminutes.com/yaml/) format is used for the configuration, setup, and jobs definitions for the workflow.
+A [YAML file](https://learnxinyminutes.com/yaml/) defines a workflow's configuration, setup, and job definitions.
 
 ## Creation of an GitHub Action YAML file
 
-To start, a file for the workflow needs to be created.
+Workflows start with a YAML file.
 For these notes, I created a file named `update-data-media-marketing-resources.yml`.
-This file is stored in the file path mentioned above `.github/workflow/`.
+This file lives in the repo's `.github/workflows/` directory.
 
 ::: {.callout-note}
 Workflow files can either end in a `.yml` or `.yaml` extension.
@@ -45,21 +44,21 @@ Workflow files can either end in a `.yml` or `.yaml` extension.
 
 Although there exists great flexibility in how these files are constructed, I've found the basic sections include:
 
-1. A metadata section (i.e., usually just a title of the workflow)
+1. A metadata section (i.e., a workflow's title)
 2. A specification of the `on:` attribute (i.e., how workflows are triggered)
 3. Jobs (i.e., collection of steps)
 4. Build configuration (i.e., the environment in which the workflow runs)
 5. Steps (i.e., the actual actions taken)
 
-Each section utilizes attributes for their definitions, which, simply defined, are just `key:value` pairs.
-Let's start with the front matter of our workflow file, the metadata section.
+Each section contains attributes: `key:value` pairs.
+Let's start with the front matter of the workflow file, the metadata section.
 
 ### Metadata section
 
 The metadata section contains information about your workflow.
-Several attributes can be defined in this section (see [here](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax)).
+This section makes available several attributes (see [here](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax)).
 Some attributes are required, others are optional.
-The ones included in this workflow are:
+These include:
 
 * `name`: The name of the workflow (required)
 * `description`: A description of what the wofkflow does (optional)
@@ -78,38 +77,38 @@ You'll see how this attirbute will be found in several places, including in the 
 
 ### The `on:` attribute
 
-The `on` attribute is used to define what triggers a workflow.
-Many options are available for this attribute.
-A full overview of all these options is out of scope for this post, so I'm only going to highlight the most basic ones.
-Again, I reiterate that there are lots of options for specifying what triggers a workflow.
+The `on` attribute defines events that trigger a workflow.
+This attirbute has many options.
+Because covering all the options is out of scope, I focus only on a couple basic specifications in this post.
 
-`workflow_dispatch` triggers the workflow through a user manually running the workflow.
-That is, going into the workflow file definition and pushing a button to run the workflow.
-This can also be done via the command line as well.
+`workflow_dispatch` triggers the workflow through a manual action taken on part of a user.
+This includes such actions like going into the workflow file definition via GitHub's UI and pushing a button to run the workflow.
+You can also use command-line functions to do this.
 
-`push` triggers a workflow when a push event happens.
+`push` triggers a workflow when a push is made to a repo.
 This can be focused further to pushes occurring to specific branches and pages.
 
 [`scheduled`](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule) is a special type of trigger.
 It kicks off workflows based on a defined scheduled time.
-It used [Cron syntax](https://en.wikipedia.org/wiki/Cron) to define the scheduled time, and it can be set to run workflows as short as every 5 minutes (i.e., though, I don't know why you'd need that short of an interval between workflow runs).
-Figuring out the syntax for your scheduled run can be challening, so I turn to online calculators to help out.
-I find [this one](https://crontab.guru/) to be quite useful.
+[Cron syntax](https://en.wikipedia.org/wiki/Cron) defines the scheduled time, and it can be set to run workflows as short as every 5 minutes (i.e., though, I don't know why you'd need that short of an interval between workflow runs, but it's available).
+Figuring out the syntax for your scheduled run can be challening, so I turn to online calculators for help.
+[This one](https://crontab.guru/) is quite useful.
 
 ::: {.callout-note}
 Be mindful of the interval you're running your workflows.
 Depending on whether your repo is public or private, your workflow runs will be metered based on the number of minutes a workflow runs.
-Also, if you have a pro GitHub account, you're given 3,000 minutes for private repo workflow runs.
-However, charges may be applied if you go over.
+Also, if you have a Pro GitHub account (i.e., one you pay for), you're given 3,000 minutes for private repo workflow runs.
+However, charges may be applied if you go over your alloted amount
 More on this [here](https://docs.github.com/en/billing/concepts/product-billing/github-actions#free-use-of-github-actions).
 Also, if you're exploring this space, you might consider setting up alerts and budgets, just so you don't get any surprise bills at the end of the month.
 More on this [here](https://docs.github.com/en/billing/tutorials/set-up-budgets#managing-budgets-for-your-personal-account).
 :::
 
-One final note about the `on` attribute, it can be set to be triggered by multiple event types by using `[]`.
-For instance, you can specify a workflow to be triggered by push and pull events by doing configuring the following in your workflow file `on: [push, pull]`.
+One final note about the `on` attribute: you can trigger it with multiple event types by using `[]`.
+For instance, you can specify a workflow to be triggered by push and pull events by using the following configuration in your workflow file `on: [push, pull]`.
 
-For this workflow, I've specified the following for it to be on a weekly scheduled run on Sunday afternoons.
+For this workflow, I've set it up to run weekly on Sunday afternoons.
+This portion of the YAML file looks like this:
 
 ```yml
 on:
@@ -119,26 +118,26 @@ on:
 
 ### Jobs
 
-The jobs section is the next section of a workflow.
+Jobs are the next portion of a workflow.
 This section contains the environment configuration (i.e., builds) as well as the steps for each job.
 There is a lot of flexibility in how the jobs section is organized, as it allows for various environments to be setup and used to run jobs.
 The organization of jobs can also be varied.
 For this workflow, I keep it simple: one build for the job section.
-You might notice more complicated job sepcifications when reviewing other workflow files.
+You might notice more complicated job sepcifications when reviewing other workflow files, though.
 
 #### Build
 
-A build is an organized unit of steps to be run on some type of environment.
+A build is an organized unit of steps to be run on some type of compute environment.
+As with other sections, you use attributes to specify the configuration.
 The `runs-on` attribute specifies the type of environment of the build (i.e., the type of machine used for compute).
 The `steps` attribute is used to define the actions or runs to take place within the build.
 The `name` attribute is used to label the build.
-This attribute is available within the run 
 
 #### `runs-on`
 
-The `runs-on` attribute defines the type of machine the steps will run on.
-In accessible terms, it's the type of computer operating system used to perform the steps of a job.
-GitHub Actions alls these [runners](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job).
+The `runs-on` attribute defines the type of machine used to run steps.
+In more accessible terms, it's the type of computer operating system used to do the job.
+GitHub Actions calls these [runners](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job).
 Many flavors of runners are available, and you can even use a self-hosted runner if needed.
 As for GitHub managed runners, most of the flavors include some variation of either linux, Windows, or macOS.
 
@@ -148,8 +147,8 @@ The type of runner determines the cost per minute.
 More on this [here](https://docs.github.com/en/billing/reference/actions-runner-pricing).
 :::
 
-Since we're striving for simplicity here, the most current version of linux is sufficient.
-To specify this, the build section of the workflow file will look like this:
+Since we're striving for simplicity here, the most current version of ubuntu linux is sufficient.
+To specify this, the build section of the workflow YAML file looks like this:
 
 ```yml
 build:
@@ -163,15 +162,16 @@ build:
 The steps portion of the workflow is where actions are defined.
 First, you have the `name` attribute for each step.
 This is a metadata field useful for giving each step a useable name.
-Besides this attribute, There's two main ones that are useful here: `uses` and `runs`.
+In addition, there's two useful attributes here: `uses` and `runs`.
 
-`uses` is where you can specify pre-built actions available in GitHub Action's marketplace.
-Marketplace actions were developed by other developers to preform common actions and made for others to use.
-Some actions the majority of workflows will use, for instance [`actions/checkout`](https://github.com/actions/checkout).
-Others may be more specialized to a specific promgramming language or domain, for example the [actions made available from `r-lib`](https://github.com/r-lib/actions/tree/v2-branch).
+`uses` is where you can specify pre-built actions, which are made available in the GitHub Action's marketplace.
+Marketplace actions were developed and maintained by other developers, and they are available to other GitHub users.
+Some of these Marketplace actions are used quite often, for instance [`actions/checkout`](https://github.com/actions/checkout) is used heavily, since it's meant to checkout code onto the runner.
+Other Marketplace actions may have other other intended usecases or apply only to a specific programming language or domain.
+For example, the [actions made available from `r-lib`](https://github.com/r-lib/actions/tree/v2-branch).
 More on these in a second.
 
-`runs` is for specific commands you want to run on the runner.
+The `runs` attribute is for specific commands you want to run on the runner.
 For instance, say you want to log the version of a specific piece of software within the environment.
 You can do the following:
 
@@ -181,49 +181,230 @@ You can do the following:
     quarto --version
 ```
 
+You can use one- or multi-line statements for this attribute.
+The use of `|` allows for you to write commands extending over multiple lines.
+
 #### Steps to update resource list
 
-Now that we're aware of the available attributes, let's take a second to define the steps to update the resource list.
+Now that we're aware the differnt attributes, let's take a second to define the steps to update the resource list.
 In list form, this is what I want to happen:
 
 1. Use R to import the new resources from the [repo containing the `.csv` file](https://github.com/collinberke/data-media-marketing-resources).
 2. Render the page using a quarto `.qmd` file to be published on the site.
-3. Create a git commit logging the resource list was updated on the site.
+3. Create a git commit logging the resource list was updated on the site to the main branch.
 
-These steps will require the use of both the `uses` and `runs` attributes.
+The `uses` and `runs` attributes will both be needed to perform these actions.
 
 ##### Actions from the Marketplace
 
 Once the runner's environment is up and running, one common action is to checkout the repo's code into the environment.
-Since this is such a common action, [GitHub Actions]() has a good pre-defined action to  get started.
-To do this, 
+Since this is such a common action, [GitHub Actions](https://github.com/actions/checkout) has a good pre-defined action to help us get started.
+To do this, we use the following block within the YAML file.
 
-The workflow's first and second steps can also be completed using pre-defined actions from the GA Marketplace.
-When it comes to utilizing R within a workflow, I've found `r-libs` actions to be quite useful.
+```yml
+# More here: https://github.com/actions/checkout
+- name: Checkout repo code
+  uses: actions/checkout@v6
+```
+
+This will perform the necessary actions to checkout the code, so it's available within the runner's environment.
+
+Now that the code is available on the runner, we need to do some additional setup and configuration of the compute environment.
+This includes getting and configuring R.
+I've found [r-lib's](https://github.com/r-lib/actions) actions to be quite useful.
 
 ###### Don't be like me
 
-You may think 'oh just `install.packages()` to setup the packages you need to run your code.
-Yeah... the first time I ran this, it took 10m44s.
-There's a better way--use r-libs' [`setup-r-dependencies`](https://github.com/r-lib/actions/tree/v2/setup-r-dependencies) or [`setup-renv`](https://github.com/r-lib/actions/tree/v2/setup-renv) actions.
+Word to the wise.
+You could manage the setup and configuration of R yourself.
+In this post, we're just working within ubuntu.
+The setup wouldn't be too challenging to install R and the needed libraries.
+However, utilizing r-lib's actions makes it easy, and it provides one great benefit: caching.
+Here's my story.
 
-Initially using the `setup-r-dependencies` action, my time was nearly cut in half to 5m28s.
-All that was required was that I setup a `DESCRIPTION` file in the root directory of the project.
-It's also important to note that these actions give you the added benefit of creating a cached object.
-The cached object is basically a snapshot of the environment you used during a previous workflow run.
-With this snapshot you do not need to build the packages again.
-This cached object can be used for future runs.
-Indeed, I ran my action again to see how much faster the workflow was.
-It ran at a mind boggling 00m32s!
+Once you have R installed on the runner, you may think 'oh I can just `install.packages()` to setup the libraries needed to run my code'.
+Yeah... the first time I ran this it took 10m44s.
+In terms of running things on a computer, this was a snails pace.
+
+There's a better way--use r-libs' [`setup-r-dependencies`](https://github.com/r-lib/actions/tree/v2/setup-r-dependencies) or [`setup-renv`](https://github.com/r-lib/actions/tree/v2/setup-renv) action.
+
+In fact, using the `setup-dependencies` action nearly **cut my setup time in half, 5m28s**.
+All that was required was that I have a `DESCRIPTION` file in the root directory, which contained the dependencies need to run the code.
+
+One way this method of setup is faster is the action implements the use of [`pak`](https://pak.r-lib.org/) to install the dependencies.
+
+But wait, there's more.
+`setup-r-dependencies` also [caches](https://docs.github.com/en/actions/concepts/workflows-and-actions/dependency-caching?versionId=free-pro-team%40latest&productId=actions&restPage=reference%2Cworkflows-and-actions) a snapshot of the runner's dependencies for future runs.
+Every workflow run starts with a fresh environment, and dependencies need to be re-loaded every time.
+Rather than going and installing these dependencies every time, instead, GitHub actions can already have these dependencies ready within the environment by pulling in the snapshot.
+
+When I ran the action again, it utilized the depedency snapshot, and it completed the setup in a **mind boggling run of 00m32s!**
+
 So, yeah, use r-libs actions if you can.
 
-More about setting up Quarto [here](https://github.com/quarto-dev/quarto-actions/tree/main/setup).
+Here's the [DESCRIPTION file](https://github.com/collinberke/berkeBlog/blob/2012feac68290714028c64358b68ea0c834685fb/DESCRIPTION) I use for dependency management in the runner's environment.
 
-Rendering a quarto file can be seen [here](https://github.com/quarto-dev/quarto-actions/tree/main/render).
+::: {.callout-note}
+Indeed, [`renv`](https://rstudio.github.io/renv/) could also be used for dependency management.
+For this example, though, I found the DESCRIPTION file approach to be the most straightforward.
+:::
 
-##### Runs for our workflow
+##### Setting up Quarto
 
-# Interfacing with actions from the command line
+Now with R installed along with the needed dependencies, the setup and configuration of the environment to render the quarto file is next.
+The [Quarto developers](https://github.com/quarto-dev) provide pre-built actions here to help us do this easily.
+These pre-built actions can be found within the [`quarto-actions`](https://github.com/quarto-dev/quarto-actions) repos from the group.
+
+This action [here](https://github.com/quarto-dev/quarto-actions/tree/main/setup) is used to install Quarto on the runner.
+The YAML section to run this action looks like this:
+
+```yaml
+- name: Setup Quarto
+  uses: quarto-dev/quarto-actions/setup@v2
+
+- name: Check Quarto version
+  run: |
+    quarto --version
+```
+
+Although not necessary for the workflow, I include a quick `run` attribute to log the installed version of Quarto on the runner.
+This is useful if I ever need to diagnose any issues with previous workflow runs.
+
+Now we have everything we need within the build to render the file: R; dependencies to run our code; and Quarto is installed.
+The next step is now to render the file.
+
+##### Rendering the file
+
+The actions to render a Quarto file can be reviewed [here](https://github.com/quarto-dev/quarto-actions/tree/main/render).
+The YAML to render the Quarto file looks like this:
+
+```yaml
+- name: Render Quarto report
+  uses: quarto-dev/quarto-actions/render@v2
+  with:
+    path: data-media-marketing-resources.qmd
+
+- name: List files in directory
+  run: |
+    ls -a
+```
+
+You'll notice I include another `run` statement here for logging purposes.
+Here I run the command `ls -a` to list out all the files on the runner.
+Again, just some additional information in case I need to diagnose a failed run in the future.
+
+##### Commit changes to repo
+
+With the newly rendered file on the runner, we have changes to commit to the repo.
+To do this, we add the following code to our YAML file:
+
+```yaml
+- name: Commit and push updated resource list to repo
+  run: |
+    git config user.name "github-actions[bot]"
+    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    git add .
+    git commit -m "Update data-media-marketing-resources" -m "Changes here: https://www.collinberke.com/data-media-marketing-resources.html"
+    git push
+```
+
+Let's discuss this a little more.
+Notice here the commit is being attributed to a bot and not a person.
+This is not a well documented feature.
+However, multiple places suggest its use (checkout this blog [here](https://dev.to/davorg/robo-committer-for-automated-commits-2kba)).
+Additionally, the `actions/checkout` repo contains an [example suggesting the use of this bot account](https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token).
+
+All that's being done here is running a few git commands to:
+
+1. configure the bot account attribution, e.g. `git config user.name`
+2. add our changes `git add .`
+3. commit using an informative commit message, `git commit -m "<informative message>"`
+4. push changes to the repo, `git push`
+
+These are all the steps needed for a workflow.
+Here's the entire YAML file for a review.
+
+```yaml
+name: "Update data-media-marketing-resoures"
+description: "Updates resource list at collinberke.com/data-media-marketing-resources.html"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 15 * * 0"
+
+jobs:
+
+  build:
+    name: Build environment
+    runs-on: ubuntu-latest
+    steps:
+
+      # More here: https://github.com/actions/checkout
+      - name: Checkout repo code
+        uses: actions/checkout@v6
+
+      # More here: https://github.com/r-lib/actions/tree/v2-branch/setup-r
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+      
+      # More here: https://github.com/r-lib/actions/tree/v2-branch/setup-r-dependencies
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+      
+      # More here: https://github.com/quarto-dev/quarto-actions/tree/main/setup
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Check Quarto version
+        run: |
+          quarto --version
+
+      # More here: https://github.com/quarto-dev/quarto-actions/tree/main/render
+      - name: Render Quarto report
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: data-media-marketing-resources.qmd
+
+      - name: List files in directory
+        run: |
+          ls -a
+
+      # Attribute commit to bot account
+      - name: Commit and push updated resource list to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Update data-media-marketing-resources" -m "Changes here: https://www.collinberke.com/data-media-marketing-resources.html"
+          git push
+```
+
+The complete file can also be viewed [here](https://github.com/collinberke/berkeBlog/blob/master/.github/workflows/update-data-media-marketing-resources.yml).
+
+Now that the YAML file for the workflow is defined, it can be triggered either manually or during the scheduled time.
+
+#### Publishing the changes online
+
+I use [Netlify](https://www.netlify.com/) to host my personal blog.
+This service provides functionality where changes to the `main` branch kick off a new build and publish static content to a web server.
+As such, the workflow doesn't need additional steps to publish the updated web content.
+However, the Quarto dev team has [actions for the publishing](https://github.com/quarto-dev/quarto-actions/tree/main/publish).
+There's even a description of how to do this with Netlify [here](https://github.com/quarto-dev/quarto-actions/tree/main/publish#netlify).
+Despite this, I haven't explored setting this up, as I like the current setup.
+
+::: {.callout-note}
+Services like Netlify have limits on the number of builds that can take place over a certain period of time.
+These limits will depend on the pricing tier.
+Netlify uses credits.
+Builds require a significant amount of credits.
+As such, be mindful of how many builds you initiate when using a service like Netlify.
+Daily builds will require significantly more credits than a weekly build.
+:::
+
+This post will now shift focus towards how to view, manage, and trigger workflows on GitHub using the [GitHub CLI tool](https://cli.github.com/).
+
+# Actions from the command line
 
 To list out all the workflows within a repo, run the following command:
 
@@ -231,7 +412,7 @@ To list out all the workflows within a repo, run the following command:
 gh workflow list
 ```
 
-Run the following in the terminal to run a workflow from the command-line.
+Type the following in the terminal to run a workflow from the command-line.
 
 ```bash
 gh workflow run update-data-media-marketing-resources.yml
@@ -247,9 +428,38 @@ To watch the progress of a workflow, run the following from the terminal:
 gh run watch
 ```
 
+# Wrap up
 
-# Using a bot to commit changes
+This post overviewed the process of creating workflows using [GitHub actions](defining).
+It aimed to be a collection of notes walking through the steps highlighting an example to:
 
-More [here](https://dev.to/davorg/robo-committer-for-automated-commits-2kba).
+1. Setup the metadata in a GitHub Actions workflow YAML file.
+2. Configure what events will trigger a workflow.
+In this example manual and scheduled triggers are discussed.
+3. Setup the compute environment on a runner.
+4. Use already developed actions via GitHub's marketplace to setup R; setup dependenices; install Quarto; and render a new version of static web content.
+5. Create a git commit and push content back to the `main` branch for publication to the web.
 
-Using the checkout action to do this [here](https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token).
+One of the few takeaways from exploring GitHub Actions more deeply was many of the actions to do common steps have already been built.
+Use them, as they're likely quicker to get things setup and more efficient than what you could develop on your own.
+
+In addition, another takeway is GitHub actions is rather easy to get started.
+Indeed, there may be some versions of it that can be complicated.
+However, most common usecases already have been pre-built.
+You just need to know how to compose the workflow file to leverage them.
+
+My take?
+Take some time to expriment with Actions.
+There seems to be a lot of potential to aid in the automation of workflows.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
+
+
+
+
+
