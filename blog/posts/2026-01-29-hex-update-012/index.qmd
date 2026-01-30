@@ -1,0 +1,144 @@
+---
+title: "The Hex Update: Issue 012"
+date: "2026-01-29"
+author: "Collin K. Berke, Ph.D."
+description: "Some more 2026 predictions; rural Nebraskans' views on online community; podcasts will command more ad spend"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Folks, welcome to Issue 012.
+
+I missed last week.
+Sorry.
+My schedule didn't allow much space for writing.
+So, I wanted to catch up and focus on writing another post this week.
+
+Three topics recently caught my attention:
+
+* A report with some additional 2026 predictions for journalism, media, and technology.
+Audio, video, and personality will continue to be paths forward for media organizations.
+* A recent survey reporting on rural Nebraskans' views on algorithms and digital spaces.
+* A podcast episode emphasizing podcasts will command more attention from marketers and advertisers, as they provide greater opportunity for advertising impressions during digital audio listening time.
+
+To cap off the week with a little bit of fun, I share an article on scientists launching wooden satellites into space.
+Yes, wood.
+The stuff that comes from trees.
+
+Let's get into it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Report: Journalism, media, and technology trends and predictions](https://reutersinstitute.politics.ox.ac.uk/journalism-media-and-technology-trends-and-predictions-2026)
+
+This report is packed with 2026 media industry insights and predictions generated from a survey of media executives.
+Summarizing what caught my attention was a challenging task.
+So, I prioritized only sharing my top three insights.
+The whole report is worth a read, though.
+
+For one, media organizations are increasing their focus on audio and video production.
+Some quotes related to this topic include:
+
+> They (media executives) will also be looking beyond the article, investing more in multiple formats especially video and adjusting their content to make it more ‘liquid’ and therefore easier to reformat and personalise.
+
+> Over three-quarters of our survey respondents (79%) said it would be important to invest more in video, with a majority (71%) also looking to expand audio formats as a direct response to the AI threat.
+
+Personality will be used to cut through the noise.
+Independent creators have known this for some time, as they've leveraged their own personalities to expand their audiences and brands on third-party platforms not tied to a single media organization.
+Publishers will seek to capitalize on this.
+In fact, according to survey results, many publishers are attempting to get their staff to behave more like creators (76%), create partnerships with creators (50%), or aim to hire independent creators (28%) to manage portions of their organization (e.g., social media accounts).
+Indeed, as was quoted in the article, audiences want content that feels human, expert, and trustworthy.
+Letting personality lead will be one way to meet this need.
+
+Lastly Answer Engine Optimisation and Liquid Content are terms to become more aware of this year.
+These are strategies and tools media executives will turn to manage web traffic loss resulting from AI use.
+
+> Publishers expect traffic from search engines to decline by more than 40% over the next three years – not quite ‘Google Zero’ but a substantial impact none the less.
+
+Answer Engine Optimisation--related to Search Engine Optimization--are the tactics used by publishers to get their content embedded within AI summaries.
+Liquid Content is content that can be modified more easily to reformat and customize to individual users.
+
+#### Why does this matter?
+
+This report contains several predictions to track in 2026.
+Many of the predictions that caught my attention were related to AI, it potential impacts, and what media executives intend to focus on to address.
+The shift to more audio and video is one strategy to be aware of, as these formats may be more insulated from the impacts of AI in the year ahead.
+Audiences also want great content that feels human, expert, and trustworthy.
+Personality is one content element that can do this, which audio and video formats afford greater opportunity to do.
+Discovery is also a key point to emphasize.
+In this era of AI, getting content in the places where people are will be paramount.
+Audience's expectations will also grow around personalized experiences.
+AI and fluid content will allow for these experiences to be curated by media organizations.
+Indeed, I suspect these expectations will transcend all media, regardless of the content being consumed.
+
+### [Article: Rural Nebraskans aware of, concerned about impact of online algorithms](https://news.unl.edu/article/rural-nebraskans-aware-of-concerned-about-impact-of-online-algorithms)
+
+Here's an article a little more local--local to me anyways.
+The article reports some recent survey results about rural Nebraskans' awareness and views on the use of algorithms in online spaces.
+Many rural Nebraskans are aware of the use of algorithms to create custom digital experiences.
+Despite this awareness, many (74%) find these experiences make it more challenging to identify reliable information online.
+Building on this, the survey also provides some data around rural Nebraskans' views on the effectiveness of online spaces to help them connect with people who share common interests.
+According to the results, 35% of Nebraskans disagree while 29% agree that online spaces can be used to find more people with their exact interests then they can in their daily lives.
+The article also contains additional comments about how these data highlight opportunities in how the digital world can be used to further engage rural Nebraskans.
+Some additional reporting can be found [here (04m53s)](https://podcasts.apple.com/us/podcast/jan-23-nebraska-guard-deployment-neb-medicine-board/id118397516?i=1000746366023).
+
+#### Why does this matter?
+
+Although the results from the [Nebraska Rural Poll](https://ruralpoll.unl.edu/) are localized to the state of Nebraska, some might transcend geography.
+It's not surprising many rural Nebraskans are aware of the presence and effects of algorithms.
+What is surprising, though, were the results related to rural Nebraskans' views on the limited value online spaces have in finding people with similar interests beyond their daily lives.
+The common assumption would be less population density would result in a greater use and a sense of greater  value being placed on online tools that allow greater connection for rural residents.
+It also made me ask questions about how community and connection is defined in rural areas, and if a digital space existed or could be created that meets these definitions?
+Perhaps these results exist because these digital spaces don't exist.
+More questions rather than answers here, but they're interesting to consider.
+
+### [Podcast: The Great BTN Bake (Take) Off — Forecast Trends for 2026](https://www.youtube.com/watch?v=6WitqUwjwGo)
+
+Bumped into this episode from [EMARKETER's](https://www.emarketer.com/) [Behind The Numbers podcast](https://www.youtube.com/playlist?list=PLP1B1jR9De1mqHt6RgjChZytcNVa1l6_R).
+The episode covered some not so well known trends marketers and advertisers will want to be aware of in 2026.
+One trend focused on the lack of advertising and marketing spend flowing to podcasts.
+Much of the money spent within the digital audio listening space goes toward music, though many users on these platforms are already paying for subscriptions and won't be reachable with ads.
+According to one analyst, podcasts provide additional reach, and, in 2026, many budgets will be reconfigured to act on this opportunity.
+Although the podcast data points mostly caught my attention, the second trend highlighted was the rise in advertising-based video on on demand (AVOD) viewing.
+
+Here are some interesting points from the episode:
+
+* Podcasts are hot, but they still haven't gotten the full attention of advertisers and marketers [03m46s](https://youtu.be/6WitqUwjwGo?si=Gy_Hv3mUwN3VSGVl&t=226)
+* 80% of people will hear ads via podcasting vs 50% via listening to music [08m17s](https://youtu.be/6WitqUwjwGo?si=Joz2zj7ClGgtCKJz&t=497)
+* Time spent with podcasts as part of of all digital audio listening (30%) will only continue to grow [12s13s](https://youtu.be/6WitqUwjwGo?si=ApKWKWtzb9z2nmnh&t=733)
+* Live sports are the podcasts of streaming TV [19m00s](https://youtu.be/6WitqUwjwGo?si=1ypki0T2TdJNsvlW&t=1140)
+
+#### Why does this matter?
+
+One figure from this episode really stood out to me: 80% of audiences will hear ads via podcasting vs. 50% via listening to music.
+If I were a media planner developing a strategy for my digital listening spend, I'd more heavily focus my budget on podcasts.
+This is also a clear signal to media organizations and podcast producers.
+Podcast advertising spend is an opportunity, and it will only continue to grow in the coming year.
+
+# Just for fun
+
+### [Article: Satellites encased in wood are in the works](https://www.economist.com/science-and-technology/2026/01/21/satellites-encased-in-wood-are-in-the-works)
+
+Satellites made of wood to be launched into space?
+That's right, scientists are turning to trees for their designs.
+It's interesting to see how this natural material provides several benefits beyond what we'd expect a satellite to be made of, metal.
+These stories always inspire me.
+It also reminds me that the answer to some of the problems we face might be right in front of us, we just need to be aware enough to consider it.
+
+I hope you had a productive week and are soon to have an even more restful weekend.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
