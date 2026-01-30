@@ -52,3 +52,6 @@ vignettes/*.pdf
 /.quarto/
 
 **/*.quarto_ipynb
+
+# Ignore draft posts
+blog/posts/.drafts/*
