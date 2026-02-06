@@ -1,0 +1,115 @@
+---
+title: "The Hex Update: Issue 013"
+date: "2026-02-06"
+author: "Collin K. Berke, Ph.D."
+description: "Factors influencing media choice; Project Eidos: improving online advertising measurement; companionship and AI radio hosts"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Folks, welcome to Issue 013.
+
+Three topics recently caught my attention:
+
+* Academic work exploring the factors influencing media choice and rage bait
+* Project Eidos: an industry effort to standardize definitions and processes for online advertising measurement
+* AI radio hosts and companionship while listening to radio
+
+To cap off the week with a little bit of fun, I share a resource that reminded me how great the open web can be: The Library of Juggling.
+
+Let's get into it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Article: Why Rage Bait Works and How Curiosity Can Help Us Stop Doomscrolling](https://lettersandsciencemag.ucdavis.edu/rage-bait-curiosity-doomscrolling)
+
+This article highlights some recent academic work from the [Cognitive Communication Science Lab](https://cogcommscience.com/) at the University of California, Santa Barbara, lead by Associate Professor [Richard Huskey](https://communication.ucdavis.edu/people/richard-huskey).
+The article provides an overview of work exploring the mechanisms of rage bait, the ways in which users can be more mindful when consuming content, and the impact this type of content may have on people's use and engagement on social media.
+Despite the main focus of the article, the findings related to the factors influencing media choice are what caught my attention: emotion (e.g., positive/negative moods) and individual differences in curiosity (i.e., reinforcement learning; reward generalization; and information bonuses).
+In terms of emotion, Huskey and team found negative emotional states result in increased preference to consume negative content.
+These findings are counter to our assumptions and decades of media theory, which posits audiences select media to improve their mood.
+However, the researchers found this is not the case every time.
+Another interesting finding from this work includes the relationship between individual levels of curiousness and the likelihood audiences will enjoy a new, novel experience.
+
+#### Why does this matter?
+
+Reading the summary of this interesting work made me consider an oft-repeated phrase: know your audience.
+There are many practical applications for media professionals to consider as an extension of these results.
+Audiences' emotion are one key factor to consider.
+Also, individual differences, not necessarily just level of curiousness, play a crucial role and should be sought to be understood.
+Being aware of these factors could lead to some additional insight into how to craft experiences that better influence audience's media choice and enjoyment of content.
+
+### [Article: The IAB Formalizes Its Measurement Initiatives Under Its New ‘Project Eidos’](https://www.adexchanger.com/measurement/the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos/)
+
+This article introduces the Interactive Advertising Bureau's (IAB) new measurement initiative, [Project Eidos](https://www.iab.com/topics/project-eidos/).
+The initiative seeks to address advertising and marketing's structural issues in the online advertising measurement space.
+The IAB states this is not a replacement, but rather a realignment effort.
+The work includes standardizing measurement terms, as inconsistency across the industry greatly impacts the principles, standards, and frameworks used by and relied on by advertisers and marketers.
+In fact, the article cites the following statistic:
+
+> The IAB estimates that, at minimum, the industry loses at least $9 billion annually due to inconsistent definitions, API feeds and data inputs – much of it spent on manual work by humans to normalize and sync the data themselves.
+
+Aside from saving money, this initiative is critical because the effectiveness of "privacy by design", modern attribution tools, incremental testing, and media mix modeling (MMM) also depends on the outcome of this work.
+The article further suggests these additional efforts will result in little impact if the industry continues to operate in an environment with inconsistent measurement.
+
+#### Why does this matter?
+
+Standards and shared agreement are critical here.
+The effectiveness of online advertising depends on the results of such industry efforts.
+Explication of terms is what's important here, especially as the industry expands the use of methodologies prioritizing privacy, modernize attribution, and utilize various analysis and modeling techniques.
+It's garbage in, garbage out.
+Regardless of how sophisticated these methods may be, they'll lack impact if everyone is speaking a different language in terms of inputs and outputs.
+Media organizations will also want to be aware of this industry wide initiative, as in the near future advertisers and marketers may come to expect media partners to speak the same language and work within the industry's new standards.
+Moreover, from someone who operates in this space, it would be useful to no longer have to rely on workarounds and "digital duct tape" for measurement.
+
+### [Blog post: Heads Up, Radio - There's A New Companion In Town](https://jacobsmedia.com/heads-up-radio-theres-a-new-companion-in-town/)
+
+This blog post by [Fred Jacobs](https://jacobsmedia.com/our-team/) from [Jacobs Media](https://jacobsmedia.com/) provides some interesting insight into radio technology from the [2026 Consumer Electronic Show](https://www.ces.tech/).
+According to the post, AI transcended many of the products and demos.
+The post shared a couple of technologies attempting to transform radio.
+Specifically, it discussed tech that aims to uniquely enhance factors leading to people using radio: companionship.
+From the post:
+
+> As stations have gravitated to prerecorded shows hosted by out of market talent, perhaps the companionship piece has eroded somewhat.
+> Can “AI buds” convincingly replace—or at least compete with—humans?
+> It’s a question that remains to be seen.
+> The “AI companion” phase is clearly a technology goal that is fast becoming a trend.
+
+The post also shared an example of this tech: [Radio.FYI](https://fyi.me/p/vDOILsR6_qvIhEBma5GrOnPTfyL-DF5vYsMA6kTOdQI=).
+
+#### Why does this matter?
+
+In previous updates, I've highlighted personality as a strategy to break through the noise.
+Personality is a necessary but not sufficient factor for companionship.
+Thus, the following question should be asked: Is AI 'human' enough to functionally have a personality to meet audiences' companionship needs when listening to radio?
+Industry trends point to the answer being yes.
+It's certainly a trend to follow, as it has the potential to transform radio operations and audiences' expectations of the radio listening experience.
+
+# Just for fun
+
+### [Website: The Library of Juggling](https://libraryofjuggling.com/)
+
+Interested in learning how to juggle?
+The Library of Juggling is the place to turn.
+Bumping into this was a reminder of how great the web can be: a collection of open resources to learn something new and to go deep on specific subjects.
+Now, I don't think I'll be picking up juggling any time soon.
+I lack the time, motivation, and frankly the hand-eye coordination.
+However, if for some reason I needed to learn, I at least know this resource is available.
+
+Here's to a great start to the weekend.
+
+Enjoy 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
