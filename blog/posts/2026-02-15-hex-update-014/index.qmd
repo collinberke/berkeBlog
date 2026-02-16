@@ -1,0 +1,139 @@
+---
+title: "The Hex Update: Issue 014"
+date: "2026-02-15"
+author: "Collin K. Berke, Ph.D."
+description: "Fashiontainment; defining what a podcast is; marketing tactics--are some still relevant?"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Folks, welcome to Issue 014.
+
+Another busy week on my end, so I struggled to find space to write and publish a post by last Thursday night.
+Nonetheless, I still wanted to cap off this week with an update.
+
+Three topics recently caught my attention:
+
+* Brands shifting their marketing campaign strategy toward 'fashiontainment'
+* Defining the term podcast
+* Traditional marketing playbook tactics may be coming into question
+
+For a bit of fun, I share a blog post highlighting an innovation in an everyday item we don't necessarily think about: walls--specifically drywall.
+
+Let's get into it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Article: Gap gets into "fashiontainment"](https://www.marketplace.org/story/2026/01/21/why-gap-is-investing-in-fashiontainment)
+
+This article discusses a term introduced by the retailer [Gap](https://www.gap.com/): fashiontainment.
+Fashiontainment is Gap's melding of marketing campaigns with music artists and events to blur the lines between traditional advertising and content.
+Why?
+Marketers are acutely aware consumers have become more wary of traditional advertising and the noise within this space.
+Some marketers for large brands are betting a mix of advertising and entertainment is a way to address these two issues.
+Despite this bet, the article emphasizes some expert opinion, which posits such tactics will become core to marketing strategy.
+Measuring sales attribution due to these large campaigns is hard to measure and can be subjective, so it limits the number of marketers willing to try this approach.
+The article also highlights that innovation in this space can take a lot, so many marketers have fallen into observing what works and making a copy.
+Take for example this [article](https://theharrispoll.com/briefs/insurance-mascots-and-what-allstates-mayhem-shows-us-about-them/) about insurance mascots, which the article links.
+
+#### Why does this matter?
+
+The idea of blurring advertising and entertainment is what caught my attention here.
+Media organizations may find opportunity beyond just selling inventory, which may come from partnerships with brands turning to entertainment in an attempt to set themselves apart.
+However, it's a risky strategy, especially when marketers will be challenged in terms of campaign measurement and sales attribution.
+Also, fashiontainment isn't a new idea, either, which the article makes clear.
+Nonetheless, it's interesting to see experimentation within the space, especially since a common strategy has been to copy what works.
+It makes advertising interesting again.
+
+### [Podcast: What even is a podcast anymore?](https://www.bbc.com/reel/video/p0mxr47m/what-even-is-a-podcast-anymore-)
+
+This interview with [Katty Kay](https://en.wikipedia.org/wiki/Katty_Kay) and [PJ Vogt](https://www.searchengine.show/) focused on defining the term podcast.
+No surprise, the medium has changed significantly.
+Video podcasts are increasing.
+In fact, many people you talk to who *listen* to a podcast are most likely *watching* it.
+As such, the discussion included thoughts about the impact video has on the richness of the medium, which includes the conversations taking place within podcast episodes.
+Both the guest and host here agreed that cameras and crews significantly impact the nature of interviews and the conversations that take place.
+The interview then included some conversation about why podcasts are trending toward video.
+This includes the impact of algorithmic filtering that video platforms provide, which makes it easier for consumers to find content they might like.
+Lastly, the interview contained some conversation about how creators are returning to experimentation within the space, as the money and attention have cooled a bit.
+These two quotes from Vogt were mentioned with this point, and they are worth some further reflection:
+
+> Sometimes the least interesting time to be working an art form is at the moment where all the money shows up.
+
+> That sometimes a little less money and a little less attention is not the worst thing for people making something.
+
+Here are some interesting points I flagged as being worth a re-listen:
+
+* The changes in listener experience between video and audio-only podcasts. (04m51s)
+* Consumers' experience with discoverability in a space filled with content. (07m24s)
+* How are creators experiencing these profound changes in podcasting? (09m38s)
+
+#### Why does this matter?
+
+I find it ironic, and frankly a bit meta, that I watched a podcast about defining what a podcast is.
+Nonetheless, the interview contained some interesting points.
+There seems to be a balance still trying to be achieved here in terms of audio-only and video podcasts.
+Conversations do change when a podcast is recorded for video.
+However, discoverability is better for the consumer due to algorithmic filtering.
+I also think the conversation about creators turning back toward experimentation was interesting.
+Perhaps the current state of the space will lead to other forms of story-telling that pushes the medium forward.
+
+### [Event promotion: What stopped working in marketing--and what leaders are doing instead](https://adage.com/events-awards/gen-z-summit/aa-nextgen-marketing-best-practices-what-no-longer-works-in-2026)
+
+Despite being an event promotion, some useful points related to marketing trends were provided in this piece from [AdAge](https://adage.com/).
+The thesis is simple: many familiar marketing tactics may no longer apply and a recalibration is underway.
+This includes a release from marketers to be on top of every trend.
+The article provides several expert viewpoints mentioning that by the time you have a signal for a trend, it's too late to act on because people are already moving on.
+Some perspectives shared in the article also mention 2026 is the year of being "Peak Human", as AI is more and more being applied to reduce friction.
+However, authenticity requires some friction.
+Lastly, the article provides some thoughts on the change in strategy away from rigid targeting.
+Instead, some of the marketing executives stated it's more about focusing on the creative and letting platform algorithms do the work of getting the messaging in front of the right people.
+For instance, from a quote in the article by [Bridget Evans](https://www.linkedin.com/in/bridgetevans/), Spotify's global head of advertising business marketing:
+
+> Because overly rigid targeting can backfire. It shrinks your reach, slows learning and can have negative media efficiency consequences.
+
+#### Why does this matter?
+
+The piece contains some points to note.
+For one, the movement away from targeting was surprising, but it makes sense.
+The message should be the driver of who it gets in front of, not necessarily from rigid definitions of a target audience.
+Platforms' algorithms are really good at doing this, so let them do their jobs without limiting them with rigid definitions.
+Lastly, the comments about friction were worth some additional thought.
+AI certainly can be a friction reducer, even to a point where every user interaction is a custom, seemless experience.
+However, such friction reduction has the potential to strip away the humanness of the experience.
+Audiences still crave this humanness, and thus will come to expect friction to still be a part of the experience.
+
+# Just for fun
+
+### [Blog post: The wonder of modern drywall](https://www.worksinprogress.news/p/the-wonder-of-modern-drywall)
+
+You ever think about walls?
+Me neither, but within them is an interesting story of innovation.
+The innovation?
+[Drywall](https://en.wikipedia.org/wiki/Drywall).
+The article linked above provides more background.
+Just the thought of not being able to hang pictures due to [lath and plaster walls](https://en.wikipedia.org/wiki/Lath_and_plaster) just seems frustrating.
+Thankfully drywall has been invented.
+Not only is it more fire resistant and easier to work with, but its invention has made our lives easier.
+I find enjoyment hearing about innovations to everyday things we don't necessarily think about.
+You might, too.
+Check it out.
+
+Here's to hoping you find some innovation inspiration this week.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
+
