@@ -1,0 +1,124 @@
+---
+title: "The Hex Update: Issue 015"
+date: "2026-02-23"
+author: "Collin K. Berke, Ph.D."
+description: "Audio listening trends; Americans' complicated relationship with news; Netflix and Hollywood"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Folks, welcome to Issue 015.
+A little behind on last week's update, but here you go.
+
+Three topics recently caught my attention:
+
+* Audio listening trends
+* A report detailing Americans' complicated relationship with news
+* A podcast episode on Netflix's acquisition of Warner Brothers
+
+For a bit of fun, I share an article synthesizing and showing the impact daily rituals have on our everyday lives.
+
+Let's get into it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Report: The Record: Q4 U.S. audio listening trends](https://www.nielsen.com/insights/2026/the-record-q4-audio-listening-trends-2/)
+
+Linked above is a quarterly report from [Nielsen](https://www.nielsen.com/) about consumers' daily listening time.
+According to the report, daily audio consumption was 3 hours and 54 minutes, which is spread across multiple channels and platforms.
+When it comes to ad supported audio, 82% of all listening time goes to radio and podcasts.
+The report mentions this trend holds across age groups.
+However, younger audiences devote more listening time to podcasts (18 to 34: 33%; 35+: 17%).
+The report also splits these results in terms of format.
+Although for people 18+, the majority of listening time is devoted to News/Talk, though differences are present among groups.
+
+#### Why does this matter?
+
+I find these reports to be a good regular check-in, especially in terms of staying on top of time spent listening on ad supported platform trends.
+A few weeks ago I shared some [2026 trends to be aware of](https://www.collinberke.com/blog/posts/2026-01-29-hex-update-012/).
+One of those trends was how podcasts are not receiving their fair share of attention in terms of advertising dollars.
+While reviewing these the time spent listening trends, it became apparent this might be an opportunity to reach younger audiences (<35), as they devote more of their listening time to podcasts.
+
+### [Report: Americans' Complicated Relationship With News](https://www.pewresearch.org/journalism/2026/02/11/americans-complicated-relationship-with-news/)
+
+This report explores data about and attempts to untangle Americans' complicated relationship with news.
+To do this, it provides survey and focus group results from U.S. adults.
+The report presented findings across several topic areas.
+These included: news fatigue; the role news plays in people's civic participation; news access; views on people's ability to verify the accuracy of information within news; seeking vs bumping into news; and whether or not Americans' are tuning out the news.
+The report contains several key points and additional reporting on each point.
+As such, this summary includes only a few points that caught my attention.
+However, the whole report is worth a read.
+
+According to the report, many Americans feel exhausted by the news.
+Over 50% of U.S. adults say they are warn out by the news.
+Much of this fatigue is attributed to the volume of news.
+As such, two-thirds of Americans' are reported to have stopped getting news from a specific source.
+The report goes further.
+It states over a third of Americans say news consumption doesn't help in daily decision making.
+Indeed, these results are likely related to the following finding in the report:
+
+> Only 8% of Americans say people in the U.S. have a responsibility to pay for news, and most do not pay for it themselves.
+
+Despite these results, half of U.S. adults believe news consumption is rising.
+
+#### Why does this matter?
+
+These are all points media organizations should be considering, especially if they produce news.
+It's clear that news fatigue is a real, lived experience for many people in the U.S.
+This likely is translating into news avoidance and negative perceptions towards paying for news.
+In truth, this report is worth a full read-through.
+I was only able to overview a few of the points I found to be interesting in the above summary.
+There's also deeper-dives into each of these topics in the full report.
+
+### [Podcast: Netflix is eating Hollywood--because it has to](https://www.youtube.com/watch?v=0fftM1g6HFo)
+
+Here's an interesting podcast episode breaking down [Netflix's acquisition of Warner Brothers Discovery](https://about.netflix.com/en/news/netflix-to-acquire-warner-bros).
+The episode contains some relevant discussion about current media business strategy.
+The topics covered include: streaming library acquisition; the economics of content production; the value of data for streaming platforms; the role of AI in media organization's offerings; and some questions about the role of quality in an AI era.
+
+Here are some points I flagged for a re-listen:
+
+* The strategy around paying big dollar amounts for IP when some of the biggest disruptors in the media space pay $0 for content.  [05M07S](https://youtu.be/0fftM1g6HFo?si=vO0i_5R15e3Gmh14&t=308)
+* Content libraries are hard to generate with limited amounts of time and even much more so when competing with platforms who have speed due to user generated content. [10M40S](https://youtu.be/0fftM1g6HFo?si=gcJnu-H3pr3BFKgz&t=640)
+* The economics aren't there for streaming services to create hit shows because the model for long-term advertising dollars are not available. [10M07S](https://youtu.be/0fftM1g6HFo?si=NW8aIOZN_14e_JSE&t=727)
+* Large volumes of data is what creates value (i.e., improves targetted ads), but you need audience on these platforms to generate enough data. [31M02S](https://youtu.be/0fftM1g6HFo?si=vkWgz2ohFkEbroOl&t=1863)
+* There was some discussion about the role AI plays and what audiences find valuable: well-crafted things from the past. There's no evidence yet that all this technology will create well-crafted things in the future. [43M07S](https://youtu.be/0fftM1g6HFo?si=w03w6O4GJ5fBb9Tt&t=2587)
+* Does quality matter or is it just about scale? If these are differentiators then what do media organizations focus on?
+Reduced quality for scale or be super-premium content requiring higher subscription prices? [45M06S](https://youtu.be/0fftM1g6HFo?si=5szZlxGQuNkl5zrc&t=2706)
+
+#### Why does this matter?
+
+Aside from the acquisition deal being discussed, this episode contained some interesting conversation about current strategy for media organizations.
+The topic of content economics seemed to be an area worth additional focus, especially in terms of maximizing engagement while also balancing the realities of the media industry.
+This includes balancing quality, competing with platforms that spend very little for content, and legacy funding models to create hit series.
+Quality vs. scale is something else to consider.
+Both can be a differentiator, but it seems doing both results in limited effectiveness in terms of business strategy.
+
+# Just for fun
+
+### [Article: The surprising power of daily rituals](https://www.bbc.com/future/article/20210914-how-rituals-help-us-to-deal-with-uncertainty-and-stress)
+
+I bumped into this article from 2021, and it was a synthesis of the role daily rituals play in our lives.
+It was interesting to learn more about their impact, even for the mundane ones we do every day.
+It was also powerful to hear that rituals are useful in terms of reducing uncertainty, even if they don't necessarily have a practical purpose.
+Reading it made me reflect on some of my daily rituals, which I found to be a helpful exercise.
+Maybe you will to.
+
+Here's to a great start to the week.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
+
