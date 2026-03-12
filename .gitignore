@@ -55,3 +55,4 @@ vignettes/*.pdf
 
 # Ignore draft posts
 blog/posts/.drafts/*
+**/**/.drafts/*
