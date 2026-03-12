@@ -2,7 +2,7 @@
 title: "The Hex Update: Issue 009"
 date: "2026-01-01"
 author: "Collin K. Berke, Ph.D."
-description: "A weekly collection of what I recently read and learned while working in the media industry"
+description: "AI and its impact on web traffic; AI and its impact on ads; Streaming and local broadcasters"
 toc: true
 from: markdown+emoji
 categories:

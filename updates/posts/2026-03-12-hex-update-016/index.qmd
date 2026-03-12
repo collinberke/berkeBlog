@@ -1,0 +1,131 @@
+---
+title: "The Hex Update: Issue 016"
+date: "2026-03-12"
+author: "Collin K. Berke, Ph.D."
+description: "Lessons learned developing an app for TVs; live sports is driving platform subscriptions; AI-generated podcast disclosure; Netflix helping broadcasters"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Folks, welcome to Issue 016.
+The past couple of weeks have been a doozy between my work and personal calendar.
+I was just trying to keep my head above water, so time for writing was quite limited.
+Nonetheless, let's get back to it.
+
+Three topics recently caught my attention:
+
+* [Lessons learned in the development of a TV application](https://dinkomarinac.dev/blog/what-i-learned-after-building-3-tv-apps-coming-from-mobile/)
+* [Live sports is driving streaming platform subscriptions](https://www.tvbeurope.com/media-consumption/content-not-platform-how-live-sports-became-the-streaming-subscription-driver)
+* [A new decision framework and set of tools for disclosing AI-generated podcasts](https://podnews.net/update/ai-disclosures)
+
+For a bit of fun, I share an [inspiring story](https://wordglyph.xyz/one-piece-at-a-time) about someone who pitched a roller coaster idea to Disney--when they were 10.
+
+Also, to keep things fresh, I'm adding a new section: The best news I heard all week.
+This week, I'm sharing an [article](https://www.tvtechnology.com/platform/streaming/netflix-co-ceo-we-can-help-traditional-broadcasters-connect-with-audiences) about Netflix's view on its ability to help broadcasters.
+
+Let's get into it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Blog post: What I Learned After Building 3 TV Apps Coming From Mobile](https://dinkomarinac.dev/blog/what-i-learned-after-building-3-tv-apps-coming-from-mobile/)
+
+This blog post provides insight into the development of interactive apps for televisions.
+The author is pretty clear: TVs are not mobile devices.
+As such, standard development patterns that work on mobile devices fall apart when developing for a TV.
+Some of the differences include: TV's are viewed from a distance, so the UI experience is different; navigation is constrained because touch affords direct manipulation, but remotes constrain navigation to limited inputs; the fragmented nature of devices and manufacturers and the operating systems on devices makes development a [wicked problem](https://en.wikipedia.org/wiki/Wicked_problem) to solve; limitations due to television hardware; and the limits to testing before an application can be put into production.
+This piece is certainly relevant if your organization is exploring or actively working on an app to be deployed within a television environment.
+
+#### Why does this matter?
+
+I've been a part of a project like this, and these lessons are spot on.
+Operating systems across televisions vary considerably, which adds layers of complexity to the development process and introduces challenges into the testing phase.
+Certainly, tools are available to help with this.
+The experience for users is also different, especially when it comes to navigation.
+Touch in a mobile space affords many different gestures to accomplish actions.
+TV remotes constrain navigation, so you have to be especially mindful about how you intend users to interact with your application.
+As more media organizations attempt to be in this space, they'll need to be mindful of the uniqueness when it comes to television app development.
+As such, whether working with an in-house or a third-party development team, you'll want to have conversations with these groups about the uniqueness of TV application development.
+
+### [Article: Content, not platform: how live sports became the streaming subscription driver](https://www.tvbeurope.com/media-consumption/content-not-platform-how-live-sports-became-the-streaming-subscription-driver)
+
+Here's an interesting piece from [Matt Ross](https://www.linkedin.com/in/matt-ross-0b5440107/), Chief Analytics Officer for Digital i's.
+According to the piece, personalized viewing experiences afforded by streaming seems to be what's driving live sports viewing on these platforms.
+Despite the result of greater audience fragmentation, the article posits greater engagement with the content--especially for younger audiences.
+In fact, the article asserts it's the content driving audiences to these platforms, not platforms driving audiences to content.
+Here's a related quote from the article:
+
+> Audiences are concerned with content, not platform, so when SVOD moved into live sports, the fans followed.
+
+Along these same lines, the piece contained some insight into the role YouTube plays within live sports: it serves as a place for audiences to view content while events are taking place.
+The article also contains some conversation about the impact streamers are having on public service broadcasters in Europe.
+This includes some discussion about how market pressures are leading these types of broadcasters to strike deals with streaming service providers, while also being challenged to reconsider the production of high-cost, high-engagement entertainment programming.
+
+#### Why does this matter?
+
+Live sports remains an advantage for broadcasters, though personalization and access may be limited.
+However, streaming platforms allow for greater access and more personalized viewing experiences, though they may lack the rights to carry live sports content.
+Content is king in this case, and the article's points serve as a reminder.
+The conversation related to partnerships between streaming platforms and public service broadcasters in Europe is also noteworthy.
+Is this an opportunity for public media here in the U.S.?
+[Some seem to think so](https://www.linkedin.com/posts/shawnhalford_perhaps-this-will-be-an-unpopular-opinion-activity-7434611453086801920-6tyd).
+
+### [Article: AI in podcasts: When should you disclose it?](https://podnews.net/update/ai-disclosures)
+
+This post introduces a [framework](https://shouldidisclose.ai/about.html) and [tool](https://shouldidisclose.ai/) for determining if a podcast should be disclosed as being AI-generated.
+It introduces an [interactive online questionnaire](https://shouldidisclose.ai/) podcast producers can use to determine disclosure of a podcast being AI-generated.
+Developed by [Alberto Betella](https://betella.net/), the framework and tools use a guiding principle:
+
+> Disclose when AI is doing the creative work your listeners came for.
+
+In addition to introducing this tool, the post provides several opinions regarding its applicability.
+These conversations ranged from creators' passion and curiosity; the willingness to disclose AI use without unfair penalization; and authenticity, connection, and transparency.
+
+#### Why does this matter?
+
+Audiences expect authenticity and transparency--it's what allows content to stand out amongst the noise.
+Indeed, disclosure utilizing some type of framework might certainly help certify authenticity while improving transparency.
+However, I also agree with part of the argument regarding disclosure without penalization of content.
+If AI is used for creative purposes--while still being truthful and verified--and it creates value for an audience, then disclosure shouldn't hurt podcasts produced using AI.
+Indeed, this is a space to continue to follow.
+
+# The best news I heard all week
+
+### [Netflix co-CEO: We Can Help Traditional Broadcasters Connect With Audiences](https://www.tvtechnology.com/platform/streaming/netflix-co-ceo-we-can-help-traditional-broadcasters-connect-with-audiences)
+
+It's interesting to consider what partnerships like this might look like.
+Netflix has the platform and scale to reach audiences.
+Broadcasters have content and IP audiences want--especially local content.
+Does the industry get to a place where Netflix is the go to platform for local content?
+An interesting idea, especially considering how audiences are currently consuming content on these platforms.
+
+# Just for fun
+
+### [Blog post: I Pitched a Roller Coaster to Disneyland at Age 10 in 1978](https://wordglyph.xyz/one-piece-at-a-time)
+
+Dreamers dream.
+Dreamers become builders.
+Builders build.
+Here's an interesting piece by Kevin Gilkmann, who at the age of 10 pitched a roller coaster design to Disney.
+Although his design wasn't accepted, he got a response from an [Imagineer](https://en.wikipedia.org/wiki/Walt_Disney_Imagineering) which motivated him to become a builder in addition to being a dreamer.
+This post was a good reminder to 'just go for it, even if failure is imminent'.
+You may be surprised by the end result, even if it wasn't initially what you were aiming for.
+
+Hey, maybe we all just need [20 seconds of insane courage](https://youtu.be/p_3uUlwmbKs?si=toXGEe_JNDZjHnmo).
+
+Have a great start to the weekend.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
