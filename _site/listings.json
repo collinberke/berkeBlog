@@ -2,19 +2,6 @@
   {
     "listing": "/blog/index.html",
     "items": [
-      "/blog/posts/2026-02-23-hex-update-015/index.html",
-      "/blog/posts/2026-02-15-hex-update-014/index.html",
-      "/blog/posts/2026-02-06-hex-update-013/index.html",
-      "/blog/posts/2026-01-29-hex-update-012/index.html",
-      "/blog/posts/2026-01-15-hex-update-011/index.html",
-      "/blog/posts/2026-01-09-hex-update-010/index.html",
-      "/blog/posts/2026-01-01-hex-update-009/index.html",
-      "/blog/posts/2025-12-25-hex-update-008/index.html",
-      "/blog/posts/2025-12-19-hex-update-007/index.html",
-      "/blog/posts/2025-12-12-hex-update-006/index.html",
-      "/blog/posts/2025-12-05-hex-update-005/index.html",
-      "/blog/posts/2025-11-21-hex-update-004/index.html",
-      "/blog/posts/2025-11-13-hex-update-003/index.html",
       "/blog/posts/2025-11-01-til-notes-github-issues-file/index.html",
       "/blog/posts/2025-10-26-til-notes-rstats-function-dots/index.html",
       "/blog/posts/2025-10-11-tir-notes-boykis-the-ghosts-in-the-data/index.html",
@@ -31,10 +18,8 @@
       "/blog/posts/2024-12-30-til-base-r-list2env-glue-data-string-interpolation/index.html",
       "/blog/posts/2024-12-27-til-tidyr-separate-character-string/index.html",
       "/blog/posts/2024-12-08-til-data-wrangling-numeric-summaries-logical-vectors/index.html",
-      "/blog/posts/2024-11-01-hex-update-002/index.html",
       "/blog/posts/2024-10-05-post-workflow-walkthrough-google-bigquery-bigrquery-rstats/index.html",
       "/blog/posts/2024-09-14-post-google-analytics-machine-learning-kmeans-clustering/index.html",
-      "/blog/posts/2024-07-10-hex-update-001/index.html",
       "/blog/posts/2024-06-11-post-machine-learning-market-basket-analysis-google-analytics/index.html",
       "/blog/posts/2024-04-25-tidytuesday-2024-05-03-space-launches/index.html",
       "/blog/posts/2024-03-22-tidytuesday-2024-03-12-fiscal-sponsor-directory/index.html",
@@ -61,5 +46,26 @@
   {
     "listing": "/talks/index.html",
     "items": []
+  },
+  {
+    "listing": "/updates/index.html",
+    "items": [
+      "/updates/posts/2026-03-12-hex-update-016/index.html",
+      "/updates/posts/2026-02-23-hex-update-015/index.html",
+      "/updates/posts/2026-02-15-hex-update-014/index.html",
+      "/updates/posts/2026-02-06-hex-update-013/index.html",
+      "/updates/posts/2026-01-29-hex-update-012/index.html",
+      "/updates/posts/2026-01-15-hex-update-011/index.html",
+      "/updates/posts/2026-01-09-hex-update-010/index.html",
+      "/updates/posts/2026-01-01-hex-update-009/index.html",
+      "/updates/posts/2025-12-25-hex-update-008/index.html",
+      "/updates/posts/2025-12-19-hex-update-007/index.html",
+      "/updates/posts/2025-12-12-hex-update-006/index.html",
+      "/updates/posts/2025-12-05-hex-update-005/index.html",
+      "/updates/posts/2025-11-21-hex-update-004/index.html",
+      "/updates/posts/2025-11-13-hex-update-003/index.html",
+      "/updates/posts/2024-11-01-hex-update-002/index.html",
+      "/updates/posts/2024-07-10-hex-update-001/index.html"
+    ]
   }
 ]

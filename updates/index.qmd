@@ -1,5 +1,5 @@
 ---
-title: "Blog"
+title: "Updates"
 listing:
     type: table
     contents: "posts/**/index.qmd"
