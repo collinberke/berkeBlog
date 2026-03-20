@@ -1,0 +1,154 @@
+---
+title: "The Hex Update: Issue 017"
+date: "2026-03-19"
+author: "Collin K. Berke, Ph.D."
+description: "AI creating personalized hyperlocal news; applying a product mindset to data work at Netlfix; 100 years: the invention of TV; and some other things that brought me joy"
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 017.
+Last week I took a few days of vacation, which was a refreshing change of pace.
+I also took some time to do some digital spring cleaning.
+This included reconfiguring the apps on my phone's homescreen.
+I've neglected this for years, and the idea of maintaining a useful homescreen experience went to the wayside.
+I finally settled on a more efficient, useful organization--no more scattershot apps across multiple screens.
+I also found iOS' [widgets](https://support.apple.com/en-us/118610) and [quick actions](https://support.apple.com/guide/iphone/perform-quick-actions-iphcc8f419db/ios) to be quite useful.
+
+Folks, take time for some digital spring cleaning.
+It's worth it.
+
+So, anyways, let's get started.
+
+Three topics recently caught my attention:
+
+* [Hyperlocal news created by AI](https://www.cjr.org/feature/hyperlocal-ai-patch-newsletter-million-subscribers.php)
+* [Applying a product mindset to data work at Netflix](https://netflixtechblog.medium.com/data-as-a-product-applying-a-product-mindset-to-data-at-netflix-4a4d1287a31d)
+* [100 years: The invention of television](https://www.history.co.uk/articles/first-tv-demonstration-john-logie-baird)
+
+The best news I heard all week: [Firefly](https://en.wikipedia.org/wiki/Firefly_(TV_series)) is [coming back as an animated series](https://www.the-independent.com/arts-entertainment/tv/news/firefly-reboot-nathan-fillion-animated-series-cast-b2939822.html) and the [Dune 3 trailer just dropped](https://www.theguardian.com/film/2026/mar/17/dune-part-three-trailer-chalamet-villeneuve).
+
+For a bit of fun, I share a [story](https://www.brown.edu/news/2026-03-04/kitchen-fluid-dynamics) about how more of the world was learned by looking at the physics of a mundane experience we all have.
+
+Oh, I'm experimenting with another new section: What I found interesting this week.
+I wanted a place to reflect a little on the week.
+I will be a quick paragraph about what kept me interested while working and learning this week.
+At times, this section may be media related, other times it might be more tech focused, or it could just be another dumping ground for some half-baked ideas.
+Let's see where it goes.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Article: Hyperlocal AI with a Million Subscribers](https://www.cjr.org/feature/hyperlocal-ai-patch-newsletter-million-subscribers.php)
+
+This article features a company developing an AI platform which creates twice-weekly personalized hyperlocal newsletters.
+The service, Patch, drafts newsletters using local news aggregations, event calendars, and posts from Nextdoor.
+Included is some discussion about the sustainability of local journalism through Patch's business model, which doesn't utilize a nonprofit approach.
+This also includes some examination of the questions publishers should be seeking to answer with the integration of AI into their services.
+Specifically, in a market where media literacy is declining and readers can identify AI-generated content, the question related to how news can create value for both subscribers and advertisers becomes even more paramount.
+The piece includes some additional examples of how other news outlets have been using AI to not only create this hyperlocal content, but other products and services for their readership.
+
+#### Why does this matter?
+
+The focus for media organizations here should be to answer the following question: how can news create value for both subscribers and advertisers?
+AI certainly has the potential to do this in many areas, and it's not just in its ability to fill the void of hyperlocal news coverage.
+Indeed, organizations that best answer the above question will not only better serve their audiences, but could begin to see positive impacts on the revenue portion of their business model.
+
+### [Blog: Data as a Product: Applying a Product Mindset to Data at Netflix](https://netflixtechblog.medium.com/data-as-a-product-applying-a-product-mindset-to-data-at-netflix-4a4d1287a31d)
+
+This post explains how Netflix uses a product mindset in their data work.
+Data as a product, as quoted from the article, is defined as:
+
+> viewing data not as an incidental byproduct of systems, but as a core product in its own right.
+
+As such, the post asserts this approach to data work allows for the application of established product management principles to data assets.
+Included in this article are seven key principles on how this mindset is applied.
+These include:
+
+1. Having a clear purpose
+2. Defining users (audience)
+3. Providing measureble value and quality.
+4. Being thoughtful in terms of design and documentation.
+5. Following lifecycle management practices.
+6. Establishing clear ownership.
+7. Creating and maintaining trust and reliability.
+
+The post expands on each of these points in greater detail, which includes how they are defined and applied at Netflix
+
+#### Why does this matter?
+
+Netflix is clearly a leading company in the media industry, and it's important to acknowledge their approach and learn from their application of data.
+This includes an acknowledgement that the application of product management principles are critical when it comes to data work.
+It's also important to recognize, even at the scale and maturity of Netflix, their business is constantly re-thinking how data is being used.
+It's not a stale, rote process that just gets completed.
+It's iterative.
+Indeed, not all media organizations have Netflix's resources. However, many of these principles can be applied part-and-parcel to media organization's use of data.
+
+### [Article: John Logie Baird: 100 years since the first TV demonstration](https://www.history.co.uk/articles/first-tv-demonstration-john-logie-baird)
+
+This article is an interesting look back at the history of the invention of television, which occurred nearly 100 years ago.
+The inventor, [John Logie Baird](https://en.wikipedia.org/wiki/John_Logie_Baird), demonstrated the ability to televise moving images using an invention called a Televisor.
+This was built upon an earlier invention known as a [Nipkow disk](https://en.wikipedia.org/wiki/Nipkow_disk).
+Some of the earliest televised images included a ventriloquist dummy's head and a 20-year-old office worker William Edward Taynton.
+There's more about this historic event and where it happened in this video [here](https://www.youtube.com/watch?v=y7UZUr45qnU).
+
+#### Why does this matter?
+
+It's certainly taken for granted today, but the idea of television was under question nearly a century ago.
+Now it's an integral part of modern day life, though the technology has greatly advanced over the last 100 years.
+It's important to reflect upon the humbling beginnings of this technology, and how its creation impacted the media industry.
+It's also important to consider how this medium is changing, especially as digital media consumption competes with what is traditionally considered television viewing.
+
+# The best news I heard all week
+
+### [Firelfly, cult sci-fi ranked among best one-season TV shows ever made, to return -- with a twist](https://www.the-independent.com/arts-entertainment/tv/news/firefly-reboot-nathan-fillion-animated-series-cast-b2939822.html)
+
+### [War, inheritance and … a baby? First Dune: Part Three trailer is here](https://www.theguardian.com/film/2026/mar/17/dune-part-three-trailer-chalamet-villeneuve)
+
+# What I found interesting this week
+
+I bumped into a definition of [incremental development](https://allendowney.github.io/ThinkPython/chap06.html#incremental-development) while reading [Chapter 6: Return Values](https://allendowney.github.io/ThinkPython/chap06.html) from [Think Python](https://allendowney.github.io/ThinkPython/index.html) by Allen P. Downey.
+I intuitively knew about these steps, but his framing just made it click more for me.
+Here they are:
+
+> 1. Start with a working program, make small changes, and test after every change.
+> 2. Use variables to hold intermediate values so you can display and check them.
+> 3. Once the program is working, remove the scaffolding.
+
+# Just for fun
+
+### [Article: How long does it take to get last liquid drops from kitchen containers? These physicists know the answer](https://www.brown.edu/news/2026-03-04/kitchen-fluid-dynamics)
+
+There's something satisfying about a deeper examination of everyday experiences.
+I know very little about physics, but hearing a story about how a greater understanding of our world was created by examining something mundane just resonated with me.
+It really makes one consider what else could be learned if we just took the time to look a little further.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Willingness to look stupid is a genuine moat in creative work](https://sharif.io/looking-stupid)
+* [How Quarto embed fixes data science storytelling](https://www.emilyriederer.com/post/quarto-comms/)
+* [Phil Collins - Take Me Home](https://www.youtube.com/watch?v=sRY1NG1P_kw) (video)
+* [AC/DC - Back in Black (Official 4K Video)](https://www.youtube.com/watch?v=pAgnJDJN4VA) (video)
+
+That's it for this update.
+Get up, stand up, and stretch a little.
+Maybe even think about doing a little digital spring cleaning this weekend?
+
+I hope you have a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
