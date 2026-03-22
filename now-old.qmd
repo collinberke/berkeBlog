@@ -4,8 +4,33 @@ subtitle: "Here you'll find old updates I've removed from my Now Page."
 format:
   html:
     toc: false
-    date-modified: "2024-12-14"
+    date-modified: "r Sys.Date()"
 ---
+
+# 2026-03-21 update
+
+#### Transitioning to LazyVim
+
+As of my last update, I decided to burn down my Neovim setup and start over.
+I was in search of something more enjoyable and manageable to work with.
+I came across [LazyVim](https://www.lazyvim.org/) and started to really enjoy it.
+Out of the box it had sane defaults and configurations, so the setup was minimal and I've found it more enjoyable to work with.
+LazyVim Extras also make it easy to install and configure different plugins.
+
+#### Blogging more
+
+I'm attempting to increase the publishing of my blog posts.
+I was following a cadance of roughly posting every month.
+I want to bump this up to two a month, with a stretch goal being every week.
+The hardest parts are being realistic with myself, identifying shorter post topics to write about, and being kinder to myself.
+Writing posts with a tighter turn-around means embracing progress over perfection.
+
+#### Thinking about the use of data and organizational culture
+
+More and more often I'm being tasked with stratigizing how to improve the role and impact data has within an organization.
+These are not easy questions to answer.
+I've been doing a lot of exploring and experimentation.
+If anyone has any suggestions, let's chat.
 
 # 2024-12-14 update
 
