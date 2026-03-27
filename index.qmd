@@ -9,9 +9,9 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/collinberke
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/BerkeCollin
+    - icon: chat
+      text: Bluesky
+      href: https://bsky.app/profile/collinberke.bsky.social
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/collinberke/
