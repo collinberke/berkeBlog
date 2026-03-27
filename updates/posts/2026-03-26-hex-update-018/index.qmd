@@ -1,0 +1,159 @@
+---
+title: "The Hex Update: Issue 018"
+date: "2026-03-26"
+author: "Collin K. Berke, Ph.D."
+description: "Factors leading to media disengagement; messaging breaking the rules of billboard campaigns; some more reporting on Google Zero; Mr. Rogers is getting his own YouTube channel; and a new photo of the Crab Nebula"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 018.
+Spent some time in [Excel](https://www.theverge.com/news/788870/microsoft-excel-turns-40-today) this week.
+It's been some time since I've used it beyond some simple analyses.
+Although I take a code-first approach to data work, sometimes Excel is the right tool for the job.
+It just works for simple tasks, and it's the lingua franca between colleagues and I.
+Maybe I'll watch some YouTube videos to get back up to speed on some of the advancements I've missed out on ... ?
+Skill building, you know?
+
+Anyways, here are three things that recently caught my attention:
+
+* [The factors related to media disengagement](https://felix-dietrich.de/research/publications/25_chigreece_gilbertetal_pub.html)
+* [Messaging breaking the rules of billboards](https://www.npr.org/2026/03/18/nx-s1-5746115/billboards-san-francisco-tech-ai-advertising-marketing)
+* [Some additional reporting on Google Zero](https://futurism.com/artificial-intelligence/google-ai-overviews-media)
+
+The best news I heard all week: [‘Mister Rogers’ Neighborhood’ is getting a YouTube channel](https://deadline.com/2026/03/mister-rogers-neighborhood-youtube-channel-1236760195/).
+
+For a bit of fun, I share a [story](https://nautil.us/hubble-snaps-a-new-dazzling-photo-of-the-crab-nebula-1279203) about a recent picture taken by The [Hubble Space Telescope](https://en.wikipedia.org/wiki/Hubble_Space_Telescope) of the [Crab Nebula](https://en.wikipedia.org/wiki/Crab_Nebula).
+
+Let's explore these further.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [101 reasons to stop: A systematic review of media cues for disengagement](https://felix-dietrich.de/research/publications/25_chigreece_gilbertetal_pub.html) (research article)
+
+This research article explores academic literature for work investigating the mechanisms related to media disengagement.
+To do this, the paper utilized a methodology to identify work focused on *media cues*.
+According to the authors, media cues are defined as:
+
+> stimuli inherent to media environments that influence the potential for behaviour (e.g., disengagement) within the situation.
+
+The paper posits media disengagement is related to the presence of media cues.
+The [Hierarchical CMC Taxonomy](https://journals.sagepub.com/doi/10.1177/0093650220958224) is also used to more clearly organize media cues into a formal theoretical framework.
+Specifically, these factors can originate anywhere from the following portions of the taxonomy:
+
+1. device
+2. type of application
+3. branded application
+4. feature
+5. interaction
+6. message
+
+The article provides a useful table with all the features explored within the literature, nested within the groupings of the Hierarchical CMC Taxonomy.
+
+#### Why does this matter?
+
+In updates past, we've discussed how essential a focus on audience engagement will be for media organizations operating within a fragmented media environment, and user and reach metrics will decrease in importance.
+This piece outlines the mechanisms media producers and creators can leverage to craft more engaging experiences, and thus having a direct impact on media organizations ability to increase audience engagement.
+Although these mechanisms are an available tool, respect for user and audience agency remains paramount.
+It's critical to be aware that some of these features can be over-leveraged to a point of negative effect.
+Many audiences and users are becoming more keenly aware of these tactics and are actively seeking to avoid such experiences, thus respect from producers and creators should be top-of-mind when crafting media and experiences incorporating these mechanisms.
+
+### [Do you understand this billboard? If not, that's the whole point](https://www.npr.org/2026/03/18/nx-s1-5746115/billboards-san-francisco-tech-ai-advertising-marketing) (article)
+
+Here's an article focused on outdoor media campaigns for AI companies in San Francisco.
+The article highlights how this billboard messaging goes against the intent of a traditional billboard campaign: clearly explaining a product to a defined audience.
+That is, quoting [Christine Rose](https://www.linkedin.com/in/christine-rose/) from OUTFRONT Media in the article:
+
+> The cryptic tech ads assume the audience already understands the context, and rely on shared language, inside jokes, or cultural cues, rather than specific messaging.
+
+Such messaging is unique, but other professionals interviewed in the article caution this strategy may divide people into 'in groups' and 'out groups'.
+Such division could result in negative effects, but many of these companies view the upside of this strategy outweighs the risk.
+
+#### Why does this matter?
+
+This piece contains some interesting propositions about audience, messaging, and the medium.
+That is, if you know your audience well and the messaging strategy's risk is worth taking, then break the rules.
+It also really makes me consider how the messaging strategy can change when targeting a very specific audience in spaces where you go against the traditional intent of the medium carrying the message.
+Outdoor media isn't really a focus of these updates, so this piece was fun to bump into and reflect on more deeply.
+
+### [Evidence Grows That Google’s AI Overviews Have Eviscerated the Media Industry](https://futurism.com/artificial-intelligence/google-ai-overviews-media) (article)
+
+This article contains additional reporting on [Google Zero](https://en.wikipedia.org/wiki/Zero-click_result#Google_Zero).
+This time it's some research focusing on the impact AI summaries have on publisher's search traffic.
+This article references a [report](https://growtika.com/blog/tech-media-collapse) from [Growtika](https://growtika.com/).
+According to the report, many digital technology publishers are facing serious declines in traffic.
+The article goes further by reporting on the assumed causes of these declines: AI overviews; changes to the algorithm where Reddit posts rank higher; and the growing use of AI chatbots.
+Although these figures seem staggering, there's some question to the validity and accuracy of Growtika's research.
+This includes Growtika's lack of access to publishers' actual web traffic data and some criticism on their lack of control of seasonal shifts and people's changing content preferences.
+
+#### Why does this matter?
+
+Despite some of the criticism and limitations of the methodology employed within Growtika's report, it's still critical to consider the impact AI summaries and agents have on audience's interaction with media organization's content.
+The media industry is facing an inflection point, and a greater focus on engagement over reach should be the focus now.
+This may necessitate a change in strategy and tactics toward offerings that create direct relationships with audiences (e.g., newsletters) and are more interactive, rather than on a focus solely dependent upon funneling traffic through search.
+
+# The best news I heard all week
+
+### [‘Mister Rogers’ Neighborhood’ Getting YouTube Channel For First Time](https://deadline.com/2026/03/mister-rogers-neighborhood-youtube-channel-1236760195/) (article)
+
+# What I found interesting this week
+
+A few weeks back, I was introduced to the concept of [*five nines*](https://en.wikipedia.org/wiki/High_availability).
+This concept surfaced again while working on a project this week, so I was motivated to go a little deeper.
+
+The [percent calculations](https://en.wikipedia.org/wiki/High_availability#Percentage_calculation) for five nines in terms of downtime per year and month are staggering.
+That is, to achieve "five nines", a system can only be down for 5.26 minutes/year or 26.30 seconds/month.
+How do teams reach such high levels of availability?
+Several principles can be followed.
+These include:
+
+1. Eliminating single points of failure.
+2. Reliable crossover.
+3. Detection of failures as they occur.
+
+# Just for fun
+
+### [Hubble Snaps a New Dazzling Photo of the Crab Nebula](https://nautil.us/hubble-snaps-a-new-dazzling-photo-of-the-crab-nebula-1279203) (article)
+
+I bumped into this story later in the week.
+It was fun to learn more about the [Crab Nebula](https://en.wikipedia.org/wiki/Crab_Nebula) and the [Hubble Space Telescope](https://en.wikipedia.org/wiki/Hubble_Space_Telescope).
+What was striking was was the realization of how things change in so little time, even on the galactic scale.
+Some of the facts shared were astounding.
+Plus, it was just a cool picture to look at.
+Enjoy.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Google Has a Secret Reference Desk. Here's How to Use It](https://cardcatalogforlife.substack.com/p/google-has-a-secret-reference-desk) (blog post)
+* [Big Data on the Cheapest MacBook](https://duckdb.org/2026/03/11/big-data-on-the-cheapest-macbook) (blog post)
+* [Ruff Ruffman, Humble Media Genius | Algorithms Sing-Along Music Video | PBS KIDS](https://www.youtube.com/watch?v=lwfDPtUP2P8) (video)
+* [Tracy Chapman - Fast Car (Live)](https://www.youtube.com/watch?v=yvGfVdx-gNo&pp=0gcJCcUKAYcqIYzv) (video)
+
+That's it for this update.
+
+Take some time to learn something new this weekend.
+Use this as permission to watch that YouTube video you've been putting off.
+You might even take up learning more about the [filter formula](https://www.youtube.com/watch?v=USyNCEnaOY0) in Excel.
+
+Here's to a great start to your weekend. I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
