@@ -1,0 +1,208 @@
+---
+title: "Notes: Tidying up commit messages using a Conventional Commits style"
+description: "My commit messages needed help, so here's a solution"
+author: "Collin K. Berke, Ph.D."
+date: "2026-03-30"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - git
+  - github
+  - productivity
+  - workflow
+---
+
+# Background
+
+I've been making a concerted effort to tidy up my workflow.
+This includes my commit messages and history, which could use more structure and organization.
+For years, I never really thought about it.
+Code I wrote was mostly only going to be read and maintained by myself, so checking it into version control without worrying too much about the commit message was often the case.
+
+As my collaborations expanded, the importance of having clear commit messages dawned on me.
+I've picked up a few conventions here and there, but they still could improve.
+This is especially true when it comes to writing commits during R code and package development.
+These notes are an attempt to outline what I've learned about writing clear, complete commit messages.
+Portions of this will likely be opinionated, but I've found what's outlined here works well and aligns closely to other specifications.
+
+To help, I first needed a framework to work from.
+As a [LazyVim](https://www.lazyvim.org/) user, I initiate periodic plugin updates.
+When doing so, you get to see some of the commits from plugin developers.
+Take for example a few of the recent commits to the UI theme I use, [tokyonight.nvim](https://github.com/folke/tokyonight.nvim):
+
+```txt
+cdc07ac style: formatr
+7382277 chore(build): auto-generated vimdocs
+55bcc81 chore(build): auto-generated docs
+a6edd83 chore(build): auto-generated build files
+970cbb4 feat(extra): add Gemini CLI theme
+```
+
+# Conventional Commits
+
+I've seen this same style applied across many other plugins I use, so I explored if some rules already existed.
+
+There were:
+
+* [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0)
+
+The purpose of this specification is to make commit messages both human and machine readable.
+It provides light-weight conventions to describe features, fixes, and breaking changes.
+
+Taken directly from the specification, it suggests the following commit style:
+
+```txt
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+# Conventions I'm using
+
+The following is a description of the various conventions I'm attempting to follow and improve upon in my commit messages.
+
+## Commit types
+
+According to the spec, all commits must have a type.
+There are several commit types.
+These include required and optional types.
+When developing with R, I've found the following types to be relevant to my domain.
+
+### Required commit types
+
+* **fix**: fixes a bug or problem with the code.
+* **feat**: introduction of a new feature to the codebase.
+* **breaking change**: a significant change to the code or API.
+To denote a breaking change, I lean towards appending a `!` at the end of the type.
+However, adding a breaking change footer in addition to this also seems helpful.
+More on this in a bit.
+
+As noted in the specification, these types map to [Semantic Versioning Conventions](https://semver.org/) (i.e., MAJOR.MINOR.PATCH).
+That is: 
+
+* fix equates to a bump in PATCH
+* feat equates to a bump in MINOR
+* breaking change equates to a bump in MAJOR
+
+I've always struggled knowing when to bump version numbers, so reviewing this greatly improved my understanding of when to bump specific versions.
+
+### Optional, but often useful commit types
+
+* **docs**: a change or update to a codebase's documentation.
+* **test**: add or modify a portion of the testing framework.
+* **refactor**: a modification to the code base, but no output or behaviour is modified.
+
+These don't map to any of the Semantic Versioning Conventions, at least in how I read the specification.
+This doesn't mean that they couldn't coincide with bumping a version, though.
+
+### Example commit messages utilizing the various types
+
+Here's a contrived example of what this might look like.
+
+```txt
+feat: added an is_even function
+docs: draft docs for is_even function
+fix: is_even function now handles zero
+test: add test for is_even zero handling
+feat!: modify is_even to an is_even_odd function
+```
+
+## Scopes
+
+When it comes to R development, I've struggled with the optional scope portion of conventional commit messages.
+As documented in the specification:
+
+> A scope MAY be provided after a type. A scope MUST consist of a noun describing a section of the codebase surrounded by parenthesis, e.g., fix(parser):
+
+However, many of commits during R package development could span various sections.
+Take for example cases where you're following [RMarkdown Driven Development (RmDD)](https://www.emilyriederer.com/post/rmarkdown-driven-development/), and you're in the process of refactoring your analysis code into functions.
+You're likely making changes to `vignettes`, `R`, and `man` directories.
+Your analysis may also require an addition or a change to a SQL query, so that means you're making changes in the `inst` directory.
+This example now involves four different scope areas to be included within a commit.
+
+A scope is optional, so I might be overthinking this a bit.
+I've settled on the following for myself: if changes span multiple scopes, and I want to add a scope to the commit message, then the changes likely need to be broken into [smaller commit messages](https://masalmon.eu/2024/06/03/small-commits/).
+[`git add --patch`](https://www.youtube.com/watch?v=blbzIgM-aOU) is useful when confronted with these situations.
+
+#### Example commit messages applying scope
+
+```txt
+feat(R): added an is_even function
+docs(man): draft and render docs for is_even function
+fix(R): is_even function now handles zero
+test(tests): add test for is_even zero handling
+feat(R)!: modify is_even to a is_even_odd function
+```
+
+## Body
+
+It's not very often I add additional information via the body of a commit message.
+I attempt to make descriptions informative enough to make it clear what changes are being made.
+Check back in with me after I practice this some more.
+I could change my mind on the body portion of the commit message.
+
+## Commit Footer
+
+This is the space within a commit message I want to expand my use of more.
+Specifically, I think several useful tokens are available that could be added to a commit's footer.
+These include:
+
+* `Refs:`
+* `Fixes:`
+* `Closes:`
+* `See-also: fe3187489d69c4 (subject of related commit)`
+
+This would be great for also leveraging some of the tooling available to GitHub issues.
+
+#### Example commit messages employing footers
+
+```txt
+fix(R): is_even function now handles zero
+
+Fixes: #123
+```
+
+```txt
+feat(R)!: modify is_even to a is_even_odd function
+
+BREAKING CHANGE: users want an explicit function to identify odd or even numbers
+Closes: #23
+```
+
+## Grab bag of other conventions
+
+When it comes to casing, I'm going to stick to lowercase.
+However, the only exception is in cases of BREAKING CHANGE.
+
+If a commit falls underneath multiple commit types or spans multiple scopes, this is a signal the changes need to be broken into multiple commits.
+
+Commit types are not rigid.
+These can be team or project specific.
+Optional commit types can be expanded or modified over time.
+
+What happens in cases where I make a mistake, e.g., use refactor instead of feat?
+You can use `git rebase -i`.
+I found this [video](https://www.youtube.com/watch?v=H7RFt0Pxxp8) on the topic helpful.
+
+# Wrap up
+
+This was a fun, productive set of notes.
+I certainly feel a little more informed about how to apply the Conventional Commits specification to my commit messages.
+Maybe you should check it out as well.
+
+Have a good one.
+
+If you found this post to be useful, please share with others.
+If you're interested in these types of topics, let's connect:
+
+* BlueSky: [@collinberke.bsky.social](https://bsky.app/profile/collinberke.bsky.social)
+* LinkedIn: [collinberke](https://www.linkedin.com/in/collinberke/)
+* GitHub: [@collinberke](https://github.com/collinberke)
+* [Say Hi!](https://www.collinberke.com/say-hi)
