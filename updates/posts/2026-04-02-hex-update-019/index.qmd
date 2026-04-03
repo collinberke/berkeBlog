@@ -1,0 +1,151 @@
+---
+title: "The Hex Update: Issue 019"
+date: "2026-04-02"
+author: "Collin K. Berke, Ph.D."
+description: "YouTube is now the king of all media; America's Test Kitchen is offering programmatic advertising inventory; a case for not relying too heavily on data; using SQL to play chess"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 019.
+I've been really appreciating the extra sunlight that comes along with spring.
+Although the weather lately has been dreery where I live, I'm looking forward to enjoying the outside some more.
+Before we know it, summer will be upon us.
+Maybe I'll get outside for a walk this weekend?
+Perhaps you could enjoy one as well.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [YouTube is now the king of all media](https://podcasts.apple.com/us/podcast/king-youtube-whos-coming-for-the-crown-and-how/id1113097936?i=1000757641363)
+* [America's Test Kitchen is offering programmatic advertising inventory](https://www.adexchanger.com/ctv-roundup/americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu/)
+* [A case for not relying on data for media organizations](https://jacobsmedia.com/note-to-radio-understand-the-data-but-dont-rely-on-it/)
+
+The best news I heard all week: [America is going back to the moon](https://www.vox.com/today-explained-newsletter/484455/artemis-ii-launch).
+
+For a bit of fun, I share a [blog post](https://www.dbpro.app/blog/chess-in-pure-sql) that uses [SQL](https://en.wikipedia.org/wiki/SQL), a programming language used for database operations, to play chess.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [King YouTube: Who’s Coming for the Crown—and How](https://podcasts.apple.com/us/podcast/king-youtube-whos-coming-for-the-crown-and-how/id1113097936?i=1000757641363) (podcast)
+
+This episode from [EMARKETER's](https://www.emarketer.com/) [Behind the Numbers](https://www.youtube.com/playlist?list=PLP1B1jR9De1mqHt6RgjChZytcNVa1l6_R) podcast further explores YouTube's rise as a leading media platform.
+In terms of revenue, [YouTube has become the world's largest media company](https://www.hollywoodreporter.com/business/digital/youtube-worlds-largest-media-company-2025-tops-disney-1236525130/) ([02M57s](https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&t=177)).
+According to the episode's panel of analysts, this is in part due to YouTube's advantage of being a platform of free user generated content, while more traditional media companies continue to rely on a limited number of high-budget projects ([04M40S](https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&t=280)).
+Despite this, there was some contention to the claim that YouTube was the king of all media.
+Rather, it was mentioned that the platform should be considered the king of all reach ([05M54S](https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&t=354)).
+A point was then raised that YouTube is now a TV first platform, where over 70% of users are now watching via a connected TV.
+The ad dollars, however, are not reflecting this.
+The majority of advertising spend to YouTube continues to flow to mobile ([10M20S](https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&t=620)).
+YouTube's competitors are attempting to compete with the platform by moving more into vertical video and podcasts.
+However, analysts during the epsiode mentioned YouTube's competitors need to provide proof these new features bring in more audience, rather than just being an addition to their content library with no impact on reach and engagement.
+Some discussion was also had about YouTube's ads being a sleeping giant for revenue.
+Once they figure out the ad experience, like other platforms have, the ceiling is very high for the platform ([20M56S](https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&t=1256))
+
+#### Why does this matter?
+
+As previous updates have mentioned, YouTube continues to be the platform in the media space.
+This includes leading in the television space.
+Media organizations need to continue to prioritize YouTube as part of their publishing and distribution strategy, even though other platforms are building out features for vertical video and podcasts.
+It's also important to recognize YouTube's opportunity in terms of revenue generated from their ad experience, which only has the potential to grow.
+In fact, if the platform can crack the ad experience like other platforms have, then media organization's strategies for YouTube will become paramount.
+
+### [America’s Test Kitchen Puts Direct And Programmatic Access On Its Menu](https://www.adexchanger.com/ctv-roundup/americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu/) (article)
+
+This article describes a new advertising offering from [America's Test Kitchen](https://www.americastestkitchen.com/about-us/welcome), a brand publishing cooking content including TV shows, podcasts, cookbooks, and a print magazine.
+ATK is now providing standalone packages for advertisers to buy inventory on their [free ad-supported TV channels](https://www.americastestkitchen.com/articles/8317-how-to-watch-americas-test-kitchen-shows).
+In the past, media buyers would buy bundeled packages from streaming platforms to get their messaging near ATK or ATK like content.
+Why this shift?
+The article posits media buyers are making transparency and control over their ads nonnegotiable.
+Better data is also a key component of these direct sales of advertising inventory.
+This quote from the article does a good job highlighting this point:
+
+> For ATK, selling its inventory on a standalone basis allows it to give advertisers more content details, such as show title and episode number, ahead of running a campaign.
+> Show-level information is often hard for media buyers to find in the era of streaming and media fragmentation – and it remains a sore spot as demands for transparency continue.
+> Adding programmatic pipes also allows buyers to pair more audience targeting attributes with content metadata, Clavell said, including purchase intent.
+
+#### Why does this matter?
+
+Media buyers want greater control, transparency, and insight into their advertisements.
+Media organizations in the position to meet this need may want to explore options to provide this service, as there's opportunity here.
+The upside here is being able to control ad placements accompanied by improved access to better content metadata.
+This opportunity obviously would require a publisher's library and audience to be large enough to support such and effort, though.
+
+### [Note To Radio: Understand The Data But Don’t Rely On It](https://jacobsmedia.com/note-to-radio-understand-the-data-but-dont-rely-on-it/) (article)
+
+This article makes the case that radio stations, operating in a rapidly changing environment, have put too much reliance on data, and a course adjustment is advised.
+While reflecting on points from another [article](ww.fastcompany.com/91507988/forget-kpis-vibes-community-and-culture-is-how-you-build-a-brand-in-2026-brand-building), the author, [Fred Jacobs](https://jacobsmedia.com/our-team/), suggests the current environment should be viewed through a vibe lens.
+The article calls for a shift away from reviewing the quarterly forecasts and observing on what's happening here and now.
+It's a call to be more mindful of what's happening in the local markets media organization's serve.
+It's also a realignment of focus on the core audience, as this is where media brands will find their success.
+Specifically, according to the article:
+
+> The data have a place—another revealing scorecard that helps us sort out where everybody stands each month, each quarter, and each year.
+> But the brands that aim for a higher purpose—including longevity, consistency, and the ability to connect with meaningful audiences may find themselves ahead of the curve.
+
+#### Why does this matter?
+
+This article contains points worth consideration.
+Having a pulse on the local community of a media organization is critical to it's operation.
+With how fast things move, though, data may not be timely enough to capture the changes impacting the communities they serve.
+However, one piece that I think is missing here is a delineation on what data the article is being critical about.
+Indeed, an over reliance on traditional reach metrics may be shortsighted and won't be able to capture the 'vibe' of what's happening in the fast chagning environment media organizations operate.
+Other types of data exist, many of which are timely and capable of providing insight into the 'vibes', though.
+Media organizations need to be aware of these data sources and layer them in with other means to be able to tell the whole story of where a station sits in terms of reaching, engaging, and impacting the community in which it serves.
+
+# The best news I heard all week
+
+### [America is going back to the moon](https://www.vox.com/today-explained-newsletter/484455/artemis-ii-launch) (article)
+
+# What I found interesting this week
+
+I spent time reflecting and learning about an improved framework for my [git](https://en.wikipedia.org/wiki/Git) [commit messages](https://en.wikipedia.org/wiki/Commit_(version_control)).
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) was a great resource to bump into, and I adopted most of what was documented in the specification.
+To assist in my learning, I drafted a blog post on how to write better commit messages in my work.
+Check it out [here](https://www.collinberke.com/blog/posts/2026-03-30-notes-rstats-conventional-commits/).
+
+# Just for fun
+
+### [Chess in Pure SQL](https://www.dbpro.app/blog/chess-in-pure-sql) (blog post)
+
+Here's a tech piece for some fun this week.
+SQL's utility comes from its ability to perform database operations.
+But it can also be used to do fun things, like playing chess.
+It's amazing how some simple statements can be used to render such a complex game.
+I also really like the interactive elements in the post.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Consider the Greenland Shark](https://www.lrb.co.uk/the-paper/v42/n09/katherine-rundell/consider-the-greenland-shark) (article)
+* [How TV learned to sell itself](https://worksinprogress.co/issue/how-tv-learned-to-sell-itself/) (article)
+* [The Silkroad Ensemble: Ascending Bird | SILKROAD](https://www.youtube.com/watch?v=gs7IDSCqYyQ) (video)
+* [360 (Charli xcx Cover For Cello Obligato and String Quartet) by Peter Gregson \[from Bridgerton S4\]](https://www.youtube.com/watch?v=w8oYiQjlWNc) (video)
+
+That's it for this update.
+Maybe take some time this weekend to cherish the additional daylight we've been getting.
+I know I could benefit from some additional sunlight.
+Make sure to wear some sunscreen, though.
+
+I hope your work week comes to a great end, and you have an even more enjoyable weekend.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
