@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2026-04-02">
+<meta name="description" content="YouTube is now the king of all media; America’s Test Kitchen is offering programmatic advertising inventory; a case for not relying too heavily on data; using SQL to play chess">
 
-<title>Updates – Collin K. Berke, Ph.D.</title>
+<title>The Hex Update: Issue 019 – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +26,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../icon.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-db059561a52a8157735d9d19982f7967.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-d0c046dc0154466c5602a4bbfdff71ce.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-db059561a52a8157735d9d19982f7967.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-d0c046dc0154466c5602a4bbfdff71ce.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,68 +72,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      page: 15,
-    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -142,7 +84,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Collin K. Berke, Ph.D.</span>
     </a>
   </div>
@@ -153,27 +95,27 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../now.html"> 
+    <a class="nav-link" href="../../../now.html"> 
 <span class="menu-text">Now</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../blog/index.html"> 
+    <a class="nav-link" href="../../../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../updates/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../../updates/index.html"> 
 <span class="menu-text">Updates</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../say-hi.html"> 
+    <a class="nav-link" href="../../../say-hi.html"> 
 <span class="menu-text">Say Hi!</span></a>
   </li>  
 </ul>
@@ -185,24 +127,69 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(19)</span></div><div class="category" data-category="bWVkaWE=">media <span class="quarto-category-count">(19)</span></div><div class="category" data-category="dGhlJTIwaGV4JTIwdXBkYXRl">the hex update <span class="quarto-category-count">(19)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lets-catch-up" id="toc-lets-catch-up" class="nav-link active" data-scroll-target="#lets-catch-up">Let’s catch up</a></li>
+  <li><a href="#three-things" id="toc-three-things" class="nav-link" data-scroll-target="#three-things">Three things</a>
+  <ul class="collapse">
+  <li><a href="#king-youtube-whos-coming-for-the-crownand-how-podcast" id="toc-king-youtube-whos-coming-for-the-crownand-how-podcast" class="nav-link" data-scroll-target="#king-youtube-whos-coming-for-the-crownand-how-podcast">King YouTube: Who’s Coming for the Crown—and How (podcast)</a></li>
+  <li><a href="#americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu-article" id="toc-americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu-article" class="nav-link" data-scroll-target="#americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu-article">America’s Test Kitchen Puts Direct And Programmatic Access On Its Menu (article)</a></li>
+  <li><a href="#note-to-radio-understand-the-data-but-dont-rely-on-it-article" id="toc-note-to-radio-understand-the-data-but-dont-rely-on-it-article" class="nav-link" data-scroll-target="#note-to-radio-understand-the-data-but-dont-rely-on-it-article">Note To Radio: Understand The Data But Don’t Rely On It (article)</a></li>
+  </ul></li>
+  <li><a href="#the-best-news-i-heard-all-week" id="toc-the-best-news-i-heard-all-week" class="nav-link" data-scroll-target="#the-best-news-i-heard-all-week">The best news I heard all week</a>
+  <ul class="collapse">
+  <li><a href="#america-is-going-back-to-the-moon-article" id="toc-america-is-going-back-to-the-moon-article" class="nav-link" data-scroll-target="#america-is-going-back-to-the-moon-article">America is going back to the moon (article)</a></li>
+  </ul></li>
+  <li><a href="#what-i-found-interesting-this-week" id="toc-what-i-found-interesting-this-week" class="nav-link" data-scroll-target="#what-i-found-interesting-this-week">What I found interesting this week</a></li>
+  <li><a href="#just-for-fun" id="toc-just-for-fun" class="nav-link" data-scroll-target="#just-for-fun">Just for fun</a>
+  <ul class="collapse">
+  <li><a href="#chess-in-pure-sql-blog-post" id="toc-chess-in-pure-sql-blog-post" class="nav-link" data-scroll-target="#chess-in-pure-sql-blog-post">Chess in Pure SQL (blog post)</a></li>
+  <li><a href="#cool-things-i-recently-bumped-into" id="toc-cool-things-i-recently-bumped-into" class="nav-link" data-scroll-target="#cool-things-i-recently-bumped-into">Cool things I recently bumped into</a></li>
+  </ul></li>
+  <li><a href="#lets-connect" id="toc-lets-connect" class="nav-link" data-scroll-target="#lets-connect">Let’s connect</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Updates</h1>
+<h1 class="title">The Hex Update: Issue 019</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">the hex update</div>
+    <div class="quarto-category">media</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    YouTube is now the king of all media; America’s Test Kitchen is offering programmatic advertising inventory; a case for not relying too heavily on data; using SQL to play chess
+  </div>
 </div>
 
 
+<div class="quarto-title-meta column-page-left">
 
-<div class="quarto-title-meta">
-
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 2, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -212,285 +199,97 @@ window.Quarto = {
 </header>
 
 
+<section id="lets-catch-up" class="level1">
+<h1>Let’s catch up</h1>
+<p>Welcome to Issue 019. I’ve been really appreciating the extra sunlight that comes along with spring. Although the weather lately has been dreery where I live, I’m looking forward to enjoying the outside some more. Before we know it, summer will be upon us. Maybe I’ll get outside for a walk this weekend? Perhaps you could enjoy one as well.</p>
+<p>Let’s get started.</p>
+<p>Three topics recently caught my attention:</p>
+<ul>
+<li><a href="https://podcasts.apple.com/us/podcast/king-youtube-whos-coming-for-the-crown-and-how/id1113097936?i=1000757641363">YouTube is now the king of all media</a></li>
+<li><a href="https://www.adexchanger.com/ctv-roundup/americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu/">America’s Test Kitchen is offering programmatic advertising inventory</a></li>
+<li><a href="https://jacobsmedia.com/note-to-radio-understand-the-data-but-dont-rely-on-it/">A case for not relying on data for media organizations</a></li>
+</ul>
+<p>The best news I heard all week: <a href="https://www.vox.com/today-explained-newsletter/484455/artemis-ii-launch">America is going back to the moon</a>.</p>
+<p>For a bit of fun, I share a <a href="https://www.dbpro.app/blog/chess-in-pure-sql">blog post</a> that uses <a href="https://en.wikipedia.org/wiki/SQL">SQL</a>, a programming language used for database operations, to play chess.</p>
+</section>
+<section id="three-things" class="level1">
+<h1>Three things</h1>
+<p>Here’s what caught my attention this week:</p>
+<section id="king-youtube-whos-coming-for-the-crownand-how-podcast" class="level3">
+<h3 class="anchored" data-anchor-id="king-youtube-whos-coming-for-the-crownand-how-podcast"><a href="https://podcasts.apple.com/us/podcast/king-youtube-whos-coming-for-the-crown-and-how/id1113097936?i=1000757641363">King YouTube: Who’s Coming for the Crown—and How</a> (podcast)</h3>
+<p>This episode from <a href="https://www.emarketer.com/">EMARKETER’s</a> <a href="https://www.youtube.com/playlist?list=PLP1B1jR9De1mqHt6RgjChZytcNVa1l6_R">Behind the Numbers</a> podcast further explores YouTube’s rise as a leading media platform. In terms of revenue, <a href="https://www.hollywoodreporter.com/business/digital/youtube-worlds-largest-media-company-2025-tops-disney-1236525130/">YouTube has become the world’s largest media company</a> (<a href="https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&amp;t=177">02M57s</a>). According to the episode’s panel of analysts, this is in part due to YouTube’s advantage of being a platform of free user generated content, while more traditional media companies continue to rely on a limited number of high-budget projects (<a href="https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&amp;t=280">04M40S</a>). Despite this, there was some contention to the claim that YouTube was the king of all media. Rather, it was mentioned that the platform should be considered the king of all reach (<a href="https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&amp;t=354">05M54S</a>). A point was then raised that YouTube is now a TV first platform, where over 70% of users are now watching via a connected TV. The ad dollars, however, are not reflecting this. The majority of advertising spend to YouTube continues to flow to mobile (<a href="https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&amp;t=620">10M20S</a>). YouTube’s competitors are attempting to compete with the platform by moving more into vertical video and podcasts. However, analysts during the epsiode mentioned YouTube’s competitors need to provide proof these new features bring in more audience, rather than just being an addition to their content library with no impact on reach and engagement. Some discussion was also had about YouTube’s ads being a sleeping giant for revenue. Once they figure out the ad experience, like other platforms have, the ceiling is very high for the platform (<a href="https://youtu.be/HRniRDk04nQ?si=QWP_uafG_1K1dLET&amp;t=1256">20M56S</a>)</p>
+<section id="why-does-this-matter" class="level4">
+<h4 class="anchored" data-anchor-id="why-does-this-matter">Why does this matter?</h4>
+<p>As previous updates have mentioned, YouTube continues to be the platform in the media space. This includes leading in the television space. Media organizations need to continue to prioritize YouTube as part of their publishing and distribution strategy, even though other platforms are building out features for vertical video and podcasts. It’s also important to recognize YouTube’s opportunity in terms of revenue generated from their ad experience, which only has the potential to grow. In fact, if the platform can crack the ad experience like other platforms have, then media organization’s strategies for YouTube will become paramount.</p>
+</section>
+</section>
+<section id="americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu-article" class="level3">
+<h3 class="anchored" data-anchor-id="americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu-article"><a href="https://www.adexchanger.com/ctv-roundup/americas-test-kitchen-puts-direct-and-programmatic-access-on-its-menu/">America’s Test Kitchen Puts Direct And Programmatic Access On Its Menu</a> (article)</h3>
+<p>This article describes a new advertising offering from <a href="https://www.americastestkitchen.com/about-us/welcome">America’s Test Kitchen</a>, a brand publishing cooking content including TV shows, podcasts, cookbooks, and a print magazine. ATK is now providing standalone packages for advertisers to buy inventory on their <a href="https://www.americastestkitchen.com/articles/8317-how-to-watch-americas-test-kitchen-shows">free ad-supported TV channels</a>. In the past, media buyers would buy bundeled packages from streaming platforms to get their messaging near ATK or ATK like content. Why this shift? The article posits media buyers are making transparency and control over their ads nonnegotiable. Better data is also a key component of these direct sales of advertising inventory. This quote from the article does a good job highlighting this point:</p>
+<blockquote class="blockquote">
+<p>For ATK, selling its inventory on a standalone basis allows it to give advertisers more content details, such as show title and episode number, ahead of running a campaign. Show-level information is often hard for media buyers to find in the era of streaming and media fragmentation – and it remains a sore spot as demands for transparency continue. Adding programmatic pipes also allows buyers to pair more audience targeting attributes with content metadata, Clavell said, including purchase intent.</p>
+</blockquote>
+<section id="why-does-this-matter-1" class="level4">
+<h4 class="anchored" data-anchor-id="why-does-this-matter-1">Why does this matter?</h4>
+<p>Media buyers want greater control, transparency, and insight into their advertisements. Media organizations in the position to meet this need may want to explore options to provide this service, as there’s opportunity here. The upside here is being able to control ad placements accompanied by improved access to better content metadata. This opportunity obviously would require a publisher’s library and audience to be large enough to support such and effort, though.</p>
+</section>
+</section>
+<section id="note-to-radio-understand-the-data-but-dont-rely-on-it-article" class="level3">
+<h3 class="anchored" data-anchor-id="note-to-radio-understand-the-data-but-dont-rely-on-it-article"><a href="https://jacobsmedia.com/note-to-radio-understand-the-data-but-dont-rely-on-it/">Note To Radio: Understand The Data But Don’t Rely On It</a> (article)</h3>
+<p>This article makes the case that radio stations, operating in a rapidly changing environment, have put too much reliance on data, and a course adjustment is advised. While reflecting on points from another <a href="ww.fastcompany.com/91507988/forget-kpis-vibes-community-and-culture-is-how-you-build-a-brand-in-2026-brand-building">article</a>, the author, <a href="https://jacobsmedia.com/our-team/">Fred Jacobs</a>, suggests the current environment should be viewed through a vibe lens. The article calls for a shift away from reviewing the quarterly forecasts and observing on what’s happening here and now. It’s a call to be more mindful of what’s happening in the local markets media organization’s serve. It’s also a realignment of focus on the core audience, as this is where media brands will find their success. Specifically, according to the article:</p>
+<blockquote class="blockquote">
+<p>The data have a place—another revealing scorecard that helps us sort out where everybody stands each month, each quarter, and each year. But the brands that aim for a higher purpose—including longevity, consistency, and the ability to connect with meaningful audiences may find themselves ahead of the curve.</p>
+</blockquote>
+<section id="why-does-this-matter-2" class="level4">
+<h4 class="anchored" data-anchor-id="why-does-this-matter-2">Why does this matter?</h4>
+<p>This article contains points worth consideration. Having a pulse on the local community of a media organization is critical to it’s operation. With how fast things move, though, data may not be timely enough to capture the changes impacting the communities they serve. However, one piece that I think is missing here is a delineation on what data the article is being critical about. Indeed, an over reliance on traditional reach metrics may be shortsighted and won’t be able to capture the ‘vibe’ of what’s happening in the fast chagning environment media organizations operate. Other types of data exist, many of which are timely and capable of providing insight into the ‘vibes’, though. Media organizations need to be aware of these data sources and layer them in with other means to be able to tell the whole story of where a station sits in terms of reaching, engaging, and impacting the community in which it serves.</p>
+</section>
+</section>
+</section>
+<section id="the-best-news-i-heard-all-week" class="level1">
+<h1>The best news I heard all week</h1>
+<section id="america-is-going-back-to-the-moon-article" class="level3">
+<h3 class="anchored" data-anchor-id="america-is-going-back-to-the-moon-article"><a href="https://www.vox.com/today-explained-newsletter/484455/artemis-ii-launch">America is going back to the moon</a> (article)</h3>
+</section>
+</section>
+<section id="what-i-found-interesting-this-week" class="level1">
+<h1>What I found interesting this week</h1>
+<p>I spent time reflecting and learning about an improved framework for my <a href="https://en.wikipedia.org/wiki/Git">git</a> <a href="https://en.wikipedia.org/wiki/Commit_(version_control)">commit messages</a>. <a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> was a great resource to bump into, and I adopted most of what was documented in the specification. To assist in my learning, I drafted a blog post on how to write better commit messages in my work. Check it out <a href="https://www.collinberke.com/blog/posts/2026-03-30-notes-rstats-conventional-commits/">here</a>.</p>
+</section>
+<section id="just-for-fun" class="level1">
+<h1>Just for fun</h1>
+<section id="chess-in-pure-sql-blog-post" class="level3">
+<h3 class="anchored" data-anchor-id="chess-in-pure-sql-blog-post"><a href="https://www.dbpro.app/blog/chess-in-pure-sql">Chess in Pure SQL</a> (blog post)</h3>
+<p>Here’s a tech piece for some fun this week. SQL’s utility comes from its ability to perform database operations. But it can also be used to do fun things, like playing chess. It’s amazing how some simple statements can be used to render such a complex game. I also really like the interactive elements in the post.</p>
+</section>
+<section id="cool-things-i-recently-bumped-into" class="level2">
+<h2 class="anchored" data-anchor-id="cool-things-i-recently-bumped-into">Cool things I recently bumped into</h2>
+<p>A collection of links to things I’ve found cool recently (or was reminded are cool).</p>
+<ul>
+<li><a href="https://www.lrb.co.uk/the-paper/v42/n09/katherine-rundell/consider-the-greenland-shark">Consider the Greenland Shark</a> (article)</li>
+<li><a href="https://worksinprogress.co/issue/how-tv-learned-to-sell-itself/">How TV learned to sell itself</a> (article)</li>
+<li><a href="https://www.youtube.com/watch?v=gs7IDSCqYyQ">The Silkroad Ensemble: Ascending Bird | SILKROAD</a> (video)</li>
+<li><a href="https://www.youtube.com/watch?v=w8oYiQjlWNc">360 (Charli xcx Cover For Cello Obligato and String Quartet) by Peter Gregson [from Bridgerton S4]</a> (video)</li>
+</ul>
+<p>That’s it for this update. Maybe take some time this weekend to cherish the additional daylight we’ve been getting. I know I could benefit from some additional sunlight. Make sure to wear some sunscreen, though.</p>
+<p>I hope your work week comes to a great end, and you have an even more enjoyable weekend.</p>
+<p>Cheers 🎉!</p>
+</section>
+</section>
+<section id="lets-connect" class="level1">
+<h1>Let’s connect</h1>
+<p>If you found this content useful, please share. If you find these topics interesting and want to discuss further, let’s connect:</p>
+<ul>
+<li>BlueSky: <a href="https://bsky.app/profile/collinberke.bsky.social"><span class="citation" data-cites="collinberke.bsky.social">@collinberke.bsky.social</span></a></li>
+<li>LinkedIn: <a href="https://www.linkedin.com/in/collinberke/">collinberke</a></li>
+<li>GitHub: <a href="https://github.com/collinberke"><span class="citation" data-cites="collinberke">@collinberke</span></a></li>
+<li><a href="https://www.collinberke.com/say-hi">Say Hi!</a></li>
+</ul>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-date-sort" data-direction="asc">
-          Date - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Date - Newest
-        </option>
-         <option value="listing-title-sort" data-direction="asc">
-          Title
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<table class="quarto-listing-table table table-striped table-hover">
-<thead>
-<tr>
-<th>
-<a class="sort" data-sort="listing-date-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Date</a>
-</th>
-<th>
-<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Title</a>
-</th>
-<th>
-Description
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1775106000000" data-listing-file-modified-sort="1775206086301" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1307" data-listing-title-sort="The Hex Update: Issue 019" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Apr 2, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-04-02-hex-update-019/index.html" class="title listing-title">The Hex Update: Issue 019</a>
-</td>
-<td>
-<span class="listing-description">YouTube is now the king of all media; America’s Test Kitchen is offering programmatic advertising inventory; a case for not relying too heavily on data; using SQL to play chess</span>
-</td>
-</tr>
-<tr data-index="1" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1774501200000" data-listing-file-modified-sort="1774590483643" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1166" data-listing-title-sort="The Hex Update: Issue 018" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Mar 26, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-03-26-hex-update-018/index.html" class="title listing-title">The Hex Update: Issue 018</a>
-</td>
-<td>
-<span class="listing-description">Factors leading to media disengagement; messaging breaking the rules of billboard campaigns; some more reporting on Google Zero; Mr.&nbsp;Rogers is getting his own YouTube channel; and a new photo of the Crab Nebula</span>
-</td>
-</tr>
-<tr data-index="2" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1773896400000" data-listing-file-modified-sort="1773982716058" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1172" data-listing-title-sort="The Hex Update: Issue 017" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Mar 19, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-03-19-hex-update-017/index.html" class="title listing-title">The Hex Update: Issue 017</a>
-</td>
-<td>
-<span class="listing-description">AI creating personalized hyperlocal news; applying a product mindset to data work at Netlfix; 100 years: the invention of TV; and some other things that brought me joy</span>
-</td>
-</tr>
-<tr data-index="3" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1773291600000" data-listing-file-modified-sort="1773334213897" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1068" data-listing-title-sort="The Hex Update: Issue 016" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Mar 12, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-03-12-hex-update-016/index.html" class="title listing-title">The Hex Update: Issue 016</a>
-</td>
-<td>
-<span class="listing-description">Lessons learned developing an app for TVs; live sports is driving platform subscriptions; AI-generated podcast disclosure; Netflix helping broadcasters</span>
-</td>
-</tr>
-<tr data-index="4" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1771826400000" data-listing-file-modified-sort="1773334213897" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1029" data-listing-title-sort="The Hex Update: Issue 015" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Feb 23, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-02-23-hex-update-015/index.html" class="title listing-title">The Hex Update: Issue 015</a>
-</td>
-<td>
-<span class="listing-description">Audio listening trends; Americans’ complicated relationship with news; Netflix and Hollywood</span>
-</td>
-</tr>
-<tr data-index="5" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1771135200000" data-listing-file-modified-sort="1773334213896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1132" data-listing-title-sort="The Hex Update: Issue 014" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Feb 15, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-02-15-hex-update-014/index.html" class="title listing-title">The Hex Update: Issue 014</a>
-</td>
-<td>
-<span class="listing-description">Fashiontainment; defining what a podcast is; marketing tactics–are some still relevant?</span>
-</td>
-</tr>
-<tr data-index="6" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1770357600000" data-listing-file-modified-sort="1773334213896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="1000" data-listing-title-sort="The Hex Update: Issue 013" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Feb 6, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-02-06-hex-update-013/index.html" class="title listing-title">The Hex Update: Issue 013</a>
-</td>
-<td>
-<span class="listing-description">Factors influencing media choice; Project Eidos: improving online advertising measurement; companionship and AI radio hosts</span>
-</td>
-</tr>
-<tr data-index="7" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1769666400000" data-listing-file-modified-sort="1773334213896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1319" data-listing-title-sort="The Hex Update: Issue 012" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Jan 29, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-01-29-hex-update-012/index.html" class="title listing-title">The Hex Update: Issue 012</a>
-</td>
-<td>
-<span class="listing-description">Some more 2026 predictions; rural Nebraskans’ views on online community; podcasts will command more ad spend</span>
-</td>
-</tr>
-<tr data-index="8" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1768456800000" data-listing-file-modified-sort="1773334213896" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="883" data-listing-title-sort="The Hex Update: Issue 011" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Jan 15, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-01-15-hex-update-011/index.html" class="title listing-title">The Hex Update: Issue 011</a>
-</td>
-<td>
-<span class="listing-description">Developing young journalists is the future for news; teenagers’ negative views of news; streaming platforms placing pressure on broadcasters</span>
-</td>
-</tr>
-<tr data-index="9" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1767938400000" data-listing-file-modified-sort="1773334213895" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1164" data-listing-title-sort="The Hex Update: Issue 010" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Jan 9, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-01-09-hex-update-010/index.html" class="title listing-title">The Hex Update: Issue 010</a>
-</td>
-<td>
-<span class="listing-description">Appointment viewing, is it back?; the future of the web; revenue models for streaming-first audiences</span>
-</td>
-</tr>
-<tr data-index="10" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1767247200000" data-listing-file-modified-sort="1773334213895" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="943" data-listing-title-sort="The Hex Update: Issue 009" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Jan 1, 2026</span>
-</td>
-<td>
-<a href="../updates/posts/2026-01-01-hex-update-009/index.html" class="title listing-title">The Hex Update: Issue 009</a>
-</td>
-<td>
-<span class="listing-description">AI and its impact on web traffic; AI and its impact on ads; Streaming and local broadcasters</span>
-</td>
-</tr>
-<tr data-index="11" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1766642400000" data-listing-file-modified-sort="1773334213895" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="846" data-listing-title-sort="The Hex Update: Issue 008" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Dec 25, 2025</span>
-</td>
-<td>
-<a href="../updates/posts/2025-12-25-hex-update-008/index.html" class="title listing-title">The Hex Update: Issue 008</a>
-</td>
-<td>
-<span class="listing-description">Podcasts taking over the living room; Netflix’s recent podcast deals; Users faith in the internet</span>
-</td>
-</tr>
-<tr data-index="12" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1766124000000" data-listing-file-modified-sort="1773334213895" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1130" data-listing-title-sort="The Hex Update: Issue 007" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Dec 19, 2025</span>
-</td>
-<td>
-<a href="../updates/posts/2025-12-19-hex-update-007/index.html" class="title listing-title">The Hex Update: Issue 007</a>
-</td>
-<td>
-<span class="listing-description">AI mistakes; 2026 predictions for journalism; The web is now mostly bots</span>
-</td>
-</tr>
-<tr data-index="13" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1765519200000" data-listing-file-modified-sort="1773334213894" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1154" data-listing-title-sort="The Hex Update: Issue 006" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Dec 12, 2025</span>
-</td>
-<td>
-<a href="../updates/posts/2025-12-12-hex-update-006/index.html" class="title listing-title">The Hex Update: Issue 006</a>
-</td>
-<td>
-<span class="listing-description">A weekly collection of what I recently read and learned while working in the media industry</span>
-</td>
-</tr>
-<tr data-index="14" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1764914400000" data-listing-file-modified-sort="1773334213894" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1116" data-listing-title-sort="The Hex Update: Issue 005" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Dec 5, 2025</span>
-</td>
-<td>
-<a href="../updates/posts/2025-12-05-hex-update-005/index.html" class="title listing-title">The Hex Update: Issue 005</a>
-</td>
-<td>
-<span class="listing-description">A weekly collection of what I recently read and learned while working in the media industry</span>
-</td>
-</tr>
-<tr data-index="15" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1763704800000" data-listing-file-modified-sort="1773334213894" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1137" data-listing-title-sort="The Hex Update: Issue 004" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Nov 21, 2025</span>
-</td>
-<td>
-<a href="../updates/posts/2025-11-21-hex-update-004/index.html" class="title listing-title">The Hex Update: Issue 004</a>
-</td>
-<td>
-<span class="listing-description">A weekly collection of what I recently read and learned about while working in the media industry</span>
-</td>
-</tr>
-<tr data-index="16" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1763013600000" data-listing-file-modified-sort="1773334213894" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="980" data-listing-title-sort="The Hex Update: Issue 003" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Nov 13, 2025</span>
-</td>
-<td>
-<a href="../updates/posts/2025-11-13-hex-update-003/index.html" class="title listing-title">The Hex Update: Issue 003</a>
-</td>
-<td>
-<span class="listing-description">A weekly collection of what I recently read and learned about while working in the media industry</span>
-</td>
-</tr>
-<tr data-index="17" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1730523600000" data-listing-file-modified-sort="1773334213893" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3143" data-listing-title-sort="The Hex Update: Issue 002" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Nov 2, 2024</span>
-</td>
-<td>
-<a href="../updates/posts/2024-11-01-hex-update-002/index.html" class="title listing-title">The Hex Update: Issue 002</a>
-</td>
-<td>
-<span class="listing-description">Key insights and what I learned about the media industry as of October 2024</span>
-</td>
-</tr>
-<tr data-index="18" data-categories="dGhlJTIwaGV4JTIwdXBkYXRlJTJDbWVkaWE=" data-listing-date-sort="1720587600000" data-listing-file-modified-sort="1773334213893" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2830" data-listing-title-sort="The Hex Update: Issue 001" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Jul 10, 2024</span>
-</td>
-<td>
-<a href="../updates/posts/2024-07-10-hex-update-001/index.html" class="title listing-title">The Hex Update: Issue 001</a>
-</td>
-<td>
-<span class="listing-description">Key insights and what I learned about the media industry in June 2024</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
-  <ul class="pagination"></ul>
-</nav>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -739,6 +538,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
