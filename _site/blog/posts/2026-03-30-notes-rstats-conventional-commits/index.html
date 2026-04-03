@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Collin K. Berke, Ph.D.">
-<meta name="dcterms.date" content="2026-02-06">
-<meta name="description" content="Factors influencing media choice; Project Eidos: improving online advertising measurement; companionship and AI radio hosts">
+<meta name="dcterms.date" content="2026-03-30">
+<meta name="description" content="My commit messages needed help, so here’s a solution">
 
-<title>The Hex Update: Issue 013 – Collin K. Berke, Ph.D.</title>
+<title>Notes: Tidying up commit messages using a Conventional Commits style – Collin K. Berke, Ph.D.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -43,8 +77,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-d0c046dc0154466c5602a4bbfdff71ce.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-6b26afd5e61a4c85010218d11c2ac9e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-4c6103dc91907769a3054eb9e04cc850.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -111,6 +145,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../../updates/index.html"> 
+<span class="menu-text">Updates</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../../say-hi.html"> 
 <span class="menu-text">Say Hi!</span></a>
   </li>  
@@ -131,18 +169,22 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lets-catch-up" id="toc-lets-catch-up" class="nav-link active" data-scroll-target="#lets-catch-up">Let’s catch up</a></li>
-  <li><a href="#three-things" id="toc-three-things" class="nav-link" data-scroll-target="#three-things">Three things</a>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#conventional-commits" id="toc-conventional-commits" class="nav-link" data-scroll-target="#conventional-commits">Conventional Commits</a></li>
+  <li><a href="#conventions-im-using" id="toc-conventions-im-using" class="nav-link" data-scroll-target="#conventions-im-using">Conventions I’m using</a>
   <ul class="collapse">
-  <li><a href="#article-why-rage-bait-works-and-how-curiosity-can-help-us-stop-doomscrolling" id="toc-article-why-rage-bait-works-and-how-curiosity-can-help-us-stop-doomscrolling" class="nav-link" data-scroll-target="#article-why-rage-bait-works-and-how-curiosity-can-help-us-stop-doomscrolling">Article: Why Rage Bait Works and How Curiosity Can Help Us Stop Doomscrolling</a></li>
-  <li><a href="#article-the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos" id="toc-article-the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos" class="nav-link" data-scroll-target="#article-the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos">Article: The IAB Formalizes Its Measurement Initiatives Under Its New ‘Project Eidos’</a></li>
-  <li><a href="#blog-post-heads-up-radio---theres-a-new-companion-in-town" id="toc-blog-post-heads-up-radio---theres-a-new-companion-in-town" class="nav-link" data-scroll-target="#blog-post-heads-up-radio---theres-a-new-companion-in-town">Blog post: Heads Up, Radio - There’s A New Companion In Town</a></li>
-  </ul></li>
-  <li><a href="#just-for-fun" id="toc-just-for-fun" class="nav-link" data-scroll-target="#just-for-fun">Just for fun</a>
+  <li><a href="#commit-types" id="toc-commit-types" class="nav-link" data-scroll-target="#commit-types">Commit types</a>
   <ul class="collapse">
-  <li><a href="#website-the-library-of-juggling" id="toc-website-the-library-of-juggling" class="nav-link" data-scroll-target="#website-the-library-of-juggling">Website: The Library of Juggling</a></li>
+  <li><a href="#required-commit-types" id="toc-required-commit-types" class="nav-link" data-scroll-target="#required-commit-types">Required commit types</a></li>
+  <li><a href="#optional-but-often-useful-commit-types" id="toc-optional-but-often-useful-commit-types" class="nav-link" data-scroll-target="#optional-but-often-useful-commit-types">Optional, but often useful commit types</a></li>
+  <li><a href="#example-commit-messages-utilizing-the-various-types" id="toc-example-commit-messages-utilizing-the-various-types" class="nav-link" data-scroll-target="#example-commit-messages-utilizing-the-various-types">Example commit messages utilizing the various types</a></li>
   </ul></li>
-  <li><a href="#lets-connect" id="toc-lets-connect" class="nav-link" data-scroll-target="#lets-connect">Let’s connect</a></li>
+  <li><a href="#scopes" id="toc-scopes" class="nav-link" data-scroll-target="#scopes">Scopes</a></li>
+  <li><a href="#body" id="toc-body" class="nav-link" data-scroll-target="#body">Body</a></li>
+  <li><a href="#commit-footer" id="toc-commit-footer" class="nav-link" data-scroll-target="#commit-footer">Commit Footer</a></li>
+  <li><a href="#grab-bag-of-other-conventions" id="toc-grab-bag-of-other-conventions" class="nav-link" data-scroll-target="#grab-bag-of-other-conventions">Grab bag of other conventions</a></li>
+  </ul></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
   </ul>
 </nav>
     </div>
@@ -151,16 +193,18 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Hex Update: Issue 013</h1>
+<h1 class="title">Notes: Tidying up commit messages using a Conventional Commits style</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">the hex update</div>
-    <div class="quarto-category">media</div>
+    <div class="quarto-category">git</div>
+    <div class="quarto-category">github</div>
+    <div class="quarto-category">productivity</div>
+    <div class="quarto-category">workflow</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Factors influencing media choice; Project Eidos: improving online advertising measurement; companionship and AI radio hosts
+    My commit messages needed help, so here’s a solution
   </div>
 </div>
 
@@ -177,7 +221,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 6, 2026</p>
+      <p class="date">March 30, 2026</p>
     </div>
   </div>
   
@@ -189,66 +233,127 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="lets-catch-up" class="level1">
-<h1>Let’s catch up</h1>
-<p>Folks, welcome to Issue 013.</p>
-<p>Three topics recently caught my attention:</p>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>I’ve been making a concerted effort to tidy up my workflow. This includes my commit messages and history, which could use more structure and organization. For years, I never really thought about it. Code I wrote was mostly only going to be read and maintained by myself, so checking it into version control without worrying too much about the commit message was often the case.</p>
+<p>As my collaborations expanded, the importance of having clear commit messages dawned on me. I’ve picked up a few conventions here and there, but they still could improve. This is especially true when it comes to writing commits during R code and package development. These notes are an attempt to outline what I’ve learned about writing clear, complete commit messages. Portions of this will likely be opinionated, but I’ve found what’s outlined here works well and aligns closely to other specifications.</p>
+<p>To help, I first needed a framework to work from. As a <a href="https://www.lazyvim.org/">LazyVim</a> user, I initiate periodic plugin updates. When doing so, you get to see some of the commits from plugin developers. Take for example a few of the recent commits to the UI theme I use, <a href="https://github.com/folke/tokyonight.nvim">tokyonight.nvim</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>cdc07ac style: formatr</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>7382277 chore(build): auto-generated vimdocs</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>55bcc81 chore(build): auto-generated docs</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>a6edd83 chore(build): auto-generated build files</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>970cbb4 feat(extra): add Gemini CLI theme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="conventional-commits" class="level1">
+<h1>Conventional Commits</h1>
+<p>I’ve seen this same style applied across many other plugins I use, so I explored if some rules already existed.</p>
+<p>There were:</p>
 <ul>
-<li>Academic work exploring the factors influencing media choice and rage bait</li>
-<li>Project Eidos: an industry effort to standardize definitions and processes for online advertising measurement</li>
-<li>AI radio hosts and companionship while listening to radio</li>
+<li><a href="https://www.conventionalcommits.org/en/v1.0.0">Conventional Commits 1.0.0</a></li>
 </ul>
-<p>To cap off the week with a little bit of fun, I share a resource that reminded me how great the open web can be: The Library of Juggling.</p>
-<p>Let’s get into it.</p>
+<p>The purpose of this specification is to make commit messages both human and machine readable. It provides light-weight conventions to describe features, fixes, and breaking changes.</p>
+<p>Taken directly from the specification, it suggests the following commit style:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>&lt;type&gt;[optional scope]: &lt;description&gt;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>[optional body]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>[optional footer]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="three-things" class="level1">
-<h1>Three things</h1>
-<p>Here’s what caught my attention this week:</p>
-<section id="article-why-rage-bait-works-and-how-curiosity-can-help-us-stop-doomscrolling" class="level3">
-<h3 class="anchored" data-anchor-id="article-why-rage-bait-works-and-how-curiosity-can-help-us-stop-doomscrolling"><a href="https://lettersandsciencemag.ucdavis.edu/rage-bait-curiosity-doomscrolling">Article: Why Rage Bait Works and How Curiosity Can Help Us Stop Doomscrolling</a></h3>
-<p>This article highlights some recent academic work from the <a href="https://cogcommscience.com/">Cognitive Communication Science Lab</a> at the University of California, Santa Barbara, lead by Associate Professor <a href="https://communication.ucdavis.edu/people/richard-huskey">Richard Huskey</a>. The article provides an overview of work exploring the mechanisms of rage bait, the ways in which users can be more mindful when consuming content, and the impact this type of content may have on people’s use and engagement on social media. Despite the main focus of the article, the findings related to the factors influencing media choice are what caught my attention: emotion (e.g., positive/negative moods) and individual differences in curiosity (i.e., reinforcement learning; reward generalization; and information bonuses). In terms of emotion, Huskey and team found negative emotional states result in increased preference to consume negative content. These findings are counter to our assumptions and decades of media theory, which posits audiences select media to improve their mood. However, the researchers found this is not the case every time. Another interesting finding from this work includes the relationship between individual levels of curiousness and the likelihood audiences will enjoy a new, novel experience.</p>
-<section id="why-does-this-matter" class="level4">
-<h4 class="anchored" data-anchor-id="why-does-this-matter">Why does this matter?</h4>
-<p>Reading the summary of this interesting work made me consider an oft-repeated phrase: know your audience. There are many practical applications for media professionals to consider as an extension of these results. Audiences’ emotion are one key factor to consider. Also, individual differences, not necessarily just level of curiousness, play a crucial role and should be sought to be understood. Being aware of these factors could lead to some additional insight into how to craft experiences that better influence audience’s media choice and enjoyment of content.</p>
+<section id="conventions-im-using" class="level1">
+<h1>Conventions I’m using</h1>
+<p>The following is a description of the various conventions I’m attempting to follow and improve upon in my commit messages.</p>
+<section id="commit-types" class="level2">
+<h2 class="anchored" data-anchor-id="commit-types">Commit types</h2>
+<p>According to the spec, all commits must have a type. There are several commit types. These include required and optional types. When developing with R, I’ve found the following types to be relevant to my domain.</p>
+<section id="required-commit-types" class="level3">
+<h3 class="anchored" data-anchor-id="required-commit-types">Required commit types</h3>
+<ul>
+<li><strong>fix</strong>: fixes a bug or problem with the code.</li>
+<li><strong>feat</strong>: introduction of a new feature to the codebase.</li>
+<li><strong>breaking change</strong>: a significant change to the code or API. To denote a breaking change, I lean towards appending a <code>!</code> at the end of the type. However, adding a breaking change footer in addition to this also seems helpful. More on this in a bit.</li>
+</ul>
+<p>As noted in the specification, these types map to <a href="https://semver.org/">Semantic Versioning Conventions</a> (i.e., MAJOR.MINOR.PATCH). That is:</p>
+<ul>
+<li>fix equates to a bump in PATCH</li>
+<li>feat equates to a bump in MINOR</li>
+<li>breaking change equates to a bump in MAJOR</li>
+</ul>
+<p>I’ve always struggled knowing when to bump version numbers, so reviewing this greatly improved my understanding of when to bump specific versions.</p>
+</section>
+<section id="optional-but-often-useful-commit-types" class="level3">
+<h3 class="anchored" data-anchor-id="optional-but-often-useful-commit-types">Optional, but often useful commit types</h3>
+<ul>
+<li><strong>docs</strong>: a change or update to a codebase’s documentation.</li>
+<li><strong>test</strong>: add or modify a portion of the testing framework.</li>
+<li><strong>refactor</strong>: a modification to the code base, but no output or behaviour is modified.</li>
+</ul>
+<p>These don’t map to any of the Semantic Versioning Conventions, at least in how I read the specification. This doesn’t mean that they couldn’t coincide with bumping a version, though.</p>
+</section>
+<section id="example-commit-messages-utilizing-the-various-types" class="level3">
+<h3 class="anchored" data-anchor-id="example-commit-messages-utilizing-the-various-types">Example commit messages utilizing the various types</h3>
+<p>Here’s a contrived example of what this might look like.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>feat: added an is_even function</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>docs: draft docs for is_even function</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fix: is_even function now handles zero</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>test: add test for is_even zero handling</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>feat!: modify is_even to an is_even_odd function</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="article-the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos" class="level3">
-<h3 class="anchored" data-anchor-id="article-the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos"><a href="https://www.adexchanger.com/measurement/the-iab-formalizes-its-measurement-initiatives-under-its-new-project-eidos/">Article: The IAB Formalizes Its Measurement Initiatives Under Its New ‘Project Eidos’</a></h3>
-<p>This article introduces the Interactive Advertising Bureau’s (IAB) new measurement initiative, <a href="https://www.iab.com/topics/project-eidos/">Project Eidos</a>. The initiative seeks to address advertising and marketing’s structural issues in the online advertising measurement space. The IAB states this is not a replacement, but rather a realignment effort. The work includes standardizing measurement terms, as inconsistency across the industry greatly impacts the principles, standards, and frameworks used by and relied on by advertisers and marketers. In fact, the article cites the following statistic:</p>
+<section id="scopes" class="level2">
+<h2 class="anchored" data-anchor-id="scopes">Scopes</h2>
+<p>When it comes to R development, I’ve struggled with the optional scope portion of conventional commit messages. As documented in the specification:</p>
 <blockquote class="blockquote">
-<p>The IAB estimates that, at minimum, the industry loses at least $9 billion annually due to inconsistent definitions, API feeds and data inputs – much of it spent on manual work by humans to normalize and sync the data themselves.</p>
+<p>A scope MAY be provided after a type. A scope MUST consist of a noun describing a section of the codebase surrounded by parenthesis, e.g., fix(parser):</p>
 </blockquote>
-<p>Aside from saving money, this initiative is critical because the effectiveness of “privacy by design”, modern attribution tools, incremental testing, and media mix modeling (MMM) also depends on the outcome of this work. The article further suggests these additional efforts will result in little impact if the industry continues to operate in an environment with inconsistent measurement.</p>
-<section id="why-does-this-matter-1" class="level4">
-<h4 class="anchored" data-anchor-id="why-does-this-matter-1">Why does this matter?</h4>
-<p>Standards and shared agreement are critical here. The effectiveness of online advertising depends on the results of such industry efforts. Explication of terms is what’s important here, especially as the industry expands the use of methodologies prioritizing privacy, modernize attribution, and utilize various analysis and modeling techniques. It’s garbage in, garbage out. Regardless of how sophisticated these methods may be, they’ll lack impact if everyone is speaking a different language in terms of inputs and outputs. Media organizations will also want to be aware of this industry wide initiative, as in the near future advertisers and marketers may come to expect media partners to speak the same language and work within the industry’s new standards. Moreover, from someone who operates in this space, it would be useful to no longer have to rely on workarounds and “digital duct tape” for measurement.</p>
+<p>However, many of commits during R package development could span various sections. Take for example cases where you’re following <a href="https://www.emilyriederer.com/post/rmarkdown-driven-development/">RMarkdown Driven Development (RmDD)</a>, and you’re in the process of refactoring your analysis code into functions. You’re likely making changes to <code>vignettes</code>, <code>R</code>, and <code>man</code> directories. Your analysis may also require an addition or a change to a SQL query, so that means you’re making changes in the <code>inst</code> directory. This example now involves four different scope areas to be included within a commit.</p>
+<p>A scope is optional, so I might be overthinking this a bit. I’ve settled on the following for myself: if changes span multiple scopes, and I want to add a scope to the commit message, then the changes likely need to be broken into <a href="https://masalmon.eu/2024/06/03/small-commits/">smaller commit messages</a>. <a href="https://www.youtube.com/watch?v=blbzIgM-aOU"><code>git add --patch</code></a> is useful when confronted with these situations.</p>
+<section id="example-commit-messages-applying-scope" class="level4">
+<h4 class="anchored" data-anchor-id="example-commit-messages-applying-scope">Example commit messages applying scope</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>feat(R): added an is_even function</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>docs(man): draft and render docs for is_even function</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fix(R): is_even function now handles zero</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>test(tests): add test for is_even zero handling</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>feat(R)!: modify is_even to a is_even_odd function</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="blog-post-heads-up-radio---theres-a-new-companion-in-town" class="level3">
-<h3 class="anchored" data-anchor-id="blog-post-heads-up-radio---theres-a-new-companion-in-town"><a href="https://jacobsmedia.com/heads-up-radio-theres-a-new-companion-in-town/">Blog post: Heads Up, Radio - There’s A New Companion In Town</a></h3>
-<p>This blog post by <a href="https://jacobsmedia.com/our-team/">Fred Jacobs</a> from <a href="https://jacobsmedia.com/">Jacobs Media</a> provides some interesting insight into radio technology from the <a href="https://www.ces.tech/">2026 Consumer Electronic Show</a>. According to the post, AI transcended many of the products and demos. The post shared a couple of technologies attempting to transform radio. Specifically, it discussed tech that aims to uniquely enhance factors leading to people using radio: companionship. From the post:</p>
-<blockquote class="blockquote">
-<p>As stations have gravitated to prerecorded shows hosted by out of market talent, perhaps the companionship piece has eroded somewhat. Can “AI buds” convincingly replace—or at least compete with—humans? It’s a question that remains to be seen. The “AI companion” phase is clearly a technology goal that is fast becoming a trend.</p>
-</blockquote>
-<p>The post also shared an example of this tech: <a href="https://fyi.me/p/vDOILsR6_qvIhEBma5GrOnPTfyL-DF5vYsMA6kTOdQI=">Radio.FYI</a>.</p>
-<section id="why-does-this-matter-2" class="level4">
-<h4 class="anchored" data-anchor-id="why-does-this-matter-2">Why does this matter?</h4>
-<p>In previous updates, I’ve highlighted personality as a strategy to break through the noise. Personality is a necessary but not sufficient factor for companionship. Thus, the following question should be asked: Is AI ‘human’ enough to functionally have a personality to meet audiences’ companionship needs when listening to radio? Industry trends point to the answer being yes. It’s certainly a trend to follow, as it has the potential to transform radio operations and audiences’ expectations of the radio listening experience.</p>
+<section id="body" class="level2">
+<h2 class="anchored" data-anchor-id="body">Body</h2>
+<p>It’s not very often I add additional information via the body of a commit message. I attempt to make descriptions informative enough to make it clear what changes are being made. Check back in with me after I practice this some more. I could change my mind on the body portion of the commit message.</p>
+</section>
+<section id="commit-footer" class="level2">
+<h2 class="anchored" data-anchor-id="commit-footer">Commit Footer</h2>
+<p>This is the space within a commit message I want to expand my use of more. Specifically, I think several useful tokens are available that could be added to a commit’s footer. These include:</p>
+<ul>
+<li><code>Refs:</code></li>
+<li><code>Fixes:</code></li>
+<li><code>Closes:</code></li>
+<li><code>See-also: fe3187489d69c4 (subject of related commit)</code></li>
+</ul>
+<p>This would be great for also leveraging some of the tooling available to GitHub issues.</p>
+<section id="example-commit-messages-employing-footers" class="level4">
+<h4 class="anchored" data-anchor-id="example-commit-messages-employing-footers">Example commit messages employing footers</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fix(R): is_even function now handles zero</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Fixes: #123</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>feat(R)!: modify is_even to a is_even_odd function</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>BREAKING CHANGE: users want an explicit function to identify odd or even numbers</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Closes: #23</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-</section>
-<section id="just-for-fun" class="level1">
-<h1>Just for fun</h1>
-<section id="website-the-library-of-juggling" class="level3">
-<h3 class="anchored" data-anchor-id="website-the-library-of-juggling"><a href="https://libraryofjuggling.com/">Website: The Library of Juggling</a></h3>
-<p>Interested in learning how to juggle? The Library of Juggling is the place to turn. Bumping into this was a reminder of how great the web can be: a collection of open resources to learn something new and to go deep on specific subjects. Now, I don’t think I’ll be picking up juggling any time soon. I lack the time, motivation, and frankly the hand-eye coordination. However, if for some reason I needed to learn, I at least know this resource is available.</p>
-<p>Here’s to a great start to the weekend.</p>
-<p>Enjoy 🎉!</p>
+<section id="grab-bag-of-other-conventions" class="level2">
+<h2 class="anchored" data-anchor-id="grab-bag-of-other-conventions">Grab bag of other conventions</h2>
+<p>When it comes to casing, I’m going to stick to lowercase. However, the only exception is in cases of BREAKING CHANGE.</p>
+<p>If a commit falls underneath multiple commit types or spans multiple scopes, this is a signal the changes need to be broken into multiple commits.</p>
+<p>Commit types are not rigid. These can be team or project specific. Optional commit types can be expanded or modified over time.</p>
+<p>What happens in cases where I make a mistake, e.g., use refactor instead of feat? You can use <code>git rebase -i</code>. I found this <a href="https://www.youtube.com/watch?v=H7RFt0Pxxp8">video</a> on the topic helpful.</p>
 </section>
 </section>
-<section id="lets-connect" class="level1">
-<h1>Let’s connect</h1>
-<p>If you found this content useful, please share. If you find these topics interesting and want to discuss further, let’s connect:</p>
+<section id="wrap-up" class="level1">
+<h1>Wrap up</h1>
+<p>This was a fun, productive set of notes. I certainly feel a little more informed about how to apply the Conventional Commits specification to my commit messages. Maybe you should check it out as well.</p>
+<p>Have a good one.</p>
+<p>If you found this post to be useful, please share with others. If you’re interested in these types of topics, let’s connect:</p>
 <ul>
 <li>BlueSky: <a href="https://bsky.app/profile/collinberke.bsky.social"><span class="citation" data-cites="collinberke.bsky.social">@collinberke.bsky.social</span></a></li>
 <li>LinkedIn: <a href="https://www.linkedin.com/in/collinberke/">collinberke</a></li>
@@ -261,13 +366,14 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2026,
   author = {Berke, Collin K},
-  title = {The {Hex} {Update:} {Issue} 013},
-  date = {2026-02-06},
+  title = {Notes: {Tidying} up Commit Messages Using a {Conventional}
+    {Commits} Style},
+  date = {2026-03-30},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Berke, Collin K. 2026. <span>“The Hex Update: Issue 013.”</span>
-February 6, 2026.
+Berke, Collin K. 2026. <span>“Notes: Tidying up Commit Messages Using a
+Conventional Commits Style.”</span> March 30, 2026.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -517,6 +623,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
