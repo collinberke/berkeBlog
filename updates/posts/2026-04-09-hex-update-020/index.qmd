@@ -1,0 +1,157 @@
+---
+title: "The Hex Update: Issue 020"
+date: "2026-04-09"
+author: "Collin K. Berke, Ph.D."
+description: "Sony handing over operational control of Bravia to TCL; SEO industry attempts to influence AI summaries; the impact of the attention economy on kids; an incredible image of Earth setting behind the moon"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 020.
+
+It's been a busy week.
+Time just flew.
+I'm still recovering from the fact that today is already Friday.
+
+Alright, here we go.
+
+Three topics recently caught my attention:
+
+* [Sony is handing over operational control of Bravia to TCL](https://www.thestreamingwars.tv/news/sony-hands-tcl-operational-control-of-bravia-in-strategic-capital-shift/)
+* [The SEO industry's attempt to influence AI responses](https://www.theverge.com/tech/900302/ai-seo-industry-google-search-chatgpt-gemini-marketing)
+* [The impact of the attention economy on kids](https://www.zerotothree.org/open-letter/how-the-attention-economy-impacts-young-children/)
+
+The best news I heard all week: [Nebraska.Code() returns to Lincoln, Nebraska this July!](https://bsky.app/profile/nebraskacode.bsky.social/post/3mihcyp36bk2t).
+
+For a bit of fun, I share an incredible image titled [The Edge of Two Worlds](https://www.flickr.com/photos/nasa2explore/55192123432/in/photostream/lightbox/), which was taken during the [Artemis II](https://en.wikipedia.org/wiki/Artemis_II) mission to the moon.
+
+Let's get into some articles.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Sony Hands TCL Operational Control of Bravia in Strategic Capital Shift](https://www.thestreamingwars.tv/news/sony-hands-tcl-operational-control-of-bravia-in-strategic-capital-shift/) (article)
+
+This article provides some insight into the recent deal between [Sony](https://en.wikipedia.org/wiki/Sony) and [TCL](https://en.wikipedia.org/wiki/TCL_Technology) to manage the production of television hardware. The article, referencing another [article](https://www.thestreamingwars.tv/the-take/why-sony-is-willing-to-let-tcl-run-bravias-economics/) written by the same group, mentions the hardware side of television is a space where additional technological innovation will only have marginal effects on competitive advantage.
+This is attributed to the commodification of display panels, which are effectively interchangeable across different devices.
+As such, display suppliers are better positioned to reap value.
+According to the article, Sony's value and long-term growth will come from a focus higher in the stack, which includes advancements in image processing, calibration, and integration with content, production, and the distribution ecosystem.
+This quote from the article emphasizes this point well:
+
+> Hardware categories tied to commoditized components eventually force a choice: own the factory or own the meaning. Doing both gets expensive fast. Sony chose meaning.
+
+Indeed, the article also posits this signals a broader trend across media and connected devices:
+
+> Companies are tightening their focus on the parts of the value chain that generate returns and partnering on the parts that absorb cost.
+
+#### Why does this matter?
+
+TV hardware may be at a point where improvement in display quality will only marginally improve.
+As brands transition away from hardware development to areas higher in the stack, more recurrent changes to the environments media organizations' content reside will occur (e.g., software and UI for TVs).
+This means media organizations' focus will need to shift away from improvements that come from improved displays.
+Rather, focus will need to be centered on how environments higher in the stack influence and can be used to improve audiences' experience with their content.
+This is no small task, as the variation across TV operating systems is quite vast.
+
+### [Can AI responses be influenced? The SEO industry is trying](https://www.theverge.com/tech/900302/ai-seo-industry-google-search-chatgpt-gemini-marketing) (article)
+
+This article provides an overview of the current SEO industry, where agencies are attempting to seize the opportunities of AI-powered search.
+The article mentions the SEO space is full of ambiguity, where hypotheses are tested and re-tested, hints are mined, and debates are on-going about what works and what doesn't.
+AI summaries have only led to further ambiguity in this space, as reports attribute declines in organic traffic being due to its release.
+The article observes [*Listicles*](https://en.wikipedia.org/wiki/Listicle) are the current strategy being employed, and they seem to be effective in getting content populated within AI summaries.
+However, the article mentions this strategy may not work in the long-term.
+Some experts cited in the piece mention the SEO industry has no agreed upon definitions of what the new SEO is and the concepts within it.
+The article also shared additional skepticism of the methodology employed by the [Growtika report](https://growtika.com/blog/tech-media-collapse) I shared in a [past update](https://www.collinberke.com/updates/posts/2026-03-26-hex-update-018/).
+Despite these critiques, there's continued belief that organic traffic will continue to decline and will not return.
+Citing some marketing professional perspective, the article mentions many in the industry are now focused on how people are talking about their business on Reddit, YouTube, other social media platforms, and in news coverage--even much so that the article cites another report that brands' budgets for PR will double by 2027.
+The article also refers to the term *backlink*, which I wasn't aware of.
+Backlinks are one factor that increase a site's chances of visibility on top of search rankings.
+Here's one [definition](https://en.wikipedia.org/wiki/Backlink):
+
+> a backlink is a hyperlink on another web resource (the referrer) that points to the referent.
+
+#### Why does this matter?
+
+As I learn more about this space, it becomes clearer to me that there is a lack of clarity into what SEO strategies work, especially now in this moment of AI disruption.
+Media organizations need to be more aware and mindful about their marketing and SEO strategy, as they may be confronted with additional ambiguity within their own operations and third-party partnerships.
+Bold claims about effective AI-summary visibility strategy should be considered with some caution.
+This is especially true as AI summaries continue to evolve and the tactics become more defined within the industry.
+
+### [How the attention economy impacts young children](https://www.zerotothree.org/open-letter/how-the-attention-economy-impacts-young-children/) (blog post)
+
+This article posits the "attention economy" is prevalent in children's media now more than ever, and it provides some evidence on the impacts this can have on development.
+The article specifically focuses on YouTube content.
+This platform is being flooded with AI-generated children's content, which is crafted for monetization rather than developmental purposes.
+What's even more striking is the presence of AI content that is published but explicitly contains errors and misinformation.
+The effects of short-form content are also discussed, where the author provides some evidence on how this type of content relates to attention regulation, stress, and anxiety in adults.
+Moreover, it discusses the contention between the advantages of short-form content for platforms (i.e., endless scrolling; opportunities for additional ads; additional insight into what captures attention), and the requirements for creating effective educational content for children.
+The post also provides some suggestions for parents navigating this space.
+
+#### Why does this matter?
+
+If you're someone with children, you quickly come to realize how digital spaces are increasingly becoming overrun by AI children's content.
+It causes a moment of pause to realize creators are gravitating to this space and crafting this content with the objective to maximize attention for the purposes of monetization.
+It's even alarming this content is being created with little concern for basic correctness of information within the content.
+This points to the need, obligation, and opportunity there is for media organizations and creators of children's content to differentiate themselves.
+It also speaks to the need to do this on platforms that garner the most of children's attention, like YouTube.
+
+# The best news I heard all week
+
+### [Nebraska.Code() returns to Lincoln, Nebraska this July!](https://bsky.app/profile/nebraskacode.bsky.social/post/3mihcyp36bk2t)
+
+# What I found interesting this week
+
+I bumped into this [statement](https://youtu.be/N_oT_8xVRXg?si=A_65PGgSSNTWhg5X&t=277) about [parquet files](https://parquet.apache.org/) from [Hadley Wickham](https://hadley.nz/), one of the leading software developers and voices in the data science space.
+The ability to enforce column types in the file beyond what a `.csv` file provides seemed like an interesting feature.
+It sounded like a really great built-in data governance feature.
+So, I ran with this advice and read some more.
+I came across these interesting resources and packages:
+
+* [Large Data Work: Intro to parquet files in R](https://hutchdatascience.org/data_snacks/r_snacks/parquet.html) (blog post)
+* [Arrow](https://arrow.apache.org/docs/r/) (package)
+* [nanoparquet](https://nanoparquet.r-lib.org/) (package)
+
+I plan to explore the use of this file type further.
+I'm also thinking about writing up a blog post to document what I learn.
+I'll keep you posted.
+
+# Just for fun
+
+### [The Edge of Two Worlds](https://www.flickr.com/photos/nasa2explore/55192123432/in/photostream/lightbox/) (photo)
+
+Last week, [the best news I heard](https://www.collinberke.com/updates/posts/2026-04-02-hex-update-019/#the-best-news-i-heard-all-week) was the US was going back to the moon.
+Well, here's one result of the mission--a striking photo of Earth soon to set behind the Moon's cratered surface.
+It's an incredible image.
+You might even consider making it your computer's wallpaper, like I did.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded that are cool).
+
+* [The Git Commands I Run Before Reading Any Code](https://piechowski.io/post/git-commands-before-reading-code/) (blog post)
+* [Digging into the Matrix: Practicing Code Archaeology - Arthur Doler - NDC London 2026](https://www.youtube.com/watch?v=RhHervpDeOQ) (video)
+* [What's next: Quarto 2](https://quarto.org/docs/blog/posts/2026-04-06-whats-next-quarto-2/) (blog post)
+* [Digitizing photos from the 1998 Game Boy Camera](https://swiftrocks.com/digitizing-photos-from-the-1998-game-boy-camera) (blog post)
+* [Wet Sand by the Red Hot Chili Peppers](https://www.youtube.com/watch?v=oabjND9QW8Q) (video)
+
+That's it for this update.
+
+Take a moment to slow down and enjoy the weekend.
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
