@@ -1,0 +1,156 @@
+---
+title: "The Hex Update: Issue 021"
+date: "2026-04-16"
+author: "Collin K. Berke, Ph.D."
+description: "Reporting on how Americans listen to radio; AI and where online search is taking place; cable channel programming employing a YouTube strategy; visual storytelling in the Fifth Element"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 021.
+
+Working on this week's update, I came across some material resulting in some feelings of nostalgia.
+They made me remember some enjoyable past media experiences.
+Maybe some of what I share will have the same impact on you.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Some reporting on how Americans listen to radio](https://www.nielsen.com/wp-content/uploads/sites/2/2026/03/Nielsen-2026-Audio-Today-How-America-Listens-Mar26.pdf)
+* [AI and where online search is taking place](https://sparktoro.com/blog/new-research-search-happens-everywhere-an-analysis-of-41-websites-with-significant-search-activity/)
+* [Cable channel programming employing a YouTube strategy](https://postingnexus.substack.com/p/a-ridiculousness-lesson-i-didnt-see)
+
+The best news I heard all week: [users can now share timestamped videos in the YouTube mobile app](https://www.theverge.com/streaming/913611/youtube-mobile-app-share-at-timestamp-clips).
+
+For a bit of fun, I share a [piece](https://theasc.com/articles/fantastic-voyage-creating-the-futurescape-for-the-fifth-element) going in depth on the visual storytelling that took place in the [Fifth Element](https://en.wikipedia.org/wiki/The_Fifth_Element).
+
+# Three things
+
+Here's some more depth on what caught my attention this week:
+
+### [Audio today 2026: How America Listens](https://www.nielsen.com/wp-content/uploads/sites/2/2026/03/Nielsen-2026-Audio-Today-How-America-Listens-Mar26.pdf) (report)
+
+This report from [Nielsen](https://www.nielsen.com/) provides points about marketer's under investment and missed opportunity when it comes to radio.
+In terms of reach, according to the report, radio garners extensive reach for U.S. adults (93%).
+If you include tactics adjacent to over-the-air (e.g., podcasting), the reach coverage nears 100%.
+Despite these figures, the report posits an under investment and lack of perception by marketers related to the return on investment audio can provide, where the majority of marketer's advertising budgets are devoted to channels where tracking is more accessible (e.g., digital).
+As quoted from the report:
+
+> By underinvesting in radio, brands are missing out on a highly efficient channel that consistently over delivers.
+
+> Digital channels are taking precedence due to their perceived measurability and direct attribution. 
+> However, ease of measurement does not always equate to effectiveness or higher ROI.
+
+Moreover, citing [Edison's Share of Ear Report](https://www.edisonresearch.com/solutions/share-of-ear/) the report states a comprehensive audio marketing campaign strategy allows for greater reach to younger and more diverse audiences.
+
+#### Why does this matter?
+
+In a [past update](https://www.collinberke.com/updates/posts/2026-01-29-hex-update-012/), I shared some additional view points of this underinvestment in audio.
+Specifically, some analysts mention there is significant underinvestment in advertising to podcasts.
+There seems to be a signal here: audio provides a solid return on investment for marketers, and media organizations producing this content should get out in front of it.
+It will be on these organizations to effectively express the return on investment related to audio, maybe even convincing some to reconsider some of the advertising spend going to other channels.
+The unique opportunity in terms of reach and the ability to get in front of diverse, younger audiences is also another relevant point to raise.
+
+### [New Research: Search Happens Everywhere; an Analysis of 41 Websites with Significant Search Activity](https://sparktoro.com/blog/new-research-search-happens-everywhere-an-analysis-of-41-websites-with-significant-search-activity/) (blog post)
+
+This article makes a case for an expansion of the term search, which is no longer just taking place with traditional engines and AI tools.
+The post also explores and provides several data points related to search volume across the web.
+The report analyzed data collected from user's search behavior on desktop devices.
+A significant point made in the article is that [Google](https://en.wikipedia.org/wiki/Google) still garners a significant amount of desktop web searches, and [ChatGPT](https://en.wikipedia.org/wiki/ChatGPT) is smaller in comparison.
+The article also mentions more search is occurring on Amazon, Bing, and YouTube than on ChatGPT, and the author makes a point to be mindful of using the right tactics beyond just a broad strategy of trying to increase AI summary visibility.
+I really like this point made in the articles summary:
+
+> Search is a behaviour, not a channel.
+
+The report also states search is still mostly taking place via traditional search engines (~81%), which is not surprising.
+
+#### Why does this matter?
+
+Where user search behavior is taking place is what's important here.
+Strategy for Search Everywhere Optimization is not effective as it could be, and more refined, and tactics need to be more defined and specific for organizations.
+If you're audience is not using a platform to perform search behaviors, then just because it's new doesn't mean it's critical for a successful strategy.
+There might be other more impactful tactics if search behaviors are more deeply examined.
+
+### [A Ridiculousness Lesson I Didn't See Coming](https://postingnexus.substack.com/p/a-ridiculousness-lesson-i-didnt-see) (blog post)
+
+Here's a slightly dated but still relevant blog post on cable channel programming and its relationship to streaming platform strategy.
+The post contains several interesting points, so I'll highlight the ones that caught my attention.
+At first, the post notes cable channel programming strategy is moving more towards a YouTube approach.
+The focus being to provide audience's access to the content they want, during times they most want it.
+This translates into constant reruns of "sick day" content and dedicated scheduling of single titles.
+Here's a quote exemplifying this point:
+
+> Something I’ve posited when it comes to streaming is that technology doesn’t alter behavior; it allows for a preferred behavior to surface.
+
+There was also some discussion about how this model fits within audience's lives, where the author shared one framework known as the Daily Activity Hypothesis.
+The post then highlights how personality, in terms of brands and talent, is a key tactic to funneling audience's to streaming platforms.
+I found this quote relevant:
+
+> Substance, recognizable brands or personalities, and attention centers will overtake all growth hacks that people come up with for audience subscription businesses.
+
+One additional point from the post worth further consideration is how TV isn't changed by streaming.
+Rather, the change is in the distribution model, not in what audience's already like: dramas, procedurals, and comedy.
+
+#### Why does this matter?
+
+Audiences want what they want, and they will turn to the platforms that easily fulfill that need.
+Cable channels modifying programming more toward single titles is a move toward giving people what they want, which platforms like YouTube can deliver on, algorithmically.
+It's also important to recognize that growth in these spaces will come from media organizations that provide substance, are recognizable and have a personality, and serve as attention centers.
+These should be the focus areas for groups operating in this space.
+
+# The best news I heard all week
+
+### [Users can now share timestamped videos in the YouTube mobile app](https://www.theverge.com/streaming/913611/youtube-mobile-app-share-at-timestamp-clips)
+
+# What I found interesting this week
+
+For informational purposes, I've been curating and hosting a list of [media and marketing research resources](https://www.collinberke.com/data-media-marketing-resources.html) on this blog.
+The list was dormant for a bit, as I hadn't bumped into anything in awhile.
+I love those moments where you stumble upon a vein of useful research sources and reading material.
+This week I experienced one of those moments.
+So, I've updated the list.
+Take some time to check it out.
+If you know of any other sources I should be aware about, pass them along.
+I'll add them to the list.
+
+# Just for fun
+
+### [Fantastic Voyage: Creating the Futurescape for The Fifth Element](https://theasc.com/articles/fantastic-voyage-creating-the-futurescape-for-the-fifth-element)
+
+Here's a piece I bumped into, which resulted in me feeling a little nostalgic.
+[The Fifth Element](https://en.wikipedia.org/wiki/The_Fifth_Element) is one of those movies that impacted my sci-fi fandom.
+It reminded me of the level of artisanship required to tell such story.
+Reading about how the visuals were created through a combination of physical models, software, and camera work made me more greatly appreciate the craft of visual storytelling applied in the production of this film.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Dashboard rot as org attention grave markers](https://www.counting-stuff.com/dashboard-rot-as-org-attention-grave-markers/) (blog post)
+* [Thousands of rare concert recordings are landing on the Internet Archive — listen now](https://techcrunch.com/2026/04/13/thousands-of-rare-concert-recordings-are-landing-on-the-internet-archive-listen-now/) (article)
+* [Everything to Know About Jackbox Party Essentials Games No console? No problem. Three hilarious Jackbox hits just crashed Netflix Party Games](https://www.netflix.com/tudum/articles/jackbox-games-party-essentials-news) (article)
+* [Spaceballs: The New One](https://www.youtube.com/watch?v=efpL1E_fI3E) (video)
+
+That's it for this update.
+Perhaps this is the weekend where I'll lean into my nostalgia a little bit?
+You might even consider going back to something that makes you feel a little nostalgic.
+
+Have a good weekend!
+
+Okay, bye. 👋
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
