@@ -1,0 +1,201 @@
+---
+title: "Notes: What I learned while configuring R code chunk insertion in Neovim"
+description: "What took me a few hours to learn about keymaps will hopefully now take you a few minutes"
+format:
+  html:
+    link-external-newwindow: true
+date: "2026-04-20"
+author: "Collin K. Berke, Ph.D."
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - nvim
+  - lazyvim
+  - r.nvim
+  - configuration
+  - productivity
+  - workflow
+---
+
+# Background
+
+Today's the day I fixed a long standing annoyance I've had with my configuration of the [R.nvim](https://github.com/R-nvim/R.nvim) plugin for [nvim](https://github.com/R-nvim/R.nvim): a keymap to insert code chunks.
+I work extensively with `.qmd` files, so inserting code chunks is routine.
+I liked the code chunk insertion behavior of previous R.nvim versions.
+All you had to do was hit a single [backtick](https://en.wikipedia.org/wiki/Backtick) and a code chunk would be inserted into a file.
+Something changed in an updated version, and the behavior of this keymap started acting inconsistent.
+Then, it was dropped from the default configuration all together.
+I mean, it could have been me that did something and not the plugin, though.
+
+These notes detail how I reset the code chunk insertion keymap within configuration, as I found the setup a little tricky.
+My hope is these notes will save someone time in the future--likely my future self.
+
+To start, open up a `.qmd` or `.Rmd` file in a [buffer](https://youtu.be/_6OqJrdbfs0?si=vymYLmnc_8fIj7ZK&t=31) and start a R session (`<LeaderKey>rf`).
+First, let's get a list of all the keymaps the R.nvim plugin makes available.
+To do this, run `RMapsDesc` in nvim's command line prompt.
+If you scroll to the Edit section, you'll see the plugin provides a `RmdInsertChunk` command.
+However, there is no key mapped to it.
+So, we need to set one.
+
+If you run `help R.nvim-key-bindings`, you'll be able to read R.nvim's docs on setting custom keymaps.
+If you scroll down, R.nvim provides some example configuration code on how to go about customizing keymaps with the plugin.
+It looks like this:
+
+```lua
+hook = {
+	on_filetype = function()
+		-- Use <Enter> to send code to R:
+		vim.api.nvim_buf_set_keymap(0, "n", "<Enter>", "<Plug>RDSendLine", { noremap = true })
+		vim.api.nvim_buf_set_keymap(0, "v", "<Enter>", "<Plug>RSendSelection", { noremap = true })
+
+		-- Emulate some of Vim-R's default key bindings:
+		vim.api.nvim_buf_set_keymap(0, "i", "_", "<Plug>RInsertAssign", { noremap = true })
+		if vim.bo.filetype == "rnoweb" then
+			vim.api.nvim_buf_set_keymap(0, "i", "<", "<Plug>RnwInsertChunk", { noremap = true })
+		elseif vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
+			vim.api.nvim_buf_set_keymap(0, "i", "`", "<Plug>RmdInsertChunk", { noremap = true })
+		end
+	end,
+}
+```
+
+In my naivety, I dug into what a *hook* meant in this context.
+Reading some simplified explanations ([here](https://stackoverflow.com/questions/467557/what-is-meant-by-the-term-hook-in-programming) and [here](https://www.reddit.com/r/explainlikeimfive/comments/799b59/eli5_what_are_hooks_in_computer_programming_what/)), I came to the conclusion it's just an anchor point to add additional custom functionality to the R.nvim plugin.
+It's kind of like a point to add extensions onto an extension.
+In terms of R.nvim's docs, a hook is defined as Lua functions that get called after certain events.
+
+In the doc's example, it sets some general, specific keymaps, like using `<Enter>` to send a line.
+However, it also uses conditionals to apply keymaps based on the file type open within a buffer.
+
+```lua
+if vim.bo.filetype == "rnoweb" then
+-- do something for .Rnw files
+elseif vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
+	-- do something for .Rmd and .qmd files
+end
+```
+
+With some prerequisites out of the way, let's go about setting up the key map to insert code chunks within Quarto and Rmd files.
+
+# Configuration
+
+I modified the example configuration code slightly.
+Here's the modified version of the doc's code I use in my config:
+
+```lua
+if vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
+	vim.api.nvim_buf_set_keymap(0, "i", "``", "<Plug>RmdInsertChunk", { noremap = false })
+end
+```
+
+This is what I changed:
+
+* I don't use `.Rnw` files, so I dropped this portion of the example code, but I kept a simple conditional for `.Rmd` and `.qmd` files.
+* I wasn't a fan of the single backtick  as the key, as I sometimes use inline code chunks and wrap in-text code with them, so I went with a double backtick.
+
+I will mention I did try some other variations of this keymap, where it would allow code chunk insertion in [normal mode](https://www.freecodecamp.org/news/vim-editor-modes-explained/).
+However, I kept running into too many conflicts with other keymaps, and I felt the value set for the [`noremap`](https://neovim.io/doc/user/api/#nvim_set_keymap()) was also resulting in some conflicts.
+I did learn, though, `noremap` handles recursive mappings.
+So, I dug further, and I learned more about [*recursive mapping*](https://neovim.io/doc/user/map/#recursive_mapping) and how this relates to keymaps.
+Nonetheless, I got it working by setting the option's value to `false`.
+
+For quick reference, here's my `extend-r-nvim.lua` file in its current state, including this change:
+
+```lua
+return {
+	"R-nvim/R.nvim",
+	lazy = false,
+	config = function()
+		local opts = {
+			pdfviewer = "",
+			view_df = {
+				open_app = "terminal:vd",
+			},
+			hook = {
+				on_filetype = function()
+					-- Make it easier to run code and code chunks
+					vim.keymap.set("n", "<LocalLeader><Enter>", "<Plug>RDSendLine", {})
+
+					vim.keymap.set("v", "<LocalLeader><Enter>", "<Plug>RSendSelection", {})
+
+					-- Make it easier to kill the console
+					vim.keymap.set("n", "<LocalLeader>ts", "<Cmd>RStop<CR>", { desc = "R stop terminal" })
+
+					-- Make it easier to explore objects
+					vim.api.nvim_buf_set_keymap(
+						0,
+						"n",
+						"<LocalLeader>gl",
+						"<Cmd>lua require('r.run').action('dplyr::glimpse')<CR>",
+						{ desc = "R dplyr::glimpse()" }
+					)
+
+					-- Make it easier to start a shiny app
+					vim.api.nvim_buf_set_keymap(
+						0,
+						"n",
+						"<LocalLeader>sa",
+						"<Cmd>lua require('r.send').cmd('shiny::runApp()')<CR>",
+						{ desc = "R shiny::runApp()" }
+					)
+
+					-- Keymap common devtools functions
+					vim.api.nvim_buf_set_keymap(
+						0,
+						"n",
+						"<LocalLeader>L",
+						"<Cmd>lua require('r.send').cmd('devtools::load_all()')<CR>",
+						{ desc = "R devtools::load_all()" }
+					)
+
+					vim.api.nvim_buf_set_keymap(
+						0,
+						"n",
+						"<LocalLeader>U",
+						"<Cmd>lua require('r.send').cmd('devtools::install()')<CR>",
+						{ desc = "R devtools::install()" }
+					)
+
+					vim.api.nvim_buf_set_keymap(
+						0,
+						"n",
+						"<LocalLeader>T",
+						"<Cmd>lua require('r.send').cmd('devtools::test()')<CR>",
+						{ desc = "R devtools::test()" }
+					)
+
+					vim.api.nvim_buf_set_keymap(
+						0,
+						"n",
+						"<LocalLeader>D",
+						"<Cmd>lua require('r.send').cmd('devtools::document()')<CR>",
+						{ desc = "R devtools::test()" }
+					)
+
+					-- Code chunk insertion keymap for rmd and quarto files
+					if vim.bo.filetype == "rmd" or vim.bo.filetype == "quarto" then
+						vim.api.nvim_buf_set_keymap(0, "i", "``", "<Plug>RmdInsertChunk", { noremap = false })
+					end
+				end,
+			},
+		}
+		require("r").setup(opts)
+	end,
+}
+```
+
+# Wrap-up
+
+This was a straight forward configuration update, but it took me way longer than I wanted it to.
+I lacked some of the prerequisite knowledge to fully understand what was needed and unneeded.
+[Lua](https://www.lua.org/) is an accessible language, but I'm slowly still learning the syntax.
+I'm hoping if someone has this same configuration problem they'll now be able to solve it within a few minutes, rather than hours.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
