@@ -1,0 +1,150 @@
+---
+title: "The Hex Update: Issue 022"
+date: "2026-04-25"
+author: "Collin K. Berke, Ph.D."
+description: "Netflix rolling out vertical video; a panel discussion about the business of the creator economy; Puck's reinvention of the news industry; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 022.
+
+It was another busy week on my end.
+That's why I'm a little behind on posting this issue.
+We made it to weekend, though!
+Phew.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Netflix's UI update will include vertical video](https://www.theverge.com/streaming/913539/netflix-mobile-app-update-vertical-video)
+* [A panel discussion exploring the business within the creator economy](https://www.thewrap.com/industry-news/business/issa-rae-dhar-mann-creators-hollywood-future/)
+* [Puck's reinvention of the news industry](https://www.theverge.com/podcast/910443/can-puck-reinvent-the-news-business-for-the-influencer-age)
+
+For a bit of fun, I share an [article](https://www.scientificamerican.com/article/how-a-renaissance-gambling-dispute-spawned-probability-theory/) telling the origin story of probability theory, which resulted from a Renaissance gambling dispute.
+
+There's also some additional links to other cool things I came across this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Netflix embraces vertical video with major mobile app update](https://www.theverge.com/streaming/913539/netflix-mobile-app-update-vertical-video) (article)
+
+This brief article reports on the launch of Netflix's newly redesigned mobile app.
+There's one big change: a vertical video feed.
+The feature will show clips of shows and movies, where users can tap if they want to watch.
+Why this change?
+Quoted in the article, Netflix has mentioned the lines between entertainment, TV, and mobile devices is blurring.
+Netflix's leadership believes a vertical video feed is an expansion of their entertainment offerings, and it will provide the space for needed expansion into the future.
+
+#### Why does this matter?
+
+Netflix's UI designs lead the industry.
+Usually, [when Netflix makes a change to their UI, other organizations follow](https://www.theverge.com/24182520/netflix-co-ceo-memo-ads-subscription-price-decoder-podcast-interview).
+As a leader in this space, they are constantly iterating on ways to compell users to click on title reccomendations and make assets more compelling for users to more engage on the platform.
+Vertical video might be the feature that does this, and other media organizations with their own platforms may want to take note.
+
+### [The business of the creator economy](https://www.thewrap.com/industry-news/business/issa-rae-dhar-mann-creators-hollywood-future/) (video)
+
+Here's a panel discussion overviewing how business is conducted and partnerships work in the creator economy.
+The discussion was organized around experts sharing insights about how deals work in terms of development and production, financing, distribution and marketing, and ancillaries (i.e., merchandise, consumer products, and events).
+Each panelist shared interesting points within each of these areas.
+For one, advice was given to insulate creators from external pressures, so they can fully focus on the artistic work of creating.
+To do this, a point was made to hire talented people and provide a good support staff to do the external work for creators.
+Then the panel shared insight into what cuts through when it comes to creators (e.g., talent rising to the top), and how identifying these factors can result in positive partnerships with media organizations and brands.
+Some of these factors include creators who have an interesting point of view, something unique about them personally, creators who have a story to tell, speak to a specific fandom, and have an audience and willingness to build their audience.
+The conversation also included some additional advice to creators: be on many platforms for scale.
+Rather than thinking in terms of virality on one platform, the focus should shift more to a production mindset.
+
+Here are some timestamps with some additional interesting points:
+
+* 17M58S: Younger audiences (e.g., Gen Z) love independent creator content, they want originality.
+* 25M33S: Using a distribution engine, partnerships, and acting like a creator to address the [cold start problem](https://www.youtube.com/watch?v=TSnYO34b3TA) inherent within the release of new IP.
+* 27M18S: How do you find what works through experimentation to create and grow new audiences?
+The distribution engine and partnerships are critical.
+You can't just throw it on one platform and just grind it out for many years.
+* 36M12S: You need to be everywhere.
+Incremental audience and incremental revenue are important considerations--different people go to different platforms for different things.
+Have the production mindset rather than views and virality on one platform.
+
+#### Why does this matter?
+
+Incredible panel.
+It contained several viewpoints worth walking away with.
+Despite the focus being on working with creators, it was interesting to hear how teams within larger media organizations are trying to experiment with the creator mindset to create and grow new audiences.
+In addition, the point about incremental audience and revenue and the importance of taking on a production mindset over views and virality on one platform was another key takeaway.
+These were just a few high-level points that caught my attention.
+I suggest those seeking to partner with independent creators to take some time and watch the whole discussion.
+
+### [Can Puck reinvent the news business for the influencer age?](https://www.theverge.com/podcast/910443/can-puck-reinvent-the-news-business-for-the-influencer-age) (podcast)
+
+This link is to an interview between [Decoder Podcast's](https://www.theverge.com/decoder-podcast-with-nilay-patel) [Nilay Patel](https://www.theverge.com/authors/nilay-patel) and [Puck's](https://puck.news/) CEO [Sarah Personette](https://www.linkedin.com/in/sarah-personette-4b71125/).
+One key point emphasized was the impact the rapid change of technology has had on the media industry, which resulted in the loss of scarcity, attention fragmentation, and editing being moved from gatekeepers to algorithms (12M23S).
+This quote from the interview really emphasized this point:
+
+> But at the same time, you had some challenges. You had the systems starting to break. That very capital-intensive world now no longer was capital-intensive. With a keyboard and with access to wifi, you could be a journalist and that was awesome, but you also had scarcity disappear, you had attention fragment, you had the gatekeepers, the editors of the world move from being capable of editing to editing being dominated by algorithms.
+
+Journalists being likened to influencers was also debated (23M00S).
+This included some conversation about how this relates to business operations and audience's trust in information.
+One final point made pertained to top of funnel strategy, especially as it relates to generating new subscribers (45M23S).
+That is, fragmentation has been happening for nearly 20 years, and thus, distribution can no longer be concentrated to just one or three different places.
+
+Here are some additional timestamps from the interview I found interesting:
+
+* 06M50S: [Volatility, Uncertainty, Complexity, and Ambiguity (VUCA)](https://en.wikipedia.org/wiki/VUCA)
+* 12M23S: 38, 14, 7, 4, and months. I really liked this example of the shortening of technology adoption.
+* 49M15S: Generative Search Optimization and how AI can't be ignored because its impact on consumption and the industry.
+
+#### Why does this matter?
+
+Pucks' business model and role of journalists within this model is worth further exploration by media organizations.
+Clearly, there are differing views between the process of journalism and the underlying aim of influencers.
+However, I do think there is something here in terms of personality and humaness being key to a successful model for news organizations.
+The top of the funnel conversation was also on point, as fragmentation requires strategies media organizations to diversify their distribution channels to build new audiences.
+The points made about the impact of technology growth are also worth another listen.
+
+# What I found interesting this week
+
+Since January, I've been serving in an advisory role to a sponsorship project between Nebraska Public Media and the [University of Nebraska-Lincoln's College of Engineering School of Computing Senior Design](https://computing.unl.edu/senior-design/).
+We got to work with students to develop some really interesting features of an [ATSC 3.0](https://en.wikipedia.org/wiki/ATSC_3.0) application, while also working with some really interesting technology.
+My role was to provide guidance on a measurement plan.
+This was especially interesting because of where this application runs: televisions.
+Here's a [description of the project](https://computing.unl.edu/senior-design/project-details-2025-26/#nebraska-public-media).
+Well, the current version of the project has made it to the college's end of year showcase.
+I was excited to see the final version developed by the team.
+
+# Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [So you've been asked to "take over" some old data pipeline...](https://www.counting-stuff.com/so-youve-been-asked-to-take-over-some-old-data-pipeline/) (blog post)
+* [Highlights from Git 2.54](https://github.blog/open-source/git/highlights-from-git-2-54) (blog post)
+* [How a Renaissance gambling dispute spawned probability theory](https://www.scientificamerican.com/article/how-a-renaissance-gambling-dispute-spawned-probability-theory/) (article)
+* [Using the internet like its 1999](https://joshblais.com/blog/using-the-internet-like-its-1999/) (blog post)
+* [311 - Down (Official 4K Video)](https://www.youtube.com/watch?v=lYBIRHi5-o8) (video)
+
+That's it for this update.
+I've got some additional tasks to complete over the weekend.
+So, I'll have a quick reset and will get back to focusing.
+I'll surely find some time to have a little bit of fun and rest, though.
+If you're working on something this weekend, I wish you the best of luck in being productive.
+Be sure to take a break from time-to-time.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
