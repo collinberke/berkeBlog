@@ -1,0 +1,154 @@
+---
+title: "The Hex Update: Issue 023"
+date: "2026-04-30"
+author: "Collin K. Berke, Ph.D."
+description: "Creator journalists, audience, and traditional media; TikTok's ability to keep a new movie thriving; innovation is an urgent concern for news leadership; working with the garage open; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 023.
+
+April was packed with some interesting work that kept me busy.
+May is now upon us, and summer will soon be knocking at the door.
+I'm getting excited for what this change in season will bring.
+
+I've decided to make a few slight changes to the structure of this update.
+Specifically, I'm consolidating the best news I came across this week, a just for fun piece, and a cool things I bumped into sections.
+Now instead of multiple sections, I'll park everything within the cool things I bumped into this week section.
+The sections I'm cutting were experimental, and it just feels right to organize them this way.
+It also simplifies the structure.
+Remember, iteration is important here.
+
+So anyways, let's get started.
+
+Three topics recently caught my attention:
+
+* [Creator journalists, audience, and traditional media](https://niemanreports.org/liz-kelly-nelson-project-c-creator-journalists-social-media-gen-z-news-vertical-video/)
+* [TikTok's ability to keep a new movie thriving](https://www.npr.org/2026/04/18/nx-s1-5787983/new-data-show-tiktok-engagement-as-a-key-indicator-of-long-term-box-office-success)
+* [Innovation is an urgent concern for news leadership](https://tvnewscheck.com/journalism/article/news-leaders-innovation-is-urgent-concern/)
+
+For a bit of fun, I share a short [blog post](https://notes.andymatuschak.org/Work_with_the_garage_door_up) describing the the idea of 'Work with the garage door open'.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [How Are Creator Journalists Reaching Audiences Traditional Media Miss?](https://niemanreports.org/liz-kelly-nelson-project-c-creator-journalists-social-media-gen-z-news-vertical-video/) (article)
+
+Above is a link to an interview with [Liz Kelly Nelson](https://www.linkedin.com/in/lizkellynelson/), founder of [Project C](https://projectc.biz/), a group focused on providing resources to creator journalists who are working independently.
+The interview contains some discussion defining what creator journalists do, how to best support them, and what larger news organizations need to be aware of with these types of journalists.
+Several key points in the interview caught my attention.
+For one, the definition of what a creator journalist was a really good, useful framing.
+Statements centered on why news organizations should care about the creator economy were also an important takeaway from the interview.
+This is especially true given how younger audiences are consuming news on platforms like YouTube and TikTok.
+The interview also contained a thoughtful response to this question: Does this [independent creator journalists] further exacerbate the fragmentation of a polarized news ecosystem?
+Nelson's response emphasized that news organizations really need to understand what the community needs in terms of news and information.
+By looking to creator journalists in how they fulfill their communities' needs, news organizations will come up with better ways to reach and speak with their audiences.
+There was also some discussion about news organizations supporting a 'creator-in-residence' within newsrooms.
+
+#### Why does this matter?
+
+Since the [last update](https://www.collinberke.com/updates/posts/2026-04-25-hex-update-022/), the focus has been on creators--now independent creator journalists.
+News organizations need to confront the reality that journalists are finding success independently, as the platform ecosystem greatly supports this model.
+My take?
+This isn't necessarily a bad thing, but it is an evolution.
+Creator journalists will not take away the need for larger newsrooms, as some stories can't be told without these resources.
+However, what I do see is the need for increased partnerships.
+In addition, news organizations, to meet the needs of their communities, will need to better understand why people are turning more and more to creator content.
+Observing how creators meet these needs will lead news organizations to a better understanding of how to reach and engage with audiences.
+
+### [Hollywood's new word of mouth: TikTok sustains the buzz after opening weekend](https://www.npr.org/2026/04/18/nx-s1-5787983/new-data-show-tiktok-engagement-as-a-key-indicator-of-long-term-box-office-success) (article)
+
+Here's a news article highlighting the impact [TikTok](https://en.wikipedia.org/wiki/TikTok) and independent creators have on film and media.
+According to industry professionals quoted in the article, TikTok is a platform useful for reaching new audiences, and it provides significant lift in terms of marketing.
+The article cites some pretty staggering statistics in support these points: creator content outperforms traditional film advertising by 3-to-1, and it has been shown to soften the usual second week drop common of movie premieres.
+Much of this impact is attributed to independent creator content, which studios would previously be against due to protecting intellectual property.
+However, this type of content is now being embraced, and it is even considered essential to the marketing strategies for many movie releases.
+It was staggering to read that every day users create upwards of 6.5 million posts related to entertainment and news.
+Even more striking, according to the article, is that nearly half of users found a new movie via the platform, and a third of these users converted by looking up a showtime or purchasing a ticket.
+
+#### Why does this matter?
+
+The trend is clear: TikTok is a platform to reach new audiences.
+With user generated content related to entertainment and news exceeding 6 million posts a day, it's no surprise the platform has a significant impact on a media organization's marketing operations.
+Media organizations should continue to follow this trend, and they might want to consider how TikTok fits into their overall marketing strategy.
+Given the 3-to-1 impact of UGC content over traditional advertising, portions of this strategy might be focused on engaging with independent creators to post about their available content and experiences.
+
+### [News Leaders: Innovation Is Urgent Concern](https://tvnewscheck.com/journalism/article/news-leaders-innovation-is-urgent-concern/) (article)
+
+This article is a recap of a panel of news and technology leaders at this year's [NAB Show](https://www.nabshow.com/).
+The panel was centered on changes news organizations need to be focusing on right now.
+The concensus?
+Groups need to move faster and innovate.
+Several points along with examples were provided.
+Audience fragmentation driving this need was one point raised by the panel.
+News organizations need to be everywhere so as to be able to meet people where they are with important information.
+In addition, the article stated this is not only a technology and work process problem, but it's also the appointment viewing mindset that is still present within newsrooms.
+There needs to be more alignment with not only workflow, but also the mindset of how to deliver content in this fragmented environement.
+Transperancey as part of the news product was another imporant theme that was discussed.
+One example from [KCBS in Los Angeles](https://www.cbsnews.com/losangeles/) was to move the assignment desk into a studio and make assignment editors a part of every newscast, which resulted in viewers expressing appreciation for the improved transperancey because it allowed them to see how news was being gathered.
+There was also some discussion about creating more modular content and technology to improve the ability to increase genuine, local digital news coverage.
+An important point, focused more on tech, was how AI compresses the development time for technology.
+This short development cycle allows for features to more quickly get in the hands of professionals and test out what works and doesn't work.
+
+#### Why does this matter?
+
+What's above are a few points and examples from the panel recap I found to be important.
+Three critical points: audience fragmentation; the mindshift change now required to meet audience needs; and rapid tech advances making more tools available to journalists and producers.
+The undertone of all these points, at least in my observation, is the incredible opportunity to better serve audiences given the current state of the media industry and the growing technological innovation.
+However, for news organizations to meet the moment, embracing change and the integration of these new technologies into current workflows will be essential.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I've continued some project work doing extract, transform, and load tasks.
+Much of the tech I'm working with involves the use of [resources](https://cloud.google.com/) within the [Google Cloud Platform (GCP)](https://en.wikipedia.org/wiki/Google_Cloud_Platform).
+To improve my workflows and push myself, I prioritize trying to do tasks from the command line first.
+
+One common task is to move and update files from my local machine into GCP buckets using the [Google Cloud SDK](https://cloud.google.com/sdk).
+Indeed, the bash commands like `gcloud storage cp` and `gcloud storage rm` are available.
+But I've often wondered if there was a [rsync bash](https://www.w3schools.com/bash/bash_rsync.php) equivalent.
+There is: [`gcloud storage rsync`](https://docs.cloud.google.com/sdk/gcloud/reference/storage/rsync).
+I was so excited to discover this.
+Here's one of the commands I've added to my toolbox:
+
+```txt
+gcloud storage rsync ./local-path gs://path-to-gcp-bucket --exclude=".DS_Store"
+```
+
+I also learned [Quarto](https://quarto.org/) allows for [shell commands](https://quarto.org/docs/computations/execution-options.html#shell-commands) within code chunks to be run.
+Oh, and I was reminded to be careful using `./` and being mindful of what your current working directory is--synch means synch everything.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [3 constraints before I build anything](https://jordanlord.co.uk/blog/3-constraints/) (blog)
+* [Work with the garage door open](https://notes.andymatuschak.org/Work_with_the_garage_door_up) (blog)
+* [A.I. Should Elevate Your Thinking, Not Replace It](https://www.koshyjohn.com/blog/ai-should-elevate-your-thinking-not-replace-it/) (blog)
+* [PUP - Kids (Audio)](https://www.youtube.com/watch?v=EqTNdUOE1wo) (video)
+
+That's it for this update.
+Just keep plugging along.
+You got this.
+
+Okay, bye! 👋
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
