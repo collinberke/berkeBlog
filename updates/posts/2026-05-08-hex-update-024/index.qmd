@@ -1,0 +1,196 @@
+---
+title: "The Hex Update: Issue 024"
+date: "2026-05-08"
+author: "Collin K. Berke, Ph.D."
+description: "News Americans seek out or come across; podcasting's most valuable audience: Audio Primes; Google's experimental feature to validate authentic bots; how to write poetry; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 024.
+
+I have several projects keeping me busy, both professionally and personally.
+While working on these, I'm constantly reminded of the power of small improvements.
+Insert any phrase that fits: 1% a day, one brick at a time, slow and steady wins the race, etc.
+I hope you had a week where you made some small improvements.
+They'll compound over time.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [News Americans seek out or come across](https://www.pewresearch.org/short-reads/2026/04/20/what-types-of-news-do-americans-seek-out-or-happen-to-come-across/)
+* [Podcasting most valuable audience: Audio Primes](https://soundsprofitable.com/research/audio-primes-2026/)
+* [Google's experimental feature to validate authentic bots](https://www.seroundtable.com/google-web-bot-auth-41270.html)
+
+For a bit of fun, I share an [article](https://thecreativeindependent.com/guides/how-to-write-a-poem/) about how to write a poem.
+I certainly don't see myself writing poetry anytime soon, but this article was so well written that I read the whole thing.
+So, I thought I'd share.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [What types of news do Americans seek out or happen to come across](https://www.pewresearch.org/short-reads/2026/04/20/what-types-of-news-do-americans-seek-out-or-happen-to-come-across/) (report)
+
+This link is to a [Pew Research Center](https://www.pewresearch.org/) report.
+The report provides some data and insight into how Americans get their news.
+The key insight is a growing share of Americans are getting their news by coming across it rather than actively seeking it out (49% of U.S. adults).
+When it comes to deep dives, the majority of U.S. adults still seek out this information (55%).
+The report also drills down into these results by age group.
+Key differences exist between younger audiences in terms of how they get in-depth information, deep dives, and the most up-to-date information.
+Specifically, younger audiences tend to more come across up-to-date information by chance rather than seeking it out (52% for U.S. adults aged 18-29).
+
+#### Why does this matter?
+
+Be present in the spaces where your audiences are, especially when it comes to publishing up-to-date information.
+Then, prioritize providing a means and curate spaces for audiences to find in-depth information easily.
+Many media organizations who provide a news service and are seeking to reach younger audiences will also want to be aware of these information seeking behaviors, as a greater number of younger audiences tend to bump into information by chance rather then seeking it out.
+
+### [Audio Primes: The Podcast Industry's Most Valuable Audience](https://soundsprofitable.com/research/audio-primes-2026/) (report) and [Eyes are optional](https://soundsprofitable.com/article/eyes-are-optional/) (article)
+
+This report from [Sounds Profitable](https://soundsprofitable.com/) and the related summary article by [Tom Webster](https://www.linkedin.com/in/tomwebster/) profiles and provides insights about people who are classified as *Audio Primes*.
+Audio Primes are podcast consumers who listen to 75% of their content as audio.
+Podcast producers should be aware of several audience characteristics about this group.
+From the research, these include:
+
+* Audio Primes are younger (35 to 54 year olds), which goes against the common held assumption that this group is mostly composed of 55+ individuals.
+* They over index in terms of video consumption.
+The article emphasizes this might not be what some would expect--this group consumes audio on video infrastructure.
+Despite this, the article clarifies video is still important to strategy, as it still serves as an important discovery mechanism.
+* They are deliberate, expect depth, and are built on routine.
+They consume genres rewarding sustained focus: political talk, self-improvement, and science content.
+Nearly half follow just one or two shows, and the majority only listen on one platform.
+* Audio primes are considered to be a word-of-mouth engine.
+As the article puts it, once you reach one Audio Prime, you've reached their entire network.
+* They are resistant to AI voices and value authenticity.
+* They over index in terms of short-form content consumption (under 20 minutes).
+
+#### Why does this matter?
+Podcast consumption continues to grow.
+Advertising spend will follow.
+For growth purposes, podcast producers should keep these listeners top of mind, as there are many benefits for reaching and engaging with this group.
+For one, even if consumption is mainly listening for this group, it's clear video platform presence is important--it's where they listen and discover what to listen to next.
+The type of content this group gravitates toward is an important consideration: short-form, deliberate, provides depth, but is packaged in a way that fits within their routine (e.g., available on the platforms they use routinely and fits within their lifestyle).
+Lastly, media organizations need to lean into the word-of-mouth characteristic of this group.
+They're a leading driver of listenership and engagement.
+The characteristics listed above are just the ones that caught my attention.
+The report and article go into much more depth, so check it out.
+
+### [Google Web Bot Auth: Validate Authentic Bots](https://www.seroundtable.com/google-web-bot-auth-41270.html) (article)
+
+[Google](https://en.wikipedia.org/wiki/Google) has an [experimental feature](https://developers.google.com/crawling/docs/crawlers-fetchers/web-bot-auth) that aims to help websites validate authentic bot requests.
+This feature will involve agents cryptographically signing their requests.
+Currently the industry and tech relies on self-reported headers and IP addresses, which limits the verifiability of agent identity.
+Adopting this specification has many benefits, including better observability into how agents are interacting with site content.
+Since the feature is experimental, it's only testing via Google's AI agents at this time.
+
+#### Why does this matter?
+
+[Agents are purported to fundamentally change the way we interact with the internet and how the internet is structured and supported](https://www.youtube.com/watch?v=78w61I62N_0&t=765s).
+With this fundamental shift in how users interact with the internet, what's now more important than ever is greater observability into how agents interact with publisher's content.
+Is a visit or a tracked event on a website a genuine user interaction?
+It's challenging to tell with AI agents and the current protocols and infrastructure.
+Site owners and publishers will want to continue tracking this feature's development, as it might be fundamental to being able to parse out genuine user engagement from AI agent behavior.
+
+# What I found interesting this week
+
+I've been attempting to clean up my [dotfiles](https://www.youtube.com/watch?v=r_MpUP6aKiQ), an ongoing spring cleaning project.
+A blog post covering some of the initial clean up I've done is forthcoming. 
+I promise.
+
+My [Zsh](https://ohmyz.sh/) configuration was one item I focused on this week.
+I loathed my organizational approach of my personal functions.
+So, starting small, I began addressing it.
+
+I so far learned the following while tidying things up:
+
+1. You don't have to reference every function and autoload them in your `.zshrc` file. You can just do the following:
+
+```txt
+fpath+=(~/.zsh_functions)
+autoload -Uz ~/.zsh_functions/*(N.:t)
+```
+
+The benefit here is extensibility.
+Every time a new function is added to the `.zsh_functions` directory, it's immediately loaded in.
+
+2. I also learned about [Bash](https://www.youtube.com/watch?v=I4EWvMFj37g&t=1s)'s [case](https://www.geeksforgeeks.org/linux-unix/bash-scripting-case-statement/) statement while trying to create a function to more efficiently interact with my [`todo.txt`](https://www.al3rez.com/todo-txt-journey) file.
+This came about because I started using a chain of `if-else-then` statements, but I wanted the behavior and syntax similar to [R's](https://www.r-project.org/) [switch()](https://rdrr.io/r/base/switch.html) function.
+
+Given my unfamiliarity with Bash's syntax, there were a few false starts.
+I was quickly reminded of the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle while working this out.
+I ended up in a good spot, though:
+
+```txt
+todo() {
+  local dir="$HOME/your-todo-dir/"
+  local file="$dir/todo.txt"
+  local action="${1:-print}"
+
+  if [[ ! -d "$dir" ]]; then
+    echo "Error: Directory $dir does not exist."
+    return 1
+  fi
+
+  case "$action" in
+    "print")
+      less "$file"
+      ;;
+    "edit")
+      nvim "$file"
+      ;;
+    "diff")
+      git -C "$dir" diff
+      ;;
+    "update")
+      git -C "$dir" add todo.txt
+      git -C "$dir" commit -m "docs: update todo"
+      git -C "$dir" push
+      ;;
+    *)
+
+    echo "Usage: todo {edit|diff|update} or leave empty to print"
+    return 1
+    ;;
+  esac
+}
+```
+
+# Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [How to write a poem](https://thecreativeindependent.com/guides/how-to-write-a-poem/) (blog)
+* [Dig into zsh: How to Function (part 1)](https://postgresqlstan.github.io/zsh/zsh-functions/) (blog)
+* [Bringing OpenTelemetry to R in production](https://opensource.posit.co/blog/2026-05-07_opentelemetry/) (blog)
+* [~/.dotfiles in 100 Seconds](https://www.youtube.com/watch?v=r_MpUP6aKiQ) (video)
+* [Anna Meredith: Tiny Desk Concert](https://www.npr.org/2018/03/02/589883479/anna-meredith-tiny-desk-concert) (video)
+
+That's it for this update.
+Take a moment to find something small and make it better this weekend.
+These small improvements compound over time (i.e., 1% a day).
+For me, it's continuing to make small edits to my dotfiles.
+For you, that could be anything that makes your life a little easier, more enjoyable, and more productive.
+
+Here's to a great start to your weekend.
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
