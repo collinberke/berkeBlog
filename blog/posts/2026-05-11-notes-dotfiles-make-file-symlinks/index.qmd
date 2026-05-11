@@ -1,0 +1,222 @@
+---
+title: "Notes: The start to cleaning up my dotfiles"
+description: "Makefiles, symlinks, a .zshrc, and a Zsh function"
+format:
+  html:
+    link-external-newwindow: true
+execute:
+  eval: false
+date: "2026-05-11"
+author: "Collin K. Berke, Ph.D."
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - notes
+  - configuration
+  - productivity
+  - workflow
+---
+
+My focus has been on my [dotfiles](https://github.com/collinberke/dotfiles) recently.
+Since I've been making changes, I thought it best to write a post to document my changes and what I've learned.
+The hope is this will not only be helpful to me but others in the future.
+I especially hope it's helpful for others interested in managing their configuration in this way.
+
+If you're not familiar with dotfiles, here are a few resources I've found helpful:
+
+* [~/.dotfiles in 100 seconds](https://www.youtube.com/watch?v=r_MpUP6aKiQ)
+* [dotfiles: Your unofficial guide to dotfiles on GitHub](https://dotfiles.github.io/)
+* [Using Git and GitHub to manage your dotfiles](https://blog.smalleycreative.com/using-git-and-github-to-manage-your-dotfiles/)
+* [Awesome Dotfiles](https://github.com/webpro/awesome-dotfiles)
+
+While cleaning up my current setup, I was confronted with a problem: version controlling my files and making them clonable to any environment I'm working in.
+
+None of the changes in these notes are uniquely my own.
+Neither were they developed by me.
+A majority of what I've changed thus far was already a solved problem, so I just took what others have done (I'll be sure to provide some links).
+
+# Starting over... kind of
+
+I already had a [repo](https://github.com/collinberke/dotfiles) with a start to some dotfiles.
+However, many of these files were just some manual configuration steps I had documented.
+Very little automation was used.
+So, I kind of 'started over' by using what I already had.
+
+For some time now, I've been collecting, modifying, and customizing the configurations for the tech I use.
+Addressing all of these files at once would have been too much.
+So, the initial intention was to start small, see what worked, and iterate.
+
+The starting point was my [oh-my-zsh](https://ohmyz.sh/) configuration, which is managed using a [`.zshrc`](https://github.com/ohmyzsh/ohmyzsh/wiki/Settings) file.
+So, I cloned down my dotfiles repo into my home directory and `cp`'d my `.zshrc` file over to my recently cloned `dotfiles` directory.
+
+You can see the current version of my `.zshrc` [here](https://github.com/collinberke/dotfiles/blob/main/zshrc).
+I won't post it for brevity sakes, but it's a pretty vanilla configuration.
+
+# A makefile
+
+Creating a makefile was the first step.
+All a makefile is, in this context, is a file that contains several tasks to help set up and configure everything for our configuration files.
+
+I shamelessly just took what Michael Smalley had is this blog post [here](https://blog.smalleycreative.com/using-git-and-github-to-manage-your-dotfiles/) for my own makefile.
+Specifically, it's just a shell script (i.e., `.sh` file) that contains several steps to setup everything for the configuration.
+
+Here's the current [version](https://github.com/collinberke/dotfiles/blob/main/makesymlinks.sh) of my makefile, which, honestly, is an exact copy from the blog linked above:
+
+```bash
+#!/bin/bash
+#############################
+# .make.sh
+# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
+#############################
+
+########## Variables
+
+dir=~/dotfiles
+olddir=~/dotfiles_old
+files="zshrc"
+
+##########
+
+# create dotfiles_old in homedir
+echo -n "Creating $olddir for backup of any existing dotfiles in ~..."
+mkdir -p $olddir
+echo "done"
+
+# change to the dotfiles directory
+echo -n "Changing to the $dir directory ..."
+cd $dir
+echo "done"
+
+# move any existing dotfiles in homedir to dotfiles_old directoyr, then create symlinks
+for file in $files; do
+  echo "moving any existing dotfiles from ~ to $olddir"
+  mv ~/.$file ~/dotfiles_old/
+  echo "creating symlink to $file in home directory."
+  ln -s $dir/$file ~/.$file
+done
+```
+
+What I really liked about this version of a makefile was how it moved older configuration files to a `~/dotfiles_old` directory.
+This made me feel better, as I was less concerned of losing any current configuration files as things were getting moved around.
+
+The `files` variable will be what I'll expand upon the future, which will take place once I add more configuration files.
+Another convention used within this makefile involves the dropping of the `.` in the configuration file naming convention.
+The makefile handles this small detail for us.
+
+Once the makefile was ready, I made it executable with the following commands via the terminal:
+
+```bash
+cd ~/dotfiles
+chmod +x makesymlinks.sh
+./makesymlinks.sh
+```
+
+# Symlinks
+
+For some reason, I had an irrational fear of setting up a symlink.
+When reading through some of the explanations online, it just made it seem like there was a chance for data loss somewhere, some how, and in some situations, especially if you deleted a symlink.
+I wanted to avoid this situation, since I could see a case where I might need to remove a symlink to go back to a previous configuration version.
+
+A [symlink](https://en.wikipedia.org/wiki/Symbolic_link) (short for symbolic link), is kind of like a shortcut.
+It's a way to create an access path to files in a directory without duplicating any of the file's contents.
+So, symlinking our dotfiles directory to the home directory treats the files within it as if they were stored in our home directory.
+There's no need for any copying and pasting of files.
+The symlinks got us covered.
+
+Reviewing some simplified explanations via the internet helped calm my fears.
+
+So, onward.
+
+Our makefile handles the symlink with this line of code:
+
+```bash
+ln -s $dir/$file ~/.$file
+```
+
+It's pretty self-explanatory, but it's basically linking what's in the `$file` directory with that in the home directory.
+
+Now anytime changes are made, the symlink will make it so the files within the dotfiles directory will act as though they are stored within the home directory.
+
+Nice.
+
+# Oh, and one more thing
+
+I liked managing my zsh functions within individual files stored in a `.zsh_function` directory.
+However, I would do something like this at the end of my `.zshrc` to make them available within my session:
+
+```bash
+fpath+=(~/.zsh_functions)
+autoload -U startSomething
+autoload -U doTask
+autoload -U openThing
+```
+
+Doing it this way just didn't bring me joy.
+I considered if there was an efficient, flexible way to do this.
+There was:
+
+```bash
+fpath+=(~/.zsh_functions)
+autoload -Uz ~/.zsh_functions/*(N.:t)
+```
+
+I found Zsh's [documentation](https://zsh.sourceforge.io/Doc/Release/Functions.html#Functions) on functions really useful.
+
+I also created a function to help me better interact with my [`todo.txt`](https://www.al3rez.com/todo-txt-journey) file.
+I wrote about this in one of my recent [Hex Updates](https://www.collinberke.com/updates/posts/2026-05-08-hex-update-024/#what-i-found-interesting-this-week), where I discuss what I recently learned while writing Zsh functions using Bash.
+To keep things short, here's the function without a detailed description of what's taking place:
+
+```bash
+todo() {
+  local dir="$HOME/your-todo-dir/"
+  local file="$dir/todo.txt"
+  local action="${1:-print}"
+
+  if [[ ! -d "$dir" ]]; then
+    echo "Error: Directory $dir does not exist."
+    return 1
+  fi
+
+  case "$action" in
+  "print")
+    less "$file"
+    ;;
+  "edit")
+    nvim "$file"
+    ;;
+  "diff")
+    git -C "$dir" diff
+    ;;
+  "update")
+    git -C "$dir" add todo.txt
+    git -C "$dir" commit -m "docs: update todo"
+    git -C "$dir" push
+    ;;
+  *)
+
+    echo "Usage: todo {edit|diff|update} or leave empty to print"
+    return 1
+    ;;
+  esac
+}
+```
+
+# Wrap up
+
+This was a pretty straightforward starting point to the clean up of my dotfiles.
+The makefile was easy because it was an already solved problem.
+I did, however, have to get more comfortable with the concept of symlinks, though.
+Following the makefile, I started small by moving my `.zshrc` file and adding and getting that version controlled.
+Figuring out how to better incorporate my Zsh functions was a nice discovery.
+The bonus was writing a function to better interact with my `todo.txt` file.
+Now it's about moving over and cleaning up some other dotfiles into this new setup.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
+
