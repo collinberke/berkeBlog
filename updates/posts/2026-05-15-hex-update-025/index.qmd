@@ -1,0 +1,146 @@
+---
+title: "The Hex Update: Issue 025"
+date: "2026-05-15"
+author: "Collin K. Berke, Ph.D."
+description: "AI's impact on Google Search; informational content and its role with LLMs; everything is becoming television; design elements to make text look 'futuristic'; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 025.
+
+I've just been chugging along this week with work and home projects.
+This includes staying busy and checking items off the to-do list.
+Not much else to report, so let's dive in.
+
+Three topics recently caught my attention:
+
+* [How AI is changing Google Search and SEO](https://www.youtube.com/watch?v=_R04ySodhGE)
+* [Informational content and its role with LLMs](https://sitebulb.com/resources/guides/the-role-of-informational-content-in-the-age-of-llms/)
+* [Everything is becoming television](https://www.derekthompson.org/p/why-everything-became-television)
+
+For a bit of fun, I share an [article](https://typesetinthefuture.com/2016/02/18/futuristic/) demonstrating how various typesetting design elements are used to give text a futuristic look.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [How AI Is Changing Google Search and SEO](https://www.youtube.com/watch?v=_R04ySodhGE) (podcast)
+
+This podcast is an interview with [Nikola Todorovic](https://www.linkedin.com/in/nikola-todorovic-14729011/), director of Software Engineering at Google Search.
+The episode focuses on the impact AI overviews have on search.
+According to Nikola, users are finding search can now answer more complex questions [(02m58s)](https://youtu.be/_R04ySodhGE?si=yXDx-pEv-1tjto0T&t=178).
+As such, search queries are becoming longer.
+Search has transitioned from keyword searches, to more conversational queries, and to now being longer AI prompts by users.
+To return better search results, AI overviews synthesize information returned by a technique called [*query fan-out*](https://digiday.com/media/wtf-is-query-fan-out-in-googles-ai-mode/) [(13m09s)](https://youtu.be/_R04ySodhGE?si=MO5mUHTe_cusjMxp&t=789).
+Although this technique is meant to create better AI summary results based on user intention, it continues to challenge publisher's SEO strategy.
+The interview then explores the impacts these features will have on the content ecosystem, as well as SEO going forward [(20m29s)](https://youtu.be/_R04ySodhGE?si=iaquif6_24L19Rvi&t=1229).
+Todorovic was clear: there is no magic SEO wand to find success with this version of search and AI summaries.
+Despite this, he emphasized one area to focus on.
+Site owners should continue to create products and content that provide value to users.
+People still need to continue providing value to people.
+
+#### Why does this matter?
+
+Continue creating useful content for users.
+Useful in this case means creating and publishing content answering the various queries extending from what was originally asked by the user.
+It's no longer about identifying and using the keywords users are searching for, but rather it's about publishing content to meet user's explicit and implicit intentions.
+AI search summaries seek to provide additional information users intend to receive.
+There's also certainly some structural things that can be done to improve the chances content gets included within AI summaries.
+This Digiday [article](https://digiday.com/media/wtf-is-query-fan-out-in-googles-ai-mode/) provides some places to start.
+
+### [The Role of Informational Content in the Age of LLMs](https://sitebulb.com/resources/guides/the-role-of-informational-content-in-the-age-of-llms/) (blog)
+
+This blog post outlines recommendations for writing informational content that works best with LLMs.
+Its thesis is the way informational content was written in the past is now obsolete.
+As such, it highlights several points and guidelines on what publishers can do if they are writing informational content.
+Simply put, according to the article, writing with keywords users are searching for is no longer the tactic.
+Now it's about associations: the writing should connect the content to other topics or entitys.
+In addition, in this era of LLMs, publishers need to continue writing content that provides new, genuine value, clarifies complex ideas, and offers practical information not found elsewhere.
+It's no longer about providing general information; publishers now need to provide specifics.
+The article also places extra emphasis on relying on the Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T) quality guidelines provided by Google.
+As such, certain structural elements of the article are now critical: bylines, credentials, and moves that show expertise.
+
+#### Why does this matter?
+
+AI search summaries have impacted SEO strategy.
+Tactics useful for populating content in search rankings will no longer work for AI summaries.
+The specific tactics to get populated within summaries are still being experimented with.
+What we do know is how search works in terms of fan-out queries, and content written to address intent inherent in these fan-out queries is one area to focus.
+More importantly, though, is the need to continue creating genuine content that meets user's needs.
+The E-E-A-T model is useful here.
+Also, [Google's AI search guidelines](https://developers.google.com/search/blog/2025/05/succeeding-in-ai-search) are worth a review.
+
+### [Everything is Television](https://www.derekthompson.org/p/why-everything-became-television) (article)
+
+Here's a really interesting article about how all things in media are turning into television.
+The article shares several examples to support this point: the majority of time spent on platforms like Facebook and Instagram are spent watching video; podcasting's move to more of a video first format; and AI tools rolling out spaces where users can watch endless amounts of AI generated video content.
+The article attempts to further explain the statement that "everything is turning into television": the continuous flow of episodic video.
+The article posits it's the infinitude nature of this flow of video that is the primary driver of consumption, not necessarily the content itself.
+The article then provides positives and negatives if all media embraces the grammar of television.
+
+#### Why does this matter?
+
+Platforms recognize the importance of video, especially the role short form video feeds have on discovery and consumption.
+Take [Netflix's recent feature roll-out](https://about.netflix.com/en/news/unveiling-our-innovative-new-tv-experience) of its vertical video feed for mobile as an example.
+It's now critical for publishers who rely on other platforms to understand the shift in focus toward the flow of video, rather than strictly on the titles that are available.
+It's also an interesting thought experiment to consider the impacts a move for all of media to embrace the grammar of television can have.
+That's a bigger question worth further exploration.
+Some interesting points made in this one, so I suggest taking a look.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I've been trying more and more to use [visidata](https://www.visidata.org/) from some data work, specifically data entry and exploration.
+It's a really powerful tool, but I've clumsily used it in the past.
+It's main utility, for me, is to be able to view data from the terminal.
+
+Well, this week I began trying to learn how to *use* it for other data tasks.
+To assist in my learning, I drafted the start of a cheatsheet for my reference.
+For now it's just focused on data entry and editing data files.
+The hope is to expand it some more as I learn new things.
+Here's what I've got thus far:
+
+```markdown
+# Entering data
+`za`     - blank new column
+`a`      - blank new column
+`e`      - edit a new cell
+`Ctrl+s` - save a sheet
+```
+
+Oh, I also learned about the [`clipr`](https://matthewlincoln.net/clipr/) R package this week.
+It's a really nice utility to write things to your system's [clipboard](https://en.wikipedia.org/wiki/Clipboard_(computing)).
+I've found some really neat programmatic uses for it.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Typeset in the future](https://typesetinthefuture.com/2016/02/18/futuristic/) (blog)
+* [What a Japanese cooking principle taught me about overcoming AI fatigue](https://www.devas.life/what-a-japanese-cooking-principle-taught-me-about-overcoming-ai-fatigue/) (blog)
+* [The power of a free popsicle](https://www.gsb.stanford.edu/insights/power-free-popsicle) (article)
+
+That's it for this update.
+
+I hope you have a good weekend.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}

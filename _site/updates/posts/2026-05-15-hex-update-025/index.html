@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Collin K. Berke, Ph.D.">
-<meta name="dcterms.date" content="2026-05-11">
-<meta name="description" content="Makefiles, symlinks, a .zshrc, and a Zsh function">
+<meta name="dcterms.date" content="2026-05-15">
+<meta name="description" content="AI’s impact on Google Search; informational content and its role with LLMs; everything is becoming television; design elements to make text look ‘futuristic’; and some other cool things I came across this week">
 
-<title>Notes: The start to cleaning up my dotfiles – Collin K. Berke, Ph.D.</title>
+<title>The Hex Update: Issue 025 – Collin K. Berke, Ph.D.</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -82,8 +82,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-1e5ad64fd0144ef3e9b8ffa7cd8261fa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-06bda6adb05b0368c48500cf66aa6524.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-82e7d968386bc6f68bfceb5876b612a8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-fffa27e5c3e5cad3d8c8c9a3b11e76a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -334,11 +334,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#starting-over-kind-of" id="toc-starting-over-kind-of" class="nav-link active" data-scroll-target="#starting-over-kind-of">Starting over… kind of</a></li>
-  <li><a href="#a-makefile" id="toc-a-makefile" class="nav-link" data-scroll-target="#a-makefile">A makefile</a></li>
-  <li><a href="#symlinks" id="toc-symlinks" class="nav-link" data-scroll-target="#symlinks">Symlinks</a></li>
-  <li><a href="#oh-and-one-more-thing" id="toc-oh-and-one-more-thing" class="nav-link" data-scroll-target="#oh-and-one-more-thing">Oh, and one more thing</a></li>
-  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  <li><a href="#lets-catch-up" id="toc-lets-catch-up" class="nav-link active" data-scroll-target="#lets-catch-up">Let’s catch up</a></li>
+  <li><a href="#three-things" id="toc-three-things" class="nav-link" data-scroll-target="#three-things">Three things</a>
+  <ul class="collapse">
+  <li><a href="#how-ai-is-changing-google-search-and-seo-podcast" id="toc-how-ai-is-changing-google-search-and-seo-podcast" class="nav-link" data-scroll-target="#how-ai-is-changing-google-search-and-seo-podcast">How AI Is Changing Google Search and SEO (podcast)</a></li>
+  <li><a href="#the-role-of-informational-content-in-the-age-of-llms-blog" id="toc-the-role-of-informational-content-in-the-age-of-llms-blog" class="nav-link" data-scroll-target="#the-role-of-informational-content-in-the-age-of-llms-blog">The Role of Informational Content in the Age of LLMs (blog)</a></li>
+  <li><a href="#everything-is-television-article" id="toc-everything-is-television-article" class="nav-link" data-scroll-target="#everything-is-television-article">Everything is Television (article)</a></li>
+  </ul></li>
+  <li><a href="#what-i-found-interesting-this-week" id="toc-what-i-found-interesting-this-week" class="nav-link" data-scroll-target="#what-i-found-interesting-this-week">What I found interesting this week</a>
+  <ul class="collapse">
+  <li><a href="#cool-things-i-recently-bumped-into" id="toc-cool-things-i-recently-bumped-into" class="nav-link" data-scroll-target="#cool-things-i-recently-bumped-into">Cool things I recently bumped into</a></li>
+  </ul></li>
   <li><a href="#lets-connect" id="toc-lets-connect" class="nav-link" data-scroll-target="#lets-connect">Let’s connect</a></li>
   </ul>
 </nav>
@@ -349,18 +355,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes: The start to cleaning up my dotfiles</h1>
+<h1 class="title">The Hex Update: Issue 025</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">notes</div>
-    <div class="quarto-category">configuration</div>
-    <div class="quarto-category">productivity</div>
-    <div class="quarto-category">workflow</div>
+    <div class="quarto-category">the hex update</div>
+    <div class="quarto-category">media</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Makefiles, symlinks, a .zshrc, and a Zsh function
+    AI’s impact on Google Search; informational content and its role with LLMs; everything is becoming television; design elements to make text look ‘futuristic’; and some other cool things I came across this week
   </div>
 </div>
 
@@ -377,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 11, 2026</p>
+      <p class="date">May 15, 2026</p>
     </div>
   </div>
   
@@ -389,126 +393,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>My focus has been on my <a href="https://github.com/collinberke/dotfiles">dotfiles</a> recently. Since I’ve been making changes, I thought it best to write a post to document my changes and what I’ve learned. The hope is this will not only be helpful to me but others in the future. I especially hope it’s helpful for others interested in managing their configuration in this way.</p>
-<p>If you’re not familiar with dotfiles, here are a few resources I’ve found helpful:</p>
+<section id="lets-catch-up" class="level1">
+<h1>Let’s catch up</h1>
+<p>Welcome to Issue 025.</p>
+<p>I’ve just been chugging along this week with work and home projects. This includes staying busy and checking items off the to-do list. Not much else to report, so let’s dive in.</p>
+<p>Three topics recently caught my attention:</p>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=r_MpUP6aKiQ">~/.dotfiles in 100 seconds</a></li>
-<li><a href="https://dotfiles.github.io/">dotfiles: Your unofficial guide to dotfiles on GitHub</a></li>
-<li><a href="https://blog.smalleycreative.com/using-git-and-github-to-manage-your-dotfiles/">Using Git and GitHub to manage your dotfiles</a></li>
-<li><a href="https://github.com/webpro/awesome-dotfiles">Awesome Dotfiles</a></li>
+<li><a href="https://www.youtube.com/watch?v=_R04ySodhGE">How AI is changing Google Search and SEO</a></li>
+<li><a href="https://sitebulb.com/resources/guides/the-role-of-informational-content-in-the-age-of-llms/">Informational content and its role with LLMs</a></li>
+<li><a href="https://www.derekthompson.org/p/why-everything-became-television">Everything is becoming television</a></li>
 </ul>
-<p>While cleaning up my current setup, I was confronted with a problem: version controlling my files and making them clonable to any environment I’m working in.</p>
-<p>None of the changes in these notes are uniquely my own. Neither were they developed by me. A majority of what I’ve changed thus far was already a solved problem, so I just took what others have done (I’ll be sure to provide some links).</p>
-<section id="starting-over-kind-of" class="level1">
-<h1>Starting over… kind of</h1>
-<p>I already had a <a href="https://github.com/collinberke/dotfiles">repo</a> with a start to some dotfiles. However, many of these files were just some manual configuration steps I had documented. Very little automation was used. So, I kind of ‘started over’ by using what I already had.</p>
-<p>For some time now, I’ve been collecting, modifying, and customizing the configurations for the tech I use. Addressing all of these files at once would have been too much. So, the initial intention was to start small, see what worked, and iterate.</p>
-<p>The starting point was my <a href="https://ohmyz.sh/">oh-my-zsh</a> configuration, which is managed using a <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Settings"><code>.zshrc</code></a> file. So, I cloned down my dotfiles repo into my home directory and <code>cp</code>’d my <code>.zshrc</code> file over to my recently cloned <code>dotfiles</code> directory.</p>
-<p>You can see the current version of my <code>.zshrc</code> <a href="https://github.com/collinberke/dotfiles/blob/main/zshrc">here</a>. I won’t post it for brevity sakes, but it’s a pretty vanilla configuration.</p>
+<p>For a bit of fun, I share an <a href="https://typesetinthefuture.com/2016/02/18/futuristic/">article</a> demonstrating how various typesetting design elements are used to give text a futuristic look.</p>
+<p>You’ll also find some additional links to other items I found cool this week.</p>
 </section>
-<section id="a-makefile" class="level1">
-<h1>A makefile</h1>
-<p>Creating a makefile was the first step. All a makefile is, in this context, is a file that contains several tasks to help set up and configure everything for our configuration files.</p>
-<p>I shamelessly just took what Michael Smalley had is this blog post <a href="https://blog.smalleycreative.com/using-git-and-github-to-manage-your-dotfiles/">here</a> for my own makefile. Specifically, it’s just a shell script (i.e., <code>.sh</code> file) that contains several steps to setup everything for the configuration.</p>
-<p>Here’s the current <a href="https://github.com/collinberke/dotfiles/blob/main/makesymlinks.sh">version</a> of my makefile, which, honestly, is an exact copy from the blog linked above:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#############################</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># .make.sh</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#############################</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">########## Variables</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">dir</span><span class="op">=</span>~/dotfiles</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">olddir</span><span class="op">=</span>~/dotfiles_old</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="va">files</span><span class="op">=</span><span class="st">"zshrc"</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">##########</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create dotfiles_old in homedir</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Creating </span><span class="va">$olddir</span><span class="st"> for backup of any existing dotfiles in ~..."</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$olddir</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"done"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># change to the dotfiles directory</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Changing to the </span><span class="va">$dir</span><span class="st"> directory ..."</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$dir</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"done"</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># move any existing dotfiles in homedir to dotfiles_old directoyr, then create symlinks</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$files</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"moving any existing dotfiles from ~ to </span><span class="va">$olddir</span><span class="st">"</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mv</span> ~/.<span class="va">$file</span> ~/dotfiles_old/</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"creating symlink to </span><span class="va">$file</span><span class="st"> in home directory."</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ln</span> <span class="at">-s</span> <span class="va">$dir</span>/<span class="va">$file</span> ~/.<span class="va">$file</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>What I really liked about this version of a makefile was how it moved older configuration files to a <code>~/dotfiles_old</code> directory. This made me feel better, as I was less concerned of losing any current configuration files as things were getting moved around.</p>
-<p>The <code>files</code> variable will be what I’ll expand upon the future, which will take place once I add more configuration files. Another convention used within this makefile involves the dropping of the <code>.</code> in the configuration file naming convention. The makefile handles this small detail for us.</p>
-<p>Once the makefile was ready, I made it executable with the following commands via the terminal:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/dotfiles</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x makesymlinks.sh</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./makesymlinks.sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="three-things" class="level1">
+<h1>Three things</h1>
+<p>Here’s what caught my attention this week:</p>
+<section id="how-ai-is-changing-google-search-and-seo-podcast" class="level3">
+<h3 class="anchored" data-anchor-id="how-ai-is-changing-google-search-and-seo-podcast"><a href="https://www.youtube.com/watch?v=_R04ySodhGE">How AI Is Changing Google Search and SEO</a> (podcast)</h3>
+<p>This podcast is an interview with <a href="https://www.linkedin.com/in/nikola-todorovic-14729011/">Nikola Todorovic</a>, director of Software Engineering at Google Search. The episode focuses on the impact AI overviews have on search. According to Nikola, users are finding search can now answer more complex questions <a href="https://youtu.be/_R04ySodhGE?si=yXDx-pEv-1tjto0T&amp;t=178">(02m58s)</a>. As such, search queries are becoming longer. Search has transitioned from keyword searches, to more conversational queries, and to now being longer AI prompts by users. To return better search results, AI overviews synthesize information returned by a technique called <a href="https://digiday.com/media/wtf-is-query-fan-out-in-googles-ai-mode/"><em>query fan-out</em></a> <a href="https://youtu.be/_R04ySodhGE?si=MO5mUHTe_cusjMxp&amp;t=789">(13m09s)</a>. Although this technique is meant to create better AI summary results based on user intention, it continues to challenge publisher’s SEO strategy. The interview then explores the impacts these features will have on the content ecosystem, as well as SEO going forward <a href="https://youtu.be/_R04ySodhGE?si=iaquif6_24L19Rvi&amp;t=1229">(20m29s)</a>. Todorovic was clear: there is no magic SEO wand to find success with this version of search and AI summaries. Despite this, he emphasized one area to focus on. Site owners should continue to create products and content that provide value to users. People still need to continue providing value to people.</p>
+<section id="why-does-this-matter" class="level4">
+<h4 class="anchored" data-anchor-id="why-does-this-matter">Why does this matter?</h4>
+<p>Continue creating useful content for users. Useful in this case means creating and publishing content answering the various queries extending from what was originally asked by the user. It’s no longer about identifying and using the keywords users are searching for, but rather it’s about publishing content to meet user’s explicit and implicit intentions. AI search summaries seek to provide additional information users intend to receive. There’s also certainly some structural things that can be done to improve the chances content gets included within AI summaries. This Digiday <a href="https://digiday.com/media/wtf-is-query-fan-out-in-googles-ai-mode/">article</a> provides some places to start.</p>
 </section>
-<section id="symlinks" class="level1">
-<h1>Symlinks</h1>
-<p>For some reason, I had an irrational fear of setting up a symlink. When reading through some of the explanations online, it just made it seem like there was a chance for data loss somewhere, some how, and in some situations, especially if you deleted a symlink. I wanted to avoid this situation, since I could see a case where I might need to remove a symlink to go back to a previous configuration version.</p>
-<p>A <a href="https://en.wikipedia.org/wiki/Symbolic_link">symlink</a> (short for symbolic link), is kind of like a shortcut. It’s a way to create an access path to files in a directory without duplicating any of the file’s contents. So, symlinking our dotfiles directory to the home directory treats the files within it as if they were stored in our home directory. There’s no need for any copying and pasting of files. The symlinks got us covered.</p>
-<p>Reviewing some simplified explanations via the internet helped calm my fears.</p>
-<p>So, onward.</p>
-<p>Our makefile handles the symlink with this line of code:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$dir</span>/<span class="va">$file</span> ~/.<span class="va">$file</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>It’s pretty self-explanatory, but it’s basically linking what’s in the <code>$file</code> directory with that in the home directory.</p>
-<p>Now anytime changes are made, the symlink will make it so the files within the dotfiles directory will act as though they are stored within the home directory.</p>
-<p>Nice.</p>
 </section>
-<section id="oh-and-one-more-thing" class="level1">
-<h1>Oh, and one more thing</h1>
-<p>I liked managing my zsh functions within individual files stored in a <code>.zsh_function</code> directory. However, I would do something like this at the end of my <code>.zshrc</code> to make them available within my session:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">fpath</span><span class="op">+=</span><span class="va">(</span>~/.zsh_functions<span class="va">)</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autoload</span> <span class="at">-U</span> startSomething</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autoload</span> <span class="at">-U</span> doTask</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autoload</span> <span class="at">-U</span> openThing</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Doing it this way just didn’t bring me joy. I considered if there was an efficient, flexible way to do this. There was:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">fpath</span><span class="op">+=</span><span class="va">(</span>~/.zsh_functions<span class="va">)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autoload</span> <span class="at">-Uz</span> ~/.zsh_functions/<span class="pp">*(</span>N.:t<span class="pp">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>I found Zsh’s <a href="https://zsh.sourceforge.io/Doc/Release/Functions.html#Functions">documentation</a> on functions really useful.</p>
-<p>I also created a function to help me better interact with my <a href="https://www.al3rez.com/todo-txt-journey"><code>todo.txt</code></a> file. I wrote about this in one of my recent <a href="https://www.collinberke.com/updates/posts/2026-05-08-hex-update-024/#what-i-found-interesting-this-week">Hex Updates</a>, where I discuss what I recently learned while writing Zsh functions using Bash. To keep things short, here’s the function without a detailed description of what’s taking place:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">todo()</span> <span class="kw">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">dir</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/your-todo-dir/"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">file</span><span class="op">=</span><span class="st">"</span><span class="va">$dir</span><span class="st">/todo.txt"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">local</span> <span class="va">action</span><span class="op">=</span><span class="st">"</span><span class="va">${1</span><span class="op">:-</span>print<span class="va">}</span><span class="st">"</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="kw">[[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> <span class="kw">]];</span> <span class="cf">then</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error: Directory </span><span class="va">$dir</span><span class="st"> does not exist."</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="st">"</span><span class="va">$action</span><span class="st">"</span> <span class="kw">in</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"print"</span><span class="kw">)</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">less</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">;;</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"edit"</span><span class="kw">)</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">nvim</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">;;</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"diff"</span><span class="kw">)</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> <span class="at">-C</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> diff</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">;;</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"update"</span><span class="kw">)</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> <span class="at">-C</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> add todo.txt</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> <span class="at">-C</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> commit <span class="at">-m</span> <span class="st">"docs: update todo"</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> <span class="at">-C</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> push</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">;;</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="pp">*</span><span class="kw">)</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: todo {edit|diff|update} or leave empty to print"</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">;;</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">esac</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="the-role-of-informational-content-in-the-age-of-llms-blog" class="level3">
+<h3 class="anchored" data-anchor-id="the-role-of-informational-content-in-the-age-of-llms-blog"><a href="https://sitebulb.com/resources/guides/the-role-of-informational-content-in-the-age-of-llms/">The Role of Informational Content in the Age of LLMs</a> (blog)</h3>
+<p>This blog post outlines recommendations for writing informational content that works best with LLMs. Its thesis is the way informational content was written in the past is now obsolete. As such, it highlights several points and guidelines on what publishers can do if they are writing informational content. Simply put, according to the article, writing with keywords users are searching for is no longer the tactic. Now it’s about associations: the writing should connect the content to other topics or entitys. In addition, in this era of LLMs, publishers need to continue writing content that provides new, genuine value, clarifies complex ideas, and offers practical information not found elsewhere. It’s no longer about providing general information; publishers now need to provide specifics. The article also places extra emphasis on relying on the Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T) quality guidelines provided by Google. As such, certain structural elements of the article are now critical: bylines, credentials, and moves that show expertise.</p>
+<section id="why-does-this-matter-1" class="level4">
+<h4 class="anchored" data-anchor-id="why-does-this-matter-1">Why does this matter?</h4>
+<p>AI search summaries have impacted SEO strategy. Tactics useful for populating content in search rankings will no longer work for AI summaries. The specific tactics to get populated within summaries are still being experimented with. What we do know is how search works in terms of fan-out queries, and content written to address intent inherent in these fan-out queries is one area to focus. More importantly, though, is the need to continue creating genuine content that meets user’s needs. The E-E-A-T model is useful here. Also, <a href="https://developers.google.com/search/blog/2025/05/succeeding-in-ai-search">Google’s AI search guidelines</a> are worth a review.</p>
 </section>
-<section id="wrap-up" class="level1">
-<h1>Wrap up</h1>
-<p>This was a pretty straightforward starting point to the clean up of my dotfiles. The makefile was easy because it was an already solved problem. I did, however, have to get more comfortable with the concept of symlinks, though. Following the makefile, I started small by moving my <code>.zshrc</code> file and adding and getting that version controlled. Figuring out how to better incorporate my Zsh functions was a nice discovery. The bonus was writing a function to better interact with my <code>todo.txt</code> file. Now it’s about moving over and cleaning up some other dotfiles into this new setup.</p>
+</section>
+<section id="everything-is-television-article" class="level3">
+<h3 class="anchored" data-anchor-id="everything-is-television-article"><a href="https://www.derekthompson.org/p/why-everything-became-television">Everything is Television</a> (article)</h3>
+<p>Here’s a really interesting article about how all things in media are turning into television. The article shares several examples to support this point: the majority of time spent on platforms like Facebook and Instagram are spent watching video; podcasting’s move to more of a video first format; and AI tools rolling out spaces where users can watch endless amounts of AI generated video content. The article attempts to further explain the statement that “everything is turning into television”: the continuous flow of episodic video. The article posits it’s the infinitude nature of this flow of video that is the primary driver of consumption, not necessarily the content itself. The article then provides positives and negatives if all media embraces the grammar of television.</p>
+<section id="why-does-this-matter-2" class="level4">
+<h4 class="anchored" data-anchor-id="why-does-this-matter-2">Why does this matter?</h4>
+<p>Platforms recognize the importance of video, especially the role short form video feeds have on discovery and consumption. Take <a href="https://about.netflix.com/en/news/unveiling-our-innovative-new-tv-experience">Netflix’s recent feature roll-out</a> of its vertical video feed for mobile as an example. It’s now critical for publishers who rely on other platforms to understand the shift in focus toward the flow of video, rather than strictly on the titles that are available. It’s also an interesting thought experiment to consider the impacts a move for all of media to embrace the grammar of television can have. That’s a bigger question worth further exploration. Some interesting points made in this one, so I suggest taking a look.</p>
+<p>Check out the links above for the full story in each item, not just my brief summary and analysis.</p>
+</section>
+</section>
+</section>
+<section id="what-i-found-interesting-this-week" class="level1">
+<h1>What I found interesting this week</h1>
+<p>I’ve been trying more and more to use <a href="https://www.visidata.org/">visidata</a> from some data work, specifically data entry and exploration. It’s a really powerful tool, but I’ve clumsily used it in the past. It’s main utility, for me, is to be able to view data from the terminal.</p>
+<p>Well, this week I began trying to learn how to <em>use</em> it for other data tasks. To assist in my learning, I drafted the start of a cheatsheet for my reference. For now it’s just focused on data entry and editing data files. The hope is to expand it some more as I learn new things. Here’s what I’ve got thus far:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Entering data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="in">`za`</span>     - blank new column</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="in">`a`</span>      - blank new column</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="in">`e`</span>      - edit a new cell</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="in">`Ctrl+s`</span> - save a sheet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Oh, I also learned about the <a href="https://matthewlincoln.net/clipr/"><code>clipr</code></a> R package this week. It’s a really nice utility to write things to your system’s <a href="https://en.wikipedia.org/wiki/Clipboard_(computing)">clipboard</a>. I’ve found some really neat programmatic uses for it.</p>
+<section id="cool-things-i-recently-bumped-into" class="level2">
+<h2 class="anchored" data-anchor-id="cool-things-i-recently-bumped-into">Cool things I recently bumped into</h2>
+<p>A collection of links to things I’ve found cool recently (or was reminded are cool).</p>
+<ul>
+<li><a href="https://typesetinthefuture.com/2016/02/18/futuristic/">Typeset in the future</a> (blog)</li>
+<li><a href="https://www.devas.life/what-a-japanese-cooking-principle-taught-me-about-overcoming-ai-fatigue/">What a Japanese cooking principle taught me about overcoming AI fatigue</a> (blog)</li>
+<li><a href="https://www.gsb.stanford.edu/insights/power-free-popsicle">The power of a free popsicle</a> (article)</li>
+</ul>
+<p>That’s it for this update.</p>
+<p>I hope you have a good weekend.</p>
+<p>Cheers 🎉!</p>
+</section>
 </section>
 <section id="lets-connect" class="level1">
 <h1>Let’s connect</h1>
@@ -523,16 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2026,
-  author = {Berke, Collin K},
-  title = {Notes: {The} Start to Cleaning up My Dotfiles},
-  date = {2026-05-11},
-  langid = {en}
-}
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Berke, Collin K. 2026. <em>Notes: The Start to Cleaning up My
-Dotfiles</em>. accepted, May 11.
-</div></div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
