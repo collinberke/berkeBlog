@@ -1,0 +1,135 @@
+---
+title: "The Hex Update: Issue 026"
+date: "2026-05-24"
+author: "Collin K. Berke, Ph.D."
+description: "The Last Mile problem in journalism; Gen Z's attention and trust; updates to Google Search; the story arc of the Indian Statistical Institute; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 026.
+
+As Memorial Day approaches here in the U.S., I've taken a few vacation days to continue working on some home projects.
+That's why I'm a little behind on this week's update--I've had little time to sit down and write.
+But, here we are.
+So, let's get started.
+
+Three topics recently caught my attention:
+
+* [Journalism treating the Last Mile problem as a design problem](https://www.backstoryandstrategy.com/p/the-last-mile-goes-to-athens?triedRedirect=true)
+* [Gen Z's attention and trust](https://talkerresearch.com/where-gen-z-spends-their-time-and-what-actually-earns-their-trust/)
+* [Changes coming to Google Search](https://techcrunch.com/2026/05/19/google-search-as-you-know-it-is-over/)
+
+For a bit of fun, I share an [article](https://altermag.com/articles/the-making-of-indian-statistics) about the arc of the Indian statistical institute.
+It was an interesting read.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+[The Last Mile Goes to Athens](https://www.backstoryandstrategy.com/p/the-last-mile-goes-to-athens?triedRedirect=true) (article)
+
+The piece is a reflection of a training session for [E.W. Scripps School of Journalism Kiplinger Fellowes](https://www.ohio.edu/scripps-college/journalism/kiplinger).
+The session focused on an exploration of solutions to address journalism's *Last Mile* problem: the distance between publication and impact not due to the quality of journalism, but rather it being due to never treating delivery as a design problem.
+Participants were challenged to develop solutions to solve community challenges using the Moment, Action, and Channel model framework.
+The piece shared a key insight originating from the session.
+Many of the groups produced technology-based solutions, which the majority of involved the phone screen.
+However, as the piece rightly points out, the best solution may not always be digital but rather analog.
+This insight was not a criticism of digital solutions by the author, though.
+Rather, it was a refocusing of a key principle: create what users of this information need, when they need it, and in ways they will use it.
+Crafting the right product that best crosses over the moment, action, and channel will increase the reach and impact of the solution.
+
+#### Why does this matter?
+
+Here's my takeaway: create products for what audiences need, when they need it, and in ways best suited for them to use.
+This may not always be a technology-based solution.
+Also, impact is not always about the quality of journalism.
+Good content is out there.
+Rather, it's a lack of addressing the Last Mile as a design problem.
+That gap between publication and impact can be closed if a greater focus is put on creating products and delivery mechanisms that fits all criteria in the Moment, Action, and Channel model.
+
+[Gen Z Trust & Attention Report: How Younger Americans Engage With Brands](https://talkerresearch.com/where-gen-z-spends-their-time-and-what-actually-earns-their-trust/) (report)
+
+This report aims to provide more insight into where [Gen Z](https://en.wikipedia.org/wiki/Generation_Z) gives their attention and places their trust.
+The report was generated from an online survey of 2,000 Gen Z Americans by [Talker Research](https://talkerresearch.com/) in 2026.
+A few facts from the report caught my attention.
+When it comes to attention, Gen Z spends most of their time on platforms like [YouTube](https://en.wikipedia.org/wiki/YouTube) (59%), [TikTok](https://en.wikipedia.org/wiki/TikTok) (58%), [Instagram](https://en.wikipedia.org/wiki/Instagram) (54%), and [Netflix](https://en.wikipedia.org/wiki/Netflix) (47%).
+However, as the article puts it, there's a difference between where this group spends their time and trust they place on information.
+The rules that drive attention don't lead to trust with Gen Z.
+It's no longer about being where this group is.
+Now brands need to be authentic; provide substantive, useful information; are transparent; and provide proof.
+Gen Z puts more credibility into brands who share numbers, data, and present them with the facts.
+It's also important to note that this group, more-and-more, is turning to AI for search.
+
+#### Why does this matter?
+
+Keeping track of where Gen Z focuses their attention and puts trust in will be important for media organizations, as they are a group reshaping search, discovery, and media consumption.
+It's no longer about just being present in the spaces Gen Z spends their time, but it's also about doing the things to also build credibility and trust while residing in these spaces.
+What does that look like?
+The report above makes it pretty clear: be authentic, provide substance, be transparent, and share the data and facts.
+Oh, and keeping in mind how this group uses AI for search will be critical going forward.
+
+[Google Search as you know it is over](https://techcrunch.com/2026/05/19/google-search-as-you-know-it-is-over/) (article)
+
+[Google I/O](https://en.wikipedia.org/wiki/Google_I/O), Google's annual developer conference, was earlier [this week](https://io.google/2026/).
+During the event, one of Google's goals was clear: make AI technology more broadly accessible to its users.
+To do this, significant changes are coming to [Google Search](https://en.wikipedia.org/wiki/Google_Search).
+The article above overviews two of these key changes: the expansion of the [intelligent search box](https://blog.google/products-and-platforms/products/search/search-io-2026/) and [search agents](https://blog.google/products-and-platforms/products/search/search-io-2026/).
+The intelligent search box will allow users to submit even longer queries.
+It will, at times, place users into an AI environment that's intended to be more conversational.
+Although links are not going away per se, this new feature further reduces their visual presence according to the article.
+Information agents were another key feature rolling out.
+In simple terms, it's a feature that will identify, alert, synthesize, and summarize for users changes on the web based on users' prompts and topics of interest.
+Finally, the article points to the impact this may have on publishers and referral traffic.
+The event contained so much more than what was included within the article, so click this [link](https://www.youtube.com/watch?v=tfx2CjqtCUI) for Google's recap.
+
+# Why does this matter?
+
+Publishers need to be aware of these coming changes to search.
+They all have a direct impact on discoverability and use of content by users.
+This is especially true if your properties depend upon referral traffic.
+These changes to search will also have strategy implications in terms of search engine optimization and generative engine optimization for digital content.
+This will also include considering tactics to get in front of a web where users rely on agents to find, return, and summarize information for them.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I've continued with the reconfiguration of my dotfiles.
+This week, when time allowed, I was doing some more research on my [`tmux`](https://github.com/tmux/tmux) configuration.
+I was mostly trying to find some reference to some sane configuration options.
+Most of what I had aligned with what I came across online.
+However, I did make some changes to the theme, though.
+I mean, come on, a big part of configuration is applying your own theme, right?
+I'll be pushing these changes to my dotfiles repo shortly.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [The making of Indian statistics](https://altermag.com/articles/the-making-of-indian-statistics)
+* [Make tmux Pretty and Usable](https://hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/) (blog)
+* [Shipping a Laptop to a Refugee Camp in Uganda](https://notesbylex.com/shipping-a-laptop-to-a-refugee-camp-in-uganda) (blog)
+
+That's it for this update.
+Take a moment this weekend to reflect on the sacrifices of the men and women in the armed services.
+Also, enjoy the long weekend and the 'unofficial start' to the summer season.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
