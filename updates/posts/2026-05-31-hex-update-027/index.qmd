@@ -1,0 +1,141 @@
+---
+title: "The Hex Update: Issue 027"
+date: "2026-05-31"
+author: "Collin K. Berke, Ph.D."
+description: "Traditional TV trying to be like online advertising; a synthetic audience tool to explore concepts; a new AI startup focusing on interactive media experiences; the engineering behind every day things; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 027.
+
+Short week this week.
+Woot!
+Completed some home projects over the long weekend, so I'm feeling somewhat accomplished.
+Now back to writing about what I learned this week.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Traditional TV is trying to be like online advertising](https://www.marketplace.org/story/2026/05/14/tv-companies-are-using-ai-to-improve-their-ad-programming)
+* [An example tool used to explore concepts with synthetic audiences](https://www.thecurrent.com/marketing/marketing-strategy-the-times-uk-ai-generated-audiences-media-planning-news-publishers)
+* [A new AI startup from Ben Relles focused on interactive media experiences](https://www.hollywoodreporter.com/business/digital/new-interactive-ai-startup-make-believe-ben-relles-1236602882/)
+
+For a bit of fun, I share a [website](https://mechanical-pencil.com/) breaking down the engineering of every day things.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Traditional TV is trying to make ads more like online advertising](https://www.marketplace.org/story/2026/05/14/tv-companies-are-using-ai-to-improve-their-ad-programming) (article) and [Upfronts 2026: Agentic, outcomes and fandom are this year's buzzwords](https://www.thecurrent.com/media/streaming-upfronts-2026-agentic-outcomes-fandom-advertising-sports-ai) (article)
+
+These two articles report on network television's initiatives to develop more programmatic advertising: automated systems that shuffle and adjust ads in real time based on who's looking and what's working.
+For a long time, digital platforms have made programmatic advertising available.
+This has resulted in greater competition between digital platforms and traditional media for advertising spend.
+This competition is stoked by programmatic advertising's ability for improved targeting and data availability.
+Besides these two benefits, television networks are exploring this tech because of two advances: outcomes and agents.
+As one article puts it, content still may be king, but brands now want proof that their advertising dollars are working.
+It's no longer just about eyeballs; it's also about the actions taken by audiences.
+AI agents were another benefit discussed, where this tech could be used to create real time messaging based on what audiences are watching.
+However, some executives mentioned in the article were still cautious on the use of this tech.
+Also, the second article highlighted some networks who are exploring features like short clips and vertical video feeds on their platforms.
+
+#### Why does this matter?
+
+The tech for improved customized experiences is now available not just for digital platforms but for more traditional media platforms.
+This is a critical advancement because it should improve both the viewing and advertising experience for audiences.
+In addition, it's an improvement for brands to better verify their advertising investment.
+Integration of this tech into more traditional media spaces may help this part of the industry to recapture some of the advertising spend going towards digital.
+I'm also keeping an eye on the adoption of short clips and vertical videos from these platforms.
+Will this be a feature audiences want?
+
+### [How the Times is using AI-generated audiences to reshape media planning](https://www.thecurrent.com/marketing/marketing-strategy-the-times-uk-ai-generated-audiences-media-planning-news-publishers)
+
+This article reports on [The Time's](https://en.wikipedia.org/wiki/The_Times) release of a tool called ExplorAItion.
+The goal of this tool is to simulate how different audiences respond to campaigns, messaging, and creative.
+It's meant to do this in a way that's efficient and economical, as human-led research is time extensive and can be expensive at times.
+In fact, the report cites a statement that this tool has the potential to deliver 10x savings compared to traditional audience research.
+This includes savings in both time and resources.
+The tool also integrates real audience data to improve its ability to produce relevant results.
+Despite it's reported utility, Time's executives still contend this is not a replacement to human-led research, which is still considered to be the 'Gold Standard'.
+The article then contained a brief mention about how this tool might be useful for exploring ideas for niche audiences.
+
+#### Why does this matter?
+
+I'm still skeptical of synthetic audiences for audience research.
+My skepticism results from the data LLMs are trained on.
+Yes, you can submit additional audience data to improve simulations of real audiences, just like this tool does.
+However, the initial training data carries weight in the model's responses.
+Some audiences may not be fully represented in the model's initial training data, and thus any responses may not be fully reflective of the audience being explored.
+This is especially a concern if the initial training data comes from internet sources.
+Not all groups publish content online, so their presence in the model's initial training data may be limited or biased to specific subsets of people in that group who do publish.
+Despite my skepticism, I do see utility in tools like this to quickly and economically validate ideas worth further exploration and validation.
+Just like the article mentions, though, content, experiences, and platforms are created by humans for humans, so their is no substitute for human-led research or a replacement of it by synthetic audiences.
+They should be used in partnership with one another.
+
+### [A YouTuber Turned Tech Exec Is Making a Big Bet On AI-Powered Interactive Entertainment (Exclusive)](https://www.hollywoodreporter.com/business/digital/new-interactive-ai-startup-make-believe-ben-relles-1236602882/) (article)
+
+This article highlights a new AI startup, [Make Believe](https://www.linkedin.com/company/make-believe-lab/about/).
+Founded by YouTuber [Ben Relles](https://www.linkedin.com/in/benrelles/), the focus of this lab is to build the tech for interactive videos to talk back to viewers possible.
+Rather than another AI tool focused on cutting costs and doing things faster, the article highlights the purpose of this tech is to create formats not possible before the development of AI.
+Some of the examples shared expressed what's unique about this format.
+For instance, take learning how to make a new dish from a cooking show.
+Instead of a viewer just passively watching the show, now the viewer can ask questions to the host while watching.
+The article expanded on the additional educational benefits this type of format could have.
+Despite the optimism around this venture, the article quotes Relles' current views on the format: It's still the early days.
+Lots of experimentation and interaction will need to take place to figure out what version of this format will break through.
+
+#### Why does this matter?
+
+The [demo](https://www.linkedin.com/posts/benrelles_slow-dancing-in-6th-grade-with-a-girl-who-activity-7465067197187534848-dvLN/) is interesting, and it seems like some useful tech with the potential to create a unique interactive media format.
+From what I've read and seen thus far, this tech has some utility.
+This is especially evident in the development of educational content.
+Make Believe's development is something to follow, as there may be some interesting opportunities for media organizations to leverage this tech to create some engaging, unique media experiences for audiences.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I've been reading up on data architecture lately.
+Specifically, I've spent some time diving deeper into the [Medallion Architecture model](https://medium.com/@junshan0/medallion-architecture-what-why-and-how-ce07421ef06f).
+This prompted some further reading into other models, which included the following articles and Reddit post:
+
+* [5 Foundational Design Patterns for Data Modelling](https://martinterhaak.medium.com/data-modeling-design-patterns-part-1-3fbd45a8392) (article)
+* [Data warehouse design patterns](https://medium.com/@beeindian04/data-warehouse-design-patterns-deb77dfee9ce) (article)
+* [Is there a standard for modern data architecture?](https://www.reddit.com/r/dataengineering/comments/1traxtx/is_there_a_standard_for_modern_data_architecture/) (post)
+
+I especially found the first comment to the `r/dataengineering` post to be really helpful.
+I've also been mulling over if I'm at a point and am ready to read [Designing Data-Intensive Applications](https://learning.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/).
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Mechanical Pencil: An illustrated celebration of the engineering around us](https://mechanical-pencil.com/) (website)
+* [The Ask: Someone here needs something](https://randsinrepose.com/archives/the-ask/) (blog)
+* [What color is your function](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/) (blog)
+* [R Consortium Webinar - Scaling up data analysis in R with Arrow](http://youtube.com/watch?v=Bz17K5ZPHAE) (video)
+
+That's it for this update.
+
+Here's to a great start to your week. I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
