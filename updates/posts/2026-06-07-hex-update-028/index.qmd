@@ -1,0 +1,148 @@
+---
+title: "The Hex Update: Issue 028"
+date: "2026-06-07"
+author: "Collin K. Berke, Ph.D."
+description: "Sundar Pichai's rethinking of Google in the AI era; bots, how much are they costing publishers?; vertical video, why?; the staying power of SQL; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 028.
+
+Since it has been so hot and muggy lately, I spent much of this weekend inside.
+Got to spend some time with family though, which is always good.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Sundar Pichai's rethinking of Google in the AI era](https://www.youtube.com/watch?v=ANV3tE5ywv0)
+* [Bots, how much are they costing publishers?](https://www.adexchanger.com/ai/how-much-are-bots-costing-you-iab-tech-lab-wants-content-owners-to-find-out/)
+* [Vertical video, why?](https://www.thecurrent.com/media/streaming-disney-microdrama-apps-whats-behind-pivot-vertical-video)
+
+For a bit of fun, I share an [article](https://fagnerbrack.com/learn-sql-once-use-it-for-30-years-9aceb0bdee03) making the case for the staying power of [SQL](https://en.wikipedia.org/wiki/SQL), and why it's one language all technical folks might want to learn.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [How Sundar Pichai is rethinking Google for the AI era](https://www.youtube.com/watch?v=ANV3tE5ywv0) (podcast)
+
+This [Decoder](https://www.theverge.com/decoder-podcast-with-nilay-patel) podcast episode is an interview with Google's CEO [Sundar Pichai](https://en.wikipedia.org/wiki/Sundar_Pichai).
+It was recorded after [Google I/O 2026](https://io.google/2026/).
+Several topics were discussed, which much of the conversation was focused on AI and Google's products.
+One topic discussed was how Google Search will become more personalized for users [(17m06s)](https://youtu.be/ANV3tE5ywv0?si=1DJnNCRG4lxg02nx&t=1026).
+This personalization may also result in the custom creation of software that is kicked off by a user's search query.
+The code and setup of these personalized experiences will be handled by [Gemini](https://gemini.google.com/app).
+Extending from this topic, the interview moved into further discussion about how these changes to search could result in Google Zero [(33m38s)](https://youtu.be/ANV3tE5ywv0?si=z1Zo0dtIElGLdEJM&t=2018).
+In response, Pichai mentioned the information ecosystem is so much larger than Google, and it is constantly evolving.
+It was then mentioned that the content and the ways people consume content is changing.
+As such, Google is adapting to best meet users' needs, and they are committed to delivering the high-quality content and information people want.
+Several examples of how Google is doing this with additional features was shared.
+The final portion of the interview that caught my attention was focused on what a healthy web might look like [(39m34s)](https://youtu.be/ANV3tE5ywv0?si=5FhkfQ2bjVYKicy2&t=2374).
+According to Pichai, people want to put out information and to be connected.
+The web plays a central aspect in this regard, now more than ever.
+AI agents will likely be central to this next evolution of the web as well.
+
+#### Why does this matter?
+
+Media organizations need to be aware of these changes coming to search.
+Google's [updated, personalized information box](https://www.npr.org/2026/05/22/nx-s1-5829915/google-search-box-ai), [agentic search](https://youtu.be/tfx2CjqtCUI?si=xpy03eiMaL8gugOa&t=479), and the ability to create [custom stateful experiences](https://youtu.be/tfx2CjqtCUI?si=nGJ0X9ByZbYDhqfL&t=535) will be critical considerations for content discovery strategies moving forward.
+This will likely have an impact on the types of data and metadata required to more often populate content within AI summaries, and it will likely impact how content is structured and created.
+Aside from what caught my attention, additional topics were covered in the interview.
+The whole episode is worth a listen.
+
+### [How Much Are Bots Costing You? IAB Tech Lab Wants Content Owners To Find Out](https://www.adexchanger.com/ai/how-much-are-bots-costing-you-iab-tech-lab-wants-content-owners-to-find-out/) (article)
+
+This article highlights the release of a new [recommendation](https://github.com/IABTechLab/CoMP/blob/dev/Bot%20and%20Crawler%20Management%20Guidance.md) from the [IAB Tech Lab](https://iabtechlab.com/).
+The recommendation provides guidance to content owners on what they need to know about bots and crawlers on their sites.
+The article also cites input from [Hillary Slattery](https://www.linkedin.com/in/hillaryslattery/), IAB Tech Lab's senior director of product management and programmatic about this recommendation.
+A key point made was some bots are more valuable than others.
+As such, site owners, at a minimum, should know what bots are crawling content, how often, and how much it costs to serve each crawler.
+Such information allows site owners to make better value judgements on which bots should be allowed to crawl sites.
+This quote from the article really made these suggestions clear:
+
+> "Don't turn everything off," she added. "It's not a light switch; it's a mixing board."
+
+#### Why does this matter?
+
+Bot mitigation needs to be a part of any media organization's overall digital strategy.
+The internet is not free.
+Alongside the costs associated with content production, hosting, maintaining, and serving content has a dollar amount attached to it as well.
+Bots and crawlers hitting sites are served just like any other user would, and this traffic has a cost.
+Some bots provide value from this cost.
+Others do not.
+Like the article states, though, a 'block all bots' approach is a poor strategy.
+Rather, examination of each bot hitting one's site should take place, and a determination on the value it provides should be considered.
+This includes heeding the IAB's guidance to understand what bots are crawling your site, how often, and the associated cost to serve each bot.
+
+### [From Disney+ to microdrama apps, what’s behind the pivot to vertical video?](https://www.thecurrent.com/media/streaming-disney-microdrama-apps-whats-behind-pivot-vertical-video)
+
+This article highlights how the entertainment industry is turning to vertical video feeds for streaming platforms, no longer just a feature of social video platforms.
+It explores the why behind this format.
+In short, the industry is using it as a discovery engine, especially for younger viewers.
+The article states it's meant to improve engagement and serves as a funnel to longer content, an alternative to navigating the main screen of a platform when audiences are searching for something to watch.
+Indeed, as the article puts it, it's not about grabbing attention, rather it's about better connecting people with the content they want to consume.
+The article also contains some discussion about [micro-drama apps](https://www.npr.org/2025/03/19/nx-s1-5330470/micro-drama-soap-opera-app), which is something I had yet to come across.
+
+#### Why does this matter?
+
+Vertical video is a discovery mechanism, not a form of consumption.
+Platforms exploring this feature recognize the opportunity vertical video has to better connect audiences with the content they will enjoy, and not necessarily for its ability to garner attention.
+Indeed, this may improve engagement for some users over navigating the main page of a platform when they're trying to find something to watch.
+Media organizations that have streaming platforms may want to remain aware of the effect such features will have in terms of content discovery.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I spent time this week surveying [Google Dataform](https://cloud.google.com/dataform).
+Dataform is a cloud-based platform that helps teams build, version control, and orchestrate SQL workflows.
+Much of what I focused on was getting definitions down (e.g., what's the difference between a repository and a workspace).
+I also spent time reviewing project setup and configuration.
+I mostly was trying to understand how to best organize projects.
+I'm a fan of how this service integrates git into repositories; it's great to see this extends to the ability to use a remote git service like GitHub.
+I also learned the service uses three different file types:
+
+1. JSON for configuration (I didn't read too much about this, though I'm interested to learn how this works)
+2. SQLX files for data pipeline definitions
+3. JavaScript files for defining variables and functions to use in the project
+
+I found these two resources to be helpful:
+
+* [Dataform overview](https://docs.cloud.google.com/dataform/docs/overview) (docs)
+* [Dataform, what's the story?](https://medium.com/qodea/dataform-whats-the-story-ffa66d83d484) (article)
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Learn SQL Once, Use It for 30 Years](https://fagnerbrack.com/learn-sql-once-use-it-for-30-years-9aceb0bdee03) (article)
+* [Refactoring with Jarl: a coffee chat](https://blog.r-hub.io/2026/06/02/jarl/) (blog)
+* [They're Made Out of Weights](https://maxleiter.com/blog/weights) (blog)
+* [Domain Expertise Has Always Been the Real Moat](https://www.brethorsting.com/blog/2026/05/domain-expertise-has-always-been-the-real-moat/) (blog)
+* [What is an agent?](https://tidydesign.substack.com/p/what-is-an-agent) (blog)
+
+That's it for this update.
+
+Here's to a great start to your week.
+I hope it's a productive one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
