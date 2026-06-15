@@ -1,0 +1,161 @@
+---
+title: "The Hex Update: Issue 029"
+date: "2026-06-14"
+author: "Collin K. Berke, Ph.D."
+description: "The Washington Post's use of LLMs to improve article metadata; the value in broadcaster's archives and metadata; some guidance on working with teams to set metrics; a story about the creator of the earliest surviving animated feature film; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 029.
+
+A pretty chill weekend.
+They never seem long enough, do they?
+Nonetheless, I'm excited for the start to a new week.
+
+Let's jump in and learn something new.
+
+Three topics recently caught my attention:
+
+* [The Washington Post's use of LLMs to improve article metadata](https://washpost.engineering/how-the-washington-post-scaled-llms-for-taxonomy-classification-bc390ed8e2fb)
+* [The value in broadcaster's archives and metadata](https://tvnewscheck.com/ai/article/how-some-broadcasters-are-turning-archives-into-revenue-with-zero-upfront-investment-using-veritone/)
+* [Some guidance on working with teams to set metrics](https://www.counting-stuff.com/the-art-part-of-setting-metrics/)
+
+For a bit of fun, I share an [article](https://www.bbc.com/culture/article/20260603-how-a-26-year-old-german-woman-made-the-worlds-oldest-surviving-animated-feature-film) about one of the oldest surviving animated feature films.
+It's a really interesting story about a creator.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [How The Washington Post Scaled LLMs for Taxonomy Classification](https://washpost.engineering/how-the-washington-post-scaled-llms-for-taxonomy-classification-bc390ed8e2fb)
+
+This article overviews [The Washington Post's](https://www.washingtonpost.com/) development of a scaled taxonomy classifier using LLMs.
+It provided a look into new developments around how the paper uses LLMs to apply a taxonomy with five schemas (i.e., Subject, Person, Company, Organization, and Geography) and around 20,400 taxonomy entries.
+To do this, it details how metadata tagging happens for Subjects (i.e., what the article is about) and Entities (i.e., who the article is about) using two different processes.
+Alongside how they did it, the author of the article provides some input on what doesn't work, and they also detailed the real business impact such work has.
+This quote does a good job emphasizing the importance of this application:
+
+> metadata is what sits invisible beneath every article, shaping what readers see, what advertisers reach, and what editors understand about their coverage.
+
+### Why does this matter?
+
+These types of metadata efforts have real business and operational impact.
+Metadata, although not seen by audiences, directly influences the reach and impact of content.
+This is also a great example of how LLMs can be applied to elevate the work of humans and improve media organization outcomes (i.e., revenue).
+Indeed, most media organizations will not have the resources to develop such a system internally.
+However, most media organizations can, at a minimum, have a strategy focused on improving the content metadata layer.
+LLMs can be helpful with this work.
+
+### [How some broadcasters are turning archives into revenue with zero upfront investment using Veritone](https://tvnewscheck.com/ai/article/how-some-broadcasters-are-turning-archives-into-revenue-with-zero-upfront-investment-using-veritone/)
+
+This sponsored article features points made by [Paul Cramer](https://www.linkedin.com/in/paulcramer/), managing director of media and broadcast at [Veritone](https://www.veritone.com/), during a panel discussion at a 2025 [NewsTechForum](https://www.newstechforum.com/program/) event.
+Cramer's points centered on the value inherent in broadcaster's archives.
+This value cannot be realized without broadcasters taking steps towards enriching their metadata.
+Simply put, archives only result in value if they're searchable and produce some form of revenue.
+Most media organizations, however, lack the funding and staff to complete such projects, as they can be costly in terms of time and money.
+The article highlights how Veritone's products and services may be helpful in the completion of such projects.
+Alongside discussing the problem and solution, the article also emphasizes the use cases and benefits that could arise from metadata enrichment efforts.
+These include:
+
+* Improved strategic positioning to leverage AI
+* Clip licensing
+* Recommendation engine development
+* Licensing content for AI model generation
+* Ad intelligence reporting
+
+### Why does this matter?
+
+Archives have value.
+This value is left untapped because of a lack of metadata that makes the content unsearchable.
+In my view, this goes beyond just licensing content for revenue generation.
+This type of work has a direct impact on audience's ability to find and discover content.
+As mentioned with the previous Washington Post efforts, metadata enrichment efforts, or at the very least a strategy for improvement, are critical for media organizations.
+
+### [The "art" part of setting metrics](https://www.counting-stuff.com/the-art-part-of-setting-metrics/)
+
+Here is a post from [Randy Au's](https://bsky.app/profile/randyau.com) weekly newsletter, [Counting Stuff](https://www.counting-stuff.com/).
+The post details challenges faced when analysts are tasked with helping teams set metrics for their projects.
+A key point was made: anything can be a metric, but what is rarer is the identification of useful metrics for teams.
+This involves significant work and deliberation, and it involves data folks being mindful of specific considerations when working through this process.
+The article described many of these, but one that caught my attention were considerations around the useful properties of metrics.
+To make this process more useful for everyone, the post suggested asking the following questions during metric development:
+
+* What does success actually look like?
+* What decision would this metric force you to make?
+* What's the broader business goal we're trying to achieve here?
+
+The article also suggested keeping [Goodhart's Law](https://en.wikipedia.org/wiki/Goodhart%27s_law) top-of-mind.
+
+In the end, the article pointedly mentions we have to pick something.
+I really liked this quote, which summarizes this point well:
+
+> For many projects, I don't think there's a singular correct answer to what the best metric is.
+> The best I hope for is setting up a couple of sufficiently sensitive alarm bells that trigger when things need attention.
+
+# Why does this matter?
+
+This article is a little different from what I normally include within these summaries.
+It makes some critical points, though.
+Media organizations rely on metrics to assess their efforts, better understand their audiences, and to better inform decision making across all operational areas.
+Each area has unique considerations when developing metrics, and Au's viewpoints here provide some good guidance, especially when attempting to avoid vanity metrics.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I spent some more time in [Google Dataform](https://cloud.google.com/dataform) this week.
+This included reviewing some more docs and experimenting with the [`bq`](https://docs.cloud.google.com/bigquery/docs/reference/bq-cli-reference) command line tool.
+I had to do a little detour and remind myself of all the different ways a table could be created within in BigQuery, though.
+This [doc](https://docs.cloud.google.com/bigquery/docs/tables) was quite helpful.
+As such, I sought to  better understand how a table is created in a Google Dataform workflow using a `.sqlx` file.
+These [docs](https://docs.cloud.google.com/dataform/docs/create-tables) were helpful to understanding how to perform this operation in Dataform.
+This includes the ability to create one of three table types:
+
+1. a regular table
+2. an incremental table
+3. a table view
+
+The table type is defined in the config of the `.sqlx` file.
+
+```txt
+config {
+  type: "table"
+}
+
+config {
+  type: "incremental"
+}
+```
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* ['She beat Disney by a decade': How a 26-year-old German woman made the world's oldest animated feature film](https://www.bbc.com/culture/article/20260603-how-a-26-year-old-german-woman-made-the-worlds-oldest-surviving-animated-feature-film)
+* [I replaced Spotify with a homeade FM radio station](https://old.reddit.com/r/digitalminimalism/comments/1tes8yu/i_replaced_spotify_with_a_homemade_fm_radio/) (post)
+* [Life is too short for a slow terminal](https://mijndertstuij.nl/posts/life-is-too-short-for-a-slow-terminal/) (post)
+* [I was wrong about fast terminals](https://mijndertstuij.nl/posts/what-i-got-wrong-about-fast-terminals/) (post)
+
+That's it for this update.
+
+Go for it this week. It's going to be a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
