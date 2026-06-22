@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2026-06-21">
+<meta name="description" content="Is everyone using AI, for everything?; what’s behind the declines in offline news sources?; the future of podcasting; a flight simulator in Google Maps?; and some other cool things I came across this week">
+
+<title>The Hex Update: Issue 030 – Collin K. Berke, Ph.D.</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-82e7d968386bc6f68bfceb5876b612a8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-fffa27e5c3e5cad3d8c8c9a3b11e76a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../updates/index.html"> 
+<span class="menu-text">Updates</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../say-hi.html"> 
+<span class="menu-text">Say Hi!</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lets-catch-up" id="toc-lets-catch-up" class="nav-link active" data-scroll-target="#lets-catch-up">Let’s catch up</a></li>
+  <li><a href="#three-things" id="toc-three-things" class="nav-link" data-scroll-target="#three-things">Three things</a>
+  <ul class="collapse">
+  <li><a href="#no-everyone-is-not-using-ai-for-everything-article" id="toc-no-everyone-is-not-using-ai-for-everything-article" class="nav-link" data-scroll-target="#no-everyone-is-not-using-ai-for-everything-article">No, everyone is not using AI for everything (article)</a></li>
+  <li><a href="#why-does-this-matter" id="toc-why-does-this-matter" class="nav-link" data-scroll-target="#why-does-this-matter">Why does this matter?</a></li>
+  <li><a href="#the-different-reasons-why-television-newspapers-and-radio-are-losing-their-news-audiences-report" id="toc-the-different-reasons-why-television-newspapers-and-radio-are-losing-their-news-audiences-report" class="nav-link" data-scroll-target="#the-different-reasons-why-television-newspapers-and-radio-are-losing-their-news-audiences-report">The different reasons why television, newspapers, and radio are losing their news audiences (report)</a></li>
+  <li><a href="#why-does-this-matter-1" id="toc-why-does-this-matter-1" class="nav-link" data-scroll-target="#why-does-this-matter-1">Why does this matter?</a></li>
+  <li><a href="#age-of-audio-the-future-of-podcasting-podcast" id="toc-age-of-audio-the-future-of-podcasting-podcast" class="nav-link" data-scroll-target="#age-of-audio-the-future-of-podcasting-podcast">Age of Audio: The Future of Podcasting (podcast)</a></li>
+  <li><a href="#why-does-this-matter-2" id="toc-why-does-this-matter-2" class="nav-link" data-scroll-target="#why-does-this-matter-2">Why does this matter?</a></li>
+  </ul></li>
+  <li><a href="#what-i-found-interesting-this-week" id="toc-what-i-found-interesting-this-week" class="nav-link" data-scroll-target="#what-i-found-interesting-this-week">What I found interesting this week</a>
+  <ul class="collapse">
+  <li><a href="#cool-things-i-recently-bumped-into" id="toc-cool-things-i-recently-bumped-into" class="nav-link" data-scroll-target="#cool-things-i-recently-bumped-into">Cool things I recently bumped into</a></li>
+  </ul></li>
+  <li><a href="#lets-connect" id="toc-lets-connect" class="nav-link" data-scroll-target="#lets-connect">Let’s connect</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Hex Update: Issue 030</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">the hex update</div>
+    <div class="quarto-category">media</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Is everyone using AI, for everything?; what’s behind the declines in offline news sources?; the future of podcasting; a flight simulator in Google Maps?; and some other cool things I came across this week
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 21, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="lets-catch-up" class="level1">
+<h1>Let’s catch up</h1>
+<p>Welcome to Issue 030.</p>
+<p>June is going fast. Hard to believe we’re already halfway through the month, and the <a href="https://en.wikipedia.org/wiki/Summer_solstice">longest day of the year is behind us</a>.</p>
+<p>Well, let’s get started.</p>
+<p>Three topics recently caught my attention:</p>
+<ul>
+<li><a href="https://gabrielweinberg.com/p/people-are-consuming-ai-like-they">Is everyone using AI, for everything?</a></li>
+<li><a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/different-reasons-why-television-newspapers-and-radio-are-losing-their">What’s behind the declines in offline news sources?</a></li>
+<li><a href="https://www.20k.org/episodes/age-of-audio-2">The future of podcasting</a></li>
+</ul>
+<p>For a bit of fun, I share how <a href="https://en.wikipedia.org/wiki/Google_Maps">Google Maps</a> now has a <a href="https://developers.google.com/maps/documentation/earth/flight-simulator">flight simulator</a>.</p>
+<p>You’ll also find some additional links to other items I found cool this week.</p>
+</section>
+<section id="three-things" class="level1">
+<h1>Three things</h1>
+<p>Here’s what caught my attention this week:</p>
+<section id="no-everyone-is-not-using-ai-for-everything-article" class="level3">
+<h3 class="anchored" data-anchor-id="no-everyone-is-not-using-ai-for-everything-article"><a href="https://gabrielweinberg.com/p/people-are-consuming-ai-like-they">No, everyone is not using AI for everything</a> (article)</h3>
+<p>This article makes the case that AI is not being used by everyone for everything. Instead, it provides another framing: AI is used by some people for some things. This quote from the article summarizes a key point:</p>
+<blockquote class="blockquote">
+<p>All of this triangulates to AI use in America at approximately one third actively using AI, one third occasionally using AI, and one third never using AI.</p>
+</blockquote>
+<p>The author also cites several data points and research studies to support the piece’s claims. Job replacement, privacy violations, and the potential to spread misinformation and lies is cited as the main reasons people are limiting their AI use. The article also links to a useful <a href="https://www.microsoft.com/en-us/corporate-responsibility/dmc/topics/ai-economy-institute/reports/us-ai-adoption-2026-q1/">report</a> compiled by <a href="https://en.wikipedia.org/wiki/Microsoft">Microsoft</a>, which visualizes AI diffusion across the US.</p>
+</section>
+<section id="why-does-this-matter" class="level3">
+<h3 class="anchored" data-anchor-id="why-does-this-matter">Why does this matter?</h3>
+<p>It’s key here to zoom out and take stock of AI adoption and recognize there’s an array of use and application. Using absolutes (i.e., everyone uses AI) doesn’t allow for the full picture to come into focus. In fact, if you expand these insights to <a href="https://global-ai-adoption.netlify.app/">all people across the globe</a>, use is still fairly small. As AI is integrated into more products, diffusion and use will continue to grow. As such, the rationale people have for limiting AI use are valid concerns. As media organizations turn to these tools, they will need to address these concerns with their teams and audiences.</p>
+</section>
+<section id="the-different-reasons-why-television-newspapers-and-radio-are-losing-their-news-audiences-report" class="level3">
+<h3 class="anchored" data-anchor-id="the-different-reasons-why-television-newspapers-and-radio-are-losing-their-news-audiences-report"><a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/different-reasons-why-television-newspapers-and-radio-are-losing-their">The different reasons why television, newspapers, and radio are losing their news audiences</a> (report)</h3>
+<p>This article provides insight into why traditional offline news sources are in decline, and why some are declining faster than others. Because general trends only tell us so much, the article goes further by exploring why these declines are occurring. To do this, the article focuses on two concepts: adoption and retention. Both concepts are paired with a simple calculation:</p>
+<ul>
+<li>Adoption rate = current users + lapsed users</li>
+<li>Retention rate = current users / adoption rate</li>
+</ul>
+<p>These calculations help parse out trends to better understand if a source’s decline is due to simply not adopting the source or whether it’s the failure of the source to retain its audience. Three audience groups result from these concepts. These include current users, lapsed users, and never used. Using these calculations and audience groups, the article parsed out the declines in television and radio news. It then drilled further into differences in adoption and retention by age group.</p>
+</section>
+<section id="why-does-this-matter-1" class="level3">
+<h3 class="anchored" data-anchor-id="why-does-this-matter-1">Why does this matter?</h3>
+<p>This article expands on the <em>why</em> of declining trends. In terms of practical application, it provides further nuance and insight into strategy discussions for sources. A question arises: are trends due to limited adoption or is it a function of retaining audience? Exploring this question opens media organizations to more focused tactic discussions, whether efforts should aim to get people to first use our products or whether it should be focused on keeping people from leaving the products they used in the past. Indeed, these tactic discussions could also center on maintaining a media organization’s current audience.</p>
+</section>
+<section id="age-of-audio-the-future-of-podcasting-podcast" class="level3">
+<h3 class="anchored" data-anchor-id="age-of-audio-the-future-of-podcasting-podcast"><a href="https://www.20k.org/episodes/age-of-audio-2">Age of Audio: The Future of Podcasting</a> (podcast)</h3>
+<p>This episode published by the <a href="https://www.20k.org/">Twenty Thousand Hertz podcast</a> is an interview with <a href="https://www.linkedin.com/in/openendedfilms/">Shaun Michael Colón</a>. Colón produced a documentary about the origins of podcasting, <a href="https://www.aoamovie.com/">Age of Audio</a>. This interview explored the topics within the film, which includes podcasting’s origins, where the industry is today, and what the medium will look like in the future. Colón expressed podcasting is in its corporate era, where the vast majority of funding is going to celebrity, personality-driven, cheaper to produce content (04m24s). As such, this has resulted in a decline of highly-produced, narrative, documentary type podcasts, though it was expressed the creation of this content still matters. Along this same line of discussion, Colón and the host, <a href="https://www.dallastaylor.com/">Dallas Taylor</a>, make some interesting points about the introduction of video to the medium (07m00s). There was also some discussion about the monetization of podcasting, where 20k was used as a specific example (19m58s). To wrap up the episode, there was some discussion about the future of narrative podcasting (28m30s). I really appreciated one point made while on this topic: regardless of the economic value, people will still make things they love.</p>
+</section>
+<section id="why-does-this-matter-2" class="level3">
+<h3 class="anchored" data-anchor-id="why-does-this-matter-2">Why does this matter?</h3>
+<p>This interview made me reflect on podcasting’s place as a medium. The golden age was amazing, where highly produced, narrative driven podcasts broke through and were enjoyed by audiences. It was art. Personality-driven podcasts certainly have a place. Indeed, its what has topped the charts for a long time, and they garner significant audiences. Highly produced podcasts still have their place, though. But a different support structure or its role in a broader portfolio might need to be considered with the current state of podcasting. The example using Disney as a comparison was interesting, where audiences connect with the art, which drives folks to spend money on experiences, and thus ultimately goes back into supporting the art.</p>
+<p>Check out the links above for the full story in each item, not just my brief summary and analysis.</p>
+</section>
+</section>
+<section id="what-i-found-interesting-this-week" class="level1">
+<h1>What I found interesting this week</h1>
+<p>I’ve been learning more about <a href="https://github.com/r-lib/Rapp">Rapp</a>. It’s kind of a neat tool to write and share command line applications using R code. I’ve been a little tripped up with how to make the commands available in my shell. I can make the utilities available by <code>chmod +x file-to-utility.R</code> of the file, but you still need to run the file name for it to execute. This led me to further explore how the <code>$PATH</code> variable works on MacOS and how to modify it. I found these two articles helpful:</p>
+<ul>
+<li><a href="https://dev.to/lucassperez/til-dont-set-a-variable-named-path-inside-functions-when-using-zsh-30k5">TIL: Don’t set a variable named path inside functions when using zsh</a></li>
+<li><a href="https://0xmachos.com/2021-05-13-zsh-path-macos/">How $PATH is Constructed on macOS</a></li>
+</ul>
+<p>I also think the <a href="https://github.com/r-lib/Rapp#using-package-exec-directories-directly">Using package <code>exec</code> directories directly</a> section is key to getting this to work like I want it to.</p>
+<section id="cool-things-i-recently-bumped-into" class="level2">
+<h2 class="anchored" data-anchor-id="cool-things-i-recently-bumped-into">Cool things I recently bumped into</h2>
+<p>A collection of links to things I’ve found cool recently (or was reminded are cool).</p>
+<ul>
+<li><a href="https://developers.google.com/maps/documentation/earth/flight-simulator">Fly around the world (experimental Google Maps feature)</a> (documentation)</li>
+<li><a href="https://shadycharacters.co.uk/2026/06/ollie-wagner/">An interview with Ollie Wagner, Apple emoji designer</a> (blog)</li>
+<li><a href="https://tombedor.dev/how-to-write-good-short-docs/#how-to-write-a-good-short-doc">How to write a good, short doc</a> (blog)</li>
+</ul>
+<p>That’s it for this update.</p>
+<p>Enjoy these long days of daylight, they only get shorter from here.</p>
+<p>Cheers 🎉!</p>
+</section>
+</section>
+<section id="lets-connect" class="level1">
+<h1>Let’s connect</h1>
+<p>If you found this content useful, please share. If you find these topics interesting and want to discuss further, let’s connect:</p>
+<ul>
+<li>BlueSky: <a href="https://bsky.app/profile/collinberke.bsky.social"><span class="citation" data-cites="collinberke.bsky.social">@collinberke.bsky.social</span></a></li>
+<li>LinkedIn: <a href="https://www.linkedin.com/in/collinberke/">collinberke</a></li>
+<li>GitHub: <a href="https://github.com/collinberke"><span class="citation" data-cites="collinberke">@collinberke</span></a></li>
+<li><a href="https://www.collinberke.com/say-hi">Say Hi!</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

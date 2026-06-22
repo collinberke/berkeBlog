@@ -1,0 +1,142 @@
+---
+title: "The Hex Update: Issue 030"
+date: "2026-06-21"
+author: "Collin K. Berke, Ph.D."
+description: "Is everyone using AI, for everything?; what's behind the declines in offline news sources?; the future of podcasting; a flight simulator in Google Maps?; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 030.
+
+June is going fast.
+Hard to believe we're already halfway through the month, and the [longest day of the year is behind us](https://en.wikipedia.org/wiki/Summer_solstice).
+
+Well, let's get started.
+
+Three topics recently caught my attention:
+
+* [Is everyone using AI, for everything?](https://gabrielweinberg.com/p/people-are-consuming-ai-like-they)
+* [What's behind the declines in offline news sources?](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/different-reasons-why-television-newspapers-and-radio-are-losing-their)
+* [The future of podcasting](https://www.20k.org/episodes/age-of-audio-2)
+
+For a bit of fun, I share how [Google Maps](https://en.wikipedia.org/wiki/Google_Maps) now has a [flight simulator](https://developers.google.com/maps/documentation/earth/flight-simulator).
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [No, everyone is not using AI for everything](https://gabrielweinberg.com/p/people-are-consuming-ai-like-they) (article)
+
+This article makes the case that AI is not being used by everyone for everything.
+Instead, it provides another framing: AI is used by some people for some things.
+This quote from the article summarizes a key point:
+
+> All of this triangulates to AI use in America at approximately one third actively using AI, one third occasionally using AI, and one third never using AI.
+
+The author also cites several data points and research studies to support the piece's claims.
+Job replacement, privacy violations, and the potential to spread misinformation and lies is cited as the main reasons people are limiting their AI use.
+The article also links to a useful [report](https://www.microsoft.com/en-us/corporate-responsibility/dmc/topics/ai-economy-institute/reports/us-ai-adoption-2026-q1/) compiled by [Microsoft](https://en.wikipedia.org/wiki/Microsoft), which visualizes AI diffusion across the US.
+
+### Why does this matter?
+
+It's key here to zoom out and take stock of AI adoption and recognize there's an array of use and application.
+Using absolutes (i.e., everyone uses AI) doesn't allow for the full picture to come into focus.
+In fact, if you expand these insights to [all people across the globe](https://global-ai-adoption.netlify.app/), use is still fairly small.
+As AI is integrated into more products, diffusion and use will continue to grow.
+As such, the rationale people have for limiting AI use are valid concerns.
+As media organizations turn to these tools, they will need to address these concerns with their teams and audiences.
+
+### [The different reasons why television, newspapers, and radio are losing their news audiences](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/different-reasons-why-television-newspapers-and-radio-are-losing-their) (report)
+
+This article provides insight into why traditional offline news sources are in decline, and why some are declining faster than others.
+Because general trends only tell us so much, the article goes further by exploring why these declines are occurring.
+To do this, the article focuses on two concepts: adoption and retention.
+Both concepts are paired with a simple calculation:
+
+* Adoption rate = current users + lapsed users
+* Retention rate = current users / adoption rate
+
+These calculations help parse out trends to better understand if a source's decline is due to simply not adopting the source or whether it's the failure of the source to retain its audience.
+Three audience groups result from these concepts.
+These include current users, lapsed users, and never used.
+Using these calculations and audience groups, the article parsed out the declines in television and radio news.
+It then drilled further into differences in adoption and retention by age group.
+
+### Why does this matter?
+
+This article expands on the *why* of declining trends.
+In terms of practical application, it provides further nuance and insight into strategy discussions for sources.
+A question arises: are trends due to limited adoption or is it a function of retaining audience?
+Exploring this question opens media organizations to more focused tactic discussions, whether efforts should aim to get people to first use our products or whether it should be focused on keeping people from leaving the products they used in the past.
+Indeed, these tactic discussions could also center on maintaining a media organization's current audience.
+
+### [Age of Audio: The Future of Podcasting](https://www.20k.org/episodes/age-of-audio-2) (podcast)
+
+This episode published by the [Twenty Thousand Hertz podcast](https://www.20k.org/) is an interview with [Shaun Michael Colón](https://www.linkedin.com/in/openendedfilms/).
+Colón produced a documentary about the origins of podcasting, [Age of Audio](https://www.aoamovie.com/).
+This interview explored the topics within the film, which includes podcasting's origins, where the industry is today, and what the medium will look like in the future.
+Colón expressed podcasting is in its corporate era, where the vast majority of funding is going to celebrity, personality-driven, cheaper to produce content (04m24s).
+As such, this has resulted in a decline of highly-produced, narrative, documentary type podcasts, though it was expressed the creation of this content still matters.
+Along this same line of discussion, Colón and the host, [Dallas Taylor](https://www.dallastaylor.com/), make some interesting points about the introduction of video to the medium (07m00s).
+There was also some discussion about the monetization of podcasting, where 20k was used as a specific example (19m58s).
+To wrap up the episode, there was some discussion about the future of narrative podcasting (28m30s).
+I really appreciated one point made while on this topic: regardless of the economic value, people will still make things they love.
+
+### Why does this matter?
+
+This interview made me reflect on podcasting's place as a medium.
+The golden age was amazing, where highly produced, narrative driven podcasts broke through and were enjoyed by audiences.
+It was art.
+Personality-driven podcasts certainly have a place.
+Indeed, its what has topped the charts for a long time, and they garner significant audiences.
+Highly produced podcasts still have their place, though.
+But a different support structure or its role in a broader portfolio might need to be considered with the current state of podcasting.
+The example using Disney as a comparison was interesting, where audiences connect with the art, which drives folks to spend money on experiences, and thus ultimately goes back into supporting the art.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I've been learning more about [Rapp](https://github.com/r-lib/Rapp).
+It's kind of a neat tool to write and share command line applications using R code.
+I've been a little tripped up with how to make the commands available in my shell.
+I can make the utilities available by `chmod +x file-to-utility.R` of the file, but you still need to run the file name for it to execute.
+This led me to further explore how the `$PATH` variable works on MacOS and how to modify it.
+I found these two articles helpful:
+
+* [TIL: Don't set a variable named path inside functions when using zsh](https://dev.to/lucassperez/til-dont-set-a-variable-named-path-inside-functions-when-using-zsh-30k5)
+* [How $PATH is Constructed on macOS](https://0xmachos.com/2021-05-13-zsh-path-macos/)
+
+I also think the [Using package `exec` directories directly](https://github.com/r-lib/Rapp#using-package-exec-directories-directly) section is key to getting this to work like I want it to.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Fly around the world (experimental Google Maps feature)](https://developers.google.com/maps/documentation/earth/flight-simulator) (documentation)
+* [An interview with Ollie Wagner, Apple emoji designer](https://shadycharacters.co.uk/2026/06/ollie-wagner/) (blog)
+* [How to write a good, short doc](https://tombedor.dev/how-to-write-good-short-docs/#how-to-write-a-good-short-doc) (blog)
+
+That's it for this update.
+
+Enjoy these long days of daylight, they only get shorter from here.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
