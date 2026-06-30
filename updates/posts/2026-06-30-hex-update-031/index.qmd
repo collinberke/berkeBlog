@@ -1,0 +1,151 @@
+---
+title: "The Hex Update: Issue 031"
+date: "2026-06-30"
+author: "Collin K. Berke, Ph.D."
+description: "Bad news and your brain; Fox's purchase of Roku; AI, humans, and the newsroom; how U.S. adults spend their time; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Greetings once again to the people of the internet.
+Welcome to Issue 031.
+
+I just got back from some travel and spending time with family.
+It's always good to go home.
+
+Here's a picture from my travels:
+
+![](lake.jpeg){fig-align="center"}
+
+Now I'm back for another week of sharing some articles, thoughts, and some cool things I recently bumped into.
+
+So... Let's get started.
+
+Three topics recently caught my attention:
+
+* [Bad news and your brain](https://www.sciencedaily.com/releases/2026/06/260614012006.htm)
+* [Fox's purchase of Roku](https://www.adexchanger.com/on-tv-and-video/foxs-roku-deal-signals-the-next-phase-of-television/)
+* [AI, humans, and the newsroom](https://reutersinstitute.politics.ox.ac.uk/news/are-human-journalists-truly-irreplaceable-how-safeguard-public-interest-journalism-age-ai)
+
+For a bit of fun, I share an [article](https://www.pewresearch.org/social-trends/feature/how-do-u-s-men-and-women-spend-their-time/) that visualizes how U.S. adults spend their time.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Your brain was never designed for this much bad news](https://www.sciencedaily.com/releases/2026/06/260614012006.htm) (article)
+
+This article provides an overview of the mechanisms of news fatigue.
+According to the article:
+
+> It's [news fatigue] the predictable response of a human brain meeting an environment it was never designed to navigate.
+
+*Negativity bias* was one factor discussed, where the human brain places more weight on negative information than positive information.
+As a result, the brain pays faster attention to and has better memory of negative information.
+The article cites one study that found with every additional negative word added to a headline, click-through rates increased.
+The opposite was the case for each addition of positive words.
+The article also mentions physiological responses to negative news, where the body responds to negative information even before the brain can assess whether it's relevant or not.
+Additionally, the impact of proximity of news was also discussed.
+In the information age, the brain has a wider area to scan for negative information.
+
+### Why does this matter?
+
+Thoughtful design and care should be a consideration when it comes publishing negative information, especially if news is to meet its intended purpose.
+Clicks are certainly a goal (i.e., you can't have readers if they don't navigate to your story), but engagement--aimed at informing audiences--is also critical.
+News fatigue isn't just a concious choice by readers.
+It's an innate function of how humans process information.
+Some more consideration in creating 'brain friendly' media is a path forward.
+[Dr. Paul Boll's](https://www.linkedin.com/in/drpaulbolls/) work is a great place to start.
+Otherwise, news fatigue will continue to grow.
+
+### [Fox’s Roku Deal Signals The Next Phase Of Television](https://www.adexchanger.com/on-tv-and-video/foxs-roku-deal-signals-the-next-phase-of-television/) (article) and [Fox is buying streaming platform Roku for $22 billion](https://www.marketplace.org/story/2026/06/16/why-is-fox-buying-roku) (article)
+
+These two articles report on the $22B purchase of [Roku](https://en.wikipedia.org/wiki/Roku) by [Fox](https://en.wikipedia.org/wiki/Fox_Corporation).
+Although the particulars of the deal are interesting, what I keyed in on while reading these articles is what this purchase signals about the current state of television.
+I thought this quote summed it up well:
+
+> The deal is a reminder that the next phase of television will be defined by who controls the viewer relationship.
+
+Moreover, these articles highlight success in this space will be a function of several factors: distribution, audience access, and data and platform control.
+As one analyst stated, the first thing audiences now do when turning on a television is navigate to an app, rather than turn on a cable box.
+It's about providing different formats to meet current and future audience consumption patterns.
+This includes expanded streaming and on-demand offerings.
+However, having control of the homescreen between audiences and the content they want to watch is a big advantage.
+Data is also currency here, as it will enhance ad targeting and improve audience's viewing experience.
+
+#### Why does this matter?
+
+The viewer relationship is what's important here.
+Advantages are present from ownership of the initial interface audience's access content, but they also come from owning other means for managing this relationship.
+An improved ad experience is one benefit, but it's also an advantage to better connect people with content they are more likely to enjoy and engage with.
+Even more beneficial is if this content is made available by the platform owner, like streaming sports and news, which Fox produces.
+If you own the interface or experience, you can better manage this audience relationship.
+
+### [Are human journalists truly irreplaceable? How to safeguard public interest journalism in the age of AI](https://reutersinstitute.politics.ox.ac.uk/news/are-human-journalists-truly-irreplaceable-how-safeguard-public-interest-journalism-age-ai) (article) and [“Many newsrooms are not optimised for what humans do best” (but we have an opportunity to change that)](https://onlinejournalismblog.com/2026/06/18/many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that/) (blog)
+
+This article and subsequent blog post explores two topics: the integration of AI into newsrooms and how journalism can continue to reach people in the future.
+As part of this discussion, the article seeks to further define AI integration, and it further applies a critical lens to the topic.
+To do this, the article refines the definition of *hybridisation*, the sociotechnical entanglement of humans and machines.
+The article then goes a level deeper by explicating first- and second-order hybridisation and machine-centric and human-centric hybridisation.
+The blog expands on this definition by linking to the idea of [*reverse centaurs*](https://boingboing.net/2026/05/14/cory-doctorows-reverse-centaur-book-why-ai-is-hell-on-workers.html).
+With terms defined, the article posits many AI integrations are focused on machine-centric hybridisation, where human workflows are being organized around the output of a machine rather than the machine being organized around human outputs.
+Such organization has consequences, as it's not only about enhancing workflow, but the impacts this will have on the judgements made in journalism: what's worth noticing, what is meaningful, what is fair, what is true and relevant.
+To be clear, though, the article isn't advocating for going back to human-only workflows.
+There's issues with this approach as well (e.g., access to artisan news information).
+The article also made some interesting points about human in the loop arguments, which is complicated both conceptually and practically.
+As the article puts it:
+
+> Oversight does not scale with system complexity, and it can't be applied to dynamic, personalized content experiences.
+
+### Why does this matter?
+
+Reviewing these definitions made me realize the depth involved when characterizing the concept of hybridisation.
+It's also critical to recognize the effects different approaches to hybridisation may have on journalistic activities.
+The criticism of human-in-the-loop approaches was also a key point worth further consideration.
+The integration of AI into workflows will only increase the complexity of systems, and oversight will not scale with increased complexity in environments where resources are already being stretched.
+Oversight over dynamic, personalized experiences will be challenging as well, and as a result, there's little direction on viable accountability structures for such oversight.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+Spent some more time figuring out [Rapp](https://github.com/r-lib/Rapp) this week.
+I figured out my `$PATH` issue, which I mentioned in my last update. 
+I found out [launchers](https://github.com/r-lib/Rapp#installing-launchers) in an R package are a better approach, though.
+But hey, if you want to use a package's `exec` directory directly, you have [options](https://github.com/r-lib/Rapp#using-package-exec-directories-directly).
+I'm happy to have figured out how to be able to call these CLI tools by just using its name, rather than having to use long form ways of envoking a tool.
+As a result of learning this new package, I've been developing some small utilities to enhance my workflows, mostly.
+I'm hoping to get a blog post out about how to do this here soon.
+Keep an eye out for it.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [How Do U.S. Men and Women Spend Their Time?](https://www.pewresearch.org/social-trends/feature/how-do-u-s-men-and-women-spend-their-time/) (report)
+* [The Exhaustion of Talking to a Tool](https://ohadravid.github.io/posts/2026-06-tool-talking/) (blog post)
+* [Ask for no, don't ask for yes](https://www.mooreds.com/wordpress/archives/3518)
+* [Bro Hymn (2005 Remaster)](https://www.youtube.com/watch?v=N5GUm_kuKrM) (video)
+
+That's it for this update.
+
+Here's to a great start to your week. I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
