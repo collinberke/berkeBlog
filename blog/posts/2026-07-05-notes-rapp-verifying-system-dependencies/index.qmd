@@ -1,0 +1,79 @@
+---
+title: "Notes: Validating system dependencies for Rapp"
+description: ""
+format:
+  html:
+    link-external-newwindow: true
+execute:
+  eval: false
+date: "2026-07-04"
+author: "Collin K. Berke, Ph.D."
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - notes
+  - rapp
+---
+
+Recently, I've been using [Rapp](https://github.com/r-lib/Rapp) to develop CLI tools.
+My intent is to [wrap these tools up within an R package](https://github.com/r-lib/Rapp#installing-launchers) for others and my future self to use.
+However, some of these utilities make calls to other CLI tools installed from other sources and are not natively available via a system's terminal.
+When this happens, headaches ensue, and the library needs to be installed before the utility can be used.
+Thus, some validation checking is in order.
+The steps of this validation checking then include:
+
+1. Print version information (if any is available).
+2. Parse the version info to check for presence of the system library.
+3. If system library isn't available, print info on how to obtain it.
+
+To achieve this, the approach I came up with includes the use of some Base R, [stringr](https://stringr.tidyverse.org/), and [cli](https://cli.r-lib.org/index.html).
+Specifically, the Base R `system2()` function is used to run the system command via R.
+`stringr` is used to identify if the specific package dependency is available.
+`cli` is used to print useful information to the user in cases the system dependency isn't available.
+
+Let's look at the entire function and highlight what each piece is doing:
+
+```{r}
+is_bq_installed <- function() {
+  gcloud_version_info <- system2("gcloud", args = "version", stdout = TRUE)
+
+  if (!any(stringr::str_detect(gcloud_version_info, "bq"))) {
+    cli::cli_alert_danger("Google Cloud SDK not available.")
+    cli::cli_alert_info(
+      "See install docs at {.url https://docs.cloud.google.com/sdk/docs/install-sdk}."
+    )
+  }
+}
+```
+
+The first step here is to print the version information, if any is available.
+In my case, many of the utilities I've been working on wrap [`bq` CLI tool](https://docs.cloud.google.com/bigquery/docs/quickstarts/load-data-bq) commands.
+This line makes the system call in R:
+
+```{r}
+gcloud_version_info <- system2("gcloud", args = "version", stdout = TRUE)
+```
+
+One thing that tripped me up about using `system2()` is the `args` argument is what takes any flags for the system command, unlike the older `system()` Base R function.
+The other important bit here is `stdout = TRUE`.
+Setting this allows for capturing of the command's output within a R character vector, which is useful in the case for later parsing.
+
+Since I'm interested in making sure users have the dependency available, I use this set of code to do so:
+
+```{r}
+!any(stringr::str_detect(gcloud_version_info, "bq"))
+```
+
+The reason for `str_detect()` here should be pretty obvious.
+However, the `!any()` may not.
+``
+I hope this saves someone thinking about these issues a little bit of time.
+This feels like a reasonable approach, but I'm sure there's other--maybe even better ways--to achieve the same result.
+If you know of any, send me a message with your ideas.
+
+
+
+
+
