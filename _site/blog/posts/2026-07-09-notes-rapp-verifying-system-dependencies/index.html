@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>Media and Marketing Research Resources – Collin K. Berke, Ph.D.</title>
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2026-07-09">
+<meta name="description" content="How to make sure users have the needed tools when ‘shelling out’">
+<title>Notes: Validating system dependencies for Rapp – Collin K. Berke, Ph.D.</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,30 +23,63 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
-
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./icon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-82e7d968386bc6f68bfceb5876b612a8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-fffa27e5c3e5cad3d8c8c9a3b11e76a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-1e5ad64fd0144ef3e9b8ffa7cd8261fa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-06bda6adb05b0368c48500cf66aa6524.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -72,20 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
-<script src="site_libs/react-18.2.0/react.min.js"></script>
-<script src="site_libs/react-18.2.0/react-dom.min.js"></script>
-<script src="site_libs/reactwidget-2.0.0/react-tools.js"></script>
-<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
-<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<link href="site_libs/reactable-0.4.5/reactable.css" rel="stylesheet">
-<script src="site_libs/reactable-binding-0.4.5/reactable.js"></script>
-
-
-<link rel="stylesheet" href="styles.css">
+}</script><link rel="stylesheet" href="../../../styles.css">
 </head>
-
 <body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -249,11 +270,9 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Collin K. Berke, Ph.D.</span>
     </a>
   </div>
@@ -263,99 +282,166 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./now.html"> 
+    <a class="nav-link" href="../../../now.html"> 
 <span class="menu-text">Now</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog/index.html"> 
+    <a class="nav-link" href="../../../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./updates/index.html"> 
+    <a class="nav-link" href="../../../updates/index.html"> 
 <span class="menu-text">Updates</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./say-hi.html"> 
+    <a class="nav-link" href="../../../say-hi.html"> 
 <span class="menu-text">Say Hi!</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#the-approach" id="toc-the-approach" class="nav-link" data-scroll-target="#the-approach">The approach</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  <li><a href="#lets-connect" id="toc-lets-connect" class="nav-link" data-scroll-target="#lets-connect">Let’s connect</a></li>
+  </ul></nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Notes: Validating system dependencies for Rapp</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">notes</div>
+    <div class="quarto-category">rapp</div>
+  </div>
+  </div>
 
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Media and Marketing Research Resources</h1>
-<p class="subtitle lead">A collection of resources related to media and marketing research, curated by <a href="https://www.collinberke.com/">Collin K. Berke</a>.</p>
+<div>
+  <div class="description">
+    How to make sure users have the needed tools when ‘shelling out’
+  </div>
 </div>
 
 
+<div class="quarto-title-meta column-page-left">
 
-<div class="quarto-title-meta column-page">
-
-    
-  
     <div>
-    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">July 9, 2026</p>
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 9, 2026</p>
     </div>
   </div>
+  
     
   </div>
   
 
 
-</header>
-
-
-<p>This resource list was last updated on 2026-04-13. Want to add a resource? File an issue or edit the <code>resources.csv</code> file on <a href="https://github.com/collinberke/data-media-marketing-resources">GitHub</a> and submit a Pull Request.</p>
+</header><section id="background" class="level1"><h1>Background</h1>
+<p>Recently, I’ve been using <a href="https://github.com/r-lib/Rapp">Rapp</a> to develop CLI tools. Now that I’m creating some useful tools (useful to me anyways), my intent is to make them accessible to other folks. To do this, I want to <a href="https://github.com/r-lib/Rapp#installing-launchers">make them available within an R package</a>. Some of these tools, however, <a href="https://ropensci.org/blog/2021/09/13/system-calls-r-package/">“shell out”</a> to other CLI tools not natively installed on a user’s system. When this happens, errors are thrown, confusion sets in, headaches ensue, and the user is left blindly guessing at missing setup steps. What if we could catch this issue right away? What if when the user doesn’t have the needed dependency they receive some useful information on how to perform the setup? Validation checking is the answer.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This <a href="https://ropensci.org/blog/2021/09/13/system-calls-r-package/">post</a> from <code>rOpenSci</code> warns how wrappers to CLI tools is not always a great approach. I heed these warnings related to a “shell out”. But for simple utilities, I’m not going to <a href="https://blog.davisvaughan.com/posts/2019-03-02-now-you-c-me/">write C or C++ code</a> to perform some straightforward actions a CLI tool has already implemented.</p>
+</div>
+</div>
+<p>Here’s my thought process for this validation check:</p>
+<ol type="1">
+<li>Print version information for the wrapped CLI tool (if any is available).</li>
+<li>Parse the version info to check for presence of the tool.</li>
+<li>If the tool isn’t available on the user’s system, print info on how to obtain it.</li>
+</ol></section><section id="the-approach" class="level1"><h1>The approach</h1>
+<p>To achieve this, the approach I came up with includes the use of some Base R, the <a href="https://stringr.tidyverse.org/">stringr</a>, and <a href="https://cli.r-lib.org/index.html">cli</a> packages. Specifically, the Base R <code><a href="https://rdrr.io/r/base/system2.html">system2()</a></code> function is used to run the system command via R. <code>stringr</code> is used to identify if the specific package dependency is available via string pattern detection. <code>cli</code> is used to print useful information to the user in cases the system dependency isn’t available.</p>
+<p>Let’s break down the entire function:</p>
 <div class="cell">
-<div class="cell-output-display">
-<div class="reactable html-widget html-fill-item anchored" id="tbl-resources" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="tbl-resources">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Category":["Blog","Blog","Blog","Blog","Blog","Blog","Blog","Blog","Data","Data","Data","Data","Newsletter","Newsletter","Newsletter","Newsletter","Newsletter","Newsletter","Newsletter","Newsletter","Person","Person","Podcast","Podcast","Podcast","Publication","Publication","Publication","Publication","Publication","Publication","Publication","Publication","Publication","Publication","Publication","Publication","Report","Report","Report","Report","Report","Report","Report","Report","Report","Report","Report","Report","Report","Report","Website","Website","Website","Website","Website","Website","Website","Website","Website","Website"],"Name":["Digital Debrief by Krista Seiden","Entertainment Strategy Guy","Forrester: Blogs","Google Marketing Platform: Official Blog","Jacobs Media: Our Insights and Blogs","Paragon Blog","Radio Research Consortium: News & Analysis","Simo Ahava","Deloitte Insights: Digital Media Monitor","Nielsen: The Gauge","PODTRAC: Rankings","YouTube Charts: Weekly Top Podcast Shows","BlkPodNews","ESHAP","Paragon Insights","Posting Nexus","State of the Screens","The Myers Report","The Squeeze","The Verge: Hot Pod","Julia Alexander","Michael Beach","Analytics Power Hour","Behind the Numbers: an EMARKETER Podcast","Downstream","AdAge","AdExchanger","Columbia Journalism Review","Current","Deadline","Marketplace: Culture","Marketplace: Technology","Nieman Reports","TVNewsCheck","Variety","Vox: Culture","Vox: Technology","Current: CDP Index by Deb Ashmore","Deloitte Insights: Digital Media Trends","Deloitte Insights: Tech, Media & Telecom","Edison Research: Share of Ear","Edison Research: The Infinite Dial","M+R: Benchmarks","Nielsen: Articles","Nielsen: Case Studies","Nielsen: Perspectives","Nielsen: Reports","Pew Research Center: News Habits & Media","Reuters Institute: Digital News Report","Reuters Institute: Trends and Predictions","The Spoken Word Audio Report","EMARKETER","Edison Research","Forrester: Predictions","National Public Media: Insights","Public Media Alliance","Reuters Institute","Sounds Profitable Research & Studies","The Associated Press-NORC Center for Public Affairs Research: News and Media","The National Association for Media Literacy Education","podnews"],"Link":["<a href='https://kristaseiden.com/' target='_blank'>kristaseiden.com<\/a>","<a href='https://entertainmentstrategyguy.com/' target='_blank'>entertainmentstrategyguy.com<\/a>","<a href='https://www.forrester.com/blogs/' target='_blank'>www.forrester.com/blogs<\/a>","<a href='https://blog.google/products/marketingplatform/360/' target='_blank'>blog.google/products/marketingplatform/360<\/a>","<a href='https://jacobsmedia.com/blog/' target='_blank'>jacobsmedia.com/blog<\/a>","<a href='https://teamparagon.consulting/blog/' target='_blank'>teamparagon.consulting/blog<\/a>","<a href='https://rrconline.org/category/blogs/' target='_blank'>rrconline.org/category/blogs<\/a>","<a href='https://www.simoahava.com/' target='_blank'>www.simoahava.com<\/a>","<a href='https://www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-consumption-habits-survey/2025/digital-media-monitor-dashboard.htm' target='_blank'>www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-consumption-habits-survey/2025/digital-media-monitor-dashboard.htm<\/a>","<a href='https://www.nielsen.com/data-center/the-gauge/' target='_blank'>www.nielsen.com/data-center/the-gauge<\/a>","<a href='https://analytics.podtrac.com/publisher-network-rankings-index' target='_blank'>analytics.podtrac.com/publisher-network-rankings-index<\/a>","<a href='https://charts.youtube.com/podcasts' target='_blank'>charts.youtube.com/podcasts<\/a>","<a href='https://www.blkpodnews.com/' target='_blank'>www.blkpodnews.com<\/a>","<a href='https://eshap.substack.com/' target='_blank'>eshap.substack.com<\/a>","<a href='https://teamparagon.consulting/paragon-insights/' target='_blank'>teamparagon.consulting/paragon-insights<\/a>","<a href='https://postingnexus.substack.com/' target='_blank'>postingnexus.substack.com<\/a>","<a href='https://stateofthescreens.com/' target='_blank'>stateofthescreens.com<\/a>","<a href='https://themediaecologist.substack.com/about' target='_blank'>themediaecologist.substack.com/about<\/a>","<a href='https://www.thisisthesqueeze.com/' target='_blank'>www.thisisthesqueeze.com<\/a>","<a href='https://www.theverge.com/hot-pod-newsletter' target='_blank'>www.theverge.com/hot-pod-newsletter<\/a>","<a href='https://www.linkedin.com/in/julia-alexander-77a29281/' target='_blank'>www.linkedin.com/in/julia-alexander-77a29281<\/a>","<a href='https://www.linkedin.com/in/michaeljamesbeach/' target='_blank'>www.linkedin.com/in/michaeljamesbeach<\/a>","<a href='https://analyticshour.io/' target='_blank'>analyticshour.io<\/a>","<a href='https://podcasts.apple.com/us/podcast/behind-the-numbers-an-emarketer-podcast/id1113097936' target='_blank'>podcasts.apple.com/us/podcast/behind-the-numbers-an-emarketer-podcast/id1113097936<\/a>","<a href='https://www.relay.fm/downstream' target='_blank'>www.relay.fm/downstream<\/a>","<a href='https://adage.com/' target='_blank'>adage.com<\/a>","<a href='https://www.adexchanger.com/' target='_blank'>www.adexchanger.com<\/a>","<a href='https://www.cjr.org/' target='_blank'>www.cjr.org<\/a>","<a href='https://current.org/' target='_blank'>current.org<\/a>","<a href='https://deadline.com/' target='_blank'>deadline.com<\/a>","<a href='https://www.marketplace.org/culture' target='_blank'>www.marketplace.org/culture<\/a>","<a href='https://www.marketplace.org/technology' target='_blank'>www.marketplace.org/technology<\/a>","<a href='https://niemanreports.org/' target='_blank'>niemanreports.org<\/a>","<a href='https://tvnewscheck.com/' target='_blank'>tvnewscheck.com<\/a>","<a href='https://variety.com/' target='_blank'>variety.com<\/a>","<a href='https://www.vox.com/culture' target='_blank'>www.vox.com/culture<\/a>","<a href='https://vox.com/technology' target='_blank'>vox.com/technology<\/a>","<a href='https://current.org/author/deb-ashmore/' target='_blank'>current.org/author/deb-ashmore<\/a>","<a href='https://www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-collection.html' target='_blank'>www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-collection.html<\/a>","<a href='https://www.deloitte.com/us/en/insights/research-centers/center-for-technology-media-telecommunications.html' target='_blank'>www.deloitte.com/us/en/insights/research-centers/center-for-technology-media-telecommunications.html<\/a>","<a href='https://www.edisonresearch.com/solutions/share-of-ear/' target='_blank'>www.edisonresearch.com/solutions/share-of-ear<\/a>","<a href='https://www.edisonresearch.com/solutions/the-infinite-dial/' target='_blank'>www.edisonresearch.com/solutions/the-infinite-dial<\/a>","<a href='https://mrbenchmarks.com/' target='_blank'>mrbenchmarks.com<\/a>","<a href='https://www.nielsen.com/insights/type/article/' target='_blank'>www.nielsen.com/insights/type/article<\/a>","<a href='https://www.nielsen.com/insights/type/case-study/' target='_blank'>www.nielsen.com/insights/type/case-study<\/a>","<a href='https://www.nielsen.com/insights/type/perspective/' target='_blank'>www.nielsen.com/insights/type/perspective<\/a>","<a href='https://www.nielsen.com/insights/type/report/' target='_blank'>www.nielsen.com/insights/type/report<\/a>","<a href='https://www.pewresearch.org/topic/news-habits-media/' target='_blank'>www.pewresearch.org/topic/news-habits-media<\/a>","<a href='https://reutersinstitute.politics.ox.ac.uk/digital-news-report/' target='_blank'>reutersinstitute.politics.ox.ac.uk/digital-news-report<\/a>","<a href='https://reutersinstitute.politics.ox.ac.uk/journalism-media-and-technology-trends-and-predictions' target='_blank'>reutersinstitute.politics.ox.ac.uk/journalism-media-and-technology-trends-and-predictions<\/a>","<a href='https://www.nationalpublicmedia.com/insights/reports/the-spoken-word-audio-report/' target='_blank'>www.nationalpublicmedia.com/insights/reports/the-spoken-word-audio-report<\/a>","<a href='https://www.emarketer.com/' target='_blank'>www.emarketer.com<\/a>","<a href='https://www.edisonresearch.com/' target='_blank'>www.edisonresearch.com<\/a>","<a href='https://www.forrester.com/predictions/' target='_blank'>www.forrester.com/predictions<\/a>","<a href='https://www.nationalpublicmedia.com/insights/' target='_blank'>www.nationalpublicmedia.com/insights<\/a>","<a href='https://www.publicmediaalliance.org/' target='_blank'>www.publicmediaalliance.org<\/a>","<a href='https://reutersinstitute.politics.ox.ac.uk/' target='_blank'>reutersinstitute.politics.ox.ac.uk<\/a>","<a href='https://soundsprofitable.com/research/' target='_blank'>soundsprofitable.com/research<\/a>","<a href='https://apnorc.org/topics/news-and-media/' target='_blank'>apnorc.org/topics/news-and-media<\/a>","<a href='https://namle.org/' target='_blank'>namle.org<\/a>","<a href='https://podnews.net/' target='_blank'>podnews.net<\/a>"],"Tags":["Analytics,  Marketing,  Measurement","Digital,  Film,  Industry,  Streaming,  Television","AI,  Digital,  Industry,  Marketing,  Social Media,  Tech","Advertising,  Analytics,  Marketing,  Measurement","Audio,  Broadcast,  Digital,  Radio","Audio,  Public Media,  Radio","Audio,  Broadcast,  Radio,  Public Media","Analytics,  Marketing,  Measurement","Digital,  Gaming,  Streaming,  Television","Advertising,  Streaming,  Television","Podcasts","Audio,  Podcasts","Audio,  Podcasts","Digital,  Film,  Industry,  Marketing,  Podcasts,  Social Media,  Streaming,  Tech,  Television","Audio,  Public Media,  Radio","AI,  Digital,  Industry,  Streaming,  Tech,  Television","Advertising,  Industry,  Marketing,  Streaming,  Television","Advertising,  AI,  Marketing","Audio,  Podcasts","Audio,  Podcasts","AI,  Digital,  Industry,  Streaming,  Tech,  Television","Advertising,  Industry,  Marketing,  Streaming,  Tech,  Television","Analytics,  Data,  Measurement","Advertising,  Digital,  Marketing,  Social Media","Streaming,  Television","Advertising,  Marketing","Advertising,  Marketing,  Measurement","Journalism,  News","Audio,  Digital,  Industry,  News,  Podcasts,  Public Media,  Radio,  Streaming,  Tech,  Television","Digital,  Film,  Industry,  Streaming,  Television","AI,  Digital,  Film,  Streaming,  Gaming,  Television","AI,  Digital,  Industry,  Social Media,  Tech","Journalism,  News","Digital,  Industry,  Streaming,  Tech,  Television","Digital,  Film,  Gaming,  Industry,  Television","AI,  Digital,  Film,  Streaming,  Television","AI,  Digital,  Social Media,  Tech","Measurement,  Marketing,  Public Media","AI, Audio,  Digital,  News,  Podcasts,  Social Media,  Streaming,  Tech,  Television","AI, Audio,  Digital,  Film,  News,  Podcasts,  Social Media,  Streaming,  Tech,  Television","Audio,  Broadcast,  Podcasts,  Radio","Audio,  Broadcast,  Podcasts,  Radio","Advertising,  Marketing,  Public Media","Advertising,  Analytics,  Audio,  Digital,  Film,  Industry,  Measurement,  Marketing,  News,  Podcasts,  Radio,  Streaming,  Tech,  Television","Advertising,  Analytics,  Audio,  Digital,  Film,  Industry,  Measurement,  Marketing,  News,  Podcasts,  Radio,  Streaming,  Tech,  Television","Advertising,  Analytics,  Audio,  Digital,  Film,  Industry,  Measurement,  Marketing,  News,  Podcasts,  Radio,  Streaming,  Tech,  Television","Advertising,  Analytics,  Audio,  Digital,  Film,  Industry,  Measurement,  Marketing,  News,  Podcasts,  Radio,  Streaming,  Tech,  Television","Digital,  News","AI,  Digital,  Journalism,  News","AI,  Digital,  Journalism,  News,  Tech","Audio,  Broadcast,  Podcasts,  Radio","Advertising,  Analytics,  Audio,  Digital,  Film,  Industry,  Measurement,  Marketing,  News,  Podcasts,  Radio,  Streaming,  Tech,  Television","Audio,  Broadcast,  Podcasts,  Radio","AI,  Digital,  Industry,  Marketing,  Social Media,  Tech","Audio,  Digital,  Marketing,  Podcasts,  Public Media,  Radio","Public Media","AI,  Digital,  Journalism,  News","Advertising,  Audio,  Broadcast,  Film,  Podcasts,  Radio,  Television","Journalism,  News,  Streaming,  Television","Education","Audio,  Podcasts"]},"columns":[{"id":"Category","name":"Category","type":"character","maxWidth":180},{"id":"Name","name":"Name","type":"character"},{"id":"Link","name":"Link","type":["glue","character"],"html":true},{"id":"Tags","name":"Tags","type":"character","maxWidth":180}],"filterable":true,"searchable":true,"pagination":false,"striped":true,"showSortable":true,"elementId":"tbl-resources","dataKey":"d6c4569d9a49ca7182f85a6e53618b45"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">is_bq_installed</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">gcloud_version_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span><span class="st">"gcloud"</span>, args <span class="op">=</span> <span class="st">"version"</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">gcloud_version_info</span>, <span class="st">"bq"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_danger</a></span><span class="op">(</span><span class="st">"Google Cloud SDK not available."</span><span class="op">)</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_info</a></span><span class="op">(</span></span>
+<span>      <span class="st">"See install docs at {.url https://docs.cloud.google.com/sdk/docs/install-sdk}."</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>The first step here is to print the version information, if any is available. In my case, many of the utilities I’ve been working on wrap commands from <a href="https://docs.cloud.google.com/bigquery/docs/quickstarts/load-data-bq">Google Cloud’s <code>bq</code> CLI tool</a>. This line makes the system call in R to get the version information:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gcloud_version_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span><span class="st">"gcloud"</span>, args <span class="op">=</span> <span class="st">"version"</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="note" class="level3">
-<h3 class="anchored" data-anchor-id="note">Note</h3>
-<p>This list is provided for convenience and informational purposes only. Some resources may be open-source and freely available. Others may require a monetary payment, subscription, or account to access. Inclusion on this list does not represent an endorsement or guarantee of the accuracy, reliability, or content of any linked site. Content within these links may be invalid or inaccurate. We take no responsibility of what is contained within these links or what results from their review or use.</p>
-<p>This list will be updated periodically. Resources will be added and removed during these updates.</p>
-</section>
-<section id="inspiration" class="level3">
-<h3 class="anchored" data-anchor-id="inspiration">Inspiration</h3>
-<p>This list and its structure was inspired by <a href="https://nrennie.rbind.io/">Nicola Rennie’s</a> data visualization and data science resources list.</p>
-<p>Check them out:</p>
+<p>One thing that tripped me up about using <code><a href="https://rdrr.io/r/base/system2.html">system2()</a></code> is the <code>args</code> argument is what passes the flags for the system command, unlike the older <code><a href="https://rdrr.io/r/base/system.html">system()</a></code> Base R function. The other important bit here is <code>stdout = TRUE</code>. Setting this allows the command’s output to be returned to R as a character vector. This is useful for later parsing.</p>
+<p>Since I’m interested in making sure users have the required dependency, I use this set of code to check if it’s available:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">gcloud_version_info</span>, <span class="st">"bq"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The reason for <code>str_detect()</code> here should be pretty obvious. It’s detecting the presence of a string pattern in the character vector, ‘bq’ in this case.</p>
+<p>The <code><a href="https://rdrr.io/r/base/any.html">any()</a></code> function returns a single <code>TRUE</code> or <code>FALSE</code> boolean if <em>any</em> of the values in the character vector are TRUE. The use of <code>!</code> flips it. Thus, if the “bq” string is not detected, the end result is <code>FALSE</code>, which then kicks off the control statement:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">gcloud_version_info</span>, <span class="st">"bq"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_danger</a></span><span class="op">(</span><span class="st">"Google Cloud SDK not available."</span><span class="op">)</span></span>
+<span>  <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_info</a></span><span class="op">(</span></span>
+<span>    <span class="st">"See install docs at {.url https://docs.cloud.google.com/sdk/docs/install-sdk}."</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>At this point, it’s using some functions from the <a href="https://cli.r-lib.org/"><code>cli</code></a> package to push installation information to the user.</p>
+</section><section id="wrap-up" class="level1"><h1>Wrap up</h1>
+<p>This feels like a reasonable approach to system dependency checking when doing some simple CLI tool wrapping. Indeed, if you’re attempting to do something more advanced, I highly suggest reviewing <a href="https://ropensci.org/blog/2021/09/13/system-calls-r-package/">rOpenSci’s blog post</a>. I hope this saves some time for anyone facing this same issue.</p>
+</section><section id="lets-connect" class="level1"><h1>Let’s connect</h1>
+<p>If you found this content useful, please share. If you find these topics interesting and want to discuss further, let’s connect:</p>
 <ul>
-<li><a href="https://nrennie.rbind.io/data-viz-resources/">Data Visualization Resources</a></li>
-<li><a href="https://nrennie.rbind.io/data-science-resources/">Data Science Resources</a></li>
+<li>BlueSky: <a href="https://bsky.app/profile/collinberke.bsky.social"><span class="citation" data-cites="collinberke.bsky.social">@collinberke.bsky.social</span></a>
+</li>
+<li>LinkedIn: <a href="https://www.linkedin.com/in/collinberke/">collinberke</a>
+</li>
+<li>GitHub: <a href="https://github.com/collinberke"><span class="citation" data-cites="collinberke">@collinberke</span></a>
+</li>
+<li><a href="https://www.collinberke.com/say-hi">Say Hi!</a></li>
 </ul>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2026,
+  author = {Berke, Collin K},
+  title = {Notes: {Validating} System Dependencies for {Rapp}},
+  date = {2026-07-09},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2026. <em>Notes: Validating System Dependencies for
+Rapp</em>. accepted, July 9.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -455,6 +541,11 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -769,7 +860,6 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
-
 
 
 

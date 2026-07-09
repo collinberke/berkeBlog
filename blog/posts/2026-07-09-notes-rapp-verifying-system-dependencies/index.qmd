@@ -6,7 +6,7 @@ format:
     link-external-newwindow: true
 execute:
   eval: false
-date: "2026-07-04"
+date: "2026-07-09"
 author: "Collin K. Berke, Ph.D."
 toc: true
 code-link: true
@@ -16,6 +16,8 @@ categories:
   - notes
   - rapp
 ---
+
+# Background
 
 Recently, I've been using [Rapp](https://github.com/r-lib/Rapp) to develop CLI tools.
 Now that I'm creating some useful tools (useful to me anyways), my intent is to make them accessible to other folks.
@@ -37,6 +39,8 @@ Here's my thought process for this validation check:
 1. Print version information for the wrapped CLI tool (if any is available).
 2. Parse the version info to check for presence of the tool.
 3. If the tool isn't available on the user's system, print info on how to obtain it.
+
+# The approach
 
 To achieve this, the approach I came up with includes the use of some Base R, the [stringr](https://stringr.tidyverse.org/), and [cli](https://cli.r-lib.org/index.html) packages.
 Specifically, the Base R `system2()` function is used to run the system command via R.
@@ -111,8 +115,3 @@ If you found this content useful, please share.
 If you find these topics interesting and want to discuss further, let's connect:
 
 {{< include ../../../.includes/_connect.qmd >}}
-
-
-
-
-
