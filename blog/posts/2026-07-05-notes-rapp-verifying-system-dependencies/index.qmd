@@ -1,6 +1,6 @@
 ---
 title: "Notes: Validating system dependencies for Rapp"
-description: ""
+description: "How to make sure users have the needed tools when 'shelling out'"
 format:
   html:
     link-external-newwindow: true
@@ -18,24 +18,35 @@ categories:
 ---
 
 Recently, I've been using [Rapp](https://github.com/r-lib/Rapp) to develop CLI tools.
-My intent is to [wrap these tools up within an R package](https://github.com/r-lib/Rapp#installing-launchers) for others and my future self to use.
-However, some of these utilities make calls to other CLI tools installed from other sources and are not natively available via a system's terminal.
-When this happens, headaches ensue, and the library needs to be installed before the utility can be used.
-Thus, some validation checking is in order.
-The steps of this validation checking then include:
+Now that I'm creating some useful tools (useful to me anyways), my intent is to make them accessible to other folks.
+To do this, I want to [make them available within an R package](https://github.com/r-lib/Rapp#installing-launchers).
+Some of these tools, however, ["shell out"](https://ropensci.org/blog/2021/09/13/system-calls-r-package/) to other CLI tools not natively installed on a user's system.
+When this happens, errors are thrown, confusion sets in, headaches ensue, and the user is left blindly guessing at missing setup steps.
+What if we could catch this issue right away?
+What if when the user doesn't have the needed dependency they receive some useful information on how to perform the setup?
+Validation checking is the answer.
 
-1. Print version information (if any is available).
-2. Parse the version info to check for presence of the system library.
-3. If system library isn't available, print info on how to obtain it.
+::: {.callout-note}
+This [post](https://ropensci.org/blog/2021/09/13/system-calls-r-package/) from `rOpenSci` warns how wrappers to CLI tools is not always a great approach.
+I heed these warnings related to a "shell out".
+But for simple utilities, I'm not going to [write C or C++ code](https://blog.davisvaughan.com/posts/2019-03-02-now-you-c-me/) to perform some straightforward actions a CLI tool has already implemented.
+:::
 
-To achieve this, the approach I came up with includes the use of some Base R, [stringr](https://stringr.tidyverse.org/), and [cli](https://cli.r-lib.org/index.html).
+Here's my thought process for this validation check:
+
+1. Print version information for the wrapped CLI tool (if any is available).
+2. Parse the version info to check for presence of the tool.
+3. If the tool isn't available on the user's system, print info on how to obtain it.
+
+To achieve this, the approach I came up with includes the use of some Base R, the [stringr](https://stringr.tidyverse.org/), and [cli](https://cli.r-lib.org/index.html) packages.
 Specifically, the Base R `system2()` function is used to run the system command via R.
-`stringr` is used to identify if the specific package dependency is available.
+`stringr` is used to identify if the specific package dependency is available via string pattern detection.
 `cli` is used to print useful information to the user in cases the system dependency isn't available.
 
-Let's look at the entire function and highlight what each piece is doing:
+Let's break down the entire function:
 
 ```{r}
+#| eval: false
 is_bq_installed <- function() {
   gcloud_version_info <- system2("gcloud", args = "version", stdout = TRUE)
 
@@ -49,29 +60,57 @@ is_bq_installed <- function() {
 ```
 
 The first step here is to print the version information, if any is available.
-In my case, many of the utilities I've been working on wrap [`bq` CLI tool](https://docs.cloud.google.com/bigquery/docs/quickstarts/load-data-bq) commands.
-This line makes the system call in R:
+In my case, many of the utilities I've been working on wrap commands from [Google Cloud's `bq` CLI tool](https://docs.cloud.google.com/bigquery/docs/quickstarts/load-data-bq).
+This line makes the system call in R to get the version information:
 
 ```{r}
+#| eval: false
 gcloud_version_info <- system2("gcloud", args = "version", stdout = TRUE)
 ```
 
-One thing that tripped me up about using `system2()` is the `args` argument is what takes any flags for the system command, unlike the older `system()` Base R function.
+One thing that tripped me up about using `system2()` is the `args` argument is what passes the flags for the system command, unlike the older `system()` Base R function.
 The other important bit here is `stdout = TRUE`.
-Setting this allows for capturing of the command's output within a R character vector, which is useful in the case for later parsing.
+Setting this allows the command's output to be returned to R as a character vector.
+This is useful for later parsing.
 
-Since I'm interested in making sure users have the dependency available, I use this set of code to do so:
+Since I'm interested in making sure users have the required dependency, I use this set of code to check if it's available:
 
 ```{r}
+#| eval: false
 !any(stringr::str_detect(gcloud_version_info, "bq"))
 ```
 
 The reason for `str_detect()` here should be pretty obvious.
-However, the `!any()` may not.
-``
-I hope this saves someone thinking about these issues a little bit of time.
-This feels like a reasonable approach, but I'm sure there's other--maybe even better ways--to achieve the same result.
-If you know of any, send me a message with your ideas.
+It's detecting the presence of a string pattern in the character vector, 'bq' in this case.
+
+The `any()` function returns a single `TRUE` or `FALSE` boolean if *any* of the values in the character vector are TRUE.
+The use of `!` flips it.
+Thus, if the "bq" string is not detected, the end result is `FALSE`, which then kicks off the control statement:
+
+```{r}
+#| eval: false
+if (!any(stringr::str_detect(gcloud_version_info, "bq"))) {
+  cli::cli_alert_danger("Google Cloud SDK not available.")
+  cli::cli_alert_info(
+    "See install docs at {.url https://docs.cloud.google.com/sdk/docs/install-sdk}."
+  )
+}
+```
+
+At this point, it's using some functions from the [`cli`](https://cli.r-lib.org/) package to push installation information to the user.
+
+# Wrap up
+
+This feels like a reasonable approach to system dependency checking when doing some simple CLI tool wrapping.
+Indeed, if you're attempting to do something more advanced, I highly suggest reviewing [rOpenSci's blog post](https://ropensci.org/blog/2021/09/13/system-calls-r-package/).
+I hope this saves some time for anyone facing this same issue.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
 
 
 
