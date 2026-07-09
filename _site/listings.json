@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/posts/2026-07-09-notes-rapp-verifying-system-dependencies/index.html",
       "/blog/posts/2026-05-11-notes-dotfiles-make-file-symlinks/index.html",
       "/blog/posts/2026-04-20-nvim-rstats-code-chunks-key-binding/index.html",
       "/blog/posts/2026-03-30-notes-rstats-conventional-commits/index.html",
@@ -47,10 +48,6 @@
     ]
   },
   {
-    "listing": "/talks/index.html",
-    "items": []
-  },
-  {
     "listing": "/updates/index.html",
     "items": [
       "/updates/posts/2026-07-06-hex-update-032/index.html",
@@ -86,5 +83,9 @@
       "/updates/posts/2024-11-01-hex-update-002/index.html",
       "/updates/posts/2024-07-10-hex-update-001/index.html"
     ]
+  },
+  {
+    "listing": "/talks/index.html",
+    "items": []
   }
 ]

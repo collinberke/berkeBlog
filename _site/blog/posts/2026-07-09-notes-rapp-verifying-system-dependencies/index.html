@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Collin K. Berke, Ph.D.">
-<meta name="dcterms.date" content="2026-06-30">
-<meta name="description" content="Bad news and your brain; Fox’s purchase of Roku; AI, humans, and the newsroom; how U.S. adults spend their time; and some other cool things I came across this week">
-
-<title>The Hex Update: Issue 031 – Collin K. Berke, Ph.D.</title>
+<meta name="dcterms.date" content="2026-07-09">
+<meta name="description" content="How to make sure users have the needed tools when ‘shelling out’">
+<title>Notes: Validating system dependencies for Rapp – Collin K. Berke, Ph.D.</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,8 +23,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -47,9 +78,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-82e7d968386bc6f68bfceb5876b612a8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-fffa27e5c3e5cad3d8c8c9a3b11e76a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/bootstrap/bootstrap-1e5ad64fd0144ef3e9b8ffa7cd8261fa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-06bda6adb05b0368c48500cf66aa6524.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -75,12 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="../../../styles.css">
+}</script><link rel="stylesheet" href="../../../styles.css">
 </head>
-
 <body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -244,9 +270,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Collin K. Berke, Ph.D.</span>
@@ -258,7 +282,7 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
@@ -283,55 +307,36 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Say Hi!</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lets-catch-up" id="toc-lets-catch-up" class="nav-link active" data-scroll-target="#lets-catch-up">Let’s catch up</a></li>
-  <li><a href="#three-things" id="toc-three-things" class="nav-link" data-scroll-target="#three-things">Three things</a>
-  <ul class="collapse">
-  <li><a href="#your-brain-was-never-designed-for-this-much-bad-news-article" id="toc-your-brain-was-never-designed-for-this-much-bad-news-article" class="nav-link" data-scroll-target="#your-brain-was-never-designed-for-this-much-bad-news-article">Your brain was never designed for this much bad news (article)</a></li>
-  <li><a href="#why-does-this-matter" id="toc-why-does-this-matter" class="nav-link" data-scroll-target="#why-does-this-matter">Why does this matter?</a></li>
-  <li><a href="#foxs-roku-deal-signals-the-next-phase-of-television-article-and-fox-is-buying-streaming-platform-roku-for-22-billion-article" id="toc-foxs-roku-deal-signals-the-next-phase-of-television-article-and-fox-is-buying-streaming-platform-roku-for-22-billion-article" class="nav-link" data-scroll-target="#foxs-roku-deal-signals-the-next-phase-of-television-article-and-fox-is-buying-streaming-platform-roku-for-22-billion-article">Fox’s Roku Deal Signals The Next Phase Of Television (article) and Fox is buying streaming platform Roku for $22 billion (article)</a></li>
-  <li><a href="#are-human-journalists-truly-irreplaceable-how-to-safeguard-public-interest-journalism-in-the-age-of-ai-article-and-many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that-blog" id="toc-are-human-journalists-truly-irreplaceable-how-to-safeguard-public-interest-journalism-in-the-age-of-ai-article-and-many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that-blog" class="nav-link" data-scroll-target="#are-human-journalists-truly-irreplaceable-how-to-safeguard-public-interest-journalism-in-the-age-of-ai-article-and-many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that-blog">Are human journalists truly irreplaceable? How to safeguard public interest journalism in the age of AI (article) and “Many newsrooms are not optimised for what humans do best” (but we have an opportunity to change that) (blog)</a></li>
-  <li><a href="#why-does-this-matter-2" id="toc-why-does-this-matter-2" class="nav-link" data-scroll-target="#why-does-this-matter-2">Why does this matter?</a></li>
-  </ul></li>
-  <li><a href="#what-i-found-interesting-this-week" id="toc-what-i-found-interesting-this-week" class="nav-link" data-scroll-target="#what-i-found-interesting-this-week">What I found interesting this week</a>
-  <ul class="collapse">
-  <li><a href="#cool-things-i-recently-bumped-into" id="toc-cool-things-i-recently-bumped-into" class="nav-link" data-scroll-target="#cool-things-i-recently-bumped-into">Cool things I recently bumped into</a></li>
-  </ul></li>
+<li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#the-approach" id="toc-the-approach" class="nav-link" data-scroll-target="#the-approach">The approach</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
   <li><a href="#lets-connect" id="toc-lets-connect" class="nav-link" data-scroll-target="#lets-connect">Let’s connect</a></li>
-  </ul>
-</nav>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">The Hex Update: Issue 031</h1>
+<main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Notes: Validating system dependencies for Rapp</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">the hex update</div>
-    <div class="quarto-category">media</div>
+    <div class="quarto-category">notes</div>
+    <div class="quarto-category">rapp</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Bad news and your brain; Fox’s purchase of Roku; AI, humans, and the newsroom; how U.S. adults spend their time; and some other cool things I came across this week
+    How to make sure users have the needed tools when ‘shelling out’
   </div>
 </div>
 
@@ -348,7 +353,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 30, 2026</p>
+      <p class="date">July 9, 2026</p>
     </div>
   </div>
   
@@ -357,102 +362,86 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
-
-
-<section id="lets-catch-up" class="level1">
-<h1>Let’s catch up</h1>
-<p>Greetings once again to the people of the internet. Welcome to Issue 031.</p>
-<p>I just got back from some travel and spending time with family. It’s always good to go home.</p>
-<p>Here’s a picture from my travels:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="lake.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
+</header><section id="background" class="level1"><h1>Background</h1>
+<p>Recently, I’ve been using <a href="https://github.com/r-lib/Rapp">Rapp</a> to develop CLI tools. Now that I’m creating some useful tools (useful to me anyways), my intent is to make them accessible to other folks. To do this, I want to <a href="https://github.com/r-lib/Rapp#installing-launchers">make them available within an R package</a>. Some of these tools, however, <a href="https://ropensci.org/blog/2021/09/13/system-calls-r-package/">“shell out”</a> to other CLI tools not natively installed on a user’s system. When this happens, errors are thrown, confusion sets in, headaches ensue, and the user is left blindly guessing at missing setup steps. What if we could catch this issue right away? What if when the user doesn’t have the needed dependency they receive some useful information on how to perform the setup? Validation checking is the answer.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Now I’m back for another week of sharing some articles, thoughts, and some cool things I recently bumped into.</p>
-<p>So… Let’s get started.</p>
-<p>Three topics recently caught my attention:</p>
-<ul>
-<li><a href="https://www.sciencedaily.com/releases/2026/06/260614012006.htm">Bad news and your brain</a></li>
-<li><a href="https://www.adexchanger.com/on-tv-and-video/foxs-roku-deal-signals-the-next-phase-of-television/">Fox’s purchase of Roku</a></li>
-<li><a href="https://reutersinstitute.politics.ox.ac.uk/news/are-human-journalists-truly-irreplaceable-how-safeguard-public-interest-journalism-age-ai">AI, humans, and the newsroom</a></li>
-</ul>
-<p>For a bit of fun, I share an <a href="https://www.pewresearch.org/social-trends/feature/how-do-u-s-men-and-women-spend-their-time/">article</a> that visualizes how U.S. adults spend their time.</p>
-<p>You’ll also find some additional links to other items I found cool this week.</p>
-</section>
-<section id="three-things" class="level1">
-<h1>Three things</h1>
-<p>Here’s what caught my attention this week:</p>
-<section id="your-brain-was-never-designed-for-this-much-bad-news-article" class="level3">
-<h3 class="anchored" data-anchor-id="your-brain-was-never-designed-for-this-much-bad-news-article"><a href="https://www.sciencedaily.com/releases/2026/06/260614012006.htm">Your brain was never designed for this much bad news</a> (article)</h3>
-<p>This article provides an overview of the mechanisms of news fatigue. According to the article:</p>
-<blockquote class="blockquote">
-<p>It’s [news fatigue] the predictable response of a human brain meeting an environment it was never designed to navigate.</p>
-</blockquote>
-<p><em>Negativity bias</em> was one factor discussed, where the human brain places more weight on negative information than positive information. As a result, the brain pays faster attention to and has better memory of negative information. The article cites one study that found with every additional negative word added to a headline, click-through rates increased. The opposite was the case for each addition of positive words. The article also mentions physiological responses to negative news, where the body responds to negative information even before the brain can assess whether it’s relevant or not. Additionally, the impact of proximity of news was also discussed. In the information age, the brain has a wider area to scan for negative information.</p>
-</section>
-<section id="why-does-this-matter" class="level3">
-<h3 class="anchored" data-anchor-id="why-does-this-matter">Why does this matter?</h3>
-<p>Thoughtful design and care should be a consideration when it comes publishing negative information, especially if news is to meet its intended purpose. Clicks are certainly a goal (i.e., you can’t have readers if they don’t navigate to your story), but engagement–aimed at informing audiences–is also critical. News fatigue isn’t just a concious choice by readers. It’s an innate function of how humans process information. Some more consideration in creating ‘brain friendly’ media is a path forward. <a href="https://www.linkedin.com/in/drpaulbolls/">Dr.&nbsp;Paul Boll’s</a> work is a great place to start. Otherwise, news fatigue will continue to grow.</p>
-</section>
-<section id="foxs-roku-deal-signals-the-next-phase-of-television-article-and-fox-is-buying-streaming-platform-roku-for-22-billion-article" class="level3">
-<h3 class="anchored" data-anchor-id="foxs-roku-deal-signals-the-next-phase-of-television-article-and-fox-is-buying-streaming-platform-roku-for-22-billion-article"><a href="https://www.adexchanger.com/on-tv-and-video/foxs-roku-deal-signals-the-next-phase-of-television/">Fox’s Roku Deal Signals The Next Phase Of Television</a> (article) and <a href="https://www.marketplace.org/story/2026/06/16/why-is-fox-buying-roku">Fox is buying streaming platform Roku for $22 billion</a> (article)</h3>
-<p>These two articles report on the $22B purchase of <a href="https://en.wikipedia.org/wiki/Roku">Roku</a> by <a href="https://en.wikipedia.org/wiki/Fox_Corporation">Fox</a>. Although the particulars of the deal are interesting, what I keyed in on while reading these articles is what this purchase signals about the current state of television. I thought this quote summed it up well:</p>
-<blockquote class="blockquote">
-<p>The deal is a reminder that the next phase of television will be defined by who controls the viewer relationship.</p>
-</blockquote>
-<p>Moreover, these articles highlight success in this space will be a function of several factors: distribution, audience access, and data and platform control. As one analyst stated, the first thing audiences now do when turning on a television is navigate to an app, rather than turn on a cable box. It’s about providing different formats to meet current and future audience consumption patterns. This includes expanded streaming and on-demand offerings. However, having control of the homescreen between audiences and the content they want to watch is a big advantage. Data is also currency here, as it will enhance ad targeting and improve audience’s viewing experience.</p>
-<section id="why-does-this-matter-1" class="level4">
-<h4 class="anchored" data-anchor-id="why-does-this-matter-1">Why does this matter?</h4>
-<p>The viewer relationship is what’s important here. Advantages are present from ownership of the initial interface audience’s access content, but they also come from owning other means for managing this relationship. An improved ad experience is one benefit, but it’s also an advantage to better connect people with content they are more likely to enjoy and engage with. Even more beneficial is if this content is made available by the platform owner, like streaming sports and news, which Fox produces. If you own the interface or experience, you can better manage this audience relationship.</p>
-</section>
-</section>
-<section id="are-human-journalists-truly-irreplaceable-how-to-safeguard-public-interest-journalism-in-the-age-of-ai-article-and-many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that-blog" class="level3">
-<h3 class="anchored" data-anchor-id="are-human-journalists-truly-irreplaceable-how-to-safeguard-public-interest-journalism-in-the-age-of-ai-article-and-many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that-blog"><a href="https://reutersinstitute.politics.ox.ac.uk/news/are-human-journalists-truly-irreplaceable-how-safeguard-public-interest-journalism-age-ai">Are human journalists truly irreplaceable? How to safeguard public interest journalism in the age of AI</a> (article) and <a href="https://onlinejournalismblog.com/2026/06/18/many-newsrooms-are-not-optimised-for-what-humans-do-best-but-we-have-an-opportunity-to-change-that/">“Many newsrooms are not optimised for what humans do best” (but we have an opportunity to change that)</a> (blog)</h3>
-<p>This article and subsequent blog post explores two topics: the integration of AI into newsrooms and how journalism can continue to reach people in the future. As part of this discussion, the article seeks to further define AI integration, and it further applies a critical lens to the topic. To do this, the article refines the definition of <em>hybridisation</em>, the sociotechnical entanglement of humans and machines. The article then goes a level deeper by explicating first- and second-order hybridisation and machine-centric and human-centric hybridisation. The blog expands on this definition by linking to the idea of <a href="https://boingboing.net/2026/05/14/cory-doctorows-reverse-centaur-book-why-ai-is-hell-on-workers.html"><em>reverse centaurs</em></a>. With terms defined, the article posits many AI integrations are focused on machine-centric hybridisation, where human workflows are being organized around the output of a machine rather than the machine being organized around human outputs. Such organization has consequences, as it’s not only about enhancing workflow, but the impacts this will have on the judgements made in journalism: what’s worth noticing, what is meaningful, what is fair, what is true and relevant. To be clear, though, the article isn’t advocating for going back to human-only workflows. There’s issues with this approach as well (e.g., access to artisan news information). The article also made some interesting points about human in the loop arguments, which is complicated both conceptually and practically. As the article puts it:</p>
-<blockquote class="blockquote">
-<p>Oversight does not scale with system complexity, and it can’t be applied to dynamic, personalized content experiences.</p>
-</blockquote>
-</section>
-<section id="why-does-this-matter-2" class="level3">
-<h3 class="anchored" data-anchor-id="why-does-this-matter-2">Why does this matter?</h3>
-<p>Reviewing these definitions made me realize the depth involved when characterizing the concept of hybridisation. It’s also critical to recognize the effects different approaches to hybridisation may have on journalistic activities. The criticism of human-in-the-loop approaches was also a key point worth further consideration. The integration of AI into workflows will only increase the complexity of systems, and oversight will not scale with increased complexity in environments where resources are already being stretched. Oversight over dynamic, personalized experiences will be challenging as well, and as a result, there’s little direction on viable accountability structures for such oversight.</p>
-<p>Check out the links above for the full story in each item, not just my brief summary and analysis.</p>
-</section>
-</section>
-<section id="what-i-found-interesting-this-week" class="level1">
-<h1>What I found interesting this week</h1>
-<p>Spent some more time figuring out <a href="https://github.com/r-lib/Rapp">Rapp</a> this week. I figured out my <code>$PATH</code> issue, which I mentioned in my last update. I found out <a href="https://github.com/r-lib/Rapp#installing-launchers">launchers</a> in an R package are a better approach, though. But hey, if you want to use a package’s <code>exec</code> directory directly, you have <a href="https://github.com/r-lib/Rapp#using-package-exec-directories-directly">options</a>. I’m happy to have figured out how to be able to call these CLI tools by just using its name, rather than having to use long form ways of envoking a tool. As a result of learning this new package, I’ve been developing some small utilities to enhance my workflows, mostly. I’m hoping to get a blog post out about how to do this here soon. Keep an eye out for it.</p>
-<section id="cool-things-i-recently-bumped-into" class="level2">
-<h2 class="anchored" data-anchor-id="cool-things-i-recently-bumped-into">Cool things I recently bumped into</h2>
-<p>A collection of links to things I’ve found cool recently (or was reminded are cool).</p>
-<ul>
-<li><a href="https://www.pewresearch.org/social-trends/feature/how-do-u-s-men-and-women-spend-their-time/">How Do U.S. Men and Women Spend Their Time?</a> (report)</li>
-<li><a href="https://ohadravid.github.io/posts/2026-06-tool-talking/">The Exhaustion of Talking to a Tool</a> (blog post)</li>
-<li><a href="https://www.mooreds.com/wordpress/archives/3518">Ask for no, don’t ask for yes</a></li>
-<li><a href="https://www.youtube.com/watch?v=N5GUm_kuKrM">Bro Hymn (2005 Remaster)</a> (video)</li>
-</ul>
-<p>That’s it for this update.</p>
-<p>Here’s to a great start to your week. I hope it’s a good one.</p>
-<p>Cheers 🎉!</p>
-</section>
-</section>
-<section id="lets-connect" class="level1">
-<h1>Let’s connect</h1>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This <a href="https://ropensci.org/blog/2021/09/13/system-calls-r-package/">post</a> from <code>rOpenSci</code> warns how wrappers to CLI tools is not always a great approach. I heed these warnings related to a “shell out”. But for simple utilities, I’m not going to <a href="https://blog.davisvaughan.com/posts/2019-03-02-now-you-c-me/">write C or C++ code</a> to perform some straightforward actions a CLI tool has already implemented.</p>
+</div>
+</div>
+<p>Here’s my thought process for this validation check:</p>
+<ol type="1">
+<li>Print version information for the wrapped CLI tool (if any is available).</li>
+<li>Parse the version info to check for presence of the tool.</li>
+<li>If the tool isn’t available on the user’s system, print info on how to obtain it.</li>
+</ol></section><section id="the-approach" class="level1"><h1>The approach</h1>
+<p>To achieve this, the approach I came up with includes the use of some Base R, the <a href="https://stringr.tidyverse.org/">stringr</a>, and <a href="https://cli.r-lib.org/index.html">cli</a> packages. Specifically, the Base R <code><a href="https://rdrr.io/r/base/system2.html">system2()</a></code> function is used to run the system command via R. <code>stringr</code> is used to identify if the specific package dependency is available via string pattern detection. <code>cli</code> is used to print useful information to the user in cases the system dependency isn’t available.</p>
+<p>Let’s break down the entire function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">is_bq_installed</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">gcloud_version_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span><span class="st">"gcloud"</span>, args <span class="op">=</span> <span class="st">"version"</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">gcloud_version_info</span>, <span class="st">"bq"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_danger</a></span><span class="op">(</span><span class="st">"Google Cloud SDK not available."</span><span class="op">)</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_info</a></span><span class="op">(</span></span>
+<span>      <span class="st">"See install docs at {.url https://docs.cloud.google.com/sdk/docs/install-sdk}."</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The first step here is to print the version information, if any is available. In my case, many of the utilities I’ve been working on wrap commands from <a href="https://docs.cloud.google.com/bigquery/docs/quickstarts/load-data-bq">Google Cloud’s <code>bq</code> CLI tool</a>. This line makes the system call in R to get the version information:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gcloud_version_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span><span class="st">"gcloud"</span>, args <span class="op">=</span> <span class="st">"version"</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>One thing that tripped me up about using <code><a href="https://rdrr.io/r/base/system2.html">system2()</a></code> is the <code>args</code> argument is what passes the flags for the system command, unlike the older <code><a href="https://rdrr.io/r/base/system.html">system()</a></code> Base R function. The other important bit here is <code>stdout = TRUE</code>. Setting this allows the command’s output to be returned to R as a character vector. This is useful for later parsing.</p>
+<p>Since I’m interested in making sure users have the required dependency, I use this set of code to check if it’s available:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">gcloud_version_info</span>, <span class="st">"bq"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The reason for <code>str_detect()</code> here should be pretty obvious. It’s detecting the presence of a string pattern in the character vector, ‘bq’ in this case.</p>
+<p>The <code><a href="https://rdrr.io/r/base/any.html">any()</a></code> function returns a single <code>TRUE</code> or <code>FALSE</code> boolean if <em>any</em> of the values in the character vector are TRUE. The use of <code>!</code> flips it. Thus, if the “bq” string is not detected, the end result is <code>FALSE</code>, which then kicks off the control statement:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">gcloud_version_info</span>, <span class="st">"bq"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_danger</a></span><span class="op">(</span><span class="st">"Google Cloud SDK not available."</span><span class="op">)</span></span>
+<span>  <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_alert.html">cli_alert_info</a></span><span class="op">(</span></span>
+<span>    <span class="st">"See install docs at {.url https://docs.cloud.google.com/sdk/docs/install-sdk}."</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>At this point, it’s using some functions from the <a href="https://cli.r-lib.org/"><code>cli</code></a> package to push installation information to the user.</p>
+</section><section id="wrap-up" class="level1"><h1>Wrap up</h1>
+<p>This feels like a reasonable approach to system dependency checking when doing some simple CLI tool wrapping. Indeed, if you’re attempting to do something more advanced, I highly suggest reviewing <a href="https://ropensci.org/blog/2021/09/13/system-calls-r-package/">rOpenSci’s blog post</a>. I hope this saves some time for anyone facing this same issue.</p>
+</section><section id="lets-connect" class="level1"><h1>Let’s connect</h1>
 <p>If you found this content useful, please share. If you find these topics interesting and want to discuss further, let’s connect:</p>
 <ul>
-<li>BlueSky: <a href="https://bsky.app/profile/collinberke.bsky.social"><span class="citation" data-cites="collinberke.bsky.social">@collinberke.bsky.social</span></a></li>
-<li>LinkedIn: <a href="https://www.linkedin.com/in/collinberke/">collinberke</a></li>
-<li>GitHub: <a href="https://github.com/collinberke"><span class="citation" data-cites="collinberke">@collinberke</span></a></li>
+<li>BlueSky: <a href="https://bsky.app/profile/collinberke.bsky.social"><span class="citation" data-cites="collinberke.bsky.social">@collinberke.bsky.social</span></a>
+</li>
+<li>LinkedIn: <a href="https://www.linkedin.com/in/collinberke/">collinberke</a>
+</li>
+<li>GitHub: <a href="https://github.com/collinberke"><span class="citation" data-cites="collinberke">@collinberke</span></a>
+</li>
 <li><a href="https://www.collinberke.com/say-hi">Say Hi!</a></li>
 </ul>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2026,
+  author = {Berke, Collin K},
+  title = {Notes: {Validating} System Dependencies for {Rapp}},
+  date = {2026-07-09},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2026. <em>Notes: Validating System Dependencies for
+Rapp</em>. accepted, July 9.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -871,7 +860,6 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
-
 
 
 
