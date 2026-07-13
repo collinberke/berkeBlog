@@ -1,0 +1,166 @@
+---
+title: "The Hex Update: Issue 033"
+date: "2026-07-13"
+author: "Collin K. Berke, Ph.D."
+description: "The TV operating system wars; what the TV operating system wars mean for local media; Papa Johns recent campaign to predict when audiences' fridges are empty; alternative clock designs and time systems; and some other cool things I came across this week."
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 033.
+
+I hope everyone had a good weekend.
+We're almost halfway through July.
+August will be here before we know it.
+Summer is going by way too fast.
+
+Let's get to it.
+
+Three topics recently caught my attention:
+
+* [The TV operating system wars](https://www.streamtvinsider.com/technology/wolks-week-review-why-tv-os-war-bigger-streaming-war)
+* [What the TV operating wars mean for local media](https://www.tvrev.com/news/the-tv-os-is-becoming-local-medias-next-battleground)
+* [Papa Johns recent campaign to predict when audiences' fridges are empty](https://www.adexchanger.com/tv/papa-johns-can-predict-when-your-fridge-is-empty/)
+
+For a bit of fun, I share a [blog post](https://serialc.github.io/altClocks/) overviewing some alternative clock designs and time systems.
+It's an interesting read.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Wolk’s Week in Review: Why The TV OS War Is Bigger Than The Streaming War](https://www.streamtvinsider.com/technology/wolks-week-review-why-tv-os-war-bigger-streaming-war) (blog post)
+
+This post highlights two things: the importance of ownership of the TV operating system and recent competition in this space.
+The TV OS is the software running on a smart TV, and it includes things like the design of the homescreen, the organization of applications, a recommendation engine, and an ad platform.
+The author emphasizes, the control of the TV home screen has become one of the most contested, valuable pieces of media today.
+This is especially true because of media fragmentation.
+It's not just about organizing the user experience anymore, the TV home screen prioritizes what users see, how they see it, and their discovery path to content.
+As the article asserts, TV manufacturers and brands are no longer just selling plastic and glass to consumers, they are now major gatekeepers who control the content audience's see first.
+It's about personalization.
+This includes personalized experiences with content and advertising via the interface.
+As the author puts it, data is also an important component to this.
+TV is becoming more measurable.
+The content, experiences, and ads will get better because of it.
+Despite all these nuances, the article brings it back into focus by reminding us that consumers, regardless of these changes, will still view this as TV.
+That is, TV is TV.
+
+This was a really interesting post, so I suggest taking some time to read it in its entirety beyond this summary of the points I'm taking away.
+
+Here's some additional reporting:
+
+* [The Streaming Wars Have Moved to the TV OS](https://www.mediaplaynews.com/the-streaming-wars-have-moved-to-the-tv-os/) (article)
+* [The CTV OS War Just Started. Here's Who's Fighting and What They're Really After](https://medium.com/@alanronis/the-ctv-os-war-just-started-heres-who-s-fighting-and-what-they-re-really-after-fec2d0f340f9) (article)
+
+#### Why does this matter?
+
+The days of turning on a TV to just watch content are over.
+TV operating systems are now the first layer of the viewing experience, both in terms of content and advertising.
+As a result, it's becoming a highly contested space.
+Many media organizations may not find themselves in a position to own the TV operating space, but they can still leverage it to enhance audience discovery and engagement with content.
+This includes exploring media buys for home screen ads, optimizing content for personalization and recommendation engines to suggest content for users, and remember, consumers still view this experience as just watching TV.
+Audiences will still seek out good content.
+The article summarized above also provides some good directional advice for media organization leadership.
+
+### [The TV OS is becoming Local Media's Next Battleground](https://www.tvrev.com/news/the-tv-os-is-becoming-local-medias-next-battleground) (podcast)
+
+This podcast episode further explores the TV operating system wars with host [Tim Hanlon](https://www.linkedin.com/in/timhanlon1/), media industry analyst, and guest [Mike Gasbara](https://www.linkedin.com/in/mike-gasbara-bbb41b97/), an analyst at [TVRev](https://www.tvrev.com/).
+The episode covered several topics.
+My attention was drawn to one key area: what do these recent events in the connected TV space signal about the broader media and broadcast industries?
+For one, it points to the changing needs of marketers and media buyers.
+Being able to reach people at scale the fastest within a DMA is no longer a value proposition (26M11S).
+It's about TV becoming more of a performance vehicle rather than just a branding piece.
+The authenticated user and being able to better track attribution will grow in importance, and motivating users to opt-in, maintaining trust, and developing a relationships will be critical for the future of TV.
+The discussion also included some conversation about the potential for legacy media to take advantage of this moment (27M33S).
+As was mentioned in the conversation, big broadcasters and media brands are no longer taking a backseat with connected TV.
+Regarding opportunities for other legacy media, this is still yet to be determined.
+What was made clear, though, is local legacy media brands still have high trust and credibility within their communities.
+Strategically, in this moment, it will be about how these legacy brands leverage this trust and credibility with the modern dynamics of the industry.
+
+#### Why does this matter?
+
+It's still yet to be seen where other legacy media fits within this new dynamic, evolving environment of TV operating system ownership.
+What is clear is the need to recognize the TV home screen is now the gatekeeper between audiences and content.
+As such, strategies and tactics will need to account and identify ways to leverage this change to the TV watching experience.
+Indeed, maybe there's partnership opportunities or banner and hero buys by legacy brands to promote their content in these environments.
+Given the improved targeting capabilities of these platforms (e.g., personalized inventory based on location and viewing behavior), there might be opportunity for local media brands to promote their content to the right people in the communities they serve.
+
+### [Papa Johns Can Predict When Your Fridge Is Empty](https://www.adexchanger.com/tv/papa-johns-can-predict-when-your-fridge-is-empty/) (article)
+
+This article highlights a recent marketing campaign created by [Papa Johns](https://en.wikipedia.org/wiki/Papa_John%27s).
+According to the article, the brand worked with [Instacart's](https://en.wikipedia.org/wiki/Instacart) data to better serve and target ads to consumers on [NBCUniversal's](https://en.wikipedia.org/wiki/NBCUniversal) streaming services.
+Specifically, the campaign utilized the data to identify times when consumer's fridges may be low on groceries, and then served ads with [QR codes](https://en.wikipedia.org/wiki/QR_code) delivered during this time.
+The campaign also used this data to personalize and serve custom creative in hopes that the messaging would better resonate with consumers.
+This all was an effort to improve message effectiveness, toward the goal of increasing the number of orders and sales.
+
+#### Why does this matter?
+
+Despite this story being about marketing and commerce, there's a lesson here for media organizations: interactive TV and retail media is growing.
+Marketers will also be looking for this type of data in the future when it comes to purchasing TV inventory.
+Again, further supporting the theme of this week: TV as a performance vehicle.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+[Checksums](https://en.wikipedia.org/wiki/Checksum) were the thing this week.
+Checksums are a type of data derived from another type of digital data, like a file.
+Specifically, they are a text string outputted from a function or algorithm, which are then useful for verifying data integrity.
+
+This all came about from exploring the [`rsync`](https://docs.cloud.google.com/sdk/gcloud/reference/storage/rsync) [`gcloud storage`](https://cloud.google.com/sdk) command line tool.
+The purpose of this command is to assist in the synch between source and destination directories (i.e., make files match between this directory and that directory).
+A question came to mind while exploring: how does `rsync` know the files are the same?
+I mean, we're talking about cloud storage here.
+This service can [store massive files](https://docs.cloud.google.com/storage/quotas).
+Certainly it can't be reading every single file and comparing when you run the command.
+That's when I found out each file stored in Google Cloud buckets has a [crc32c](https://en.wikipedia.org/wiki/Cyclic_redundancy_check) and [MD5 hash](https://en.wikipedia.org/wiki/MD5) value.
+Interested in seeing these values?
+Just run this command on an object stored in a bucket:
+
+```bash
+gcloud storage objecs describe gs://name-of-object
+```
+
+So, I got [nerd sniped](https://xkcd.com/356/).
+I found this [Rstats](https://www.youtube.com/watch?v=zD9HNrnN4VY) video on the topic helpful for setting a foundation.
+The R [`digest`](https://github.com/eddelbuettel/digest) package was also helpful for creating checksums from files.
+Google also has some [docs](https://docs.cloud.google.com/storage/docs/data-validation) on how this applies to data validation.
+Oh, and I learned Google Cloud Storage transforms these values into Base64 encoded strings.
+I was a little out of my depth at this point, so AI was helpful to better understand how this all works.
+
+This turned out to be a great method for when needing to compare files stored in different places.
+It also helped me optimize some pre-existing workflows.
+
+# Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Alternate Clock Designs & Time Systems](https://serialc.github.io/altClocks/) (blog)
+* [Space, the ultimate "No way!"](https://francescrossley.com/space-the-ultimate-no-way/) (blog)
+* [Sharing](https://ratfactor.com/cards/sharing) (blog)
+* [Good Tools Are Invisible](https://www.gingerbill.org/article/2026/07/10/good-tools-are-invisible/) (blog)
+* [Write code like a human will maintain it](https://unstack.io/write-code-like-a-human-will-maintain-it) (blog)
+
+That's it for this update.
+
+Here's to a great start to your week.
+I hope you have a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
