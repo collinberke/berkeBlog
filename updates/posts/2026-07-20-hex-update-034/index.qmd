@@ -1,0 +1,143 @@
+---
+title: "The Hex Update: Issue 034"
+date: "2026-07-20"
+author: "Collin K. Berke, Ph.D."
+description: "Kids, Moana, and science; Media in 2026, an industry outlook; The growth of FAST; All the computers, tech, and software in Jurassic Park; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 034.
+
+I've been learning a lot this week while doing some DIY projects around the house.
+I pulled and reset my first toilet and installed a new kitchen faucet.
+[This Old House](https://www.thisoldhouse.com/) was certainly helpful, especially this [video](https://www.youtube.com/watch?v=OYCYUIhZDCI) demonstrating how to install a toilet.
+Working on these projects was a great reminder that learning can happen in many different formats.
+
+Let's get to learning some other stuff.
+
+Three topics recently caught my attention:
+
+* [Kids, Moana, and science](https://www.nytimes.com/2026/07/11/movies/moana-kids-obsession.html)
+* [Media in 2026, an indsutry outlook](https://www.deloitte.com/us/en/insights/industry/technology/technology-media-telecom-outlooks/media-entertainment-industry-outlook.html)
+* [The growth of FAST](https://thedesk.net/2026/06/samsung-ads-free-streaming-report-reach/)
+
+For a bit of fun, I share a [blog post](https://fabiensanglard.net/jurrasic_park_computers/index.html) researching all the computers and tech in [Jurassic Park](https://en.wikipedia.org/wiki/Jurassic_Park).
+Kudos to the depth of research within.
+It was fun read.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Kids Can’t Stop Watching ‘Moana.’ There’s a Scientific Explanation.](https://www.nytimes.com/2026/07/11/movies/moana-kids-obsession.html) (article)
+
+This article from the [New York Times](https://www.nytimes.com/) covers the concepts and science behind why children and audiences return to the same stories over and over again.
+Several concepts were introduced: [The Paradox of Choice](https://en.wikipedia.org/wiki/The_Paradox_of_Choice), The Chinese Menu Effect, and the [Goldilocks Zone](https://sites.psu.edu/bairdito/2019/03/29/gamification-learning-and-the-goldilocks-zone/).
+In short, according to the science referenced in the article, returning to what is familiar is in part a result of audience's abundance of choice, and it often results in people returning to what's familiar and know they will enjoy.
+The Goldilocks Zone was also discussed, where the task of viewing, engaging, and learning from a certain piece of content is neither too challenging nor too easy.
+This is why, as the article posits, children continually return to specific stories.
+The narrative, characters, situations, and emotions is just challenging enough for them to run little experiments and make predictions on what will happen in the story with just the right effort without being too challenging.
+Beyond this, the article mentions memorable, catchy songs also boost the draw of folks to return to a narrative.
+
+#### Why does this matter?
+
+It's critical to recognize the vast amount of choice audiences have when choosing to consume media.
+With as much noise as there is within media, audiences will skew towards what's familiar.
+This will likely only continue to compound as AI further lowers the barrier of content production.
+What is tried and true in terms of storytelling may once again prove effective in serving audiences with what they want, not necessarily something new or novel. This may especially be true for children's content production.
+The Goldilocks Zone is also an interesting concept.
+Producers of all types should consider how to structure their content in ways that is challenging enough but not too challenging for their audiences to consume.
+
+### [2026 Media and Entertainment Industry Outlook](https://www.deloitte.com/us/en/insights/industry/technology/technology-media-telecom-outlooks/media-entertainment-industry-outlook.html) (article)
+
+I'm catching up on this article from [Deloitte](https://www.deloitte.com/us/en.html).
+It provides an outlook of the media industry in 2026.
+The article shares several key points that caught my attention.
+First, the piece stated the definition of quality is changing.
+It was pointed out that quality should now be based on how experiences make audiences feel, not by how much money was spent.
+Second, the article also emphasized quality engagement, audience data, and speed of innovation are now critical for media organizations.
+Even so much so that media companies, until these components are prioritized within strategy, will be stuck focusing on just discovery and engagement rather than the additional value added from conversion, monetization, and long-term relationships with audiences.
+Lastly, this quote garnered some extra attention:
+
+> Closing the gap will likely require significant investments in data infrastructure and governance, metadata, and analytics capabilities, and thoughtful data-sharing partnerships and privacy considerations.
+
+#### Why does this matter?
+
+Changes in the definition of quality need to be internalized.
+Quality is no longer a function of dollars spent, but rather it's about the feelings generated from an experience.
+Underpinning this entire conversation is the importance of data.
+However, just saying 'data will be the answer' is a bit pedestrian.
+The focus will need to be on using data in trustful ways to make improve audiences experiences.
+
+### [Samsung: Free streaming apps achieving similar reach as broadcast TV](https://thedesk.net/2026/06/samsung-ads-free-streaming-report-reach/) (article)
+
+This article overviews findings from a recent report published by [Samsung](https://en.wikipedia.org/wiki/Samsung).
+The report focused on the current state of [Free Ad-supported Streaming Television (FAST)](https://en.wikipedia.org/wiki/Free_ad-supported_streaming_television).
+Simply put, the article reports FAST's growth has been exceptional over the past several years.
+Even so much so it's argued this type of streaming has reach comparable to traditional linear TV and cable formats.
+Live content, especially sports and news, are the major investment areas for FAST channels.
+This investment is not only aimed at increased viewership, it's also about scale, improved targeting, and shoppable ad formats.
+Indeed, the article reports FAST revenue will grow from ~$8 billion in 2023 to $17 billion by 2029.
+
+#### Why does this matter?
+
+FAST is growing fast (no pun intended).
+This goes back to what caught my attention last week: TV as a performance vehicle.
+It's also important to recognize industry analysts are beginning to liken FAST's reach to both linear and cable.
+If the resources are available, other media organizations may want to consider the benefits of creating a FAST channel.
+At the very least, other media organizations may want to consider media buys on these platforms, targeting folks who might like and engage with your content.
+Such platforms are used by 85% of households regularly.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I took some time this weekend to update the [Media and Marketing Research Resources](https://www.collinberke.com/data-media-marketing-resources.html) list on my site.
+I've bumped into several sources over the past few months, so I felt it was time to add what I have to the list.
+Here are some that I've added recently:
+
+* [Coalition for Innovative Media Measurement (CIMM)](https://cimm-us.org/)
+* [Insights | Samsung Ads](https://www.samsung.com/us/business/samsungads/insights/)
+* [TheDesk.net](https://thedesk.net/)
+* [Ben Werdmuller](https://werd.io/)
+* [StreamTV Insider](https://www.streamtvinsider.com/)
+* [Alan Wolk](https://www.streamtvinsider.com/person/alan-wolk)
+* [InteractiveTV Today (ITVT)](https://itvt.com/)
+* [Poytner](https://www.poynter.org/about/)
+* [The Media Institute: Media and Communications Policy](https://www.mediacompolicy.org/)
+* [IAB Tech Lab](https://iabtechlab.com/)
+* [The Current](https://www.thecurrent.com/)
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Jurassic Park computers in excruciating detail](https://fabiensanglard.net/jurrasic_park_computers/index.html) (blog)
+* [3-step method for learning anything](https://improvesomething.today/three-step-method-for-learning-anything/) (blog)
+* [Collection of digital clock designs](https://clocks.dev/) (website)
+* [GitHub for Beginners: Your roadmap to mastering the GitHub essentials](https://github.blog/developer-skills/github/github-for-beginners-your-roadmap-to-mastering-the-github-essentials/) (blog)
+* [I'm not a real statistician, and you can be one too](https://statsepi.substack.com/p/im-not-a-real-statistician-and-you) (blog)
+
+That's it for this update.
+
+Here's to a great start to your week. I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
