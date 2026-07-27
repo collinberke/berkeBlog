@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Collin K. Berke, Ph.D.">
+<meta name="dcterms.date" content="2026-07-27">
+<meta name="description" content="My takeaways from the event">
+
+<title>Nebraska.Code() 2026 recap – Collin K. Berke, Ph.D.</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../icon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-1e5ad64fd0144ef3e9b8ffa7cd8261fa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-06bda6adb05b0368c48500cf66aa6524.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Collin K. Berke, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../now.html"> 
+<span class="menu-text">Now</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../updates/index.html"> 
+<span class="menu-text">Updates</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../say-hi.html"> 
+<span class="menu-text">Say Hi!</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#wednesdays-workshop" id="toc-wednesdays-workshop" class="nav-link active" data-scroll-target="#wednesdays-workshop">Wednesday’s workshop</a></li>
+  <li><a href="#thursday-and-fridays-keynote-and-breakout-sessions" id="toc-thursday-and-fridays-keynote-and-breakout-sessions" class="nav-link" data-scroll-target="#thursday-and-fridays-keynote-and-breakout-sessions">Thursday and Friday’s keynote and breakout sessions</a>
+  <ul class="collapse">
+  <li><a href="#keynotes" id="toc-keynotes" class="nav-link" data-scroll-target="#keynotes">Keynotes</a>
+  <ul class="collapse">
+  <li><a href="#beyond-the-ai-hype-whats-real-whats-next" id="toc-beyond-the-ai-hype-whats-real-whats-next" class="nav-link" data-scroll-target="#beyond-the-ai-hype-whats-real-whats-next">Beyond the AI Hype: What’s Real, What’s Next</a></li>
+  <li><a href="#stop-chasing-growth-and-start-leading-it" id="toc-stop-chasing-growth-and-start-leading-it" class="nav-link" data-scroll-target="#stop-chasing-growth-and-start-leading-it">Stop Chasing Growth and Start Leading It</a></li>
+  </ul></li>
+  <li><a href="#breakout-sessions" id="toc-breakout-sessions" class="nav-link" data-scroll-target="#breakout-sessions">Breakout Sessions</a>
+  <ul class="collapse">
+  <li><a href="#technical-code-and-ai-sessions" id="toc-technical-code-and-ai-sessions" class="nav-link" data-scroll-target="#technical-code-and-ai-sessions">Technical, code, and AI sessions</a></li>
+  <li><a href="#team-building-organizational-culture-and-career-development-sessions" id="toc-team-building-organizational-culture-and-career-development-sessions" class="nav-link" data-scroll-target="#team-building-organizational-culture-and-career-development-sessions">Team building, organizational culture, and career development sessions</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#a-thank-you" id="toc-a-thank-you" class="nav-link" data-scroll-target="#a-thank-you">A thank you</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Nebraska.Code() 2026 recap</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">event</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    My takeaways from the event
+  </div>
+</div>
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Collin K. Berke, Ph.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 27, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>I attended <a href="https://www.nebraska-code.com/">Nebraska.Code() 2026</a>, an annual conference bringing together developers, engineers, and tech professionals across the Midwest. This was my fourth year attending. I find this conference a good opportunity to stay connected with what’s happening in tech. It being local conference–held here in Lincoln, NE–is also a big draw for me. This post highlights my takeaways from this year’s conference.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2026-nebraska-code-swag.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<section id="wednesdays-workshop" class="level1">
+<h1>Wednesday’s workshop</h1>
+<p>On Wednesday, I attended the full-day workshop Diverge, Then Converge. The training was organized by <a href="https://dontpaniclabs.com/">Don’t Panic Lab’s</a> <a href="https://www.linkedin.com/in/bmzimmer/">Brian Zimmer</a> and <a href="https://www.linkedin.com/in/anne-ruskamp/">Anne Ruskamp</a>. It was a full-day training packed with useful information–too much to unpack all of it here in this recap. Here’s a list of my key takeaways, many of which are various tools discussed during the session:</p>
+<ul>
+<li><a href="https://www.ideou.com/pages/ideation-method-mash-up?srsltid=AfmBOoot7McAk0AHtTC9S_GkdmpHRyaRXtA7mfaYwlHTST3ehEs8dMus">Do a Mashup</a>, phrase the challenge using “How might we …” questions.</li>
+<li>Write a news article about your product: What if it’s a wild success? What if it’s a massive failure?</li>
+<li>Generate key questions</li>
+<li>Use the scientific method to run small experiments</li>
+<li><a href="https://medium.com/@isaiahctaylor/the-40-70-rule-the-secret-to-overcoming-perfectionism-19de1a2ceb84">Powell’s 40-70 Rule</a></li>
+<li>Problem-solution fit vs.&nbsp;product market fit</li>
+<li>Avoid the trap of the ‘Obvious Solution’ or ‘Silence’</li>
+<li>Three ways to make a decision: command, consult, consensus. Add pressure release valves and time box decisions. Be transparent.</li>
+<li><a href="https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/">RICE Scoring</a></li>
+</ul>
+<p>Here are some quotes I took away from the training and discussions:</p>
+<ul>
+<li>“Have you fallen in love with your <strong>problem</strong> or your <strong>solution</strong>?”</li>
+<li>“Invention is creating something new, but is yet to be adopted. An innovation has proven market viability.””</li>
+<li>You pay for it once, or you pay for it twice.</li>
+<li>“Constraints are your friend.”</li>
+</ul>
+<p>I had seen a version of this presentation during a breakout session last year. The opportunity to go deeper was the value add for participating in the full day of training. Being able to hear from other workshop members about how they applied these tools and some tips to make them even more effective was also beneficial.</p>
+</section>
+<section id="thursday-and-fridays-keynote-and-breakout-sessions" class="level1">
+<h1>Thursday and Friday’s keynote and breakout sessions</h1>
+<section id="keynotes" class="level2">
+<h2 class="anchored" data-anchor-id="keynotes">Keynotes</h2>
+<section id="beyond-the-ai-hype-whats-real-whats-next" class="level3">
+<h3 class="anchored" data-anchor-id="beyond-the-ai-hype-whats-real-whats-next">Beyond the AI Hype: What’s Real, What’s Next</h3>
+<p><a href="https://bsky.app/profile/richcampbell.bsky.social">Richard Campbell’s</a> keynote was a good start to the day. The main point was clear: we choose how AI is used. It also was informative to hear the history of AI development, while also getting insight into where this part of the industry is going. Is this the <a href="https://en.wikipedia.org/wiki/Dot-com_bubble">‘dot-com bubble’</a> all over again? Maybe, but it sure is another disrupter. The talk also had a good reminder: we are here to solve people’s problems, not to just write code or use tech for the sake of using tech.</p>
+</section>
+<section id="stop-chasing-growth-and-start-leading-it" class="level3">
+<h3 class="anchored" data-anchor-id="stop-chasing-growth-and-start-leading-it">Stop Chasing Growth and Start Leading It</h3>
+<p><a href="https://www.linkedin.com/in/christinedidonato/">Christine DiDonato’s</a> message was a beneficial moment of reflection: stop chasing growth and start leading it. Clarity was a key theme of the talk, and I thought this quote summarized this well:</p>
+<blockquote class="blockquote">
+<p>Hustle will move you fast. Clarity will move you forward.</p>
+</blockquote>
+<p>As part of the talk, five principles of clarity were shared:</p>
+<ol type="1">
+<li>You can’t change what you won’t own.</li>
+<li>You can’t see a feature through an old lens.</li>
+<li>Growth will feel like pain when it’s not aligned to what you value.</li>
+<li>If you don’t choose your destination, someone else will choose it for you.</li>
+<li>You don’t have to feel brave to be brave.</li>
+</ol>
+<p>I’m still unpacking everything I learned from this talk. I was glad to have the opportunity to hear it during at the conference.</p>
+<p>Both of these keynotes were exceptional. Each had a great message. I also really enjoyed some of the practical tools provided. It’s always great when you get a moment to pause and reflect.</p>
+</section>
+</section>
+<section id="breakout-sessions" class="level2">
+<h2 class="anchored" data-anchor-id="breakout-sessions">Breakout Sessions</h2>
+<p>I also attended several breakout sessions, which covered a range of topics. Some were technical, code, and AI focused. Others focused on team building, organizational culture, and career development.</p>
+<section id="technical-code-and-ai-sessions" class="level3">
+<h3 class="anchored" data-anchor-id="technical-code-and-ai-sessions">Technical, code, and AI sessions</h3>
+<p>In terms of the technical, code, and AI focused sessions, I attended the following talks:</p>
+<ul>
+<li>Mission-Critical Code: What NASA’s Power of Ten Can Teach Us (<a href="https://www.linkedin.com/in/jtower/">Jonahtan ‘J.’ Tower</a>; slides are <a href="https://github.com/trailheadtechnology/power-of-ten">here</a>)</li>
+<li>Tackling Technical Debt with the Mikado Method (<a href="https://www.linkedin.com/in/joshua-holland-can-help/">Joshua Holland</a>)</li>
+<li>Data Strategy Maturity Levels (<a href="https://www.linkedin.com/in/whitney-lovelace-92aa6287/">Whitney Lovelace</a> &amp; <a href="https://www.linkedin.com/in/grey-lovelace-baa73948/">Grey Lovelace</a>)</li>
+<li>A Developer’s Guide to Database Patterns (<a href="https://www.linkedin.com/in/jerrynixon/">Jerry Nixon</a>)</li>
+</ul>
+<section id="takeaways-from-the-technical-sessions" class="level4">
+<h4 class="anchored" data-anchor-id="takeaways-from-the-technical-sessions">Takeaways from the technical sessions</h4>
+<p>I was introduced to NASA’s Power of Ten rules in Jonahtan Tower’s talk. These rules are a framework for creating more reliable code. First and foremost, it’s important to understand critical code. That is, code that could harm human life, safety, money, trust, and societal systems. Indeed, many of us are not writing code directly impacting human life or safety. However, many of us are writing code that impacts money and trust. As such, we’re all writing ‘critical code’. The Power of Ten rules can be found <a href="https://en.wikipedia.org/wiki/The_Power_of_10:_Rules_for_Developing_Safety-Critical_Code">here</a>. The example code in this talk emphasized how to apply these rules in code. I’ll be going back to these.</p>
+<p>Joshua Holland’s talk introduced the <a href="https://mikadomethod.info/">Mikado Method</a>. Mikado includes the following steps: set a goal; run a quick experiment; visualize the work; and undo changes that aren’t progress. The Mikado tree diagrams looked useful for getting a handle on the work needed to tackle technical debt. This presentation was packed with some good phrases to apply this method:</p>
+<ul>
+<li>“Checked off a node, check in your code.”</li>
+<li>“Simple, cheap experiments. You can always roll it back.”</li>
+<li>“Two is a to-do, three needs a tree.”</li>
+</ul>
+<p>It was useful to hear Whitney and Grey Lovelace define the different data maturity levels. It was refreshing to hear these levels are an organizational choice based on resources available. It’s not necessarily a ladder you need to climb. I also appreciated Grey’s openness to answer one of my questions about using Google Cloud Storage hash values to optimize file processing. His answer was really helpful.</p>
+<p>I took a lot of notes during Jerry Nixon’s database patterns session. The message was clear: offloading processes to a database is likely better. I really liked how the whole talk started with the simple <code>CREATE TABLE</code> statement, and it built upon the statement by showing the application of several column level properties. There were also multiple points made about how to optimize specific patterns if you apply some database principles and functionality in your design. These included points about stored procedures vs ad hoc SQL; code first vs.&nbsp;database first; direct access vs.&nbsp;API; and HA vs.&nbsp;Named Replicas. There was also a push to check out <a href="https://github.com/microsoft/DiskANN">DiskANN (Vector Nearest Neighbor)</a>, which was stated to be a new, really powerful tool.</p>
+</section>
+</section>
+<section id="team-building-organizational-culture-and-career-development-sessions" class="level3">
+<h3 class="anchored" data-anchor-id="team-building-organizational-culture-and-career-development-sessions">Team building, organizational culture, and career development sessions</h3>
+<p>For the topics of team building, organizational culture, and career development, I attend:</p>
+<ul>
+<li>Facing the Future: Three ways to Proactively Manage Change (<a href="https://www.linkedin.com/in/sarahfwimberley/">Sarah F. Wimberley</a>)</li>
+<li>Skills to Bills: A Users Guide to Demonstrated Competency (<a href="https://www.linkedin.com/in/nerando-johnson/">Nerando Johnson</a>)</li>
+<li>Practical tips to break work down and deliver twice as fast (<a href="https://www.linkedin.com/in/dea-mandery/">Dea Mandrey</a>)</li>
+<li>Culture as Code: Refactor Your Team’s Operating System for Resilience, Curiosity, and Flow (<a href="https://www.linkedin.com/in/teresa-hillrush/">Teresa Rush</a>)</li>
+<li>Not Another AI Talk (<a href="https://www.linkedin.com/in/bmzimmer/">Brian Zimmer</a>)</li>
+</ul>
+<section id="takeaways-from-the-team-building-organizational-culture-and-career-development-sessions" class="level4">
+<h4 class="anchored" data-anchor-id="takeaways-from-the-team-building-organizational-culture-and-career-development-sessions">Takeaways from the team building, organizational culture, and career development sessions</h4>
+<p>These sessions were really useful because many shared various frameworks. When it came to the topic of managing change in Sarah F. Wimberley’s talk, there was a reminder that every little change will affect somebody, somewhere. So, to manage the impact caused by this change, it’s best to explore in terms of three components: people, process, and technology. When it comes to people, manage expectations, acknowledge fear, and consider the end user. In terms of process, fix the process not the people performing the process; document, share, and learn; take in feedback. For technology, remember that good tools make processes work; get a box around the problem; consider dependencies and negative impacts downstream.</p>
+<p>While learning about how to break problems into smaller bits from Dea Mandrey, I was introduced to the following framework:</p>
+<ul>
+<li>Understand the problem</li>
+<li>Become outcome obsessed</li>
+<li>Prototype</li>
+<li>Use feedback loops to refine</li>
+<li>Stop when you hit the outcome</li>
+</ul>
+<p>I was reminded of these useful questions while reviewing this framework:</p>
+<ul>
+<li>What’s the problem we’re solving?</li>
+<li>How do we know we’re solving it?</li>
+</ul>
+<p>I also learned about smash events and the <a href="https://en.wikipedia.org/wiki/Pareto_principle">Pareto Principle</a>.</p>
+<p>The ANNIE model developed by Teresa Rush seemed useful:</p>
+<ul>
+<li>Assemble (connection)
+<ul>
+<li>Can we come together?</li>
+</ul></li>
+<li>Network
+<ul>
+<li>Can we collaborate and understand each other?</li>
+</ul></li>
+<li>Nurture
+<ul>
+<li>Do teams have what they need to grow?</li>
+<li>Do you have the things to grow and personally grow to be your best self?</li>
+</ul></li>
+<li>Inspire
+<ul>
+<li>Do you know the bigger picture, does the team know it?</li>
+</ul></li>
+<li>Experience
+<ul>
+<li>What experiences are your team sharing?</li>
+<li>Are you celebrating milestones?</li>
+</ul></li>
+</ul>
+<p>This session was also a good reminder to periodically do a culture check with your team from time to time. The ANNIE model is a great framework for this. If something is low or missing, refactor it. Side note, <a href="https://kahoot.com/">Kahoot</a> seemed like an interesting engagement tool.</p>
+<p>During Brian Zimmer’s session, I was introduced to some statistics around <a href="https://www.gallup.com/workplace/229424/employee-engagement.aspx">low engagement taking place in the US workforce</a>. AI, depending on how it is introduced and integrated into the workforce, has the opportunity to improve this lack in engagement.</p>
+<blockquote class="blockquote">
+<p>Where there is change and uncertainty, there is opportunity for those who are bold.</p>
+</blockquote>
+<p>A key point made was Silicon Valley provides the capability, but adoption is determined by the users. However, the difference emerges out of our decisions or indecisions. An interesting question was posed:</p>
+<blockquote class="blockquote">
+<p>What would this role look like if AI erased the worst hour of that person’s day?</p>
+</blockquote>
+<p>The points about there being no playbook for this, so experimentation needs to lead was a useful framing. Some additional points were made that were worth further reflection.</p>
+<p>Lastly, Nerando Johnson’s talk had some really good points on how to demonstrate your competency and expertise. I was already thinking about doing a recap post for this event. This talk motivated me to actually get this done.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="a-thank-you" class="level1">
+<h1>A thank you</h1>
+<p>Having this type of conference in the Midwest is really valuable. Being able to see all the cool things people are doing while also learning about cool, useful ideas is what makes going to conferences like this so beneficial. I am so grateful to the organizers who put this together each year and make events like this happen!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@misc{berke2026,
+  author = {Berke, Collin K},
+  title = {Nebraska.Code() 2026 Recap},
+  date = {2026-07-27},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-berke2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Berke, Collin K. 2026. <em>Nebraska.Code() 2026 Recap</em>. accepted,
+July 27.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
