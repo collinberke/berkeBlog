@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/posts/2026-07-27-post-nebraska-code-2026/index.html",
       "/blog/posts/2026-07-09-notes-rapp-verifying-system-dependencies/index.html",
       "/blog/posts/2026-05-11-notes-dotfiles-make-file-symlinks/index.html",
       "/blog/posts/2026-04-20-nvim-rstats-code-chunks-key-binding/index.html",
