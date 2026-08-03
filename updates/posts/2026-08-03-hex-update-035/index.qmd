@@ -1,0 +1,142 @@
+---
+title: "The Hex Update: Issue 035"
+date: "2026-08-03"
+author: "Collin K. Berke, Ph.D."
+description: "Zip codes are now more important than TV markets; media is fighting over the wrong market; age-based bias in audience measurement; the grilled chesse sandwich; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 035.
+
+It's been a busy couple of weeks.
+Phew!
+I was in training and conference mode last week, which kept most of my attention.
+I even wrote a post [recapping](https://www.collinberke.com/blog/posts/2026-07-27-post-nebraska-code-2026/) what I learned.
+Because of this I had very little time to draft an update last week, so I'm catching back up.
+
+Let's get to it.
+
+Three topics recently caught my attention:
+
+* [Zip codes are now more important than TV markets](https://www.tvrev.com/news/why-zip-codes-matter-more-than-tv-markets-now)
+* [Media is fighting over the wrong market](https://www.forrester.com/blogs/the-paramount-wbd-case-is-fighting-over-the-wrong-market/)
+* [Age-based bias in audience measurement](https://cimm-us.org/understanding-the-issue-age-based-bias-in-active-audience-measurement-panels/)
+
+For a bit of fun, I share a well written [piece](https://buttondown.com/theswordandthesandwich/archive/the-best-american-grilled-cheese-sandwich-essay/) expressing one's love for the [Grilled Cheese sandwich](https://en.wikipedia.org/wiki/Grilled_cheese).
+The writing in this piece is just... chef's kiss.
+I genuinely felt a sense of joy reading it.
+Oh, and did you know [Wikipedia](https://en.wikipedia.org/wiki/Main_Page) has a [list of sandwiches](https://en.wikipedia.org/wiki/List_of_sandwiches)?
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+## [Why Zip Codes Matter More Than TV Markets Now](https://www.tvrev.com/news/why-zip-codes-matter-more-than-tv-markets-now) (podcast)
+
+This podcast episode is an interview with [Madison & Wall's](https://madisonandwall.com/home) [Luke Stillman](https://www.linkedin.com/in/luke-stillman-cfa-562803a/), an analyst focused on understanding the advertising industry through the exploration of the flow of money.
+The essential point being made in this podcast episode is: location based data is a scale advantage.
+Many of the digital advertising platforms make this location data and geotargetting features available as part of the campaign purchasing platforms.
+Local broadcasters do not have this level of data and capability, and as a result are losing out on ad dollars to larger, national digital platforms.
+Indeed, local businesses seek economies of scale.
+In terms of advertising purchases, as was mentioned in the episode, these businesses want clearer insight into attribution that comes with their investment (i.e., did this ad buy increase foot traffic, sales).
+As Stillman put it, the opportunity is there for local media to do this (13M49S).
+However, it's a significant investment, current measurement systems built over decades don't support it, and agency processes would have to make significant changes to their operational model.
+Despite this competition and lack of data on the part of local media organizations, they are not doomed (21M00S).
+There is a path forward.
+These include accepting the scale of large digital platforms is too challenging to compete with; positioning your offering in terms of what you offer is complimentary to a digital buy--in other words how does it supercharge the campaign; partnering with commerce platforms to improve attribution data; and creating convenience for agencies and media buyers.
+
+Several additional topics were discussed, and the whole episode is worth the listen.
+
+#### Why does this matter?
+
+Attribution improvements from more granular data is what's important here.
+Local media are competing with larger platforms, with more data, and greater, simpler means for improved targeting and attribution, which are all bundled together at no extra cost to media buyers purchasing campaigns on these platforms.
+It's not about competing with these large platforms--as the investment and rate of return on such efforts isn't there.
+However, opportunity still exists.
+The biggest, as was discussed in the episode, is finding a way to express how a local media buy amplifies a digital campaign.
+Partnerships was also an interesting thought.
+The model might benefit from local media outlets partnering with commerce platforms to improve attribution measurement.
+
+## [The Paramount-Warner Bros. Discovery Case Is Fighting Over The Wrong Market](https://www.forrester.com/blogs/the-paramount-wbd-case-is-fighting-over-the-wrong-market/) (blog)
+
+The key point of this article is clear: there's a disconnect between how media markets are defined and how media markets are experienced by consumers.
+As the article puts it, this merger between Paramount and Warner Brothers Discovery further highlights this disconnect.
+Consumers' media behaviors no longer happen in clear, defined categories.
+The lines between television, social media, and creator content continue to blur.
+As such, for media companies to compete, they need scale: "more dayparts, more screens, and more formats".
+Future audience engagement and revenue depends on this scale.
+The article also argues competition in the entertainment space should be defined based on how consumers actually experience media today, and not based on legacy distribution categories.
+
+#### Why does this matter?
+
+It's about the market definitions.
+Legal arguments aside (I ain't no lawyer), what matters here is the alignment between how media organization's define the competitive markets they operate and how their audiences' experience media.
+This also includes audiences to which media organizations aspire to reach in the future.
+Misalignment between these definitions will further limit engagement and revenue, as media companies now need scale to compete within markets where the lines between television, streaming, and social media are blending.
+As some have put it, TV is TV.
+However, if your definition operationally limits the TV segments you serve, scale and audience growth will be limited.
+
+## [Understanding The Issue of Age-Based Bias In Active Audience Measurement Panels](https://cimm-us.org/understanding-the-issue-age-based-bias-in-active-audience-measurement-panels/) (report)
+
+This study attempts to understand the impact age-based bias has on active panel media measurement.
+The focus is to understand how non-compliance (i.e., under-reporting and over reporting) impacts legacy media measurement.
+The study also provides some insight into the significant work that goes into receiving quality data from legacy measurement, which includes training reinforcement for panel participants, error catching and correcting, deviation from normal patterns, and the application of numerous proprietary algorithms.
+While pointing these limitations out, the report makes the case for passive measurement methods like Automatic Content Recognition (ACR).
+Results from the study indicate differences in reporting exist across age group, where younger groups (i.e., 18 to 34 year olds) are more likely to under-report.
+As such, age-based bias may impact the accuracy of audience estimates.
+
+#### Why does this matter?
+
+What's important here is the conversation about and insight into the different measurement methodologies.
+As passive measurement improves, more measurement services will become available.
+This growth will include measurement services utilizing methodologies less susceptible to errors and are more economical to field.
+In addition, these passive forms of measurement will allow for improved data availability.
+This will further result in TV being less of a branding channel and more of a performance channel.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I attended [Nebraska.Code() 2026](https://www.collinberke.com/blog/posts/2026-07-27-post-nebraska-code-2026/) last week.
+This was my fourth year attending, and this conference was a great opportunity for me to stay connected with what's happening in tech.
+I participated in a full-day workshop and attended the keynotes and breakout sessions.
+Some sessions were technical, code, and AI focused.
+Others focused on team building, organizational culture, and career development.
+
+I blogged about my takeaways from the conference [here](https://www.collinberke.com/blog/posts/2026-07-27-post-nebraska-code-2026/#thursday-and-fridays-keynote-and-breakout-sessions).
+Check it out.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [The Best American Grilled Cheese Sandwich Essay](https://buttondown.com/theswordandthesandwich/archive/the-best-american-grilled-cheese-sandwich-essay/) (blog)
+* [Airport Simulator](https://airport.apunen.com/) (game)
+* [The footprints of every building in NYC](https://www.beautifulpublicdata.com/the-footprints-of-every-building-in-nyc/) (website)
+* [The Computer That Helped Win World War II](https://spectrum.ieee.org/colossus-computer-ieee-milestone) (article)
+
+That's it for this update.
+
+Here's to a great start to your week.
+I hope you learn something new.
+If you do, share it.
+
+Onward! 🚀
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
