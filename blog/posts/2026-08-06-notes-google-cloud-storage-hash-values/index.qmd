@@ -1,0 +1,460 @@
+---
+title: "Notes: Checksums, they're useful"
+description: "How some simple values helped speed up file comparisons while using R and Google Cloud Storage"
+format:
+  html:
+    link-external-newwindow: true
+execute:
+  eval: false
+date: "2026-08-06"
+author: "Collin K. Berke, Ph.D."
+toc: true
+code-link: true
+code-copy: true
+from: markdown+emoji
+categories:
+  - notes
+  - cloud computing
+  - google cloud storage
+  - rstats
+---
+
+In [Issue 033](https://www.collinberke.com/updates/posts/2026-07-13-hex-update-033/#what-i-found-interesting-this-week) of my weekly updates, I highlighted learning about the usefulness of [checksums](https://en.wikipedia.org/wiki/Checksum) while working with objects (e.g., data files) stored in [Google Cloud Storage](https://cloud.google.com/storage) (GCS).
+Knowing how to create checksums has been quite useful, especially when working with file-based workflows that interface with cloud storage.
+So, this post expands on this topic a little further.
+
+Here's a little setup to get started:
+
+```{r}
+#| label: setup
+#| eval: true
+#| message: false
+#| warning: false
+library(tidyverse)
+library(here)
+library(digest)
+library(base64enc)
+library(googleCloudStorageR)
+
+post_path <- "blog/posts/2026-08-06-notes-google-cloud-storage-hash-values/"
+```
+
+I will admit, some concepts were a little out of my depth when first learning about this.
+As such, I include links to resources that provide greater depth in areas I didn't fully understand.
+
+To start, I learned what checksums are.
+[Checksums](https://en.wikipedia.org/wiki/Checksum) are a type data derived from another type of digital data, like a file.
+It's like a function that takes some input data, applies some type of algorithm to that data, and returns a value.
+The input data, as long as it never changes, will always result in the same output value.
+This property of checksums makes them useful for verifying data integrity.
+This [video](https://www.youtube.com/watch?v=zD9HNrnN4VY) does a really good job explaining checksums using the R language.
+
+# Checksums and Google Cloud Storage
+
+Every object stored in GCS provides two hash values: crc32c_hash and the md5_hash.
+These values are metadata stored along with each object, and they can be viewed by running the following command from the [Google Cloud SDK](https://cloud.google.com/sdk):
+
+```bash
+glcoud storage objects describe gs://bucket/object-name
+```
+
+If you use the [googleCloudStorageR](https://code.markedmondson.me/googleCloudStorageR/) package, you can also return these values for any object stored in a bucket using the `gcs_list_objects()` function and setting the `detail` argument to `full`.
+
+```{r}
+#| label: list-gcs-objects
+googleCloudStorageR::gcs_list_objects(
+  bucket = "bucket-name",
+  prefix = "prefix-to-object",
+  detail = "full"
+)
+```
+
+Take note, though, what gets returned is not the actual hash values.
+GCS converts and stores these as [Base64 encoded values](https://www.youtube.com/watch?v=aUdKd0IFl34).
+More on that in a sec.
+
+## A little more about the crc32c and md5 hash values
+
+Hashing and hashing algorithms have their roots in cryptography, which, if you spend any amount of time researching, you'll find yourself going down a deep, deep rabbit hole quite quickly.
+So, I'm going to keep this brief and very high level, but I provide links for an additional jumping off point.
+The idea is the same, input data is fed into a hashing algorithm (in our case a crc32c or md5 algorithm) and an output value is returned.
+The math to convert these values is all that is changing here.
+[It's just a mathematical formula performed on data](https://www.youtube.com/watch?v=QZY3IjFBtFY).
+
+Both the crc32c and md5 were created for different purposes.
+The [crc32c hashing algorithm](https://github.com/google/crc32c) is useful in detecting accidental data corruption when data is sent over a network.
+It's also very fast to calculate, as modern processors have [built in instructions](https://en.wikipedia.org/wiki/SSE4) to support this type of calculation.
+The [MD5 hashing algorithm](https://www.ietf.org/rfc/rfc1321.txt) is a 128-bit string, which is useful in cases of verifying file integrity and to detect any corruption to a file.
+The MD5 calculation is software-based, so it's not as efficient as the crc32c hash.
+
+Many resources mentioned both values are 'crypotgraphically broken'.
+That is, they no longer are useful for security purposes.
+But hey, security discussions are outside the scope of this post.
+So, if you're intending to use them for those purposes, there is no advice for you here.
+
+# Calculating hash values in R
+
+Now that we know a little more about these hash values, let's figure out how we can create them using R.
+Although methods exist to do this in Base R, I found the [`digest`](https://eddelbuettel.github.io/digest/) package useful.
+Here's an example using an `mtcars.csv` file.
+
+```{r}
+#| include: false
+write_csv(
+  mtcars,
+  here(str_c(post_path, "mtcars.csv"))
+)
+```
+
+```{r}
+#| label: example-mtcars-digest
+#| eval: true
+# crc32c hash value
+digest(
+  here(str_c(post_path, "mtcars.csv")),
+  algo = "crc32c",
+  file = TRUE
+)
+
+#md5 hash value
+digest(
+  here(str_c(post_path, "mtcars.csv")),
+  algo = "md5",
+  file = TRUE
+)
+```
+
+Pretty simple, just use the `digest()` function, tell it what object you would like to create a hash for, specify what algorithm you would like to apply, and then indicate you're seeking to convert an actual file (i.e., `file = TRUE`).
+
+It's important to note here that `digest()` can create hash values for any R object using a variety of available algorithms.
+
+# Using R to base64 encode hash values
+
+As I mentioned, Google Cloud Storage converts these hash values into base64 encoded values.
+So, to use these to make comparisons between what's on your local files vs what's stored in the cloud, we need to perform a transformation.
+AI, specifically [Google Gemini](https://en.wikipedia.org/wiki/Google_Gemini) was helpful for figuring this out and allowing me to better understand the problem and how to solve it.
+Without it, I wouldn't have known where to start.
+
+I'll start with converting the crc32c hash value.
+Then, I'll do the md5 hash value, which is the one I inevitably end up using the most often.
+
+We'll also need to use the [`base64enc`](https://www.rforge.net/base64enc/) R package here.
+
+## A little detour, bits and bytes
+
+Before we get started, for my understanding, I had to establish a foundational understanding of some key terms.
+These include:
+
+* [Bits](https://en.wikipedia.org/wiki/Bit): the most basic unit of information in computing.
+These data are generally represented as '1's and '0's.
+* [Bytes](https://en.wikipedia.org/wiki/Byte): a unit of digital information that most commonly consists of eight bits.
+So, for a computer, the number eight, when using an eight-bit byte, would be represented using the bits 00001000.
+* [Hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) is a positional number system for representing a numeric value as base 16.
+
+These terms are helpful in understanding how these transformations work, even though R will do the heavy lifting for us.
+Still hanging on, I always found [this scene](https://www.youtube.com/watch?v=0xkP_FQUsuM&t=3s) from [The Martian](https://en.wikipedia.org/wiki/The_Martian_(film)) helpful.
+
+I promise, this will all be important here in a second.
+
+## crc32c to base64
+
+So, we start with the original hash value in hex for the file.
+
+```{r}
+#| label: wrngl-crc-hex-value
+#| eval: true
+crc_hex_value <- digest(
+  here(str_c(post_path, "mtcars.csv")),
+  algo = "crc32c",
+  file = TRUE
+)
+
+crc_hex_value
+```
+
+What gets outputted here is an 8-character hex string.
+Now, we need to convert this hex string into four raw bytes.
+The following code does this for us.
+
+```{r}
+#| label: wrngl-into-raw-bytes
+#| eval: true
+raw_bytes <- writeBin(strtoi(crc_hex_value, base = 16L), raw(), endian = "big")
+
+raw_bytes
+```
+
+Then, base64 encode the value.
+
+```{r}
+#| label: wrngl-base64-problem-value
+#| eval: true
+base64encode(raw_bytes)
+```
+
+But, a problem exists.
+In fact, if you scale this up to additional files, you might notice the same checksum value gets returned `gAAAAA==`.
+Why?
+
+This is where I learned [R still utilizes 32 bit integers](https://www.r-bloggers.com/2015/06/r-in-a-64-bit-world/).
+Thus, any hex value exceeding 2,147,483,647 results in integer overflow.
+`strtoi()` will fail silently in this case, as it will always return an `NA` value when this occurs.
+As such, the raw bits will still be produced, but they will be produced based on an `NA` value.
+This is why you'll get a repeated `gAAAAA==` value for some files.
+
+```{r}
+#| label: example-of-na-integer-overflow
+#| eval: true
+strtoi(crc_hex_value, base = 16L)
+```
+
+So due to this limitation, a workaround needs to be applied.
+What we can do is split the hex string `eb844693` into 2-character hex pairs (`eb`, `84`, `46`, `93`).
+These can then be converted into raw bytes, followed by base64 encoding of the value.
+The code to do this looks like this:
+
+```{r}
+#| label: wrngl-hex-pairs-to-raw-bytes
+#| eval: true
+hex_pairs <- substring(crc_hex_value, seq(1, 7, 2), seq(2, 8, 2))
+
+hex_pairs
+
+raw_bytes <- as.raw(strtoi(hex_pairs, base = 16L))
+
+raw_bytes
+```
+
+```{r}
+#| label: wrngl-raw-bytes-to-base64
+#| eval: true
+gcs_crc_hash <- base64encode(raw_bytes)
+```
+
+You can then compare this value with the crc32c_hash stored in Google Cloud Storage.
+I'll cover this here shortly.
+
+If you're interested and want to see the raw stream of bits, the `rawToBits()` function can be used.
+
+```{r}
+#| label: wrngl-see-raw-bits
+#| eval: true
+rawToBits(raw_bytes)
+```
+
+## md5 to base64
+
+Given that integer overflow is a potential issue with the crc32c hash value, the MD5 hash is another option.
+Now it's just a matter of handling and transforming a 32-character rather than an 8-character hex string.
+Once again, it all starts with the `digest` package.
+This time we specify we want to use the MD5 algorithm in the `algo` argument.
+
+```{r}
+#| label: wrngl-md5-hex-string
+#| eval: true
+md5_hex_value <- digest(
+  here(str_c(post_path, "mtcars.csv")),
+  algo = "md5",
+  file = TRUE
+)
+
+md5_hex_value
+```
+
+Given the size of the underlying bits, a matrix will be useful for organizational purposes.
+
+```{r}
+#| label: wrngl-md5-hex-matrix
+#| eval: true
+md5_hex_pairs <- matrix(
+  c(substring(md5_hex_value, seq(1, 31, 2), seq(2, 32, 2))),
+  ncol = 1
+)
+
+md5_hex_pairs
+```
+
+We then convert to an integer followed by a raw value.
+
+```{r}
+#| label: wrngl-md5-raw-bytes
+#| eval: true
+md5_raw_bytes <- as.raw(strtoi(md5_hex_pairs, base = 16L))
+
+md5_raw_bytes
+```
+
+Lastly, we perform the `base64` encoding on the raw bytes value to match with how the value is represented in GCS.
+
+```{r}
+#| label: wrngl-md5-base64-encoded
+#| eval: true
+gcs_md5_values <- base64encode(md5_raw_bytes)
+
+gcs_md5_values
+```
+
+Again, if you're interested in seeing the raw bits, use the `rawToBits` function on `md5_raw_bytes`.
+
+```{r}
+#| label: wrngl-md5-raw-bits
+#| eval: true
+rawToBits(md5_raw_bytes)
+```
+
+# Comparing files locally to those stored in Google Cloud Storage
+
+Now that we have the transformation figured out, we use these values to compare files in GCS to those stored on our local file system.
+
+To provide a more concrete example, I'm going to upload three versions of `mtcars` to a Google Cloud Storage bucket.
+These three versions will be `mtcars` just split by the `cyl` variable (i.e., cylinders).
+But first, we need to split the data into three separate files.
+So, here's the code to do this:
+
+```{r}
+#| label: write-data-mtcars-by-cyl
+group_split(mtcars, cyl) |>
+  walk2(
+    list(
+      str_c(post_path, "cyl_4_mtcars.csv"),
+      str_c(post_path, "cyl_6_mtcars.csv"),
+      str_c(post_path, "cyl_8_mtcars.csv")
+    ),
+    \(group, file_name) write_csv(group, file_name)
+  )
+```
+
+Let's now upload these files to our storage bucket.
+
+```{r}
+#| label: upload-data-to-gcs
+files <- list.files(
+  post_path,
+  pattern = "cyl_\\d_mtcars.csv",
+  full.names = TRUE
+)
+
+walk(
+  files,
+  \(x) gcs_upload(x, name = str_remove(x, str_c(post_path, "/")))
+)
+```
+
+Then, let's get the `md5Hash` and `crc32c` values using `googleCloudStorageR`'s `gcs_list_objects()` function.
+The `detail` argument set to `full` is what will return these values.
+
+```{r}
+#| label: list-data-in-gcs
+gcs_list_objects(detail = "full")
+```
+
+Here's the md5hash and crc32c values for each file from Google Cloud storage:
+
+| File | md5Hash | crc32c |
+| :--- | :--- | :--- |
+| `cyl_4_mtcars.csv` | `Pna3yg3PXv8U5h7tE5KHkg==` | `D1wf+g==` |
+| `cyl_6_mtcars.csv` | `SATlfm2lSOMYn90Wa+gvHQ==` | `ujPTEQ==` |
+| `cyl_8_mtcars.csv` | `QZaPlkfRhyf4E8T3x7d0GQ==` | `u0PTxQ==` |
+
+To make things a little easier, here are two functions to handle the transformations for us:
+
+```{r}
+#| label: func-transform-gcs-crc
+#| eval: true
+transform_gcs_crc <- function(file) {
+  hex_pairs <- digest::digest(
+    file,
+    algo = "crc32c",
+    file = TRUE
+  ) |>
+    substring(seq(1, 7, 2), seq(2, 8, 2))
+
+  raw_bytes <- as.raw(strtoi(hex_pairs, base = 16L))
+
+  gcs_crc <- base64enc::base64encode(raw_bytes)
+
+  return(gcs_crc)
+}
+```
+
+```{r}
+#| label: func-transform-gcs-md5
+#| eval: true
+transform_gcs_md5 <- function(file) {
+  md5_hex_value <- digest(
+    file,
+    algo = "md5",
+    file = TRUE
+  )
+  md5_hex_pairs <- matrix(
+    c(substring(md5_hex_value, seq(1, 31, 2), seq(2, 32, 2))),
+    ncol = 1
+  )
+  md5_raw_bytes <- as.raw(strtoi(md5_hex_pairs, base = 16L))
+
+  gcs_md5 <- base64encode(md5_raw_bytes)
+
+  return(gcs_md5)
+}
+```
+
+Let's give it a try and compare.
+
+```{r}
+#| label: test-file-crc-values
+#| eval: true
+transform_gcs_crc(here(post_path, "cyl_4_mtcars.csv"))
+transform_gcs_crc(here(post_path, "cyl_6_mtcars.csv"))
+transform_gcs_crc(here(post_path, "cyl_8_mtcars.csv"))
+```
+
+```{r}
+#| label: test-file-md5-values
+#| eval: true
+transform_gcs_md5(here(post_path, "cyl_4_mtcars.csv"))
+transform_gcs_md5(here(post_path, "cyl_6_mtcars.csv"))
+transform_gcs_md5(here(post_path, "cyl_8_mtcars.csv"))
+```
+
+Kablam, nailed it!
+
+# Use cases
+
+Now that we've walked through this transformation, some may ask why go through all this trouble?
+Why even use a checksum?
+Why not just compare other factors of the file like modified or created date?
+It's important to remember these checksums are calculated using data within the file.
+Thus, any changes to the data will impact the checksum.
+Modified and created date can be the same between files, but the data within could be different.
+In addition, checksums align well with several use cases.
+
+One use case is when you're working with a file-based workflow and files lack any IDs or metadata information useful in identifying individual files.
+This is especially useful when these files are being transformed for storage into a data warehouse, where you're just appending new data.
+These hash values can be stored with what's in the warehouse and used as a way to skip any files that have already been processed and stored, rather than having to re-run the transformation process again for every single file.
+Indeed, you are storing redundant data, but that's one tradeoff you have to make here for this to work.
+
+Another use case is when you want to ensure the files you're working with match with what's stored in cloud storage.
+Maybe files change periodically or update from time to time, and you want some simple value to validate you're working with the correct files.
+Checksums can be useful to ensure the file you're working with matches the ones stored in GCS.
+
+# Wrap up
+
+So, there it is.
+I just showed you how to create md5 and crc32c hash values for a file using R.
+Then, I demonstrated how to convert md5 and crc32c character strings into bytes, bits, and then into a base64 encoded values, just like they are represented for Google Cloud Storage bucket objects.
+I also learned a little more about R while writing this post, especially when it comes to 32-bit integers.
+
+Wasn't that fun?
+I sure came away with some takeaways.
+AI was certainly helpful for showing me how to solve this problem.
+
+My hope is this helps someone somewhere in the future.
+Keep those checksums in mind.
+They may come in handy.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
