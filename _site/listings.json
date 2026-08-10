@@ -50,10 +50,6 @@
     ]
   },
   {
-    "listing": "/talks/index.html",
-    "items": []
-  },
-  {
     "listing": "/updates/index.html",
     "items": [
       "/updates/posts/2026-08-10-hex-update-036/index.html",
@@ -93,5 +89,9 @@
       "/updates/posts/2024-11-01-hex-update-002/index.html",
       "/updates/posts/2024-07-10-hex-update-001/index.html"
     ]
+  },
+  {
+    "listing": "/talks/index.html",
+    "items": []
   }
 ]
