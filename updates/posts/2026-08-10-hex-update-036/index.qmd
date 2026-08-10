@@ -1,0 +1,138 @@
+---
+title: "The Hex Update: Issue 036"
+date: "2026-08-10"
+author: "Collin K. Berke, Ph.D."
+description: "First there were microdramas, soon there will be microsports; a case study exploring the use of AI in newsrooms--there's no one model; frustrating TV app experiences and canceled subscritpions; what we lost when movie rental stores went out of business; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 036.
+
+Hey, hey, hey, folks.
+I'm beginning to feel the summer winding down.
+Conversations now include back to school conversations.
+A local big box store already has Halloween decortations for sale ...
+Don't get me wrong, fall is my favorite season.
+However, can we take a beat and hold on to summer for bit longer?
+
+Anyways, let's get started.
+
+Three topics recently caught my attention:
+
+* [First there were microdramas, soon there will be microsports](https://www.hollywoodreporter.com/tv/tv-news/microdramas-birth-microsports-world-1-exclusive-1236656133/)
+* [A case study exploring the use of AI in newsrooms--there's no one model](https://theconversation.com/as-ai-reshapes-newsrooms-leading-media-outlets-are-charting-different-paths-for-its-use-283565)
+* [Frustrating TV app experiences and canceled subscriptions](https://www.thewrap.com/industry-news/business/frustrating-app-experience-subscription-canceled-hub-ctam-survey/)
+
+For a bit of fun, I share an [article](https://thereader.mitpress.mit.edu/the-lost-civic-life-of-movie-rental-stores/) reflecting on what has been lost in terms of a 'third space' when movie rental stores went out of business.
+It's an interesting retrospective.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Move Over Microdramas, Here Come the Microsports (Exclusive)](https://www.hollywoodreporter.com/tv/tv-news/microdramas-birth-microsports-world-1-exclusive-1236656133/) (article)
+
+The key point made in this article is audiences are searching for new, engaging formats in the places they are--their feeds.
+Advertising spend is also concentrated to these spaces as well.
+According to the article, World1 aims to create this sports vertical video content that is optimized for user's feeds using 30-second competition videos.
+In the words of their CEO, as quoted in the article, "They're building a news sports industry for the phone" and they seek to create "maximum drama in minimum time".
+The business model for this content is built upon advertising dollars, sponsorships, and licensing.
+As for now, subscriptions or microtransactions will not be a part of this model.
+
+#### Why does this matter?
+
+Place, format, and advertising spend is what matters here.
+The feed is a place where audiences spend time, and the opportunities to fund engaging content is there.
+The 'micro' content format is also not a [new concept](https://www.npr.org/2025/03/19/nx-s1-5330470/micro-drama-soap-opera-app), as 'microdramas' have gained popularity.
+[Although micro content's potential success has some caveats](https://www.thecurrent.com/media/streaming-disney-microdrama-apps-whats-behind-pivot-vertical-video), the advertising dollars to support this type of content is present.
+This will especially be true if this format can be shown to stop the scroll.
+Keep an eye on this space.
+Micro content formats, especially for vertical video, will likely expand.
+
+### [As AI reshapes newsrooms, leading media outlets are charting different paths for its use](https://theconversation.com/as-ai-reshapes-newsrooms-leading-media-outlets-are-charting-different-paths-for-its-use-283565) (article)
+
+This article is a summary of a case study exploring AI adoption within newsrooms.
+Specifically, it examined the AI practices for Reuters, the BBC, and The Guardian.
+The article's main finding is clear: there's no one model on how AI is integrated into newsrooms, and three factors influence its adoption: funding, values, and mission.
+The authors of this article expand on this point by identifying three areas: speed as a market strategy, AI with guardrails, and principles before profit.
+For more profit oriented news organizations, AI might be leveraged for speed of information production, though this puts pressure on the accuracy of information.
+Other outfits might take a more guardrails type approach.
+As the article puts it, this includes clear accountability structures, which involves some form of human oversight and [content labeling](https://www.bbc.co.uk/mediacentre/articles/user-centred-ai-labels).
+Lastly, the article adds to this by highlighting AI adoption for newsrooms focused on principles over profit.
+These types of newsrooms are open to AI use, but journalists are held accountable to ensure any use of AI helps readers and respects the rights of the public and other creators.
+The article also introduced the concept of a "verification tax".
+This quote from the article does a good job defining the concept:
+
+> If newsroom staffers spend more time correcting chatbot errors than writing their own stories, the technology ends up being more trouble than it's worth.
+
+#### Why does this matter?
+
+It's about funding, values, and mission.
+No one model of AI adoption will transcend or work for every newsroom.
+In fact, AI might not be the right fit for specific applications into newsroom workflows, especially if it doesn't align with these three factors.
+Another important point, which seems to transcend all three areas, is the importance of a human in the loop.
+All three had some version of this.
+The verification tax is also something to be aware of.
+This tech should be used to solve problems, not create new ones for the professionals doing the work.
+
+### [Over a Third of Viewers Have Canceled Subscriptions Due to Frustrating App Experience, Survey Finds | Exclusive](https://www.thewrap.com/industry-news/business/frustrating-app-experience-subscription-canceled-hub-ctam-survey/) (article)
+
+The main point of this article is clear: audiences are mostly satisfied with television and streaming applications, however, any type of friction can have negative consequences.
+To come to this conclusion, the article cites findings from a recent study exploring consumers' experiences with various user interface problems.
+One of the biggest forms of friction mentioned by participants was the "burying of common tasks", which includes things like continue watching and watch lists.
+Moreover, there was some age differences in terms of the satisfaction app reccomendations, where younger viewers mentioned being less satisfied.
+The article highlighted an additional critical point: all app experiences are evaluated the same by users.
+There is no distinction, at least for users, between a TV vs. mobile application.
+All app experiences need to be flawless with limited points of friction.
+
+#### Why does this matter?
+
+Exceptional digital experiences is what matters here.
+Users make no distinction between whether an app is on their phone or on their television.
+The expectations are all the same.
+They want little friction and limited pain points.
+Otherwise, these points of contention can have silent consequences in terms of lost users and subscribers.
+It's also important to pay attention to the insights about the difference in quality perception of recommendations and age from this report.
+This may be one of those incremental improvements that could result in significant benefits for platforms.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+Back in [Issue 033](https://www.collinberke.com/updates/posts/2026-07-13-hex-update-033/), I mentioned drafting a blog post about the use of [checksums](https://en.wikipedia.org/wiki/Checksum) for both Google Cloud Storage and R.
+Well, I got around to finishing and publishing it this week.
+Certainly learned a lot while writing it.
+Check it out [here](https://www.collinberke.com/blog/posts/2026-08-06-notes-google-cloud-storage-hash-values/) if you're interested.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [The Lost Civic Life of Movie Rental Stores](https://thereader.mitpress.mit.edu/the-lost-civic-life-of-movie-rental-stores/) (article)
+* [How do atomic clocks work?](https://www.nist.gov/atomic-clocks/how-do-atomic-clocks-work) (article)
+* [Dates That Don't Exist](https://blog.yossarian.net/2015/06/09/Dates-That-Dont-Exist) (blog)
+
+That's it for this update.
+
+Here's to a great start to your week.
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}

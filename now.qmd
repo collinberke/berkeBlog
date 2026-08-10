@@ -8,50 +8,49 @@ format:
 
 A now page, [why?](https://nownownow.com/about)
 
-Updated at 2026-03-22 from my home in Lincoln, Nebraska, where I'm fresh off of witnessing [Nebraska Men's Basketball make it to the Sweet 16](https://www.espn.com/mens-college-basketball/recap/_/gameId/401856534).
+Updated at 2026-08-09 from my home in Lincoln, Nebraska, where I'm fresh off of mowing my lawn and enjoying a nice Sunday summer evening.
 
 ## Projects I'm working on
 
-#### Publishing a weekly update
+#### Staying consistent by publishing a weekly update
 
-Since the Summer of 2024, I've attempted to get in the regular habit of writing and publishing a [weekly newsletter](https://www.collinberke.com/updates/).
-I came back to it from time-to-time, dropped it for a bit, and then picked it back up again at the start of this year.
-The aim is to publish something every week, and I've made a real effort to do so.
-I've certainly missed a couple weeks, but I've consistently come back to it.
-As part of this, I've also been maintaining a list of [Media and Marketing Research Resources](https://www.collinberke.com/data-media-marketing-resources.html).
+I've been keeping up with publishing my [weekly newsletter](https://www.collinberke.com/updates/).
+I moved to a Monday publishing cadence, which has helped immensely.
+I also have a better system for tracking and compiling notes for each post.
+It's been super helpful.
+Writing is challenging for me, so the weekly deadline holds me accountable to keep working at it.
 
-Writing doesn't come naturally to me, so having a standing weekly deadline motivates me to be bold and push myself outside of my comfort zone.
-Through some iteration, I've begun to find some voice.
+#### Google Dataform
 
-#### Practicing Python
+I've been spending time learning [Google Dataform](https://cloud.google.com/dataform), a data orchestration tool.
+It's ability to build automated data pipelines with SQL has been a draw.
+The integration with GitHub is also an added bonus.
+I'm still getting the hang of how to best manage project organization.
+I've also been noodling with how scheduling works best.
 
-This is another one of those professional development projects that I've worked on in the past, put down for a bit, and came back to.
-This time around I'm trying to learn more of the language and get more comfortable with the syntax.
-I've found some good reading material, and I'm looking for projects I can apply what I'm learning.
+#### Blogging
 
-#### Dot files, dot files, dot files
-
-I'm a huge fan of having personal [dotfiles](https://dotfiles.github.io/) for my development setup.
-I've been iterating on mine for a few years.
-However, as of recent, they've kind of become unwieldy, messy, and fragmented.
-Spring is upon us, so I'll be doing a little spring cleaning of these files.
-The hope is to improve their organization, while also making them more portable across the different systems I use.
-Maybe I'll even learn something new in the process.
-I'll report back.
+I've been on a pretty good streak of publishing blog posts recently, in addition to my weekly updates.
+I aim for one a month, but recently, for a few months, I've posted two.
+Topic certainly plays a role.
+I've been attempting to write shorter, notes type posts.
+You should check them out [here](https://www.collinberke.com/blog/) if you're interested.
 
 If you're interested in what I've focused on in the past, [check out my past updates](https://collinberke.com/now-old.html)
 
 ## Books I'm reading
 
-#### [Think Python](https://allendowney.github.io/ThinkPython/) by Allen B. Downey
+#### [The Design of Everyday Things](https://www.amazon.com/gp/product/B00E257T6C) by Donald A. Norman
 
-This is the book I'm reading to learn more about Python.
-I've found it to be a good introduction to the language thus far.
-I'm looking to apply more of what I've learned to some projects.
+I've seen this book suggested several times.
+I was looking for a new professional read, and I felt it was a good time to pick it up.
+I've only just started it, but the information and examples shared thus far have been helpful.
 
 ## A list of books I've read (ever since I've started keeping track)
 
 ### Professional development reads
+
+#### [Think Python](https://allendowney.github.io/ThinkPython/) by Allen B. Downey
 
 #### [R for Data Science (2e)](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund
 
@@ -60,6 +59,8 @@ I'm looking to apply more of what I've learned to some projects.
 #### [Machine Learning with R - Fourth Edition](https://www.amazon.com/Machine-Learning-cleansing-modeling-tidyverse/dp/1801071322/) by Brett Lantz 
 
 #### [Practical Tableau](https://www.amazon.com/Practical-Tableau-Tutorials-Strategies-Master/dp/1491977310) by Ryan Sleeper
+
+#### [Build Your Dream Network: Forging Powerful Relationships in a Hyper-Connected World](https://www.amazon.com/gp/product/B01E4WAG6C) by J. Kelly Hoey
 
 #### [HBR Guide to Making Every Meeting Matter](https://www.amazon.com/Guide-Making-Every-Meeting-Matter/dp/1633692175) from the Harvard Business Review
 
@@ -136,6 +137,8 @@ I'm looking to apply more of what I've learned to some projects.
 #### [Project Hail Mary](https://www.amazon.com/Project-Hail-Mary-Andy-Weir-ebook/dp/B08FHBV4ZX/) by Andy Weir
 
 #### [Firebreak](https://apps.npr.org/best-books/#year=2021&book=93) by Nicole Kornher-Stace
+
+#### [Children of Dune](https://www.amazon.com/Children-Dune-Frank-Herbert-ebook/dp/B0015DTW50) by Frank Herbert
 
 #### [Dune Messiah](https://www.amazon.com/gp/product/B0011UGNDG) by Frank Herbert
 
