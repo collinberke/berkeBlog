@@ -1,0 +1,142 @@
+---
+title: "The Hex Update: Issue 037"
+date: "2026-08-17"
+author: "Collin K. Berke, Ph.D."
+description: "Website traffic is mostly bots--how one site owner is managing; 'Google-Agent' is a big mindshift for SEO; The BBC hires the Gen Z whisperer, Brandon Relph; the rise of the #hashtag; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 037.
+
+I hope you had a good weekend.
+I was fortunate to take some time off to focus on a few linger summer projects.
+Soon they'll become fall projects ...
+Some times it's just about moving the ball forward.
+New week.
+New beginnings.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Website traffic is mostly bots--how one site owner is managing](https://patronview.com/news/99-percent-of-my-website-traffic-is-bots/)
+* ["Google-Agent" is a big mindshift for SEO](https://www.mariehaynes.com/why-googles-new-google-agent-is-the-biggest-mindset-shift-in-seo-history/)
+* [The BBC hires the Gen Z whisperer, Brandon Relph](https://www.theguardian.com/media/2026/aug/06/bbc-hires-26-year-old-gen-z-entrepreneur-brandon-relph-younger-audiences)
+
+For a bit of fun, I share an [article](https://www.smithsonianmag.com/innovation/how-hashtag-became-way-instantly-invite-literally-everyone-into-conversation-180988813/) about the rise and fall of the #hashtag.
+It's an interesting look back at how a simple idea had a massive cultural impact.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [99% of My Website Traffic Is Bots](https://patronview.com/news/99-percent-of-my-website-traffic-is-bots/) (blog)
+
+This blog post details the steps [Nick Gray](https://www.linkedin.com/in/nickgraynews/) is taking to mitigate issues caused by bots and scrapers on [PatronView](https://patronview.com/).
+The key takeaway from this article is important: bot scraping is an issue faced by all sites on the internet, and although challenging, it needs to be managed.
+In the article, the author provides insight into how many requests crawlers were making to his site and where heavy crawler behavior is taking place.
+It also shares several rules and configurations that might be helpful for site owners.
+A key rule used for permitting crawling is *pages crawled per visitor referred*.
+In short, any crawler where this ratio is small or nonexistent gets blocked.
+The post then makes it very clear that this space is a moving target, as crawlers are getting more sophisticated.
+It was eye opening to learn about the impact of *residential bot nets*.
+Limited observability was another key point.
+JavaScript based measurement platforms (e.g., Google Analytics) only provide a partial snapshot of this issue.
+Much of this insight comes from exploring a site's server logs.
+This has a real business impact, as this is directional information organizations turn to to better understand how to best serve real humans.
+This quote made the impact of this problem very clear:
+
+> I'm trying to run a business here.
+> I want to know what real people read on my site, so I know what to build next.
+> I couldn't see them through the bots.
+
+#### Why does this matter?
+
+The article provides some sensible rules to address the significant increase in bot traffic, but it's a moving target.
+There's no clear answer here.
+[Some bots provide more value, while others do not](https://www.adexchanger.com/ai/how-much-are-bots-costing-you-iab-tech-lab-wants-content-owners-to-find-out/).
+The pages crawled per visitor referred is a good guiding metric for decision making, so it's worth calculating.
+Also, it is critical for media organizations recognize this has real business impact beyond just serving traffic.
+Conversations about this topic will continue to increase.
+
+### [Why Google's New "Google-Agent" is the Biggest Mindset Shift in SEO History](https://www.mariehaynes.com/why-googles-new-google-agent-is-the-biggest-mindset-shift-in-seo-history/) (blog)
+
+This blog post makes it clear: the web, where humans once navigated pages and scrolled, is quickly becoming agentic.
+As such, the article suggests site owners and SEO professionals need to know how to best work with AI agents.
+The shift involves moving from a human-first web to a now agent-first web.
+Understanding protocols like [WebMCP](https://developer.chrome.com/blog/webmcp-epp) will be imperative.
+The article also posits the relationship between content creators and Google has now changed: the transaction was traffic for content to train AI, now this relationship is fundamentally changed.
+Publishers and content users need to now know how to better manage this changed relationship.
+The article also highlights other protocols Google suggests all SEO professionals should understand: MCP, A2A, UCP, A2UI, AG-UI.
+
+#### Why does this matter?
+
+The relationship of content for traffic has changed.
+However, this isn't necessarily a loss for publishers.
+It's a transition with how users interact with information on the web.
+This transition can be an opportunity, but the interface is changing.
+It's now not just about figuring out how to get quality content to users.
+It's about figuring out how to get content to users by reducing friction for agents.
+Adoption of these various protocols will be key.
+
+### [BBC hires 26-year-old entrepreneur to help reach younger audiences](https://www.theguardian.com/media/2026/aug/06/bbc-hires-26-year-old-gen-z-entrepreneur-brandon-relph-younger-audiences) (article)
+
+This article highlights the [BBC's](https://en.wikipedia.org/wiki/BBC) recent addition to their strategy team, the gen Z whisperer, [Brandon Relph](https://www.linkedin.com/in/brandonrelph/).
+It also emphasizes why this addition to the team is critical: traditional broadcasters are behind in terms of addressing the decrease in reach to younger audiences.
+As the article puts it, many younger audiences are turning to content creators on platforms like YouTube and TikTok.
+Referencing data from the UK, the article reports "78% of the over-75s still watch TV" monthly, while "less than half of 16 to 24-year-olds do so".
+These trends likely map onto what's happening in the US as well.
+The article also addresses how the BBC aims to flip these trends, which includes prioritising digital content and producing "bespoke YouTube content".
+Indeed, as Relph is quoted in the article, there's a limited future for the BBC if there is a lack of focus on younger people.
+
+#### Why does this matter?
+
+The key point here is media organizations operating in the legacy broadcasting space need to do two things: expand strategy teams to other folks and continue to adapt to the realities of how audiences now consume content.
+This also includes an increased focus on younger audiences.
+It's also worth noting that audiences are now consuming content in other places beyond just linear.
+To have a long-term future, the focus needs to be on being in these places and packaged in ways audiences expect in these places.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I started reading [The Design of Everyday Things](https://www.amazon.com/dp/0465050654).
+It's been on my want-to-read list for a while.
+The text discusses the concept of interaction and experience, which is preceded by discoverability.
+Discoverability is defined as an understanding of what a thing does, how it works, and what is made possible with its use.
+This concept is a function of five psychological concepts: affordances, signifiers, constraints, mappings, and feedback.
+The book further defines each and provides some useful examples.
+Learning more about how these concepts relate to discoverability made me think more deeply about the design process.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [How the Hashtag Became the Way to Instantly Invite Literally Everyone Into the Conversation](https://www.smithsonianmag.com/innovation/how-hashtag-became-way-instantly-invite-literally-everyone-into-conversation-180988813/) (article)
+* [Everything I know about good system design](https://www.seangoedecke.com/good-system-design/) (blog)
+* [Do One Thing at a Time!](https://ratfactor.com/cards/one-thing) (blog)
+* [Understanding is the new bottleneck](https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck) (blog)
+
+That's it for this update.
+Let's keep the ball moving forward this week.
+I hope it's a productive one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
