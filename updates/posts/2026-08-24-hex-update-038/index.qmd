@@ -1,0 +1,150 @@
+---
+title: "The Hex Update: Issue 038"
+date: "2026-08-24"
+author: "Collin K. Berke, Ph.D."
+description: "A look back at the pre-search internet; what comes next after the death of search?; YouTube views are now being counted differently; 'Weird Al's' recent TinyDesk concert; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 038.
+
+This weekend flew by.
+Saturday was perfect weather, so I got to spend some time outside.
+Sunday was rainy.
+Looking back on the summer, most days were either hot and muggy or rainy where I live.
+Here's to hoping fall will bring clearer, cooler days.
+
+Let's get to learning something new.
+
+Three topics recently caught my attention:
+
+* [A look back at the pre-search internet](https://arstechnica.com/gadgets/2026/08/remembering-the-pre-google-web-when-search-was-an-experiment/)
+* [What comes after the death of search?](https://thewalrus.ca/google-search-is-dying/)
+* [YouTube views are now being counted differently](https://www.theverge.com/streaming/981105/youtube-video-view-counting-update)
+
+For a bit of fun, I share ["Weird Al" Yankovic's](https://en.wikipedia.org/wiki/%22Weird_Al%22_Yankovic) recent [Tiny Desk Concert](https://www.npr.org/series/tiny-desk-concerts/) (video [here](https://www.youtube.com/watch?v=o4I-Y8XiBIs)).
+It brought back some feelings of nostalgia when [The Saga Begins](https://www.youtube.com/watch?v=hEcjgJSqSRU) was performed.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Remembering the pre-Google web, when search was an experiment](https://arstechnica.com/gadgets/2026/08/remembering-the-pre-google-web-when-search-was-an-experiment/) (article)
+
+This article was a broad overview of what the pre-search Internet was like.
+It highlighted ways in which information on the internet was found, categorized, ranked, and judged throughout different eras.
+As the article puts it, search moved through phases of human curation, directories, crawlers, indexing, natural language queries, portals, ranking, and now AI summaries.
+Much of these advancements resulted from the expansion of content creation at a scale too large for humans to make search useful.
+It then highlighted how changes to the interface of search made search seem more like a tool, rather than some type of "amusement park."
+The author of the piece also makes some interesting points about how these changes to search are in effect meant to reduce friction in the information retrieval process.
+They take a moment to consider what this means in this era of search.
+
+#### Why does this matter?
+
+We are at an inflection point with how users and audience's retrieve information on the web.
+The interface is changing.
+It has changed significantly over time.
+It will continue to change.
+And remember, search is not just an activity exclusive to Google.
+It's a user activity that transcends platforms.
+The points made in the article about the reduction in friction having consequences is also worth further consideration.
+Users are getting what they want faster and in ways more accessible to them.
+This reduction in friction might come at a cost, though.
+
+### [Google Search is Dying. What Comes Next is Worse](https://thewalrus.ca/google-search-is-dying/) (article)
+
+The main point of this article is the changes to search and availability to information has negative consequences beyond just the quality of information retrieval.
+In addition, the article raises questions about the impact changes to search will have on the ability to return basic facts and truthful information.
+AI summaries have a role in this, and this role is impacted by the ecosystem to which search operates.
+This includes the influences being placed on the corpus to which the models powering AI summaries are built.
+The article goes so far as to say the corpus is polluted, and it is only becoming worse.
+Search has a lot of value, both in terms of its economic value and it being society's collective memory.
+Now, given the value and impact search has, the question is whether to continue treating it as a "'free' consumer product" or whether it should be treated as a public good.
+
+#### Why does this matter?
+
+It goes without saying, the modern world does not function without search and the ability to access truthful and basic information.
+If the platforms providing search no longer serve this function, then the interface to information retrieval will inevitably change.
+The question is, then, do these changes serve those who use it or does it further lead to negative consequences.
+Truly, as several examples were shared in the article, governments and public institutions view search as a strategic asset.
+As the article puts it,
+
+> We keep googling because we keep expecting the internet to know things.
+
+However, it's important to reflect on what society might look like if the internet and search interfaces begin to reflect an experience where users start to expect the internet does not contain the answers to their questions.
+Maybe direct access to primary, trusted sources will raise in value.
+
+### [YouTube is changing how it counts views to give the numbers a boost](https://www.theverge.com/streaming/981105/youtube-video-view-counting-update) (article)
+
+This brief article reports how [YouTube](https://en.wikipedia.org/wiki/YouTube) modified its definition of video views on the platform.
+The platform [will now count a view as soon as a video starts](https://www.youtube.com/shorts/2FBzExbYHxg).
+This is different then what has been reported and is generally accepted as the past view qualifier of 30 seconds.
+The change, as the article puts it, is too create greater parity across all YouTube video formats (e.g., Shorts) and with how other platforms measure video views.
+As such, the hope is to provide creators and publishers a better view of the exposure their content has.
+As the article reports, for now, metrics related to engaged views will still be available in YouTube's analytics portal.
+
+#### Why does this matter?
+
+View counts will increase for publishers and content creators.
+This change will certainly give more insight into exposure of video content.
+However, it puts more pressure on identifying content audiences actually watch on YouTube.
+These metrics will still be available, so creators and publishers will want to keep an eye on 'engaged views' and average time spent measurements available on YouTube's analytics platform.
+Certainly, in moments of metric definition change, especially related to views, it's important to remember [view measurements have their limitations](https://www.theverge.com/social/639811/view-counts-tiktok-instagram-x-youtube-lies).
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I came across this blog post late in the week: [The Golden Rule for Becoming a Better Writer](https://nappertime.com/the-golden-rule-of-becoming-a-better-writer/).
+It showed up at the right time.
+I've recently been pushing through some self-doubt while writing.
+I've never been a strong writer.
+When the ideas and words written feel flat and lack clarity, self-doubt compounds, and the work can feel inconsequential.
+
+Despite these feelings, I know this to not be true.
+
+This post challenged me to flip this mindset.
+Perhaps this is some signal within the noise?
+When self-doubt begins to creep in during the writing process, I need to follow this post's one rule to be a better writer:
+
+> Read as much as you can. Read widely and well.
+
+That's why I write these weekly updates.
+It motivates me to do two things: read more and write more.
+So, I learned I'm on the right path.
+Because as the post put's it, reading:
+
+1. "Teaches the writer about the craft."
+2. "Reading inspires the writer."
+3. "Reading changes the structure of the brain."
+
+# Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* ['Weird Al' Yankovic: Tiny Desk Concert](https://www.youtube.com/watch?v=o4I-Y8XiBIs) (video)
+* [HTML Can Do That](https://chrisburnell.com/html-can-do-that/) (blog)
+* [Nothing Doing](https://www.futilitycloset.com/2026/08/10/nothing-doing-12/) (blog)
+* [I Just Want to Search](https://www.0xsid.com/blog/just-want-to-search) (blog)
+
+That's it for this update.
+
+Go forth, and be productive.
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
