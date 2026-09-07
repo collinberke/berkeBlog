@@ -1,0 +1,161 @@
+---
+title: "The Hex Update: Issue 039"
+date: "2026-09-07"
+author: "Collin K. Berke, Ph.D."
+description: "The Podcast Atlas, a map of the creator ecosystem; a case study of one public radio station's successful implementation of programmatic advertising; the streaming wars are now becoming the bundling wars; mathematicians have worked out the worst way to hang a painting; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 039.
+
+I was under the weather the past couple of weeks, so my capacity to publish an issue was limited.
+It's crazy how life stuff compounds when you need to take a few days for some self care.
+I'm about 90% 🎉, and I'm slowly getting back to full speed.
+Here's your reminder folks: take rest when you need it.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [The Podcast Atlas, a map of the creator ecosystem](https://soundsprofitable.com/research/the-podcast-atlas/)
+* [A case study of one public radio station's successful implementation of programmatic advertising](https://teamparagon.consulting/one-public-radio-stations-journey-into-new-digital-revenue/)
+* [The streaming wars are now becoming the bundling wars](https://www.nytimes.com/2026/08/24/business/media/amazon-youtube-netflix-streaming-platform.html)
+
+For a bit of fun, I share an [article](https://www.scientificamerican.com/article/mathematicians-discover-the-worst-way-to-hang-a-painting/) published in the [Scientific American](https://www.scientificamerican.com/) about some mathematicians who have figured out the worst way to hang a painting.
+I really like the quote at the end of the piece.
+You should check it out.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [The Podcast Atlas: A Map of the Creator Ecosystem](https://soundsprofitable.com/research/the-podcast-atlas/) (report and [video](https://www.youtube.com/watch?v=v1o61YukgP8))
+
+This study aims to explore the role and impact creator-led experiences have on podcast audiences.
+The thesis of the work is clear:
+
+> Podcasting has evolved into a federation of interconnected creator-led experiences.
+
+According to the article, the creator is the center, but audio, video, clips, social, and newsletters all play essential roles.
+These include:
+
+* Audio is the "trust engine".
+* Video is the "deepening layer," capturing attention leading to further action.
+* Clips serve as a discovery and conversion mechanism.
+* Social media is distribution infrastructure.
+* Newsletters are an owned re-engagement mechanism.
+
+Each of these mechanisms provide audiences with value at different points in the day.
+The article makes it clear that the advertising value is not just with the audio portion of the podcast.
+All pieces contribute to the overall value.
+The report drills down further into each of these areas, referencing data points from a survey of podcast listeners.
+
+#### Why does this matter?
+
+As the article plainly puts it, the view that "podcasting" is just one behavior is no longer valid.
+Audio, video, clips, social media, and newsletters all play an integral role to the podcast being able to reach new audiences, engage the audience you already have, and re-engage those who have dropped off.
+It's also critical to acknowledge that these mechanisms may not serve the purpose of which they are originally thought to serve.
+For instance, it's not always about reach.
+Some mechanisms serve other roles, like developing trust or greater perceptions of credibility.
+Creators and producers will want to consider these roles and leverage the strength of each to maximize their efforts.
+
+This was a really interesting report, and this brief summary only covers a portion of the possible takeaways.
+If you're working in this space, I highly suggest reading the report and watching the webinar.
+
+### [One Public Radio Station’s Journey Into New Digital Revenue](https://teamparagon.consulting/one-public-radio-stations-journey-into-new-digital-revenue/) (article / webinar)
+
+The point of this webinar was to overview a case study about [WBGO's](https://www.wbgo.org/) integration of programmatic advertising into their unsold streaming and podcast inventory.
+This case study was unique because it serves as an example of a public radio station's strategy expansion into the use of tactics to generate new digital revenue.
+As was reported in the article's summary, these tactics were a success for the station.
+They led to a five figure increase in new revenue.
+This success was not without work, though.
+The station had to first identify a trusted tech and ad network partner to run the programmatic insertion of advertising categories that met the aesthetics of public radio programming, while also allowing for improved geographical targeting.
+Some modifications to the flow clock structure were required, which did result in some additional benefits for the broadcast (e.g., additional space for fundraising messages; increased promotion of social channels).
+It was also mentioned the station prepared a communication plan to address any concerns raised about the use of programmatic advertising.
+However, the article mentioned the change only received a few responses, to which a follow-up explaining why these changes took place were successful.
+The article also quoted some advice from the folks involved:
+
+* Listener experience is an important consideration: good quality sound and avoid repetitive ads.
+* Plan and learn from what others are doing.
+* Be flexible and willing to adjust.
+
+#### Why does this matter?
+
+New digital revenue can be elusive, so this was a good example of a public media organization identifying a successful opportunity.
+The case study also is a good model of the work required to fully actualize this opportunity, which includes identifying a trustful programmatic advertising partner, making needed modifications to current services, and being prepared to address any external and internal concerns.
+In all of this, though, it's still important to remember that although this provides increased revenue, the impact on audience and their experience should always be priority when taking on such an initiative.
+
+### [The Biggest Dogs in Streaming Want You to Use Only Their App](https://www.nytimes.com/2026/08/24/business/media/amazon-youtube-netflix-streaming-platform.html) (article)
+
+This article highlighted the shift taking place in the streaming industry: its no longer the streaming wars but the bundling wars.
+As the author points out, streaming platforms are striving or being more open to become the single place people consume content.
+The focus is to become the portal all content consumption takes place. 
+Consumers have expressed wanting this from their platforms.
+This is in response to platforms adjusting strategies to keep audiences engaged on the platform instead of being solely focused on subscriber growth.
+There are both disadvantages and advantages to these partnerships.
+Regarding disadvantages, these partnerships may require big cuts to subscription and advertising revenue.
+It can limit direct consumer relationship opportunities, though.
+Despite these disadvantages, these partnerships can save money in terms of technology enablement and marketing.
+It also has been shown to increase viewership.
+In addition, the article also shared some interesting background into partnerships with some of these platforms with other broadcasters.
+
+#### Why does this matter?
+
+Audiences want convenience.
+Partnerships afford convenience.
+It's about being a part of the app every user funnels their time and attention.
+This is similar to what's happening in terms of the TV interface wars.
+In addition, such partnerships can help offload some of the pressure placed on media organizations that lack the resources to create content and experiences and in addition manage the platforms this content lives.
+Large platforms have the resources to manage the technology and provide significant user bases that access these content via these portals.
+Even while tradeoffs exist within these partnerships, the end result may be advantageous.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+While taking a few days for some self-care, I came to the conclusion that I really miss not being able to publish and share some form of an update.
+Even when life gets busy or I have to punt working on this for a few days, I still consume lots of information, and I feel a strong pull to share what I've found important.
+
+So, I've been reflecting on what a 'short version' of this update might look like.
+I'll still aim for the full version with summaries and my analysis, since that's been the goal.
+But, when life catches up to me, I still want a structure I can draft quickly and share--something I can put together in an afternoon if needed.
+
+I believe a short version of these updates will still allow me to achieve my goal: share what caught my attention in the media industry and what I thought was cool from the previous week.
+You might see a few of these pop up from time to time.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Mathematicians discover the worst way to hang a painting](https://www.scientificamerican.com/article/mathematicians-discover-the-worst-way-to-hang-a-painting/) (article)
+* [Make a Portable Wide-screen Mechanical TV](https://spectrum.ieee.org/mechanical-tv-2677767814) (article)
+* [Undo for Shiny, and the three problems that make it interesting](https://tenmeh.github.io/posts/2026-08-27-undo-for-shiny/) (blog)
+* [Bad code is kudzu](https://vickiboykis.com/2026/09/01/bad-code-is-kudzu/) (blog)
+
+That's it for this update.
+Take care of yourself, folks.
+Wash your hands.
+Oh, and if you need some time for some self-care, this is your reminder to take it.
+
+Here's to a great start to your week.
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
