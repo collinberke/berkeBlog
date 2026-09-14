@@ -1,0 +1,148 @@
+---
+title: "The Hex Update: Issue 040"
+date: "2026-09-14"
+author: "Collin K. Berke, Ph.D."
+description: "Trends related to the changing landscape of news video viewing; YouTube's relationship with TV; a proposed rating system for streaming services--what they capture and don't capture; how getting your hands dirty might actually be healthy for you; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 040.
+
+Greetings people of the internet.
+Last week was a good, short week.
+It felt like an even shorter weekend.
+This just means we're having fun, right?
+
+Well, time to learn something new.
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Trends related to the changing landscape of news video viewing](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/broadcast-streaming-platforms-changing-landscape-news-video)
+* [YouTube's relationship with TV](https://podcasts.apple.com/us/podcast/youtubes-complicated-relationship-with-tv-behind/id1113097936?i=1000786903959)
+* [A half-joking, proposed rating system for streaming services--what they capture and don't capture](https://ericwbailey.website/published/a-proposal-for-new-netflix-content-rating-icons/)
+
+For a bit of fun, I share an [article](https://www.bbc.com/future/article/20260904-how-getting-your-hands-dirty-boosts-your-health-within-weeks) about how getting your hands dirty might actually be healthy for you.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [From broadcast news to streaming and platforms: The changing landscape of news video](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/broadcast-streaming-platforms-changing-landscape-news-video) (article)
+
+This article focuses on trends related to video news consumption.
+The critical findings here related to demographic differences in news video consumption and the platformization of news.
+The article clearly pointed out the majority of news video watching is now occurring on third-party platforms, rather then on publishers own sites and apps.
+Moreover, it pointed out differences in terms of age when it came to news video consumption.
+Younger audiences are turning more towards watching news video on platforms like TikTok and Instagram, while YouTube viewing has shown growth for both younger and older audiences.
+This quote seemed quite relevant:
+
+> This contrast perhaps says something about the maturity of YouTube as a platform, with many people treating it as a video streamer akin to the likes of Netflix.
+
+There was also some conversation about preference for long-form vs. short-form content consumption preferences.
+Interestingly, the article pointed to some data that mentioned older folks consume more short-form content then younger folks.
+This was attributed to younger audience preferences to watching over reading news.
+Lastly, the author left a question open about the role connected TV apps now play in this space.
+Folks are not abandoning their TVs.
+Instead, they're treating it like any other device they use to watch content, like their smartphones.
+
+#### Why does this matter?
+
+It's critical to acknowledge the platformization of news video consumption.
+Audiences now consume this content on third-party platforms more than they do on publisher's sites.
+This has direct impacts on where resources should be devoted.
+It's important to continue to observe these demographic differences across platform choices when it comes to news, while also understanding content preferences for different demographic groups.
+What we might expect may not always be the case in terms of audience preference.
+The connected TV streaming wars again is a signal worth further attention.
+Like the article puts it, connected TVs are now being treated just like any other device.
+
+### [YouTube's Complicated Relationship With TV | Behind the Numbers](https://podcasts.apple.com/us/podcast/youtubes-complicated-relationship-with-tv-behind/id1113097936?i=1000786903959) (podcast)
+
+This podcast episode provided a snapshot of the current state of YouTube as a streaming service, social media platform, an advertising platform, and a digital paid TV platform.
+The host and analysts shared several important data points and key takeaways.
+For one, YouTube has become more of a connected TV service ([04M25S](https://youtu.be/fR1VJI7UU50?si=b8FVIYESAqJ9Uwou&t=268)).
+255 million people in the US watch YouTube, where nearly 70% watch it via a connected TV .
+There was then some conversation about the impact YouTube's views metric change will have for the platform ([09M48S](https://youtu.be/fR1VJI7UU50?si=fk25CSmNzDbaDzDN&t=588)).
+This change aligns the platform more with social media video views than traditional TV viewing.
+In short, time spent metrics will be an even more important signal of the platform's ability to garner audiences' attention.
+Lastly, the episode had some points about how well YouTube TV is doing, which is one of the only digital paid TV platforms showing growth in the market ([18M37S](https://youtu.be/fR1VJI7UU50?si=Og18GOT_VPmYy64C&t=1117)).
+With 26 Million users, YouTube TV is one of the leading digital paid TV platforms.
+
+#### Why does this matter?
+
+In updates past, I've highlighted the growth of YouTube, which has been happening for quite awhile now.
+Look, it's time to recognize YouTube not as just another digital platform containing user generated content.
+Rather, it is now a platform competing for audiences' attention while watching television.
+Also, the views metric definition change is something to monitor.
+This change more aligns the platform with social media video measurement, though YouTube's analytics portal will continue to make an engaged viewers and time spent metric available.
+It will be interesting to observe how this impacts future advertising spend on the platform, and if it will further impact ad dollars devoted to traditional channels by being spent more on the TV side of the platform.
+
+### [A proposal for new Netflix content rating icons](https://ericwbailey.website/published/a-proposal-for-new-netflix-content-rating-icons/) (blog)
+
+This blog post provides a viewpoint about the limitations imposed by algorithmically-determined content recommendation systems.
+In a sort of half-jokingly way, the article brings up some good points about how ratings fail at fully capturing the lived experience people have when using streaming service rating systems.
+This quote really drove the point home:
+
+> The complexity of a thinking, feeling person in the world cannot be distilled down into a JSON file.
+
+The blog post also pointed out that realistically, what would be useful for users is the ability to open up and manage their personal profile used by these systems.
+Or, perhaps, the author suggests making modifications for a more legible, simplified schema (e.g., an 'I Hate This button!').
+To further emphasize this point, the post in a satirical way comes up with a few suggested icons for streaming services to use.
+
+#### Why does this matter?
+
+This post is an important reminder: audiences' experiences with media can involve significant nuance.
+Data points, especially constrained via a simplified data structure, may not fully capture this nuance.
+As such, this may result in less than ideal experiences if such structures are used to heavily inform the systems suggesting content.
+In fact, other modes of capturing and identifying audience signals are available to better understand and create amazing experiences.
+Listen to your audiences, don't just rely on a simplified metric.
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+Recently, I've been spending a lot of time building reports with [Quarto](https://quarto.org/).
+Formatting data tables has always been a task I've always loathed.
+I've used the [`gt`](https://gt.rstudio.com/) package from RStats from time-to-time, which made this much easier to do.
+However, I never really used it enough to get comfortable with the syntax and its design patterns.
+Something clicked for me this past week.
+The basic structuring of a table made sense, but I wasn't catching onto the patterns needed for formatting the different table elements.
+Once I began to understand how to target a table's element and then specify the element's properties, it started to all come together.
+I became much more proficient at modifying tables.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Getting your hands dirty boosts your health within weeks](https://www.bbc.com/future/article/20260904-how-getting-your-hands-dirty-boosts-your-health-within-weeks) (article)
+* [We built our house for LAN parties](https://lanparty.house/) (blog post)
+* [Don’t Let Anyone Take Away Your Big Box of Cables](https://blog.jim-nielsen.com/2026/hands-off-my-cables/) (blog post)
+* [Don't Compare Averages](https://martinfowler.com/articles/dont-compare-averages.html) (blog post)
+* [The Gaslight Anthem - "45"](https://www.youtube.com/watch?v=oST77VRHXt0) (video)
+
+That's it for this update.
+I've got a busy week ahead of me.
+Appointments, meetings, and a virtual conference.
+I'll be working hard to stay on top of it.
+
+Here's to a great start to your week.
+I hope it's a good one.
+
+Let's make it happen! ⛰️
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
