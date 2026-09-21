@@ -1,0 +1,92 @@
+---
+title: "The Hex Update: Issue 041"
+date: "2026-09-21"
+author: "Collin K. Berke, Ph.D."
+description: "Local news audiences and their changing media habits; public media's own social network?; a conversation about pocasting, Netflix, YouTube, and creator control; the importance of a film's score; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 041.
+
+This week was a busy one.
+Phew, 😅.
+Between a virtual conference, work projects, appointments, and just regular degular life, I was glad to keep it all together.
+Mostly.
+I'm thankful to get some time to sit down, write about, and share what I learned recently.
+As I work to catch up with everything, here's a [short version of my update](https://www.collinberke.com/updates/posts/2026-09-07-hex-update-039/#what-i-found-interesting-this-week) for this week.
+
+Let's get started.
+
+Three topics recently caught my attention:
+
+* [Local news audiences and their changing media habits](https://www.niemanlab.org/2026/08/can-public-media-build-its-own-social-media-chicago-public-media-teams-up-with-new_public-to-try/)
+* [Public media's own social network?](https://www.niemanlab.org/2026/08/can-public-media-build-its-own-social-media-chicago-public-media-teams-up-with-new_public-to-try/)
+* [A conversation about podcasting, Netflix, Youtube, and creator control](https://podcasts.apple.com/us/podcast/inside-podcastings-fight-over-netflix-youtube-and/id1080467174?i=1000776878673)
+
+For a bit of fun, I share a [video](https://www.youtube.com/watch?v=7vfqkvwW2fs) about the importance a film's score can have on audiences.
+It was a really interesting watch using the [Marvel Cinematic Universe](https://en.wikipedia.org/wiki/Marvel_Cinematic_Universe) as an example.
+
+You'll also find some additional links to other items I found cool this week.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Local news audiences aren’t disappearing, but their habits are changing fast](https://www.niemanlab.org/2026/08/can-public-media-build-its-own-social-media-chicago-public-media-teams-up-with-new_public-to-try/) (article)
+
+I really liked the insights focused on people who live in news desserts, how they consume news, and the impacts the lack of news can have on these areas.
+
+### [Can public media build its own social network? Chicago Public Media teams up with New_ Public to try](https://www.niemanlab.org/2026/08/can-public-media-build-its-own-social-media-chicago-public-media-teams-up-with-new_public-to-try/) (article)
+
+This is an ambitious, needed project to better serve communities. I'm excited to see what comes of it.
+
+### [Inside Podcasting's Fight Over Netflix, YouTube, and Creator Control](https://podcasts.apple.com/us/podcast/inside-podcastings-fight-over-netflix-youtube-and/id1080467174?i=1000776878673) (podcast)
+
+I really liked the conversation about podcast monetization and the role of the creator economy in podcasting.
+The conversation about the benefits of clipping was also interesting.
+
+Check out the links above for the full story in each item.
+This being a short update this week, I only included a brief sentence about what I found interesting.
+
+# What I found interesting this week
+
+I attended [posit::conf(2026)](https://conf.posit.co/2026/) virtually this week.
+This conference brings together both the R and Python communities, and it serves as a forum for data scientists, analysts, and other professionals to share talks about what's happening in the data space.
+It was great to hear more about what the teams at [Posit](https://posit.co/) have been building.
+It was also terrific learning from smart, amazing data folks while they highlighted their work, projects, and ideas.
+In the past, I attended posit::conf() twice in person (once in Chicago and the other in Seattle).
+This is my second time attending virtually, which has worked best with my current commitments at home.
+If everything aligns next year, I hope to attend the 2027 conference happening in Seattle, September 13-15.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Landing the Space Shuttle -- An Incredible Flying Machine and the Thrill of a Lifetime](https://thelastsoftwareengineer.substack.com/p/from-stonemasons-to-carpenters) (blog)
+* [The Most Important Product Decision Is What You Don't Build](https://liamnugent.me/posts/what-you-dont-build/) (blog)
+* [From Stonemasons to Carpenters](https://thelastsoftwareengineer.substack.com/p/from-stonemasons-to-carpenters) (blog)
+* [The Marvel Symphonic Universe](https://www.youtube.com/watch?v=7vfqkvwW2fs) (video)
+
+That's it for this update.
+
+Fingers crossed this week is a little slower on my end.
+Here's to hoping you have a great start to your week.
+May it be a productive one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
