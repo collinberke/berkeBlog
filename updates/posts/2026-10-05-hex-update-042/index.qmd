@@ -1,0 +1,149 @@
+---
+title: "The Hex Update: Issue 042"
+date: "2026-10-05"
+author: "Collin K. Berke, Ph.D."
+description: "The reinvention of traditional media; the great TV ad swap; folks still consume local news, though few will pay for it; a working AirPower Pro Max Ultra Plus desk; and some other cool things I came across recently"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 042.
+
+I skipped last week because I just couldn't find the time to sit down and write.
+A good, fun couple of weeks on my end, though.
+I spent time with friends this past weekend.
+Many things to celebrate and be happy about.
+We hope to spend some more time with folks this October, as the fall season starts to get into full swing--maybe even spending some time at a pumpkin patch or two is in order.
+
+Let's learn something.
+
+Three topics recently caught my attention:
+
+* [The reinvention of traditional media](https://www.streamtvinsider.com/content/beyond-cable-bundle-reinvention-traditional-media)
+* [The great TV ad swap](https://stateofthescreens.com/p/the-great-tv-ad-swap)
+* [Folks still consume local news, however, few will pay for it](https://www.editorandpublisher.com/stories/good-news-half-of-americans-consume-local-news-daily-bad-news-only-14-pay-for-it,263613)
+
+For a bit of fun, I share a [video](https://www.youtube.com/watch?v=KvLWuK2TU-w) of someone who built their own AirPower Pro Max Ultra Plus desk.
+Kudos to pulling this off.
+
+You'll also find some additional links to other items I found cool recently.
+
+# Three things
+
+Here's what caught my attention last week:
+
+### [Beyond the Cable Bundle: The Reinvention of Traditional Media](https://www.streamtvinsider.com/content/beyond-cable-bundle-reinvention-traditional-media) (article)
+
+The key point of this article is clear: traditional broadcast and cable companies need to reinvest current resources to transform their businesses.
+As the author puts it, this includes reinvesting revenue into developing business models that include subscriptions, advertising, commerce and transactional relationships with audiences, acquiring assets cheaply, and becoming more of a diversified media platform and company.
+This also involves shifting focus towards becoming more of a vertical audience platform.
+That is, as quoted from the article:
+
+> Traditional media companies need to become vertical audience platforms built around strong media brands, rather than simply streaming versions of cable channels.
+
+Vertical audience platforms are characterized as ones that have multiple forms of monetization, deep brand engagement, and key in on high-value verticals.
+To clarify these points, the article also shares the example of how [Comcast](https://en.wikipedia.org/wiki/Comcast) spun off [Versant](https://en.wikipedia.org/wiki/Versant), a separate mass media and technology company.
+This new structure, as the article states, allows for greater 'strategic freedom' and more 'independence in investment and acquisitions'.
+Moreover, it's an operating structure that allows Versant to more effectively meet their transformation goals: revenue from non-pay-TV to be 1/3 of total revenue in the three years, where eventually this will increase to over 50%.
+The article also makes a point that this transformation shouldn't be viewed in terms of just making existing services available via digital.
+
+#### Why does this matter?
+
+Declines in pay-TV have stabilized, and this offering still results in a significant share of revenue for traditional media companies.
+Despite this, audience behaviors continue to shift toward non-pay-TV sources.
+Large conglomerates are acknowledging this shift and are setting goals, developing strategies, and organizing themselves to become more of a vertical audience platform.
+These trends are signals for other traditional services to reconsider and reinvest in these areas as well.
+Another important point made in the article centers around how this transformation should not be viewed.
+It's not just about making current services available in digital spaces.
+Rather, it's a rethinking of these offerings and how these offerings can be leveraged to become more of a vertical audience platform.
+
+### [The Great TV Ad Swap](https://stateofthescreens.com/p/the-great-tv-ad-swap) (article)
+
+This article points to a critical trend for ad-supported TV: by 2030, streaming will garner more ad impressions than linear TV.
+This is a direct result of audiences spending more time consuming content on ad-supported streaming platforms.
+The gap between linear TV and streaming results from streaming having lower ad loads then linear: linear runs 2.5x more ads per hour.
+In fact, streaming platforms from linear-native networks have a higher ad-load than other streaming platforms.
+However, as the author predicts, this gap will narrow over the next several years.
+
+#### Why does this matter?
+
+We're witnessing a further shift in audience behavior here, so the impressions and advertising dollars will follow.
+Moreover, audiences' experiences with ads via streaming services will likely change, as the ad-load per hour will increase.
+This is already being demonstrated with linear-native streaming services.
+Other ad-supported streaming platforms will likely follow.
+
+### [Good news: Half consume local news daily. Bad news: Only 14% will pay for it](https://www.editorandpublisher.com/stories/good-news-half-of-americans-consume-local-news-daily-bad-news-only-14-pay-for-it,263613)
+
+This article and companion vodcast provides insight into the current state of local news.
+Through a survey fielded by the [Local News Initiative](https://localnewsinitiative.northwestern.edu/) at [Northwestern University's Medill School](https://www.medill.northwestern.edu/), audience's have a strong appetite for local news, but views on financial support are low.
+Indeed, as was stated in the vodcast, publishers' revenue models can still be successful as long as they maintain a loyal and engaged audience.
+However, there's a ceiling.
+The article then covered the pressures television news faces with digital disruption, which includes the challenges of attracting audiences to local TV stations' digital platforms.
+Several other topics were discussed: AI and trust in local news remains high.
+However, the final discussion point about meeting audiences where they are highlighted some opportunities.
+This included investments in more video and further exploring storytelling approaches to better reach and engage audiences via their mobile devices.
+
+#### Why does this matter?
+
+My read here focuses on future investment.
+It's clear audiences continue to want local news, so the opportunity is there for publishers to be successful.
+However, it's about packaging and delivering what audiences want and in places where they want it: using video storytelling and making it available via their mobile devices.
+These opportunities are only amplified by the trust folks have in local news.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+Logging decisions within projects has been on my mind lately.
+For a project I'm actively working on, I've been tracking down and attempting to obtain answers to when and how decisions were made for different components of the project.
+At one point, some of the information about decisions made in the past predated my time on the project and lacked some form of documentation--decades ago in some cases.
+With that added context, my information gathering efforts sort of lead to a dead end.
+
+While doing this work, I was reminded about [Architectural Decision Records (ADRs)](https://martinfowler.com/articles/scaling-architecture-conversationally.html#adr), which are a documenting and thinking tool used within software development.
+This tool is intended to be a lightweight document containing several elements:
+
+* title
+* status
+* decision
+* context
+* options considered
+* consequences
+* advice
+
+I considered modifying and using a form of this tool within some of the projects I'm working on.
+The idea that this could be used as a reference to past decisions, an onboarding resource, and a thinking tool all in one is what's motivating me to give it a try.
+
+I found this [additional article](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) on the subject worth a read.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [We Built the Product Apple Gave Up On...](https://www.youtube.com/watch?v=KvLWuK2TU-w) (video)
+* [How Video Games Inspire Great UX](https://jenson.org/games/) (blog)
+* [First principles thinking](http://sunilsadasivan.com/writing/first-principles-thinking/) (blog)
+* [Pearl Jam - Elderly Woman Behind the Counter in a Small Town](https://www.youtube.com/watch?v=4YFYNUu_sqE)(video)
+
+That's it for this update.
+Take a beat and make some plans for fall.
+Maybe connect with some friends and celebrate something, even if its just your friendship.
+
+Here's to a great rest of your week.
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
