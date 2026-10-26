@@ -1,0 +1,96 @@
+---
+title: "The Hex Update: Issue 043"
+date: "2026-10-26"
+author: "Collin K. Berke, Ph.D."
+description: "The era of bleh; GEO is a distraction; Analytics and AI at CNN; Code you can dance to; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 043.
+
+I'm back after a bit of a hiatus.
+Life's been busy, so I haven't had much time to write.
+I usually commit myself to an hour a day, but the time just hasn't been there recently.
+So, I'm recommiting myself to drafting these updates, with some modifications.
+
+Let's get back to it.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Now Entering the Era of Bleh](https://www.noemamag.com/now-entering-the-era-of-bleh/) (article)
+
+This piece shares some arguments on the impact AI will have on knowledge work.
+The author's statements about homogenization of output and product development caught my attention.
+An interesting point was raised: if everyone has the same tools, then there's no more competitive advantage.
+
+### [GEO is a distraction](https://www.mariehaynes.com/geo-is-a-distraction/) (blog)
+
+This blog post brings into question the effectiveness of AI to direct traffic to websites.
+According to data used in the post, traffic from all LLMs only accounted for only 0.73% of referrels.
+The story was the same for conversions, where Google organic accounted for over 96% of total conversions.
+This quote from the post sums it all up:
+
+> The AI search that is actually sending people to businesses today isn't ChatGPT.
+> It's Google.
+
+### [How CNN Is Applying Data and AI In The News Media Business](https://www.forbes.com/sites/randybean/2026/09/28/how-cnn-is-applying-data-and-ai-in-the-news-media-business/?) (article)
+
+This piece highlights CNN's views on the role data and AI plays within their operations.
+In short, the aim is that all decisions are data informed.
+A mandate on how to do this was shared in the article, and it's worth a review.
+CNN places a heavy emphasis on being able to quickly test new ideas and features, many of which are evaluated through the use of A/B testing.
+There was also some discussion about focusing on further developing a semantic layer for the network's data.
+
+Check out the links above for the full story in each item.
+
+# What I found interesting this week
+
+I'm once again reconfiguring these updates.
+The majority of my overall writing time has been focused on these updates.
+Much of this effort went into reading, summarizing, and reflecting on why each source matters in terms of what I've been learning about the media industry.
+A good chunk of time was devoted to finding relevant material to include in each issue.
+I've come to notice that this limits my ability to blog in other areas I find interesting, like data science, analytics, and tech.
+I miss writing about those topics.
+I've also come to notice the overhead of how I currently do this just wasn't paying off, and it resulted in me missing my self-imposed weekly deadline from time-to-time.
+
+So, I'm adding some constraints and making some modifications.
+The sections will remain the same, but when it comes to the weekly items that caught my attention, I'm only going to add a sentence or two of summary along with a sentence or two about why it matters.
+Other than that, much of the rest of this update will remain the same.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [DJ_Dave's 'Hardcore Software' is code you can dance to](https://www.npr.org/2026/10/05/nx-s1-5904548/dj-daves-hardcore-software-is-code-you-can-dance-to) (article)
+* [Code is clay now](https://www.albertodenia.com/writing/code-is-clay-now) (blog post)
+* [Sometimes You Should Just Write SQL](https://www.practicalsignificance.com/posts/sometimes-you-should-just-write-sql/) (blog post)
+* [The people holding up the internet](https://sheets.works/data-viz/holding-up-the-internet/read) (blog post)
+
+That's it for this update.
+
+I'm recommiting myself once again to these updates, so maybe you can recommit yourself to something you've dropped recently.
+Maybe reconfigure it so you can meet your original intention for starting it in the first place.
+If you do, share it with me.
+I'd like to see it.
+
+Here's to a great start to your week. I hope it's a productive one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
