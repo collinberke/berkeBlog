@@ -1,0 +1,100 @@
+---
+title: "The Hex Update: Issue 044"
+date: "2026-11-02"
+author: "Collin K. Berke, Ph.D."
+description: "The casualty of convenience with news; The future of YouTube and media; The most watched local news experiment; the complexity of outer billiards visualized; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 044.
+
+That's a wrap for spooky season.
+Halloween was fun.
+I got to spend some time with family and friends.
+Now it's time for late fall.
+Early this week, I was also able to wrap up a DIY project that's been sitting on my to-do list for a very, very long time...
+I felt pretty accomplished to be able to sit on a patio I built, brick by brick.
+
+Anyways, let's learn something new.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Seven Takeaways on Convenience and News](https://niemanreports.org/gabe-bullard-against-convenience-book-technology-friction-news-online-social-media/) (article)
+
+This article overviews points made in a book titled [Against Convenience](https://www.gabebullard.com/against-convenience) by [Gabe Bullard](https://www.gabebullard.com/about-gabe), and it attempts to relate these points to the current state of the news industry.
+One point that caught my attention related to the use of data: "Data doesn't say what it seems to."
+The statement that "local connections have been lost" made within the article was also worth some reflection.
+These points matter because it's important to consider the impact caused by the casualty of convenience.
+
+### [Adam Conover explains how YouTube ruined everything](https://www.theverge.com/podcast/991471/adam-conover-youtube-tv-media-union-labor-ai) (podcast)
+
+Linked is an interview with [Adam Conover](https://www.adamconover.net/), who discusses his views on the state of the media industry and the creator economy.
+Several topics are covered, which include: old and new media, the business model of the creator economy, distribution, YouTube, advertising and branding deals, and younger audiences.
+The conversation is an interesting listen, and it provides some relevant points about the current state of entertainment media.
+Here are a couple of timestamps I've bookmarked to go back to:
+
+* [06M20S](https://youtu.be/zE5Ev13Sm_Q?si=Ivd8RhG-gO48DuNR&t=380) Old and new media, YouTube as the new TV
+* [11M15S](https://youtu.be/zE5Ev13Sm_Q?si=VrjsK4y91b_Xe4-y&t=675) The cable business model
+* [22M17S](https://youtu.be/zE5Ev13Sm_Q?si=QWpVaccI32gPonv6&t=1337) The future of YouTube
+* [29M00S](https://youtu.be/zE5Ev13Sm_Q?si=ngdppkAd6vle4OYr&t=1740) Younger audiences' view of media
+* [40M00S](https://youtu.be/zE5Ev13Sm_Q?si=NJTEoqwlX1UcGREg&t=2400) Conversation related to the model of brand deals and how that works in the current model of media
+
+### [Chicago Public Media CEO Melissa Bell is Leading the Nation's Most Watched Local News Experiment](https://podcasts.apple.com/us/podcast/medill-state-of-local-news-with-tim-franklin/id1887642761) (podcast)
+
+This is an interview with [Melissa Bell](https://www.linkedin.com/in/melissaannbell/), CEO of [Chicago Public Media](https://www.chicagopublicmedia.org/).
+The interview went into how the acquisition of the Chicago Sun Times by WBEZ was going.
+This included some conversation on how the two newsrooms--now the largest non-profit newsroom in the country--are operating under one structure.
+The conversations about organizing around platform caught my attention.
+There was also some interesting conversation about meeting the needs of future audiences.
+Here are some timestamps with some interesting conversation:
+
+* [08M21S](https://youtu.be/nDENZoYI91E?si=cx5nMDfwMMlEJ2yN&t=501): Revenue opportunities extending from the development of digital products.
+* [13M40S](https://youtu.be/nDENZoYI91E?si=aSQ-L0L2HCAZbYVr&t=820): The internet is not a monolith. There is yet to be a platform to be developed that reaches audiences the way they want to be reached.
+* [15M33S](https://youtu.be/nDENZoYI91E?si=jUp291EWA95s_IAr&t=933): "Journalism is not the problem, it's the delivery mechanism"
+* [24M22S](https://youtu.be/nDENZoYI91E?si=fFBRi5tbKCetZ0Wk&t=1462): Conversation about chicago.com, a new digital community platform. This quote sums up this section well: "Public media has always served both as great creators of journalism but also stewards of infrastructure, we are stewards of radio signals and broadcast signals and we need to state that in this day and age we also need to be stewards of digital infrastructure as well."
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+I went back and brushed up my knowledge of Google Cloud's [IAM](https://docs.cloud.google.com/iam/docs) tools this week.
+User accounts, service accounts, keys, and role management hasn't been something I've needed to do for some time.
+However, recently, I've re-inherited having to do some of these tasks.
+Having a strong foundation to your cloud project's role and key management is a huge help.
+For the project I'm working in, I was glad for the upfront work done on the organizational structure related to roles.
+It made getting back up to speed so much easier.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [I can only play in your back yard if you invite me in](https://benharrap.com/post/2025-10-10-playing-in-your-back-yard/) (blog)
+* [Bring Back the Cool Save File Screens](https://scabshack.lol/posts/bring-back-the-cool-save-file-screens) (blog)
+* [i'm so bad at billiards that i ended up in the hyperbolic plane](https://www.youtube.com/watch?v=kL9BTbIGxLg) (video)
+* [astroterm: a planetarium for your terminal](https://github.com/da-luce/astroterm) (repo)
+
+That's it for this update.
+Maybe take a scan of your to-do list and find that lingering project you've been putting off.
+Now might be the time to tackle it.
+
+Here's to a great start to your week. I hope it's a good one.
+
+Onward 🚀!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
