@@ -1,0 +1,94 @@
+---
+title: "The Hex Update: Issue 045"
+date: "2026-11-09"
+author: "Collin K. Berke, Ph.D."
+description: "Can you afford to Watch TV?; Does AI result in more direct traffic?; Can the internet be saved?; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Welcome to Issue 045.
+
+I had a fun three-day weekend.
+I was fortunate to spend some quality time with family.
+I hope you had some time to connect over the weekend.
+
+Let's get to learning y'all.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Can You Afford to Watch TV?](https://www.nytimes.com/2026/11/02/arts/television/streaming-tv-era-cost.html) (article)
+
+This piece provides some viewpoints on the impact subscriptions have on audience's ability to watch television.
+The author uses the analogy that TV consumption is like "high-end dining."
+Indeed, a point is made in the piece that such an environment hurts the medium and creates divisions in experiences for audiences.
+I found this quote from the article worth some additional reflection:
+
+> The stories you experience and the references you get are determined by the purchase decisions you've made.
+
+### [Does AI drive more direct traffic?](https://www.growth-memo.com/p/does-ai-drive-more-direct-traffic) (blog)
+
+This post explores and discusses the AI traffic that might be hidden in Direct web traffic.
+The author cites an [interview](https://www.siegemedia.com/conversation/how-ramp-accurately-tracks-ai-traffic-w-eric-wiu) that states 30 to 40% of direct traffic is originating from answer engines.
+However, this post's analysis couldn't find any hidden AI traffic within their Direct traffic when exploring a sample of B2B and B2C websites.
+The post did find a correlation between AI visibility and Direct after a three-week delay. Though when it was parsed further, the relationship didn't hold.
+To summarize, the author suggests a rethinking of the traditional click funnel (i.e., search -> click -> convert).
+
+### [Can Cloudflare CEO Matthew Prince save the web from AI?](https://www.theverge.com/podcast/1000344/cloudflare-matthew-prince-google-zero-ai-web-advertising) (podcast)
+
+Recently, I've been on a [Decoder podcast](https://www.theverge.com/decoder-podcast-with-nilay-patel) kick, catching up on episodes I've missed.
+Here's another interesting interview with [Cloudflare's](https://en.wikipedia.org/wiki/Cloudflare) CEO, [Matthew Prince](https://en.wikipedia.org/wiki/Matthew_Prince).
+If you're a part of the media industry, you'll want to listen from [04M51S to 46M37S](https://youtu.be/4t8RhKbkb70?si=dsmstfai362TlhdO&t=291).
+Here are some specific points in the interview that I tagged as interesting:
+
+* [04M17S](https://youtu.be/4t8RhKbkb70?si=dsmstfai362TlhdO&t=291): The business model of the internet, and is it still working?
+* [14M20S](https://youtu.be/4t8RhKbkb70?si=zLAuunzKUVIi_z2m&t=860): Tragedy of the commons. Every request on the internet has an associated cost, whether it's a human or an agent.
+* [24M00S](https://youtu.be/4t8RhKbkb70?si=C0wzd813cdhpWz1t&t=1440): The value of local news to LLMs.
+* [37M00S](https://youtu.be/4t8RhKbkb70?si=HgfhCeaRTdWXX99g&t=2220): Information market driven by feeding valuable information to bots, is this a good thing?
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+This week, I've been really focused on creating interactive tables for some data projects I'm working on.
+The [DT](https://rstudio.github.io/DT/) package has always been my go to, which provides a straightforward interface to JavaScript's DataTables JavaScript library. 
+However, I needed some functionality that I couldn't figure out how to do for one of my projects.
+So, I went looking.
+
+I came across the [reactable](https://glin.github.io/reactable/) R package.
+Not only did I find what I was looking for, but I was excited to see all the package made available in terms of interactive tables.
+I found the package's [Examples](https://glin.github.io/reactable/articles/examples.html) page to be a great place to see what was all available.
+The interface was very similar in terms of DT, so before long I was getting the hang of it.
+It made it easy to start.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [Resisting Cognitive Surrender](https://knlb.dev/essays/surrender) (blog)
+* [The efficiency trap: why optimising everything can backfire, badly](https://www.theguardian.com/books/2026/nov/08/the-efficiency-trap-why-optimising-everything-can-backfire-badly) (blog)
+* [There's value in being mediocre](https://play.prx.org/listen?ge=prx_140_ea9bbdc4-9f60-457b-80a5-ebb94e89b100&uf=https%3A%2F%2Fpublicfeeds.net%2Ff%2F140%2Ffeed-rss.xml) (podcast)
+* [Ratboys - "What's Right?"](https://www.youtube.com/watch?v=-6OiASeY-As) (video)
+
+That's it for this update.
+
+Here's to a great start to your week. I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
