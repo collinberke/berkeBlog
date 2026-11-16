@@ -1,0 +1,103 @@
+---
+title: "The Hex Update: Issue 046"
+date: "2026-11-16"
+author: "Collin K. Berke, Ph.D."
+description: "A Tubi fund for creators and mixtapes; Is social listening dying?; NPR's focus on digital infrastructure; A digital TV network built from old videos; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Hello people of the internet!
+Welcome to Issue 046.
+I hope this update finds you well.
+This week flew by for me.
+Before I knew it, we were already at the start of another week.
+Now that's it's getting darker earlier, each day just feels like it goes by so much quicker.
+
+Let's get to learning something new.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Fox’s Tubi launches Kickstarter fund for creators, debuts “Mixtape” feature](https://thedesk.net/2026/11/fox-tubi-kickstarter-for-creators-mixtapes-for-users/) (article)
+
+This article talks about [Tubi](https://en.wikipedia.org/wiki/Tubi) partnering with [Kickstarter](https://en.wikipedia.org/wiki/Kickstarter) to help finance independent creators work.
+This strategy aims to lead to the creation of content younger audiences want, while also meeting the targeting needs of advertisers.
+There was also some conversation about Tubi's Mixtapes feature.
+This allows for users to curate and share collections of movies and television shows with other users.
+
+### [The Death of Traditional Social Listening?](https://www.linkedin.com/pulse/death-traditional-social-listening-andrew-dawson-m-s--vzfze/) (blog)
+
+This post overviews the current state of [social listening](https://en.wikipedia.org/wiki/Social_media_analytics).
+As more and more platforms begin to close public access to online comments, access to the voice of the consumer is straining the utility of social listening as a form of measurement.
+However, the post makes it clear that social listening, even during its 'golden era' was only a snapshot.
+There's more to how people feel and behave then what is being reflected via  online posts.
+This quote from the article sums up this point concisely:
+
+> Traditional social listening isn't dying because people stopped talking.
+> It's dying as a theory of completeness.
+
+I also liked the post's framing of the role social listening in terms of the four questions.
+
+### [New NPR strategic plan prioritizes ‘app-first’ digital infrastructure](https://current.org/2026/11/new-npr-strategic-plan-prioritizes-app-first-digital-infrastructure/) (article)
+
+This article is a look into NPR's strategic plan, which partly is focused on rebuilding it's mobile app experience.
+The points made about the impact of algorithms, agentic AI, and building upon rented digital land are worth some further consideration.
+The vision of 'building a wider funnel' highlighted in the article was also a point that caught my attention.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+This week, I had to revert a repo back to a previous commit hash due to some breaking code.
+Indeed, this doesn't happen very often, so I'm not too use to using `git revert`.
+While doing this, I was hit with the following error:
+
+```txt
+commit <hash> is a merge but no -m option was given.
+```
+
+No idea what this meant.
+So, I threw it at Gemini to learn more.
+This error was due to the hash I was trying to revert back to being a merged commit.
+I learned the `-m` option was required to specify how I wanted to handle the changes added by the merge.
+If I wanted to undo all the changes, I needed to use `-m 1`.
+An `-m 2` flag was available, but this is only useful if you merged main into a feature branch.
+
+Indeed, I'm team rebase all the way.
+I would have mitigated these issues if a rebase was performed rather than a merge.
+However, choices were made and the git history was already on the remote server, so I had to work with what I had.
+Nonetheless, my unclean history resulted in me learning a little more about git.
+
+Yay, me!
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [The Dawn of The Data Intelligence Engineer](https://motherduck.com/blog/the-data-intelligence-engineer/) (blog)
+* [SPELUNKR: Free alternative TV network built from the Internet Archive's forgotten videos](https://spelunkr.tv/) (website)
+* [foldableflight: fold epic paper airplanes](https://www.foldableflight.com/) (website)
+
+That's it for this update.
+
+Here's to a great start to your week.
+Have a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
