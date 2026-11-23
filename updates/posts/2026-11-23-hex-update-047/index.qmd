@@ -1,0 +1,101 @@
+---
+title: "The Hex Update: Issue 047"
+date: "2026-11-23"
+author: "Collin K. Berke, Ph.D."
+description: "The future of TV advertising--attribution; Why creator content belongs in an AI strategy; TV size and geography for targetting; and some other cool things I came across this week"
+format:
+  html:
+    link-external-newwindow: true
+toc: true
+from: markdown+emoji
+categories:
+  - the hex update
+  - media
+---
+
+# Let's catch up
+
+Friends of the internet, welcome to Issue 047.
+Solid week this week; I was able to tick a few things off my to-do list.
+I also was able to sharpen the axe, where I tidied up some areas of my work that needed some better organization.
+If the holiday season is a time where things slow down, maybe you to can take some time to sharpen your axe.
+
+So anyways, let's learn.
+
+# Three things
+
+Here's what caught my attention this week:
+
+### [Televisionation—Friday Fireside: Scott Weisenthal, Global Head of Marketing and Insights at Comcast Advertising](https://itvt.com/televisionation/televisionation-friday-fireside-scott-weisenthal-global-head-of-marketing-and-insights-at-comcast-advertising/) (podcast)
+
+Here's a conversation with [Scott Weisenthal](https://www.linkedin.com/in/scottweisenthal/), Global Head of Marketing and Insights at Comcast Advertising.
+Several points in this interview caught my attention: the gap between big brands and smaller businesses to use TV advertising; connecting the pieces of a media buy--including attribution; the importance of shared experiences and word-of-mouth; and Answer Engine Optimization.
+I'm walking away with several quotes from this interview.
+Here are two that caught my attention:
+
+> Shared experiences are what create culture. (10M55S)
+
+> LLMs are word-of-mouth on steroids. (14M06S)
+
+### [Why creator content belongs in your AI search strategy](https://www.youtube.com/watch?v=Mfvw43BbHy0) (blog)
+
+The main point of this article is clear: creator content is critical to an AI search strategy.
+It was staggering to read that 82% of AI citations come from earned media.
+Video was mentioned to play a critical role as well, especially long-format YouTube videos.
+As quoted in the article about video:
+
+> Popularity doesn't predict citation value, structure does.
+
+The article also included some points about the value of social conversations.
+
+### [Wolk's Week in Review: Can V Really Shake Up TV Measurement?](https://www.streamtvinsider.com/advertising/wolks-week-review-can-v-really-shake-tv-measurement) (blog)
+
+This post provides some opinions on the current measurement differences between linear,  connected TV, and digital measurement.
+It discusses a new system to address this called VIP (Verified Inch Price), which bases advertising inventory sales on the size of a TV and the demographics a city the TV is located.
+This quote from the article caught my attention:
+
+> TV is never going to have the granularity of digital, no matter how many algorithms we try and force on it.
+
+The article's stance is TV is a branding vehicle, it's a shared device, and as such it doesn't need the same level of granularity as digital.
+The value of VIP here is the simplicity it provides for ad buyers.
+
+Check out the links above for the full story in each item, not just my brief summary and analysis.
+
+# What I found interesting this week
+
+This week, I spent some time reading and learning more about [Google Dataform's](https://cloud.google.com/dataform) [workspaces](https://docs.cloud.google.com/dataform/docs/create-workspace).
+I started to learn more about what workspaces are, how to set one up, and all the features that are available.
+I also learned more about the initialization process, which included exploring more about the purpose of the following directories and files for a project:
+
+* `definitions/`
+* `includes/`
+* `workflow_settings.yaml`
+
+I also spent some more time understanding more about SQLX and JavaScript files and how they can be used to help define workflows.
+I'm drafting a blog post with some notes about what I learned, so that will be up soon.
+
+## Cool things I recently bumped into
+
+A collection of links to things I've found cool recently (or was reminded are cool).
+
+* [What can you actually put in a URL 🐔?](https://www.youtube.com/watch?v=Mfvw43BbHy0) (video)
+* [We don't need more apps. We need better open source.](https://jordankrueger.com/blog/better-open-source-not-more-apps/) (blog)
+* ['Out there, moving into the unknown': As Voyager 1 reaches one light-day from Earth, scientists reflect on its past — and its future](https://www.livescience.com/space/space-exploration/out-there-moving-into-the-unknown-as-voyager-1-reaches-one-light-day-from-earth-scientists-reflect-on-its-past-and-its-future) (article)
+* [NOVA: Return to the moon](https://www.pbs.org/wgbh/nova/video/return-to-the-moon/) (video)
+
+That's it for this update.
+
+For those who are celebrating, I wish you a Happy Thanksgiving.
+I hope all find some time to rest, relax, and reset.
+
+Here's to a great week.
+I hope it's a good one.
+
+Cheers 🎉!
+
+# Let's connect
+
+If you found this content useful, please share.
+If you find these topics interesting and want to discuss further, let's connect:
+
+{{< include ../../../.includes/_connect.qmd >}}
